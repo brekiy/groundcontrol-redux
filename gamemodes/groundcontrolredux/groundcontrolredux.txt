@@ -1,0 +1,7 @@
+"groundcontrol"
+{
+	"base"		"base"
+	"title"		"Ground Control Redux"
+	"maps"		"^gc_"
+	"menusystem"	"1"
+}

@@ -1,0 +1,13 @@
+{
+    "title": "Ground Control Redux",
+    "type": "gamemode",
+    "tags": [
+        "fun",
+        "realism"
+    ],
+    "ignore": [
+        "*.psd",
+        "*.vcproj",
+        "*.svn*"
+    ]
+}
