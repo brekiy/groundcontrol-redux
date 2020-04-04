@@ -81,7 +81,7 @@ function PLAYER:giveHelmet()
 end
 
 function PLAYER:takeArmorDamage(armorData, dmgInfo)
-    armorData.health = math.ceil(armorData.health - dmgInfo:GetDamage() * 0.75)
+    armorData.health = math.ceil(armorData.health - dmgInfo:GetDamage() * 0.85)
 end
 
 function PLAYER:addArmorPart(id, category)

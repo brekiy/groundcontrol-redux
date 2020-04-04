@@ -53,9 +53,6 @@ function GM:prepareArmorPiece(ply, armorId, category)
     local armorObject = {health = 100, id = armorId, category = category}
     if (category == "vest") then
         table.insert(ply.armor, armorObject)
-    -- if (category == "helmet") then
-    --     table.insert(ply.helmet, armorObject)
-    -- end
     elseif (category == "helmet") then
         table.insert(ply.helmet, armorObject)
     end
