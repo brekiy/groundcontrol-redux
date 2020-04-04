@@ -73,8 +73,8 @@ SWEP.ViewModelFlip    = false
 SWEP.ViewModel        = "models/cw2/pistols/mr96.mdl"
 SWEP.WorldModel        = "models/weapons/w_357.mdl"
 
-SWEP.Spawnable            = true
-SWEP.AdminSpawnable        = true
+SWEP.Spawnable            = false
+SWEP.AdminSpawnable        = false
 
 SWEP.Primary.ClipSize        = 6
 SWEP.Primary.DefaultClip    = 6

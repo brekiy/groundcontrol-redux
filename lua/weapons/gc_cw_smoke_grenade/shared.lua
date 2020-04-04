@@ -50,8 +50,8 @@ SWEP.ViewModelFlip    = true
 SWEP.ViewModel        = "models/weapons/v_eq_smokegrenade.mdl"
 SWEP.WorldModel        = "models/weapons/w_eq_smokegrenade.mdl"
 
-SWEP.Spawnable            = true
-SWEP.AdminSpawnable        = true
+SWEP.Spawnable            = false
+SWEP.AdminSpawnable        = false
 
 SWEP.Primary.ClipSize        = 1
 SWEP.Primary.DefaultClip    = 1

@@ -150,8 +150,8 @@ SWEP.ViewModelFlip    = false
 SWEP.ViewModel        = "models/cw2/rifles/ar15.mdl"
 SWEP.WorldModel        = "models/weapons/w_rif_m4a1.mdl"
 
-SWEP.Spawnable            = true
-SWEP.AdminSpawnable        = true
+SWEP.Spawnable            = false
+SWEP.AdminSpawnable        = false
 
 SWEP.Primary.ClipSize        = 30
 SWEP.Primary.DefaultClip    = 30

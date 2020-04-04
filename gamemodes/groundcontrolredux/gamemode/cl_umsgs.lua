@@ -85,6 +85,10 @@ net.Receive("GC_NOTIFICATION", function(a, b)
     chat.AddText(Color(150, 197, 255, 255), "[GROUND CONTROL] ", Color(255, 255, 255, 255), net.ReadString())
 end)
 
+net.Receive("GC_GAMETYPE", function(a, b)
+    GAMEMODE:setGametype(net:ReadInt(16))
+end)
+
 local function GC_AUTOBALANCED_TO_TEAM(um)
     if GAMEMODE.teamSwitchPopup then
         GAMEMODE.teamSwitchPopup:Remove()

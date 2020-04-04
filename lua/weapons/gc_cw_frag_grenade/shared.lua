@@ -51,8 +51,8 @@ SWEP.ViewModelFlip    = false
 SWEP.ViewModel        = "models/weapons/v_cw_fraggrenade.mdl"
 SWEP.WorldModel        = "models/weapons/w_cw_fraggrenade_thrown.mdl"
 
-SWEP.Spawnable            = true
-SWEP.AdminSpawnable        = true
+SWEP.Spawnable            = false
+SWEP.AdminSpawnable        = false
 
 SWEP.Primary.ClipSize        = 1
 SWEP.Primary.DefaultClip    = 1

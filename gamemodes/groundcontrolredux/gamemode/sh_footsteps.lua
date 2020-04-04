@@ -166,7 +166,7 @@ function GM:PlayerFootstep(ply, position, foot, sound, volume, filter)
     if CLIENT and ply ~= LocalPlayer() then
         return true
     end
-    local materialID = self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound]
+    local materialID = (self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound]) ? self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound] : MAT_CONCRETE
     local loudnessID, noiseLevel = self:getLoudnessLevel(ply)
     self:playFootstepSound(ply, loudnessID, materialID)
     
