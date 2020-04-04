@@ -156,8 +156,8 @@ SWEP.ViewModelFlip    = false
 SWEP.ViewModel        = "models/cw2/rifles/g3a3.mdl"
 SWEP.WorldModel        = "models/weapons/w_snip_g3sg1.mdl"
 
-SWEP.Spawnable            = true
-SWEP.AdminSpawnable        = true
+SWEP.Spawnable            = false
+SWEP.AdminSpawnable        = false
 
 SWEP.Primary.ClipSize        = 20
 SWEP.Primary.DefaultClip    = 20

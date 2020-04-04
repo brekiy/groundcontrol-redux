@@ -20,9 +20,9 @@ end
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:sendGameType()
-    umsg.Start("GC_GAMETYPE", self)
-        umsg.Short(GAMEMODE.curGametypeID)
-    umsg.End()
+    net.Start("GC_GAMETYPE")
+    net.WriteInt(GAMEMODE.curGametypeID, 16)
+    net.Send(self)
 end
 
 concommand.Add("gc_request_gametype", function(ply, com, args)

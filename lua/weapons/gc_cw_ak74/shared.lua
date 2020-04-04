@@ -1,6 +1,4 @@
 AddCSLuaFile()
--- AddCSLuaFile("sh_sounds.lua")
--- include("sh_sounds.lua")
 
 if CLIENT then
     SWEP.DrawCrosshair = false
@@ -138,8 +136,8 @@ SWEP.ViewModelFlip    = false
 SWEP.ViewModel        = "models/cw2/rifles/ak74.mdl"
 SWEP.WorldModel        = "models/weapons/w_rif_ak47.mdl"
 
-SWEP.Spawnable            = true
-SWEP.AdminSpawnable        = true
+SWEP.Spawnable            = false
+SWEP.AdminSpawnable        = false
 
 SWEP.Primary.ClipSize        = 30
 SWEP.Primary.DefaultClip    = 30

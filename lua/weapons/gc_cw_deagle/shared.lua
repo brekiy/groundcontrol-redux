@@ -105,8 +105,8 @@ SWEP.ViewModelFlip    = false
 SWEP.ViewModel        = "models/cw2/pistols/deagle.mdl"
 SWEP.WorldModel        = "models/weapons/w_pist_deagle.mdl"
 
-SWEP.Spawnable            = true
-SWEP.AdminSpawnable        = true
+SWEP.Spawnable            = false
+SWEP.AdminSpawnable        = false
 
 SWEP.Primary.ClipSize        = 7
 SWEP.Primary.DefaultClip    = 7

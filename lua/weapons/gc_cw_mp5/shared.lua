@@ -158,8 +158,8 @@ SWEP.ViewModelFlip    = true
 SWEP.ViewModel        = "models/cw2/smgs/mp5.mdl"
 SWEP.WorldModel        = "models/weapons/w_smg_mp5.mdl"
 
-SWEP.Spawnable            = true
-SWEP.AdminSpawnable        = true
+SWEP.Spawnable            = false
+SWEP.AdminSpawnable        = false
 
 SWEP.Primary.ClipSize        = 15
 SWEP.Primary.DefaultClip    = 15
