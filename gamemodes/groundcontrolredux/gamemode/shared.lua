@@ -78,6 +78,24 @@ CustomizableWeaponry.playSoundsOnInteract = true
 CustomizableWeaponry.physicalBulletsEnabled = false -- physical bullets for cw 2.0, unfortunately 
 -- CustomizableWeaponry.physicalBulletsEnabled = GetConVarNumber("gc_physical_bullets") > 0 -- physical bullets for cw 2.0, unfortunately 
 CustomizableWeaponry.suppressOnSpawnAttachments = true
+-- Override this from the weapon base to toss our special ground control frag grenade
+function CustomizableWeaponry.quickGrenade:createThrownGrenade(player)
+	local pos = player:GetShootPos()
+	local offset = CustomizableWeaponry.quickGrenade:getThrowOffset(player)
+	local eyeAng = player:EyeAngles()
+	local forward = eyeAng:Forward()
+	
+	local nade = ents.Create("gc_cw_grenade_thrown")
+	nade:SetPos(pos + offset)
+	nade:SetAngles(eyeAng)
+	nade:Spawn()
+	nade:Activate()
+	nade:Fuse(3)
+	nade:SetOwner(player)
+	
+	return nade
+end
+
 -- CW 2.0 configuration over
 
 function GM:Initialize()
