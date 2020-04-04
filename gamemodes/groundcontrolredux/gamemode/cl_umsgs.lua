@@ -86,7 +86,7 @@ net.Receive("GC_NOTIFICATION", function(a, b)
 end)
 
 net.Receive("GC_GAMETYPE", function(a, b)
-    GAMEMODE:setGametype(net:ReadInt(16))
+    GAMEMODE:setGametype(net.ReadInt(16))
 end)
 
 local function GC_AUTOBALANCED_TO_TEAM(um)
