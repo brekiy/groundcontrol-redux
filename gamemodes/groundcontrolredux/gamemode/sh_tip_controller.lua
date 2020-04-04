@@ -43,9 +43,9 @@ if SERVER then
     local PLAYER = FindMetaTable("Player")
     
     function PLAYER:sendTip(tipId)
-        umsg.Start("GC_TIP_EVENT", self)
-            umsg.String(tipId)
-        umsg.End()
+        net.Start("GC_TIP_EVENT")
+        net.WriteString(tipId)
+        net.Send(self)
     end
 end
 
@@ -140,8 +140,10 @@ if CLIENT then
     end
     
     local function GC_TIP_EVENT(um)
-        GAMEMODE.tipController:handleEvent(um:ReadString())
+        GAMEMODE.tipController:handleEvent(um)
     end
-    
-    usermessage.Hook("GC_TIP_EVENT", GC_TIP_EVENT)
+    net.Receive("GC_TIP_EVENT", function (a, b)
+        GC_TIP_EVENT(net.ReadString())
+    end)
+    -- usermessage.Hook("GC_TIP_EVENT", GC_TIP_EVENT)
 end
