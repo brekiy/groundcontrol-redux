@@ -32,7 +32,7 @@ ADDING CUSTOM MAP SUPPORT:
 		GM.entityInitializer:registerEntityInitializeCallback("entityClass", function(entity, curGameType, data)
 			if data.data then
 				if data.data.customFlagsWithinTable == "yeas my bro." then
-					print("hello coon!")
+					print("hello!")
 				end
 			end
 		end)
