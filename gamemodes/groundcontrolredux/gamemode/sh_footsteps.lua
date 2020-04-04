@@ -41,7 +41,8 @@ MAT_WOODPANEL = -103
 
 -- map the default sounds to a material ID, way cheaper than traces, but also hacky as shit
 -- whoever wrote the PlayerFootstep hook but thought it's a good idea to not provide the material ID of the surface that the player stepped on is a fucking retard
-GM.DEFAULT_FOOTSTEP_TO_MATERIAL = {["player/footsteps/wood1.wav"] = MAT_WOOD,
+GM.DEFAULT_FOOTSTEP_TO_MATERIAL = {
+    ["player/footsteps/wood1.wav"] = MAT_WOOD,
     ["player/footsteps/wood2.wav"] = MAT_WOOD,
     ["player/footsteps/wood3.wav"] = MAT_WOOD,
     ["player/footsteps/wood4.wav"] = MAT_WOOD,
@@ -73,10 +74,19 @@ GM.DEFAULT_FOOTSTEP_TO_MATERIAL = {["player/footsteps/wood1.wav"] = MAT_WOOD,
     ["player/footsteps/snow2.wav"] = MAT_SNOW,
     ["player/footsteps/snow3.wav"] = MAT_SNOW,
     ["player/footsteps/snow4.wav"] = MAT_SNOW,
+    ["player/footsteps/sand1.wav"] = MAT_SAND,
+    ["player/footsteps/sand2.wav"] = MAT_SAND,
+    ["player/footsteps/sand3.wav"] = MAT_SAND,
+    ["player/footsteps/sand4.wav"] = MAT_SAND,
     ["physics/wood/wood_box_footstep1.wav"] = MAT_WOODPANEL,
     ["physics/wood/wood_box_footstep2.wav"] = MAT_WOODPANEL,
     ["physics/wood/wood_box_footstep3.wav"] = MAT_WOODPANEL,
-    ["physics/wood/wood_box_footstep4.wav"] = MAT_WOODPANEL}
+    ["physics/wood/wood_box_footstep4.wav"] = MAT_WOODPANEL,
+    ["player/footsteps/concrete1.wav"] = MAT_CONCRETE,
+    ["player/footsteps/concrete2.wav"] = MAT_CONCRETE,
+    ["player/footsteps/concrete3.wav"] = MAT_CONCRETE,
+    ["player/footsteps/concrete4.wav"] = MAT_CONCRETE
+}
 
 GM.FOOTSTEP_LOUNDLESS_LEVEL_ORDER = {}
 
@@ -156,7 +166,6 @@ function GM:PlayerFootstep(ply, position, foot, sound, volume, filter)
     if CLIENT and ply ~= LocalPlayer() then
         return true
     end
-        
     local materialID = self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound]
     local loudnessID, noiseLevel = self:getLoudnessLevel(ply)
     self:playFootstepSound(ply, loudnessID, materialID)
@@ -175,26 +184,26 @@ function GM:playFootstepSound(ply, loudnessID, materialID)
         -- this method, on the other hand, does not cause stutters, so I have no idea wtf is going on
         EmitSound(sound, ply:GetPos(), ply:EntIndex(), CHAN_AUTO, self.FOOTSTEP_VOLUME_LEVELS[loudnessID], self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], 0, math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END))
     else -- in the case of a server we send a usermessage to everyone to play the sound
-        umsg.Start("GC_FOOTSTEP")
-            umsg.Entity(ply)
-            umsg.Short(loudnessID)
-            umsg.Short(materialID)
-        umsg.End()
+        net.Start("GC_FOOTSTEP")
+        net.WriteEntity(ply)
+        net.WriteInt(loudnessID, 16)
+        net.WriteInt(materialID, 16)
+        net.Broadcast()
     end
 end
 
 -- use usermessages to network the footsteps
 if CLIENT then
-    usermessage.Hook("GC_FOOTSTEP", function(data)
-        local object = data:ReadEntity()
+    net.Receive("GC_FOOTSTEP", function(a, b)
+        local object = net.ReadEntity()
         
         -- if the footstep sound belongs to us, don't play it, because we've already played it on our own
         if not IsValid(object) or object == LocalPlayer() then
             return
         end
         
-        local loudnessID = data:ReadShort()
-        local materialID = data:ReadShort()        
+        local loudnessID = net.ReadShort()
+        local materialID = net.ReadShort()        
         
         GAMEMODE:playFootstepSound(object, loudnessID, materialID)
     end)
