@@ -1,6 +1,4 @@
 AddCSLuaFile()
-AddCSLuaFile("sh_sounds.lua")
-include("sh_sounds.lua")
 
 if CLIENT then
     SWEP.DrawCrosshair = false

@@ -9,7 +9,6 @@ ENT.Model = "models/weapons/w_eq_smokegrenade_thrown.mdl"
 local phys, ef
 
 function ENT:Initialize()
-    print("hello smoke")
 	self:SetModel(self.Model) 
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
