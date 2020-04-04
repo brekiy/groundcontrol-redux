@@ -152,7 +152,7 @@ end
 function GM:postInitEntity()
     -- battle rifles
     local g3a3 = {}
-    g3a3.weaponClass = "cw_g3a3"
+    g3a3.weaponClass = "gc_cw_g3a3"
     g3a3.weight = 4.1
     g3a3.penetration = 18
 
@@ -174,14 +174,14 @@ function GM:postInitEntity()
     
     -- assault rifles
     local ak74 = {}
-    ak74.weaponClass = "cw_ak74"
+    ak74.weaponClass = "gc_cw_ak74"
     ak74.weight = 3.07
     ak74.penetration = 17
     
     self:registerPrimaryWeapon(ak74)
 
     local ar15 = {}
-    ar15.weaponClass = "cw_ar15"
+    ar15.weaponClass = "gc_cw_ar15"
     ar15.weight = 2.88
     ar15.penetration = 16
     
@@ -210,7 +210,7 @@ function GM:postInitEntity()
     
     -- sub-machine guns
     local mp5 = {}
-    mp5.weaponClass = "cw_mp5"
+    mp5.weaponClass = "gc_cw_mp5"
     mp5.weight = 2.5
     mp5.penetration = 9
     
@@ -246,14 +246,7 @@ function GM:postInitEntity()
     pkp.maxMags = 1
     
     self:registerPrimaryWeapon(pkp)
-    
-    -- local mg42 = {}
-    -- mg42.weaponClass = "cw_kks_doi_mg42"
-    -- mg42.weight = 11.6
-    -- mg42.penetration = 19
-    -- mg42.maxMags = 2
-    
-    -- self:registerPrimaryWeapon(mg42)
+
     
     local m79 = {}
     m79.weaponClass = "cw_m79"
@@ -344,7 +337,7 @@ function GM:postInitEntity()
     self:registerSecondaryWeapon(g18)
     
     local flash = {}
-    flash.weaponClass = "cw_flash_grenade"
+    flash.weaponClass = "gc_cw_flash_grenade"
     flash.weight = 0.5
     flash.startAmmo = 2
     flash.hideMagIcon = true -- whether the mag icon and text should be hidden in the UI for this weapon
@@ -357,7 +350,7 @@ function GM:postInitEntity()
     self:registerTertiaryWeapon(flash)
     
     local smoke = {}
-    smoke.weaponClass = "cw_smoke_grenade"
+    smoke.weaponClass = "gc_cw_smoke_grenade"
     smoke.weight = 0.5
     smoke.startAmmo = 2
     smoke.hideMagIcon = true
@@ -369,7 +362,7 @@ function GM:postInitEntity()
     self:registerTertiaryWeapon(smoke)
     
     local spareGrenade = {}
-    spareGrenade.weaponClass = "cw_frag_grenade"
+    spareGrenade.weaponClass = "gc_cw_frag_grenade"
     spareGrenade.weight = 0.5
     spareGrenade.amountToGive = 1
     spareGrenade.skipWeaponGive = true
