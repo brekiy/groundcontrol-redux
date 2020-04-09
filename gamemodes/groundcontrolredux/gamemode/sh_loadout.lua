@@ -273,7 +273,7 @@ function GM:postInitEntity()
     
     -- sniper rifles    
     local l115 = {}
-    l115.weaponClass = "cw_l115"
+    l115.weaponClass = "gc_cw_l115"
     l115.weight = 6.5
     l115.penetration = 30
     

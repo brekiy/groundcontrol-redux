@@ -45,7 +45,7 @@ function GM:makeDebrisMovetypeForTrash(entList)
     for k, v in pairs(entList) do
         local phys = v:GetPhysicsObject()
         
-        if phys and phys:GetMass() <= self.TrashPropMaxWeight then
+        if IsValid(phys) and phys:GetMass() <= self.TrashPropMaxWeight then
             v:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
         end
     end
