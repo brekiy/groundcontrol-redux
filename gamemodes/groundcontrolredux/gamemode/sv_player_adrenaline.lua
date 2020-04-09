@@ -31,17 +31,17 @@ end
 
 if not FULL_INIT then
     if SERVER then
-        CustomizableWeaponry.callbacks:addNew("bulletCallback", "GroundControl_bulletCallback", function(wep, ply, traceResult, dmgInfo)
-            local rangeInMeters = wep.EffectiveRange / 39.37 -- convert back to meters
-            local suppressionRange = math.Clamp(GAMEMODE.StartingSuppressionRange + rangeInMeters * 0.2, GAMEMODE.MinimumSuppressionRange, GAMEMODE.MaximumSuppressionRange)
-            local suppressionSpeedChange = rangeInMeters * 0.0002
-            local suppressionDuration = 0.1 + rangeInMeters * 0.0005 
+        -- CustomizableWeaponry.callbacks:addNew("bulletCallback", "GroundControl_bulletCallback", function(wep, ply, traceResult, dmgInfo)
+        --     local rangeInMeters = wep.EffectiveRange / 39.37 -- convert back to meters
+        --     local suppressionRange = math.Clamp(GAMEMODE.StartingSuppressionRange + rangeInMeters * 0.2, GAMEMODE.MinimumSuppressionRange, GAMEMODE.MaximumSuppressionRange)
+        --     local suppressionSpeedChange = rangeInMeters * 0.0002
+        --     local suppressionDuration = 0.1 + rangeInMeters * 0.0005 
             
-            for key, object in pairs(ents.FindInSphere(traceResult.HitPos, suppressionRange)) do
-                if object:IsPlayer() and object:Alive() and object:canSuppress(ply) then
-                    object:suppress(suppressionDuration, suppressionSpeedChange)
-                end
-            end
-        end)
+        --     for key, object in pairs(ents.FindInSphere(traceResult.HitPos, suppressionRange)) do
+        --         if object:IsPlayer() and object:Alive() and object:canSuppress(ply) then
+        --             object:suppress(suppressionDuration, suppressionSpeedChange)
+        --         end
+        --     end
+        -- end)
     end
 end

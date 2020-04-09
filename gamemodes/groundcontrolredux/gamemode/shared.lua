@@ -36,7 +36,7 @@ GM.RoundOverAction = {
     RANDOM_MAP_AND_GAMETYPE = 2
 }
 
-GM.KnifeWeaponClass = "cw_extrema_ratio_official"
+GM.KnifeWeaponClass = "act3_knife"
 
 GM.StandHullMin = Vector(-16, -16, 0)
 GM.StandHullMax = Vector(16, 16, 72)
@@ -71,30 +71,30 @@ CreateConVar("gc_base_run_speed", 280, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base run 
 include("sh_sounds.lua")
 
 -- configure CW 2.0, please do not change this (unless you know what you're doing)
-CustomizableWeaponry.canOpenInteractionMenu = true
-CustomizableWeaponry.customizationEnabled = true
-CustomizableWeaponry.useAttachmentPossessionSystem = true
-CustomizableWeaponry.playSoundsOnInteract = true
-CustomizableWeaponry.physicalBulletsEnabled = false -- physical bullets for cw 2.0, unfortunately 
--- CustomizableWeaponry.physicalBulletsEnabled = GetConVarNumber("gc_physical_bullets") > 0 -- physical bullets for cw 2.0, unfortunately 
-CustomizableWeaponry.suppressOnSpawnAttachments = true
--- Override this from the weapon base to toss our special ground control frag grenade
-function CustomizableWeaponry.quickGrenade:createThrownGrenade(player)
-	local pos = player:GetShootPos()
-	local offset = CustomizableWeaponry.quickGrenade:getThrowOffset(player)
-	local eyeAng = player:EyeAngles()
-	local forward = eyeAng:Forward()
+-- CustomizableWeaponry.canOpenInteractionMenu = true
+-- CustomizableWeaponry.customizationEnabled = true
+-- CustomizableWeaponry.useAttachmentPossessionSystem = true
+-- CustomizableWeaponry.playSoundsOnInteract = true
+-- CustomizableWeaponry.physicalBulletsEnabled = false -- physical bullets for cw 2.0, unfortunately 
+-- -- CustomizableWeaponry.physicalBulletsEnabled = GetConVarNumber("gc_physical_bullets") > 0 -- physical bullets for cw 2.0, unfortunately 
+-- CustomizableWeaponry.suppressOnSpawnAttachments = true
+-- -- Override this from the weapon base to toss our special ground control frag grenade
+-- function CustomizableWeaponry.quickGrenade:createThrownGrenade(player)
+-- 	local pos = player:GetShootPos()
+-- 	local offset = CustomizableWeaponry.quickGrenade:getThrowOffset(player)
+-- 	local eyeAng = player:EyeAngles()
+-- 	local forward = eyeAng:Forward()
 	
-	local nade = ents.Create("gc_cw_grenade_thrown")
-	nade:SetPos(pos + offset)
-	nade:SetAngles(eyeAng)
-	nade:Spawn()
-	nade:Activate()
-	nade:Fuse(3)
-	nade:SetOwner(player)
+-- 	local nade = ents.Create("gc_cw_grenade_thrown")
+-- 	nade:SetPos(pos + offset)
+-- 	nade:SetAngles(eyeAng)
+-- 	nade:Spawn()
+-- 	nade:Activate()
+-- 	nade:Fuse(3)
+-- 	nade:SetOwner(player)
 	
-	return nade
-end
+-- 	return nade
+-- end
 
 -- CW 2.0 configuration over
 
@@ -103,85 +103,122 @@ function GM:Initialize()
 end
 
 if CLIENT then
-    CustomizableWeaponry.callbacks:addNew("suppressHUDElements", "GroundControl_suppressHUDElements", function(self)
-        return true, true, false -- 3rd argument is whether the weapon interaction menu should be hidden
-    end)
+    -- CustomizableWeaponry.callbacks:addNew("suppressHUDElements", "GroundControl_suppressHUDElements", function(self)
+    --     return true, true, false -- 3rd argument is whether the weapon interaction menu should be hidden
+    -- end)
 end
 
-CustomizableWeaponry.ITEM_PACKS_TOP_COLOR = Color(0, 0, 0, 230)
+-- CustomizableWeaponry.ITEM_PACKS_TOP_COLOR = Color(0, 0, 0, 230)
 
 FULL_INIT = true
+--[[
+    ACT3 configuration
+    These are just the default settings shipped with the game, they're all FCVAR_REPLICATE
+    in the base so servers can config the base with their own liking
+]] --
 
-CustomizableWeaponry.callbacks:addNew("calculateAccuracy", "GroundControl_calculateAccuracy", function(self)
-    local hipMod, aimMod = self.Owner:getAdrenalineAccuracyModifiers()
-    local hipMult, aimMult, maxSpread = 1, 1, 1
+RunConsoleCommand("act3_rcam", 1)
+RunConsoleCommand("act3_rcam_att", "eyes")
+RunConsoleCommand("act3_rcam_forward", 2)
+RunConsoleCommand("act3_rcam_right", 0)
+RunConsoleCommand("act3_rcam_up", 2)
+
+RunConsoleCommand("act3_bullets_enable", 1)
+RunConsoleCommand("act3_bullets_dragmult", 2)
+RunConsoleCommand("act3_bullets_velmult", 0.85)
+RunConsoleCommand("act3_bullets_gravity", 600)
+RunConsoleCommand("act3_bullets_snap", 1)
+RunConsoleCommand("act3_dropmags", 1)
+RunConsoleCommand("act3_givefreemagazine", 0)
+RunConsoleCommand("act3_hipholdtype", 0)
+RunConsoleCommand("act3_infinite_atts", 1)
+RunConsoleCommand("act3_infinite_loose", 1)
+RunConsoleCommand("act3_infinite_mags", 0)
+RunConsoleCommand("act3_infinite_nades", 0)
+RunConsoleCommand("act3_mags_defaultload", 1)
+RunConsoleCommand("act3_mult_damage", 1)
+RunConsoleCommand("act3_mult_dispersion", 1)
+RunConsoleCommand("act3_mult_precision", 1)
+RunConsoleCommand("act3_mult_precision_shotgun", 1)
+RunConsoleCommand("act3_mult_recoil", 0.5)
+RunConsoleCommand("act3_mult_sway", 0.25)
+RunConsoleCommand("act3_penetration", 1)
+RunConsoleCommand("act3_penetration_mult", 1)
+RunConsoleCommand("act3_propmarkets", 0)
+RunConsoleCommand("act3_realangles", 0)
+RunConsoleCommand("act3_ricochet", 1)
+RunConsoleCommand("act3_sendhitmarkers", 1)
+RunConsoleCommand("act3_serverdebris_time", 10)
+RunConsoleCommand("act3_trueirons_enabled", 1)
+RunConsoleCommand("act3_truescopes_enabled", 1)
+RunConsoleCommand("act3_weapon_time", 1)
+
+-- CustomizableWeaponry.callbacks:addNew("calculateAccuracy", "GroundControl_calculateAccuracy", function(self)
+--     local hipMod, aimMod = self.Owner:getAdrenalineAccuracyModifiers()
+--     local hipMult, aimMult, maxSpread = 1, 1, 1
     
-    if not self.Owner:OnGround() then
-        local mult = GAMEMODE.NotOnGroundSpreadMultiplier
-        hipMult, aimMult, maxSpread = mult, mult, mult -- if we aren't on the ground, we get a huge spread increase
-    end
+--     if not self.Owner:OnGround() then
+--         local mult = GAMEMODE.NotOnGroundSpreadMultiplier
+--         hipMult, aimMult, maxSpread = mult, mult, mult -- if we aren't on the ground, we get a huge spread increase
+--     end
     
-    hipMult = hipMult * hipMod
-    aimMult = aimMult * aimMod
+--     hipMult = hipMult * hipMod
+--     aimMult = aimMult * aimMod
     
-    return aimMult, hipMult, maxSpread
-end)
+--     return aimMult, hipMult, maxSpread
+-- end)
 
-CustomizableWeaponry.callbacks:addNew("calculateRecoil", "GroundControl_calculateRecoil", function(self, modifier)
-    if not self.Owner:OnGround() then
-        modifier = modifier * GAMEMODE.NotOnGroundRecoilMultiplier -- if we aren't on the ground, we get a huge recoil increase
-    end
+-- CustomizableWeaponry.callbacks:addNew("calculateRecoil", "GroundControl_calculateRecoil", function(self, modifier)
+--     if not self.Owner:OnGround() then
+--         modifier = modifier * GAMEMODE.NotOnGroundRecoilMultiplier -- if we aren't on the ground, we get a huge recoil increase
+--     end
 
-    return modifier
-end)
+--     return modifier
+-- end)
 
-CustomizableWeaponry.callbacks:addNew("preFire", "GroundControl_preFire", function(self)
-    return CurTime() < GAMEMODE.PreparationTime
-end)
+-- CustomizableWeaponry.callbacks:addNew("preFire", "GroundControl_preFire", function(self)
+--     return CurTime() < GAMEMODE.PreparationTime
+-- end)
 
-CustomizableWeaponry.callbacks:addNew("forceFreeAim", "GroundControl_forceFreeAim", function(self)
-    -- return GAMEMODE.FORCE_FREE_AIM
-    return GetConVar("gc_force_free_aim"):GetInt() == 1
-    -- return GetConVarNumber("gc_force_free_aim") > 0
-end)
+-- CustomizableWeaponry.callbacks:addNew("forceFreeAim", "GroundControl_forceFreeAim", function(self)
+--     return GetConVar("gc_force_free_aim"):GetInt() == 1
+-- end)
 
-CustomizableWeaponry.callbacks:addNew("forceComplexTelescopics", "GroundControl_forceComplexTelescopics", function(self)
-    -- return GAMEMODE.FORCE_COMPLEX_TELESCOPICS
-    return GetConVar("gc_force_pip_scopes"):GetInt() == 1
-    -- return GetConVarNumber("gc_force_pip_scopes") > 0
-end)
+-- CustomizableWeaponry.callbacks:addNew("forceComplexTelescopics", "GroundControl_forceComplexTelescopics", function(self)
+--     return GetConVar("gc_force_pip_scopes"):GetInt() == 1
+-- end)
 
-CustomizableWeaponry.callbacks:addNew("preventAttachment", "GroundControl_preventAttachment", function(self, attachmentList, currentAttachmentIndex, currentAttachmentCategory, currentAttachment)
-    local desiredAttachments = 0
+-- CustomizableWeaponry.callbacks:addNew("preventAttachment", "GroundControl_preventAttachment", function(self, attachmentList, currentAttachmentIndex, currentAttachmentCategory, currentAttachment)
+--     local desiredAttachments = 0
     
-    for key, category in pairs(self.Attachments) do
-        if category == currentAttachmentCategory then
-            if not category.last then
-                desiredAttachments = desiredAttachments + 1
-            end
-        else
-            if category.last then
-                desiredAttachments = desiredAttachments + 1
-            end
-        end
-    end
+--     for key, category in pairs(self.Attachments) do
+--         if category == currentAttachmentCategory then
+--             if not category.last then
+--                 desiredAttachments = desiredAttachments + 1
+--             end
+--         else
+--             if category.last then
+--                 desiredAttachments = desiredAttachments + 1
+--             end
+--         end
+--     end
     
-    return desiredAttachments > self.Owner:getUnlockedAttachmentSlots()
-end)
+--     return desiredAttachments > self.Owner:getUnlockedAttachmentSlots()
+-- end)
 
-CustomizableWeaponry.callbacks:addNew("disableInteractionMenu", "GroundControl_disableInteractionMenu", function(self)
-    if GAMEMODE.curGametype.canHaveAttachments and not GAMEMODE.curGametype:canHaveAttachments(self.Owner) then
-        return true
-    end
+-- CustomizableWeaponry.callbacks:addNew("disableInteractionMenu", "GroundControl_disableInteractionMenu", function(self)
+--     if GAMEMODE.curGametype.canHaveAttachments and not GAMEMODE.curGametype:canHaveAttachments(self.Owner) then
+--         return true
+--     end
     
-    return not GAMEMODE:isPreparationPeriod()
-end)
+--     return not GAMEMODE:isPreparationPeriod()
+-- end)
 
 if CLIENT then
     local sidewaysHoldingStates = {
-        [0] = true, -- CW_IDLE
+        [0] = true, -- ACT3_STATE_IDLE
         [1] = true, -- CW_RUNNING
-        [2] = true, -- CW_AIMING
+        [2] = true, -- ACT3_STATE_INSIGHTS
         [4] = true -- CW_CUSTOMIZE
     }
     
@@ -189,116 +226,121 @@ if CLIENT then
     local downwardsVector = Vector(0, 0, 0)
     local downwardsAngle = Vector(-30, 0, -45)
     
-    CustomizableWeaponry.callbacks:addNew("adjustViewmodelPosition", "GroundControl_adjustViewmodelPosition", function(self, targetPos, targetAng)
-        local gametype = GAMEMODE.curGametype
-        local wepClass = self:GetClass()
+    -- CustomizableWeaponry.callbacks:addNew("adjustViewmodelPosition", "GroundControl_adjustViewmodelPosition", function(self, targetPos, targetAng)
+    --     local gametype = GAMEMODE.curGametype
+    --     local wepClass = self:GetClass()
         
-        if gametype.name == "ghettodrugbust" and gametype.regularTeam == LocalPlayer():Team() and gametype.sidewaysHoldingWeapons[wepClass] then
-            if sidewaysHoldingStates[self.dt.State] and not self:isReloading() and not self.isKnife then
-                if self.dt.State ~= CW_CUSTOMIZE then
-                    if self.dt.State ~= CW_RUNNING and self.dt.State ~= CW_AIMING then
-                        targetAng = targetAng * 1
-                        targetAng.z = targetAng.z - 90
-                    end
+    --     if gametype.name == "ghettodrugbust" and gametype.regularTeam == LocalPlayer():Team() and gametype.sidewaysHoldingWeapons[wepClass] then
+    --         if sidewaysHoldingStates[self.dt.State] and not self:isReloading() and not self.isKnife then
+    --             if self.dt.State ~= CW_CUSTOMIZE then
+    --                 if self.dt.State ~= CW_RUNNING and self.dt.State ~= ACT3_STATE_INSIGHTS then
+    --                     targetAng = targetAng * 1
+    --                     targetAng.z = targetAng.z - 90
+    --                 end
                     
-                    if self.dt.State == CW_RUNNING then
-                        targetPos = downwardsVector
-                        targetAng = downwardsAngle
-                    elseif self.dt.State ~= CW_AIMING then
-                        targetPos = targetPos * 1
-                        targetPos.z = targetPos.z - 3
-                        targetPos.x = targetPos.x - 4
-                    end
-                end
+    --                 if self.dt.State == CW_RUNNING then
+    --                     targetPos = downwardsVector
+    --                     targetAng = downwardsAngle
+    --                 elseif self.dt.State ~= ACT3_STATE_INSIGHTS then
+    --                     targetPos = targetPos * 1
+    --                     targetPos.z = targetPos.z - 3
+    --                     targetPos.x = targetPos.x - 4
+    --                 end
+    --             end
                 
-                local vm = self.CW_VM
-                local bones = gametype.sidewaysHoldingBoneOffsets[wepClass]
+    --             local vm = self.CW_VM
+    --             local bones = gametype.sidewaysHoldingBoneOffsets[wepClass]
                 
-                if bones then
-                    for boneName, offsets in pairs(bones) do
-                        offsets.current = LerpVectorCW20(FrameTime() * 15, offsets.current, offsets.target)
-                        local bone = vm:LookupBone(boneName)
-                        vm:ManipulateBonePosition(bone, offsets.current)
-                    end
-                end
-            else
-                local bones = gametype.sidewaysHoldingBoneOffsets[wepClass]
+    --             if bones then
+    --                 for boneName, offsets in pairs(bones) do
+    --                     offsets.current = LerpVectorCW20(FrameTime() * 15, offsets.current, offsets.target)
+    --                     local bone = vm:LookupBone(boneName)
+    --                     vm:ManipulateBonePosition(bone, offsets.current)
+    --                 end
+    --             end
+    --         else
+    --             local bones = gametype.sidewaysHoldingBoneOffsets[wepClass]
                 
-                if bones then
-                    local vm = self.CW_VM
+    --             if bones then
+    --                 local vm = self.CW_VM
                     
-                    for boneName, offsets in pairs(bones) do
-                        offsets.current = LerpVectorCW20(FrameTime() * 15, offsets.current, zeroVector)
-                        local bone = vm:LookupBone(boneName)
-                        vm:ManipulateBonePosition(bone, offsets.current)
-                    end
-                end
-            end
-        end
+    --                 for boneName, offsets in pairs(bones) do
+    --                     offsets.current = LerpVectorCW20(FrameTime() * 15, offsets.current, zeroVector)
+    --                     local bone = vm:LookupBone(boneName)
+    --                     vm:ManipulateBonePosition(bone, offsets.current)
+    --                 end
+    --             end
+    --         end
+    --     end
         
-        return targetPos, targetAng
-    end)
+    --     return targetPos, targetAng
+    -- end)
     
     GM.attachmentSlotDisplaySize = 60
     GM.attachmentSlotSpacing = 5
     
-    CustomizableWeaponry.callbacks:addNew("drawToHUD", "GroundControl_drawToHUD", function(self)
-        if self.dt.State == CW_CUSTOMIZE then
-            if not self.Owner.unlockedAttachmentSlots then
-                RunConsoleCommand("gc_request_data")
-            else
-                local availableSlots = self.Owner:getUnlockedAttachmentSlots()
-                local overallSize = (GAMEMODE.attachmentSlotDisplaySize + GAMEMODE.attachmentSlotSpacing)
-                local baseX = ScrW() * 0.5 - overallSize * availableSlots * 0.5
-                local baseY = 90
+    -- CustomizableWeaponry.callbacks:addNew("drawToHUD", "GroundControl_drawToHUD", function(self)
+    --     if self.dt.State == CW_CUSTOMIZE then
+    --         if not self.Owner.unlockedAttachmentSlots then
+    --             RunConsoleCommand("gc_request_data")
+    --         else
+    --             local availableSlots = self.Owner:getUnlockedAttachmentSlots()
+    --             local overallSize = (GAMEMODE.attachmentSlotDisplaySize + GAMEMODE.attachmentSlotSpacing)
+    --             local baseX = ScrW() * 0.5 - overallSize * availableSlots * 0.5
+    --             local baseY = 90
                 
-                for i = 1, availableSlots do
-                    local x = baseX + (i - 1) * overallSize
+    --             for i = 1, availableSlots do
+    --                 local x = baseX + (i - 1) * overallSize
                     
-                    surface.SetDrawColor(0, 0, 0, 150)
-                    surface.DrawRect(x, baseY, GAMEMODE.attachmentSlotDisplaySize, GAMEMODE.attachmentSlotDisplaySize)
-                end
+    --                 surface.SetDrawColor(0, 0, 0, 150)
+    --                 surface.DrawRect(x, baseY, GAMEMODE.attachmentSlotDisplaySize, GAMEMODE.attachmentSlotDisplaySize)
+    --             end
                 
-                local curPos = 1
+    --             local curPos = 1
                 
-                for key, category in pairs(self.Attachments) do
-                    if category.last then
-                        local x = baseX + (curPos - 1) * overallSize
+    --             for key, category in pairs(self.Attachments) do
+    --                 if category.last then
+    --                     local x = baseX + (curPos - 1) * overallSize
                         
-                        local curAtt = category.atts[category.last]
-                        local attData = CustomizableWeaponry.registeredAttachmentsSKey[curAtt]
+    --                     local curAtt = category.atts[category.last]
+    --                     local attData = CustomizableWeaponry.registeredAttachmentsSKey[curAtt]
                         
-                        surface.SetDrawColor(200, 255, 200, 255)
-                        surface.DrawRect(x, baseY - 5, GAMEMODE.attachmentSlotDisplaySize, 5)
+    --                     surface.SetDrawColor(200, 255, 200, 255)
+    --                     surface.DrawRect(x, baseY - 5, GAMEMODE.attachmentSlotDisplaySize, 5)
                         
-                        surface.SetDrawColor(255, 255, 255, 255)
-                        surface.SetTexture(attData.displayIcon)
-                        surface.DrawTexturedRect(x + 2, baseY + 2, GAMEMODE.attachmentSlotDisplaySize - 4, GAMEMODE.attachmentSlotDisplaySize - 4)
+    --                     surface.SetDrawColor(255, 255, 255, 255)
+    --                     surface.SetTexture(attData.displayIcon)
+    --                     surface.DrawTexturedRect(x + 2, baseY + 2, GAMEMODE.attachmentSlotDisplaySize - 4, GAMEMODE.attachmentSlotDisplaySize - 4)
                         
-                        curPos = curPos + 1
-                    end
-                end
+    --                     curPos = curPos + 1
+    --                 end
+    --             end
                 
-                for i = 1, availableSlots do
-                    local x = baseX + (i - 1) * overallSize
+    --             for i = 1, availableSlots do
+    --                 local x = baseX + (i - 1) * overallSize
                     
-                    draw.ShadowText("Slot " .. i, GAMEMODE.AttachmentSlotDisplayFont, x + GAMEMODE.attachmentSlotDisplaySize - 5, baseY + GAMEMODE.attachmentSlotDisplaySize, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
-                end
+    --                 drawShadowText("Slot " .. i, GAMEMODE.AttachmentSlotDisplayFont, x + GAMEMODE.attachmentSlotDisplaySize - 5, baseY + GAMEMODE.attachmentSlotDisplaySize, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+    --             end
                 
-                draw.ShadowText("Used slots " .. curPos - 1 .. "/" .. availableSlots , GAMEMODE.AttachmentSlotDisplayFont, ScrW() * 0.5, baseY + GAMEMODE.attachmentSlotDisplaySize + 20, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-            end
-        end
-    end)
+    --             drawShadowText("Used slots " .. curPos - 1 .. "/" .. availableSlots , GAMEMODE.AttachmentSlotDisplayFont, ScrW() * 0.5, baseY + GAMEMODE.attachmentSlotDisplaySize + 20, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    --         end
+    --     end
+    -- end)
 end
 
-hook.Add("CW20HasAttachment", "GroundControl.CW20HasAttachment", function(ply, attachmentID, attList)
-    return ply:hasUnlockedAttachment(attachmentID)
-end)
+function drawShadowText(text, font, x, y, colortext, colorshadow, dist, xalign, yalign)
+	draw.SimpleText(text, font, x + dist, y + dist, colorshadow, xalign, yalign)
+	draw.SimpleText(text, font, x, y, colortext, xalign, yalign)
+end
+
+-- hook.Add("CW20HasAttachment", "GroundControl.CW20HasAttachment", function(ply, attachmentID, attList)
+--     return ply:hasUnlockedAttachment(attachmentID)
+-- end)
 
 if SERVER then
-    CustomizableWeaponry.callbacks:addNew("finalizePhysicalBullet", "GroundControl_finalizePhysicalBullet", function(self, bulletStruct)
-        bulletStruct.penetrationValue = self.penetrationValue
-    end)
+    -- CustomizableWeaponry.callbacks:addNew("finalizePhysicalBullet", "GroundControl_finalizePhysicalBullet", function(self, bulletStruct)
+    --     bulletStruct.penetrationValue = self.penetrationValue
+    -- end)
 end
 
 local ZeroVector = Vector(0, 0, 0)
@@ -362,9 +404,9 @@ function GM:Move(ply, moveData)
     
     local wep = ply:GetActiveWeapon()
     
-    if IsValid(wep) and wep.CW20Weapon and wep:isPlayerProne() then
-        return
-    end
+    -- if IsValid(wep) and wep.CW20Weapon and wep:isPlayerProne() then
+    --     return
+    -- end
     
     if SERVER then
         local jumpDown = ply:GetCurrentCommand():KeyDown(IN_JUMP)

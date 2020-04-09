@@ -205,6 +205,7 @@ end
 function GM:DoPlayerDeath(ply, attacker, dmgInfo)
     ply:dropWeaponNicely(nil, VectorRand() * 20, VectorRand() * 200)
     ply:abortClimb()
+    ply:EmitSound("GC_DEATH_SOUND")
     
     if IsValid(attacker) and attacker:IsPlayer() then
         if attacker:Team() ~= ply:Team() then
@@ -243,8 +244,8 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
         end
                 
         net.Start("GC_KILLED_BY")
-            net.WriteEntity(attacker)
-            net.WriteString(inflictor:GetClass())
+        net.WriteEntity(attacker)
+        net.WriteString(inflictor:GetClass())
         net.Send(ply)
         
         local markedSpots = self.MarkedSpots[attacker:Team()]
@@ -274,7 +275,6 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
     end
     
     ply.spawnWait = CurTime() + 5
-    
     ply:CreateRagdoll()
 end
 
@@ -282,9 +282,9 @@ function GM:disableCustomizationMenu()
     for key, ply in ipairs(player.GetAll()) do
         local wep = ply:GetActiveWeapon()
         
-        if IsValid(wep) and wep.CW20Weapon and wep.dt.State == CW_CUSTOMIZE then
-            wep.dt.State = CW_IDLE
-        end
+        -- if IsValid(wep) and wep.State == ACT3_STATE_ININVMENU then
+        --     wep.State = ACT3_STATE_IDLE
+        -- end
     end
 end
 
@@ -518,7 +518,7 @@ end
 function PLAYER:crippleArm()
     local wep = self:GetActiveWeapon()
     
-    if IsValid(wep) and wep.CW20Weapon and wep.isPrimaryWeapon and not wep.dropsDisabled then
+    if IsValid(wep) and wep.isPrimaryWeapon and not wep.dropsDisabled then
         self:dropWeaponNicely(wep, VectorRand() * 20, VectorRand() * 200)
         self:sendTip("DROPPED_WEAPON")
         
@@ -546,7 +546,7 @@ function PLAYER:dropWeaponNicely(wepObj, velocity, angleVelocity) -- velocity an
     
     pos = pos + ang:Right() * 6 + ang:Forward() * 40 - ang:Up() * 5
     
-    CustomizableWeaponry:dropWeapon(self, wepObj, velocity, angleVelocity, pos, ang)
+    -- CustomizableWeaponry:dropWeapon(self, wepObj, velocity, angleVelocity, pos, ang)
 end
 
 function PLAYER:storeAttacker(attacker, dmgInfo)

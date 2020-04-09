@@ -97,7 +97,7 @@ GM.MemeRadio = true -- hehe, set to true for very funny memes
 CreateConVar("gc_meme_radio_chance", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "chance out of 1000 to have special radio lines come up", 1, 1000) -- in 1000
 GM.MVPTracker = mvpTracker.new()
 
-CustomizableWeaponry.canDropWeapon = false -- don't let the players be able to drop weapons using the cw_dropweapon console command
+-- CustomizableWeaponry.canDropWeapon = false -- don't let the players be able to drop weapons using the cw_dropweapon console command
 
 function GM:InitPostEntity()
     self:postInitEntity()

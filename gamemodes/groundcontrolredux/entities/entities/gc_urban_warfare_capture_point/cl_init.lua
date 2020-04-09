@@ -63,7 +63,7 @@ function ENT:drawHUD()
     white.a = 255
     black.a = 255
         
-    draw.ShadowText(self.PointName[self.dt.PointID], "CW_HUD24", hudPos + self.topSize * 0.5, 50 + self.topSize * 0.5, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText(self.PointName[self.dt.PointID], "ChatFont", hudPos + self.topSize * 0.5, 50 + self.topSize * 0.5, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     
     local pos = self:GetPos()
     pos.z = pos.z + 32
@@ -87,7 +87,7 @@ function ENT:drawHUD()
         
         white.a = 255 * alpha
         black.a = 255 * alpha
-        draw.ShadowText("Capture " .. self.PointName[self.dt.PointID], "CW_HUD14", coords.x, coords.y - 16, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText("Capture " .. self.PointName[self.dt.PointID], "ChatFont", coords.x, coords.y - 16, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         white.a = 255
         black.a = 255
     end
@@ -104,7 +104,7 @@ function ENT:drawHUD()
             finalText = self.captureText .. self.PointName[self.dt.PointID]
         end
         
-        draw.ShadowText(finalText, "CW_HUD24", midX, midY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText(finalText, "ChatFont", midX, midY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         
         surface.SetDrawColor(0, 0, 0, 255)
         surface.DrawOutlinedRect(midX - self.capBarWidth * 0.5, midY + 15, self.capBarWidth, self.capBarHeight)
@@ -115,7 +115,7 @@ function ENT:drawHUD()
         surface.SetDrawColor(r, g, b, 255)
         surface.DrawRect(midX + 2 - self.capBarWidth * 0.5, midY + 17, (self.capBarWidth - 4) * percentage, self.capBarHeight - 4)
         
-        draw.ShadowText("SPEED: x" .. math.Round(self.dt.CaptureSpeed, 2), "CW_HUD24", midX, midY + self.capBarHeight + draw.GetFontHeight("CW_HUD24") + 5, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText("SPEED: x" .. math.Round(self.dt.CaptureSpeed, 2), "ChatFont", midX, midY + self.capBarHeight + draw.GetFontHeight("ChatFont") + 5, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     
     local x = ScrW()
@@ -126,7 +126,7 @@ function ENT:drawHUD()
     surface.SetDrawColor(0, 0, 0, 150)
     surface.DrawRect(midX - 50, 10, 100, 30)
     
-    draw.ShadowText(string.ToMinutesSeconds(math.max(self.dt.WaveTimeLimit - CurTime(), 0)), "CW_HUD28", midX, 25, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText(string.ToMinutesSeconds(math.max(self.dt.WaveTimeLimit - CurTime(), 0)), "ChatFont", midX, 25, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     
     local ourTickets, enemyTickets = 0, 0
     
@@ -159,6 +159,6 @@ function ENT:drawHUD()
     surface.SetDrawColor(255, 117, 99, 255)
     surface.DrawRect(midX + 59, baseY + 2, length, 16)
     
-    draw.ShadowText("US: " .. ourTickets, "CW_HUD20", midX - 60, 25, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-    draw.ShadowText("ENEMY: " .. enemyTickets, "CW_HUD20", midX + 62, 25, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText("US: " .. ourTickets, "ChatFont", midX - 60, 25, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    drawShadowText("ENEMY: " .. enemyTickets, "ChatFont", midX + 62, 25, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end

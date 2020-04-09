@@ -86,12 +86,6 @@ function PLAYER:spawn()
     ply:resetWeightData()
     GAMEMODE:removeAllStatusEffects()
     
-    RunConsoleCommand("cw_freeaim_autocenter", 1)
-    RunConsoleCommand("cw_freeaim_autocenter_time", 0.650000)
-    RunConsoleCommand("cw_freeaim_center_mouse_impendance", 0.3)
-    RunConsoleCommand("cw_freeaim_lazyaim", 0.03)
-    RunConsoleCommand("cw_freeaim_yawlimit", 15)
-    
     timer.Simple(1, function()
         for key, tipId in ipairs(GAMEMODE.tipController.genericTips) do
             local result = GAMEMODE.tipController:handleEvent(tipId)
@@ -205,7 +199,7 @@ function GM:PlayerBindPress(ply, bind, pressed)
         
         local wep = ply:GetActiveWeapon()
         
-        if (IsValid(wep) and wep.CW20Weapon and wep.dt.State ~= CW_CUSTOMIZE) or not IsValid(wep) then
+        if (IsValid(wep) and wep.State ~= ACT3_STATE_ININVMENU) or not IsValid(wep) then
             if bind == self.TeamSelectionKey then
                 RunConsoleCommand("gc_team_selection")
             elseif bind == self.LoadoutMenuKey then
@@ -289,19 +283,19 @@ function GM:HasDeadPeriodPassed()
     return CurTime() > self.deadPeriod
 end
 
-CustomizableWeaponry.callbacks:addNew("deployWeapon", "GroundControl_deployWeapon", function(self)
-    if self.SpeedDec >= 20 then
-        GAMEMODE.tipController:handleEvent("FASTER_MOVEMENT")
-    end
-end)
+-- CustomizableWeaponry.callbacks:addNew("deployWeapon", "GroundControl_deployWeapon", function(self)
+--     if self.SpeedDec >= 20 then
+--         GAMEMODE.tipController:handleEvent("FASTER_MOVEMENT")
+--     end
+-- end)
 
-CustomizableWeaponry.callbacks:addNew("postAttachAttachment", "GroundControl_postAttachAttachment", function(self, attCategory)
-    local attachmentName = self.Attachments[attCategory].atts[self.Attachments[attCategory].last]
+-- CustomizableWeaponry.callbacks:addNew("postAttachAttachment", "GroundControl_postAttachAttachment", function(self, attCategory)
+--     local attachmentName = self.Attachments[attCategory].atts[self.Attachments[attCategory].last]
     
-    if self.BackupSights and self.BackupSights[attachmentName] then
-        GAMEMODE.tipController:handleEvent("BACKUP_SIGHTS")
-    end
-end)
+--     if self.BackupSights and self.BackupSights[attachmentName] then
+--         GAMEMODE.tipController:handleEvent("BACKUP_SIGHTS")
+--     end
+-- end)
 
 hook.Add("player_spawn", "GroundControl.player_spawn", function(data)
     local player = Player(data.userid)

@@ -45,7 +45,7 @@ function ENT:drawHUD()
         local white, black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
         white.a = 255 * alpha
         black.a = 255 * alpha
-        draw.ShadowText("Capture", "CW_HUD14", coords.x, coords.y - 16, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText("Capture", "ChatFont", coords.x, coords.y - 16, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         white.a = 255
         black.a = 255
     end

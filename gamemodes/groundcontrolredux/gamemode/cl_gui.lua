@@ -81,7 +81,7 @@ local gcPanel = {}
 gcPanel.alpha = 200
 
 function gcPanel:Init()
-    self:SetFont("CW_HUD20")
+    self:SetFont("ChatFont")
 end
 
 function gcPanel:SetFont(font)
@@ -103,7 +103,7 @@ function gcPanel:Paint()
     surface.DrawRect(1, 1, w - 2, h - 2)
     
     surface.DrawRect(2, 2, w - 4, self.fontHeight + 2)
-    draw.ShadowText(self.text, self.font, 4, 2, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    drawShadowText(self.text, self.font, 4, 2, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 end
 
 function gcPanel:OnRemove()
@@ -116,7 +116,7 @@ end
 vgui.Register("GCPanel", gcPanel, "DPanel")
 
 local gcBaseButton = {}
-gcBaseButton.font = "CW_HUD16"
+gcBaseButton.font = "ChatFont"
 gcBaseButton.text = ""
 gcBaseButton.hoverR, gcBaseButton.hoverG, gcBaseButton.hoverB, gcBaseButton.hoverA = 150, 255, 150, 255
 gcBaseButton.idleR, gcBaseButton.idleG, gcBaseButton.idleB, gcBaseButton.idleA = 75, 75, 75, 255
@@ -162,7 +162,7 @@ function gcBaseButton:Paint()
     surface.DrawRect(1, 1, w - 2, h - 2)
     
     local x, y = math.ceil(w * 0.5), math.ceil(h * 0.5)
-    draw.ShadowText(self.text, self.font, w * 0.5, h * 0.5, self.textColor, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText(self.text, self.font, w * 0.5, h * 0.5, self.textColor, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("GCBaseButton", gcBaseButton, "DPanel")
@@ -242,7 +242,7 @@ function teamSelectionButton:Paint()
     draw.LinearGradient(1, h - self.BOTTOM_SIZE - 2, w - 2, self.BOTTOM_SIZE, self.selectionColors[1], self.selectionColors[2], draw.VERTICAL)
     
     local playerCount = #team.GetPlayers(self.desiredTeam)
-    draw.ShadowText(string.easyformatbykeys("TEAMNAME - COUNT PLAYERTEXT", "TEAMNAME", self.teamData.teamName, "COUNT", playerCount, "PLAYERTEXT", (playerCount == 1 and "player" or "players")), "CW_HUD28", 5, h - self.BOTTOM_SIZE * 0.5, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
+    drawShadowText(string.easyformatbykeys("TEAMNAME - COUNT PLAYERTEXT", "TEAMNAME", self.teamData.teamName, "COUNT", playerCount, "PLAYERTEXT", (playerCount == 1 and "player" or "players")), "ChatFont", 5, h - self.BOTTOM_SIZE * 0.5, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
 end
 
 function teamSelectionButton:OnMousePressed(a, b, c)
@@ -512,14 +512,15 @@ function gcWeaponPanel:PaintOver()
     
     local name, ammo, magSize = "", "", ""
     name = wepObject and wepObject.PrintName or "None selected"
-    ammo = wepObject and wepObject.Primary.Ammo or "None selected"
-    magSize = wepObject and ("x" .. wepObject.Primary.ClipSize) or ""
+    local mag = wepObject and getWeaponMagazine(wepObject)
+    ammo = wepObject and mag and mag.Calibre or "None selected"
+    magSize = wepObject and mag and ("x" .. mag.MagSize) or ""
     
-    draw.ShadowText(name, "CW_HUD16", 5, 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText(name, "ChatFont", 5, 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     
     if wepData and not wepData.hideMagIcon then
-        draw.ShadowText(ammo, "CW_HUD16", 5, h - 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(magSize, "CW_HUD16", w - 16, h - 10, White, Black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        drawShadowText(ammo, "ChatFont", 5, h - 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        drawShadowText(magSize, "ChatFont", w - 16, h - 10, White, Black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     end
 end
 
@@ -566,8 +567,8 @@ function curWeaponPanel:UpdateAvailableAttachments()
         if weaponObject.Attachments then
             for categoryID, data in pairs(weaponObject.Attachments) do
                 for key, attachmentID in ipairs(data.atts) do
-                    local price = CustomizableWeaponry.registeredAttachmentsSKey[attachmentID].price
-                    
+                    -- local price = CustomizableWeaponry.registeredAttachmentsSKey[attachmentID].price
+                    local price = 100
                     if not ownedAttachments[attachmentID] and price and cash >= price then
                         self.availableAttachments[#self.availableAttachments + 1] = attachmentID
                     end
@@ -630,24 +631,24 @@ function curWeaponPanel:OnCursorEntered(w, h)
         local x, y = self:LocalToScreen(0, 0)
         
         self.descBox = vgui.Create("GCGenericDescbox")
-        self.descBox:InsertText("You have enough money to buy the following attachments:", "CW_HUD24", 0)
+        self.descBox:InsertText("You have enough money to buy the following attachments:", "ChatFont", 0)
         
-        for key, attID in ipairs(self.availableAttachments) do
-            local data = CustomizableWeaponry.registeredAttachmentsSKey[attID]
-            local spacing = 2
+        -- for key, attID in ipairs(self.availableAttachments) do
+        --     local data = CustomizableWeaponry.registeredAttachmentsSKey[attID]
+        --     local spacing = 2
             
-            if key == #self.availableAttachments then
-                spacing = 15
-            end
+        --     if key == #self.availableAttachments then
+        --         spacing = 15
+        --     end
             
-            self.descBox:InsertText(data.displayName .. " ($" .. data.price .. ")", "CW_HUD20", spacing)
-        end
+        --     self.descBox:InsertText(data.displayName .. " ($" .. data.price .. ")", "ChatFont", spacing)
+        -- end
         
         self.descBox:SetPos(x, y + h + 5)
         self.descBox:SetZPos(10000)
         self.descBox:SetDrawOnTop(true)
         
-        self.descBox:InsertText("Click to begin purchase.", "CW_HUD28", 0, GAMEMODE.HUDColors.limeYellow)
+        self.descBox:InsertText("Click to begin purchase.", "ChatFont", 0, GAMEMODE.HUDColors.limeYellow)
         self.acknowledged = true
     end
 end 
@@ -767,7 +768,7 @@ function curWeaponPanel:OnMousePressed(bind)
                 label:SetText(data.header)
                 label:SetPos(5, curYPos - 10)
                 label:SetTextColor(GAMEMODE.HUDColors.white)
-                label:SetFont("CW_HUD32")
+                label:SetFont("ChatFont")
                 label:SizeToContents()
                 
                 for key, attName in ipairs(data.atts) do
@@ -825,12 +826,13 @@ function weaponStats:SetWeapon(weaponData, id)
     else
         targetTable = BestSecondaryWeapons
     end
-    
+    PrintTable(self.weaponObject)
+    local baseBullet = ACT3_GetBullet(ACT3_GetBulletID(self.weaponObject.DefaultLoad))
     self.displayRecoil = self.weaponObject.Recoil
-    self.displaySpread = self.weaponObject.AimSpread
-    self.displayFireDelay = self.weaponObject.FireDelay
-    self.displayDamage = self.weaponObject.Damage
-    self.displayShots = self.weaponObject.Shots
+    self.displaySpread = self.weaponObject.Precision
+    self.displayFireDelay = self.weaponObject.ShootingDelay
+    self.displayDamage = baseBullet.BaseDamage
+    self.displayShots = baseBullet.Num
     
     self.bestWeaponTable = targetTable
 end
@@ -861,12 +863,12 @@ function weaponStats:AdjustBarSizeReduction()
     local baseReduction = weaponStats.barSizeReduction
     
     self:getLargestTextSize(math.Round(self.weaponObject.weight, 2) .. "KG")
-    self:getLargestTextSize(math.Round(self.weaponObject.magWeight, 2) .. "KG")
+    -- self:getLargestTextSize(math.Round(self.weaponObject.magWeight, 2) .. "KG")
     self.barSizeReduction = math.max(self.largestTextSize + 10, 37)
 end
 
 function weaponStats:getTextSize(text)
-    surface.SetFont("CW_HUD16")
+    surface.SetFont("ChatFont")
     return surface.GetTextSize(text)
 end
 
@@ -896,13 +898,13 @@ function weaponStats:Paint()
     end
     
     if self.thoroughDescription then
-        self:DrawStatBar("Hip accuracy", 100 - math.Round(wepClass.HipSpread * 1000) .. "%", targetTable.hipSpread, wepClass.HipSpread, 70, w)
-        self:DrawStatBar("Mobility", math.Round(100 - wepClass.VelocitySensitivity / 3 * 100) .. "%", targetTable.velocitySensitivity, wepClass.VelocitySensitivity, 85, w)
-        self:DrawStatBar("Spread per shot", math.Round(wepClass.SpreadPerShot * 1000, 1) .. "%", wepClass.SpreadPerShot, targetTable.spreadPerShot, 100, w)
-        self:DrawStatBar("Max spread", math.Round(wepClass.MaxSpreadInc * 1000, 1) .. "%", wepClass.MaxSpreadInc, targetTable.maxSpreadInc, 115, w)
-        self:DrawStatBar("Movement speed", GAMEMODE.BaseRunSpeed - wepClass.SpeedDec, targetTable.speedDec, wepClass.SpeedDec, 130, w)
-        self:DrawStatBar("Weapon weight", math.Round(wepClass.weight, 2) .. "KG", wepClass.weight, targetTable.weight, 145, w)
-        self:DrawStatBar("Mag weight", math.Round(wepClass.magWeight, 2) .. "KG", wepClass.magWeight, targetTable.magWeight, 160, w)
+        self:DrawStatBar("Hip accuracy", 100 - math.Round((wepClass.Precision + wepClass.HipfirePenalty) * 1000) .. "%", targetTable.hipSpread, wepClass.Precision + wepClass.HipfirePenalty, 70, w)
+        -- self:DrawStatBar("Mobility", math.Round(100 - wepClass.VelocitySensitivity / 3 * 100) .. "%", targetTable.velocitySensitivity, wepClass.VelocitySensitivity, 85, w)
+        -- self:DrawStatBar("Spread per shot", math.Round(wepClass.SpreadPerShot * 1000, 1) .. "%", wepClass.SpreadPerShot, targetTable.spreadPerShot, 100, w)
+        self:DrawStatBar("Max spread", math.Round(wepClass.MaxHeatPrecision * 1000, 1) .. "%", wepClass.MaxHeatPrecision, targetTable.maxSpreadInc, 115, w)
+        -- self:DrawStatBar("Movement speed", GAMEMODE.BaseRunSpeed - wepClass.SpeedDec, targetTable.speedDec, wepClass.SpeedDec, 130, w)
+        -- self:DrawStatBar("Weapon weight", math.Round(wepClass.weight, 2) .. "KG", wepClass.weight, targetTable.weight, 145, w)
+        -- self:DrawStatBar("Mag weight", math.Round(wepClass.magWeight, 2) .. "KG", wepClass.magWeight, targetTable.magWeight, 160, w)
         self:DrawStatBar("Penetration", wepClass.penetrationValue, wepClass.penetrationValue, targetTable.penetrationValue, 175, w)
     end
     
@@ -916,31 +918,31 @@ function weaponStats:Paint()
     end
     
     local textPos = barPos + barSize + 5
-    draw.ShadowText(math.Round(wepClass.Damage * GAMEMODE.DamageMultiplier) .. "x" .. wepClass.Shots, "CW_HUD16", textPos, 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.ShadowText("x" .. math.Round(wepClass.Recoil, 1), "CW_HUD16", textPos, 25, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.ShadowText(math.Round((100 - wepClass.AimSpread * 1000)) .. "%", "CW_HUD16", textPos, 40, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.ShadowText(math.Round(60 / wepClass.FireDelay), "CW_HUD16", textPos, 55, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText(math.Round(wepClass.Damage * GAMEMODE.DamageMultiplier) .. "x" .. wepClass.Shots, "ChatFont", textPos, 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText("x" .. math.Round(wepClass.Recoil, 1), "ChatFont", textPos, 25, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText(math.Round((100 - wepClass.AimSpread * 1000)) .. "%", "ChatFont", textPos, 40, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText(math.Round(60 / wepClass.FireDelay), "ChatFont", textPos, 55, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     
     if self.thoroughDescription then
-        draw.ShadowText(100 - math.Round(wepClass.HipSpread * 1000) .. "%", "CW_HUD16", textPos, 70, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(math.Round(100 - wepClass.VelocitySensitivity / 3 * 100) .. "%", "CW_HUD16", textPos, 85, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(math.Round(wepClass.SpreadPerShot * 1000, 1) .. "%", "CW_HUD16", textPos, 100, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(math.Round(wepClass.MaxSpreadInc * 1000, 1) .. "%", "CW_HUD16", textPos, 115, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(GAMEMODE.BaseRunSpeed - wepClass.SpeedDec, "CW_HUD16", textPos, 130, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        drawShadowText(100 - math.Round(wepClass.HipSpread * 1000) .. "%", "ChatFont", textPos, 70, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        drawShadowText(math.Round(100 - wepClass.VelocitySensitivity / 3 * 100) .. "%", "ChatFont", textPos, 85, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        drawShadowText(math.Round(wepClass.SpreadPerShot * 1000, 1) .. "%", "ChatFont", textPos, 100, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        drawShadowText(math.Round(wepClass.MaxSpreadInc * 1000, 1) .. "%", "ChatFont", textPos, 115, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        drawShadowText(GAMEMODE.BaseRunSpeed - wepClass.SpeedDec, "ChatFont", textPos, 130, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end]]--
 end
 
 function weaponStats:DrawStatBar(baseText, postBarText, barVar1, barVar2, y, w)
     local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
     
-    draw.ShadowText(baseText, "CW_HUD16", 5, y, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText(baseText, "ChatFont", 5, y, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     
     local barPos = self.barGap
     local barSize = w - self.barGap - self.barSizeReduction
     
     self:DrawBaseBar(barPos, y - 6, barSize, 12, barVar1, barVar2)
     
-    draw.ShadowText(postBarText, "CW_HUD16", barPos + barSize + 5, y, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText(postBarText, "ChatFont", barPos + barSize + 5, y, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end
 
 function weaponStats:DrawBaseBar(x, y, w, h, min, max)
@@ -985,10 +987,10 @@ function weightBar:Paint()
     
     local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
     
-    draw.ShadowText("Stamina drain: +" .. math.Round((ply:getStaminaDrainWeightModifier(curWeight) - 1) * 100, 1) .. "%", "CW_HUD16", 5, h * 0.5 - 1, GAMEMODE.HUDColors.lightRed, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.ShadowText("Noise factor: +" .. math.Round(ply:getWeightFootstepNoiseAffector(curWeight), 1), "CW_HUD16", w - 5, h * 0.5 - 1, GAMEMODE.HUDColors.lightRed, Black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    drawShadowText("Stamina drain: +" .. math.Round((ply:getStaminaDrainWeightModifier(curWeight) - 1) * 100, 1) .. "%", "ChatFont", 5, h * 0.5 - 1, GAMEMODE.HUDColors.lightRed, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText("Noise factor: +" .. math.Round(ply:getWeightFootstepNoiseAffector(curWeight), 1), "ChatFont", w - 5, h * 0.5 - 1, GAMEMODE.HUDColors.lightRed, Black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
-    draw.ShadowText("Weight: " .. math.Round(curWeight, 2) .. "/" .. GAMEMODE.MaxWeight .. "KG", "CW_HUD16", w * 0.5, h * 0.5 - 1, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText("Weight: " .. math.Round(curWeight, 2) .. "/" .. GAMEMODE.MaxWeight .. "KG", "ChatFont", w * 0.5, h * 0.5 - 1, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 function weightBar:OnCursorEntered()
@@ -996,9 +998,9 @@ function weightBar:OnCursorEntered()
         local w, h = self:GetSize()
         local x, y = self:LocalToScreen(0, 0)
         self.descBox = vgui.Create("GCGenericDescbox")
-        self.descBox:InsertText("The weight of your current loadout.", "CW_HUD28", 0)
-        self.descBox:InsertText("A high weight will increase movement noise and stamina drain from sprinting and jumping.", "CW_HUD20", 0)
-        self.descBox:InsertText("You can always deselect primary/secondary/tertiary weapons by right-clicking on them.", "CW_HUD20", 0)
+        self.descBox:InsertText("The weight of your current loadout.", "ChatFont", 0)
+        self.descBox:InsertText("A high weight will increase movement noise and stamina drain from sprinting and jumping.", "ChatFont", 0)
+        self.descBox:InsertText("You can always deselect primary/secondary/tertiary weapons by right-clicking on them.", "ChatFont", 0)
         
         self.descBox:SetPos(x, y + h + 5)
         self.descBox:SetZPos(10000)
@@ -1105,10 +1107,10 @@ function attachmentSelection:Paint()
     cam.IgnoreZ(false)
     
     local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
-    draw.ShadowText(self.displayText, "CW_HUD16", 3, 8, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText(self.displayText, "ChatFont", 3, 8, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     
     if self.isLocked then
-        draw.ShadowText("$" .. self.attachmentData.price, "CW_HUD16", 3, h - 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        drawShadowText("$" .. self.attachmentData.price, "ChatFont", 3, h - 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
     
     if self:IsHovered() then
@@ -1123,11 +1125,11 @@ function attachmentSelection:createInfoBox()
         local w, h = self:GetSize()
         local x, y = self:LocalToScreen(0, 0)
         self.descBox = vgui.Create("GCGenericDescbox")
-        self.descBox:InsertText(self.attachmentData.displayName, "CW_HUD28", 0)
+        self.descBox:InsertText(self.attachmentData.displayName, "ChatFont", 0)
         self.descBox:SetDrawOnTop(true)
         
         if self:IsLocked() then
-            self.descBox:InsertText("Click to purchase for " .. self.attachmentData.price .. "$", "CW_HUD20", 10)
+            self.descBox:InsertText("Click to purchase for " .. self.attachmentData.price .. "$", "ChatFont", 10)
         else
             if not self:IsAttachmentUsed(self.attachmentName) then
                 local can, result, data = self:CanAttachSpecificAttachmnent()
@@ -1136,41 +1138,41 @@ function attachmentSelection:createInfoBox()
                     if result == -4 or result == -6 then -- missing attachment
                         local baseText = "Can't attach, requires: "
                         
-                        if data then
-                            if result == -4 then
-                                for key, attName in ipairs(data) do
-                                    baseText = baseText .. CustomizableWeaponry.registeredAttachmentsSKey[attName].displayNameShort
+                        -- if data then
+                        --     if result == -4 then
+                        --         for key, attName in ipairs(data) do
+                        --             baseText = baseText .. CustomizableWeaponry.registeredAttachmentsSKey[attName].displayNameShort
                                     
-                                    if key ~= #data then
-                                        baseText = baseText .. "/"
-                                    end
-                                end
-                            else
-                                local total = table.Count(data)
-                                local cur = 0
+                        --             if key ~= #data then
+                        --                 baseText = baseText .. "/"
+                        --             end
+                        --         end
+                        --     else
+                        --         local total = table.Count(data)
+                        --         local cur = 0
                                 
-                                for attName, etc in pairs(data) do
-                                    cur = cur + 1
-                                    baseText = baseText .. CustomizableWeaponry.registeredAttachmentsSKey[attName].displayNameShort
+                        --         for attName, etc in pairs(data) do
+                        --             cur = cur + 1
+                        --             baseText = baseText .. CustomizableWeaponry.registeredAttachmentsSKey[attName].displayNameShort
                                     
-                                    if cur ~= total then
-                                        baseText = baseText .. "/"
-                                    end
-                                end
-                            end
-                        end
+                        --             if cur ~= total then
+                        --                 baseText = baseText .. "/"
+                        --             end
+                        --         end
+                        --     end
+                        -- end
                         
-                        self.descBox:InsertText(baseText, "CW_HUD20", 10)
+                        self.descBox:InsertText(baseText, "ChatFont", 10)
                     elseif result == -3 or result == -5 then -- incompatibility with other attachment
                         if result == -5 then
-                            self.descBox:InsertText("Can't attach, conflicts with: " .. CustomizableWeaponry.registeredAttachmentsSKey[data].displayNameShort, "CW_HUD20", 10)
+                            -- self.descBox:InsertText("Can't attach, conflicts with: " .. CustomizableWeaponry.registeredAttachmentsSKey[data].displayNameShort, "ChatFont", 10)
                         end
                     end
                 else
-                    self.descBox:InsertText("Left-click to assign attachment.", "CW_HUD20", 10)
+                    self.descBox:InsertText("Left-click to assign attachment.", "ChatFont", 10)
                 end
             else
-                self.descBox:InsertText("Right-click to un-assign attachment.", "CW_HUD20", 10)
+                self.descBox:InsertText("Right-click to un-assign attachment.", "ChatFont", 10)
             end
         end
         
@@ -1277,7 +1279,7 @@ end
 
 function attachmentSelection:SetAttachment(attName, weaponData, isPrimary)
     self.attachmentName = attName
-    self.attachmentData = CustomizableWeaponry.registeredAttachmentsSKey[attName]
+    -- self.attachmentData = CustomizableWeaponry.registeredAttachmentsSKey[attName]
     self.weaponData = weaponData
     
     if isPrimary ~= nil then
@@ -1509,27 +1511,27 @@ function attachmentAssignment:Paint()
             self.descBox:SetDrawOnTop(true)
             
             if not self:IsSlotUnlocked() then
-                self.descBox:InsertText("Slot not unlocked, can not assign to it.", "CW_HUD28", 0)
+                self.descBox:InsertText("Slot not unlocked, can not assign to it.", "ChatFont", 0)
             else
                 if self.attachmentData then
-                    self.descBox:InsertText(self.attachmentData.displayName, "CW_HUD28", 0)
+                    self.descBox:InsertText(self.attachmentData.displayName, "ChatFont", 0)
                 
                     if not self:CanAssignToSlot() then
-                        self.descBox:InsertText("Can't assign to this slot - desired category already in use.", "CW_HUD20", 0)
+                        self.descBox:InsertText("Can't assign to this slot - desired category already in use.", "ChatFont", 0)
                     else
-                        self.descBox:InsertText("Left-click to re-assign slot.", "CW_HUD20", 0)
+                        self.descBox:InsertText("Left-click to re-assign slot.", "ChatFont", 0)
                     end
                     
-                    self.descBox:InsertText("Right-click to un-assign slot.", "CW_HUD20", 10)
+                    self.descBox:InsertText("Right-click to un-assign slot.", "ChatFont", 10)
                     
                     if self.attachmentData then
                         self.descBox:SetText(self.attachmentData.description)
                     end
                 else
                     if not self:CanAssignToSlot() then
-                        self.descBox:InsertText("Can't assign to this slot - desired category already in use.", "CW_HUD20", 0)
+                        self.descBox:InsertText("Can't assign to this slot - desired category already in use.", "ChatFont", 0)
                     else
-                        self.descBox:InsertText("Left-click to assign slot.", "CW_HUD20", 0)
+                        self.descBox:InsertText("Left-click to assign slot.", "ChatFont", 0)
                         
                         if self.attachmentData then
                             self.descBox:SetText(self.attachmentData.description)
@@ -1553,14 +1555,14 @@ function attachmentAssignment:Paint()
     end
     
     local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
-    draw.ShadowText(self.displayText, "CW_HUD16", 3, 30, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.ShadowText(self.slotString, "CW_HUD20", 3, 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText(self.displayText, "ChatFont", 3, 30, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    drawShadowText(self.slotString, "ChatFont", 3, 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("GCAttachmentAssignment", attachmentAssignment, "GCAttachmentSelection")
 
 local genericDescbox = {}
-genericDescbox.font = "CW_HUD20"
+genericDescbox.font = "ChatFont"
 genericDescbox.alpha = 220
 
 function genericDescbox:Init()
@@ -1581,7 +1583,7 @@ function genericDescbox:Paint()
     local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
     
     for key, textEntry in ipairs(self.allText) do
-        draw.ShadowText(textEntry.t, textEntry.font, 5, textEntry.y + 5, textEntry.c, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        drawShadowText(textEntry.t, textEntry.font, 5, textEntry.y + 5, textEntry.c, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     end
 end
 
@@ -1614,7 +1616,7 @@ end
 
 function genericDescbox:InsertText(text, font, offset, color)
     color = color or GAMEMODE.HUDColors.white
-    self:AddText({t = text, c = color, font = (font or "CW_HUD20"), offset = (offset or 10)})
+    self:AddText({t = text, c = color, font = (font or "ChatFont"), offset = (offset or 10)})
 end
 
 function genericDescbox:SetText(text)
@@ -1639,7 +1641,7 @@ vgui.Register("GCGenericDescbox", genericDescbox, "Panel")
 
 local roundOver = {}
 roundOver.bottomText = "Starting a new round in "
-roundOver.font = "CW_HUD24"
+roundOver.font = "ChatFont"
 
 function roundOver:Init()
     self.alpha = 0
@@ -1695,8 +1697,8 @@ function roundOver:Paint()
     surface.SetDrawColor(0, 0, 0, 150 * self.alpha)
     surface.DrawRect(0, 0, w, h)
     
-    draw.ShadowText(self.winningTeamName, "CW_HUD24", w * 0.5, 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    draw.ShadowText(self:GetFinalBottomText(), "CW_HUD24", w * 0.5, h - 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText(self.winningTeamName, "ChatFont", w * 0.5, 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText(self:GetFinalBottomText(), "ChatFont", w * 0.5, h - 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     
     White.a = 255
     Black.a = 255
@@ -1736,8 +1738,8 @@ function roundPrepare:Paint()
     surface.SetDrawColor(0, 0, 0, 150 * self.alpha)
     surface.DrawRect(0, 0, w, h)
     
-    draw.ShadowText("Prepare for new round", "CW_HUD24", w * 0.5, 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    draw.ShadowText("Round starts in " .. math.ceil(self.existTime + 1 - CurTime()) .. " second(s)", "CW_HUD24", w * 0.5, h - 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText("Prepare for new round", "ChatFont", w * 0.5, 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText("Round starts in " .. math.ceil(self.existTime + 1 - CurTime()) .. " second(s)", "ChatFont", w * 0.5, h - 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     
     White.a = 255
     Black.a = 255
@@ -1819,8 +1821,8 @@ function gcExperienceBar:Paint()
     end
     
     local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
-    draw.ShadowText(expDisplay .. "/" .. nextSlotPrice .. " EXP", "CW_HUD16", w * 0.5, 9, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    draw.ShadowText(helperText, "CW_HUD20", w * 0.5, h - 10, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText(expDisplay .. "/" .. nextSlotPrice .. " EXP", "ChatFont", w * 0.5, 9, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText(helperText, "ChatFont", w * 0.5, h - 10, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("GCExperienceBar", gcExperienceBar, "DPanel")
@@ -1835,7 +1837,7 @@ function gcCashDisplay:Paint()
     local w, h = self:GetSize()
     local cash = LocalPlayer().cash
     
-    draw.ShadowText("Cash $" .. (cash > self.maxDisplayCash and (self.maxDisplayCash .. "+") or cash), "CW_HUD28", w - 5, h * 0.5, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    drawShadowText("Cash $" .. (cash > self.maxDisplayCash and (self.maxDisplayCash .. "+") or cash), "ChatFont", w - 5, h * 0.5, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("GCCashDisplay", gcCashDisplay, "DPanel")
@@ -1914,19 +1916,19 @@ function gcArmorDisplay:OnCursorEntered()
         self.descBox:SetDrawOnTop(true)
         
         if self.armorData then
-            self.descBox:InsertText(self.armorData.displayName, "CW_HUD28", 0)
-            self.descBox:InsertText(self.armorData.description, "CW_HUD20", 0)
-            self.descBox:InsertText("Weight: " .. self.armorData.weight .. "KG", "CW_HUD16", 0)
-            self.descBox:InsertText("Max penetration value: " .. self.armorData.protection, "CW_HUD16", 0)
-            self.descBox:InsertText("Blunt trauma reduction: " .. math.Round(self.armorData.damageDecrease * 100, 1) .. "%", "CW_HUD16", 0)
-            self.descBox:InsertText("Penetration damage reduction: " .. math.Round(self.armorData.damageDecreasePenetration * 100, 1) .. "%", "CW_HUD16", 0)
+            self.descBox:InsertText(self.armorData.displayName, "ChatFont", 0)
+            self.descBox:InsertText(self.armorData.description, "ChatFont", 0)
+            self.descBox:InsertText("Weight: " .. self.armorData.weight .. "KG", "ChatFont", 0)
+            self.descBox:InsertText("Max penetration value: " .. self.armorData.protection, "ChatFont", 0)
+            self.descBox:InsertText("Blunt trauma reduction: " .. math.Round(self.armorData.damageDecrease * 100, 1) .. "%", "ChatFont", 0)
+            self.descBox:InsertText("Penetration damage reduction: " .. math.Round(self.armorData.damageDecreasePenetration * 100, 1) .. "%", "ChatFont", 0)
         else
             if self.category == "vest" then
-                self.descBox:InsertText("No armor vest equipped.", "CW_HUD20", 0)
-                self.descBox:InsertText("Bleeding will occur from any shot.", "CW_HUD20", 0)
+                self.descBox:InsertText("No armor vest equipped.", "ChatFont", 0)
+                self.descBox:InsertText("Bleeding will occur from any shot.", "ChatFont", 0)
             else
-                self.descBox:InsertText("No helmet equipped.", "CW_HUD20", 0)
-                self.descBox:InsertText("Headshots are almost certainly fatal.", "CW_HUD20", 0)
+                self.descBox:InsertText("No helmet equipped.", "ChatFont", 0)
+                self.descBox:InsertText("Headshots are almost certainly fatal.", "ChatFont", 0)
             end
         end
         
@@ -1996,9 +1998,9 @@ function gcArmorSelection:Paint()
     local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
     
     if self.direction < 0 then
-        draw.ShadowText("<", "CW_HUD20", w * 0.5, 10, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText("<", "ChatFont", w * 0.5, 10, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     else
-        draw.ShadowText(">", "CW_HUD20", w * 0.5, 10, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText(">", "ChatFont", w * 0.5, 10, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end    
 
@@ -2006,7 +2008,7 @@ vgui.Register("GCArmorSelection", gcArmorSelection, "DPanel")
 
 local gcGenericPopup = {}
 gcGenericPopup.alpha = 0
-gcGenericPopup.font = "CW_HUD24"
+gcGenericPopup.font = "ChatFont"
 
 function gcGenericPopup:Init()
     self.alpha = 0
@@ -2062,10 +2064,10 @@ function gcGenericPopup:Paint()
     surface.SetDrawColor(0, 0, 0, 150 * self.alpha)
     surface.DrawRect(0, 0, w, h)
     
-    draw.ShadowText(self.topText, self.font, w * 0.5, 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText(self.topText, self.font, w * 0.5, 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     
     if self.bottomText then
-        draw.ShadowText(self.bottomText, self.font, w * 0.5, h - 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText(self.bottomText, self.font, w * 0.5, h - 12, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     
     White.a = 255
@@ -2153,16 +2155,16 @@ function gcTraitPanel:OnCursorEntered(w, h)
         local active = self:IsTraitActive()
         
         if traitLevel > 0 and not active then
-            self.descBox:InsertText(self.traitData.display .. " (Inactive)", "CW_HUD28", 0)
-            self.descBox:InsertText("This trait is not active, left-click to activate it.", "CW_HUD20", 0)
+            self.descBox:InsertText(self.traitData.display .. " (Inactive)", "ChatFont", 0)
+            self.descBox:InsertText("This trait is not active, left-click to activate it.", "ChatFont", 0)
         else
-            self.descBox:InsertText(self.traitData.display, "CW_HUD28", 0)
+            self.descBox:InsertText(self.traitData.display, "ChatFont", 0)
         end
         
         local levelText = "Level: " .. (traitLevel and traitLevel or 0) .. "/" .. self.traitData.maxLevel
         local unlockText = nil
         
-        self.descBox:InsertText(levelText, "CW_HUD24", 10)
+        self.descBox:InsertText(levelText, "ChatFont", 10)
         
         if traitLevel < self.traitData.maxLevel then
             if traitLevel > 0 then
@@ -2172,7 +2174,7 @@ function gcTraitPanel:OnCursorEntered(w, h)
             end
             
             unlockText = unlockText .. " (you have $" .. ply.cash .. ")"
-            self.descBox:InsertText(unlockText, "CW_HUD20")
+            self.descBox:InsertText(unlockText, "ChatFont")
         end
         
         self.descBox:SetText(self.traitData.description)
@@ -2221,8 +2223,8 @@ vgui.Register("GCTraitPanel", gcTraitPanel, "DPanel")
 
 local gcMVPDisplay = {}
 gcMVPDisplay.avatarImageSize = 64 -- one of: 16, 32, 64, 84, 128, 184 (as per wiki)
-gcMVPDisplay.mainTextFont = "CW_HUD28"
-gcMVPDisplay.scoreTextFont = "CW_HUD20"
+gcMVPDisplay.mainTextFont = "ChatFont"
+gcMVPDisplay.scoreTextFont = "ChatFont"
 
 function gcMVPDisplay:SetPlayer(ply)
     self.player = ply
@@ -2265,16 +2267,16 @@ function gcMVPDisplay:Paint()
     
     local fontHeight = draw.GetFontHeight(gcMVPDisplay.mainTextFont)
     
-    draw.ShadowText(self.playerText, self.mainTextFont, h + 4, 1, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-    draw.ShadowText(self.scoreText, self.scoreTextFont, h + 4, fontHeight - 2, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    drawShadowText(self.playerText, self.mainTextFont, h + 4, 1, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    drawShadowText(self.scoreText, self.scoreTextFont, h + 4, fontHeight - 2, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 end    
 
 vgui.Register("GCMVPDisplay", gcMVPDisplay, "DPanel")
 
 local gcKillerDisplay = {}
-gcKillerDisplay.mainTextFont = "CW_HUD28"
-gcKillerDisplay.scoreTextFont = "CW_HUD20"
-gcKillerDisplay.tkFont = "CW_HUD40"
+gcKillerDisplay.mainTextFont = "ChatFont"
+gcKillerDisplay.scoreTextFont = "ChatFont"
+gcKillerDisplay.tkFont = "ChatFont"
 gcKillerDisplay.avatarImageSize = 64
 gcKillerDisplay.tkSpacing = 5
 
@@ -2331,14 +2333,14 @@ function gcKillerDisplay:Paint()
     
     local fontHeight = draw.GetFontHeight(gcMVPDisplay.mainTextFont)
     
-    draw.ShadowText(self.playerText, self.mainTextFont, h + 4, 1, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-    draw.ShadowText(self.killerText, self.scoreTextFont, h + 4, fontHeight, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    drawShadowText(self.playerText, self.mainTextFont, h + 4, 1, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    drawShadowText(self.killerText, self.scoreTextFont, h + 4, fontHeight, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     
     if self.teamKill then -- draw a separate element so that people can't fake TK reports as easily
         DisableClipping(true)
             surface.SetDrawColor(0, 0, 0, 230)
             surface.DrawRect(w + self.tkSpacing, 0, h, h)
-            draw.ShadowText("TK", self.tkFont, w + self.tkSpacing + h * 0.5, 1 + h * 0.5 - draw.GetFontHeight(self.tkFont) * 0.5, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CETER)
+            drawShadowText("TK", self.tkFont, w + self.tkSpacing + h * 0.5, 1 + h * 0.5 - draw.GetFontHeight(self.tkFont) * 0.5, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CETER)
         DisableClipping(false)
     end
 end    

@@ -22,11 +22,11 @@ function GM:AddMarker(position, text, color, displayTime)
     table.insert(self.Markers, {position = position, text = text, color = color, displayTime = CurTime() + displayTime})
 end
 
-GM.HealthDisplayFont = "CW_HUD40"
-GM.BandageDisplayFont = "CW_HUD32"
-GM.ActionDisplayFont = "CW_HUD24"
-GM.GadgetDisplayFont = "CW_HUD14"
-GM.AttachmentSlotDisplayFont = "CW_HUD20"
+GM.HealthDisplayFont = "ChatFont"
+GM.BandageDisplayFont = "ChatFont"
+GM.ActionDisplayFont = "ChatFont"
+GM.GadgetDisplayFont = "ChatFont"
+GM.AttachmentSlotDisplayFont = "ChatFont"
 
 GM.HUDColors = {white = Color(255, 255, 255, 255),
     black = Color(0, 0, 0, 255),
@@ -115,9 +115,9 @@ function GM:HUDPaint()
         surface.SetDrawColor(0, 0, 0, 150)
         surface.DrawRect(50, scrH - 100 - overallTextHeight, xSize + 10, ySize - 7 + 32) -- original 32
         
-        draw.ShadowText(healthText, self.HealthDisplayFont, 55, scrH - 82 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(bandageText, self.BandageDisplayFont, 55, scrH - 82 + 32 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        -- draw.ShadowText(staminaText, self.BandageDisplayFont, 55, scrH - 82 + 64 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        drawShadowText(healthText, self.HealthDisplayFont, 55, scrH - 82 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        drawShadowText(bandageText, self.BandageDisplayFont, 55, scrH - 82 + 32 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        -- drawShadowText(staminaText, self.BandageDisplayFont, 55, scrH - 82 + 64 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         
         local offset = 60
         local baseY = scrH - 50
@@ -150,7 +150,7 @@ function GM:HUDPaint()
                     
                     self.HUDColors.white.a = alpha
                     self.HUDColors.black.a = alpha
-                    draw.ShadowText(data.text, "CW_HUD14", coords.x - 3, coords.y, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    drawShadowText(data.text, "ChatFont", coords.x - 3, coords.y, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                 end
                 
                 removeIndex = removeIndex + 1
@@ -184,7 +184,7 @@ function GM:HUDPaint()
         self.HUDColors.white.a = curAlpha * 255
         self.HUDColors.black.a = curAlpha * 255
         
-        draw.ShadowText(firstElement.topText, "CW_HUD20", midX, midY + 100 + firstElement.yOffset, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText(firstElement.topText, "ChatFont", midX, midY + 100 + firstElement.yOffset, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         
         if firstElement.bottomText then
             local targetColor = nil
@@ -196,7 +196,7 @@ function GM:HUDPaint()
             end
             
             targetColor.a = curAlpha * 255
-            draw.ShadowText(firstElement.bottomText, "CW_HUD16", midX, midY + 120 + firstElement.yOffset, targetColor, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            drawShadowText(firstElement.bottomText, "ChatFont", midX, midY + 120 + firstElement.yOffset, targetColor, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             targetColor.a = 255
         end
         
@@ -227,25 +227,25 @@ function GM:HUDPaint()
         surface.SetDrawColor(0, 0, 0, 255 * self.WholeScreenAlpha)
         surface.DrawRect(0, 0, scrW, scrH)
     end
-    
+
     if self.DeadState == 3 then
         surface.SetDrawColor(0, 0, 0, 255)
         surface.DrawRect(0, 0, scrW, 50)
         surface.DrawRect(0, scrH - 50, scrW, 50)
         
         if IsValid(ply.currentSpectateEntity) then
-            draw.ShadowText("Spectating " .. ply.currentSpectateEntity:Nick(), "CW_HUD20", midX, scrH - 35, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            drawShadowText("Spectating " .. ply.currentSpectateEntity:Nick(), "ChatFont", midX, scrH - 35, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
         
-        draw.ShadowText(self:getKeyBind("+attack") .. " - change spectate target", "CW_HUD24", midX, scrH - 15, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText(self:getKeyBind("+attack") .. " - change spectate target", "ChatFont", midX, scrH - 15, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         
-        --[[draw.ShadowText(self:getKeyBind(self.TeamSelectionKey) .. " - team selection menu", "CW_HUD24", 5, 45, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
-        draw.ShadowText(self:getKeyBind(self.LoadoutMenuKey) .. " - loadout menu", "CW_HUD24", midX, 45, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
-        draw.ShadowText(self:getKeyBind(self.RadioMenuKey) .. " - voice selection menu", "CW_HUD24", scrW - 5, 45, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)]]--
+        --[[drawShadowText(self:getKeyBind(self.TeamSelectionKey) .. " - team selection menu", "ChatFont", 5, 45, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+        drawShadowText(self:getKeyBind(self.LoadoutMenuKey) .. " - loadout menu", "ChatFont", midX, 45, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+        drawShadowText(self:getKeyBind(self.RadioMenuKey) .. " - voice selection menu", "ChatFont", scrW - 5, 45, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)]]--
         
-        draw.ShadowText(self:getKeyBind(self.TeamSelectionKey) .. " - team selection menu", "CW_HUD24", 5, 55, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.ShadowText(self:getKeyBind(self.LoadoutMenuKey) .. " - loadout menu", "CW_HUD24", 5, 80, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.ShadowText(self:getKeyBind(self.RadioMenuKey) .. " - voice selection menu", "CW_HUD24", 5, 105, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        drawShadowText(self:getKeyBind(self.TeamSelectionKey) .. " - team selection menu", "ChatFont", 5, 55, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        drawShadowText(self:getKeyBind(self.LoadoutMenuKey) .. " - loadout menu", "ChatFont", 5, 80, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        drawShadowText(self:getKeyBind(self.RadioMenuKey) .. " - voice selection menu", "ChatFont", 5, 105, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
         
         if self.curGametype.deadDraw then
             self.curGametype:deadDraw(scrW, scrH)
@@ -294,13 +294,13 @@ function GM:HUDPaint()
     
     if alive then
         if ply.bleeding then
-            draw.ShadowText(self:getKeyBind(self:getActionKey("bandage")) .. " - apply bandage", self.ActionDisplayFont, scrW * 0.5, scrH * 0.5 + 50, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            drawShadowText(self:getKeyBind(self:getActionKey("bandage")) .. " - apply bandage", self.ActionDisplayFont, scrW * 0.5, scrH * 0.5 + 50, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         else
             if self.canTraceForBandaging then -- only trace for bandage validity if we have drawn the marker of another player
                 local bandageTarget = ply:getBandageTarget()
                 
                 if bandageTarget then
-                    draw.ShadowText(string.easyformatbykeys("KEY - bandage PLAYER", "KEY", self:getKeyBind(self:getActionKey("bandage")), "PLAYER", bandageTarget:Nick()), self.ActionDisplayFont, scrW * 0.5, scrH * 0.5 + 50, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    drawShadowText(string.easyformatbykeys("KEY - bandage PLAYER", "KEY", self:getKeyBind(self:getActionKey("bandage")), "PLAYER", bandageTarget:Nick()), self.ActionDisplayFont, scrW * 0.5, scrH * 0.5 + 50, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                 end
             end
         end
@@ -354,8 +354,8 @@ function GM:drawLoadoutAvailability(w, h)
             
             self.HUDColors.white.a, self.HUDColors.black.a = 255 * alpha, 255 * alpha
             
-            draw.ShadowText(self:getKeyBind(self.LoadoutMenuKey) .. " - LOADOUT", "CW_HUD20", w - self.LoadoutElementSize * 0.5 - self.LoadoutElementSizeSpacing, h * 0.5 + self.LoadoutElementSize * 0.5, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            draw.ShadowText(os.date("%M:%S", delta), "CW_HUD20", w - self.LoadoutElementSize * 0.5 - self.LoadoutElementSizeSpacing, h * 0.5 + self.LoadoutElementSize * 0.5 + 20, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            drawShadowText(self:getKeyBind(self.LoadoutMenuKey) .. " - LOADOUT", "ChatFont", w - self.LoadoutElementSize * 0.5 - self.LoadoutElementSizeSpacing, h * 0.5 + self.LoadoutElementSize * 0.5, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            drawShadowText(os.date("%M:%S", delta), "ChatFont", w - self.LoadoutElementSize * 0.5 - self.LoadoutElementSizeSpacing, h * 0.5 + self.LoadoutElementSize * 0.5 + 20, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
     end
     
@@ -375,7 +375,7 @@ function GM:drawPlayerMarker(pos, obj, midX, midY)
         self.HUDColors.white.a = alpha
         self.HUDColors.black.a = alpha
         
-        draw.ShadowText(obj:Nick(), "CW_HUD14", coords.x + 4, coords.y - 10, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText(obj:Nick(), "ChatFont", coords.x + 4, coords.y - 10, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         
         local healthColor = 1 - (obj:Health() / 100)
         surface.SetDrawColor(200 + healthColor * 255, 255 - healthColor * 155, 200 - healthColor * 100, alpha)
@@ -496,7 +496,7 @@ function GM:createKilledByDisplay(killerPlayer, entClassString)
     
     local baseHeight = self.KilledByEntrySize + self.KilledByBaseSize
     local panel = vgui.Create("GCPanel") 
-    panel:SetFont("CW_HUD20")
+    panel:SetFont("ChatFont")
     panel:SetText("Killed by")
     panel:SetSize(self.KilledByPanelWidth, baseHeight)
     panel:CenterHorizontal()

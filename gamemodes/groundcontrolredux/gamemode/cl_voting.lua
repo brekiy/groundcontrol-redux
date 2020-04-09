@@ -19,7 +19,7 @@ function GM:updateVote(index, value)
     self.VoteOptions[index].votes = value
 end
 
-GM.VoteFont = "CW_HUD16"
+GM.VoteFont = "ChatFont"
 GM.VoteOptionSpacing = 20
 GM.VoteStartTime = 0
 GM.VoteDuration = 0
@@ -55,11 +55,11 @@ function GM:drawVotePanel()
             
             self.HUDColors.white.a, self.HUDColors.black.a = 255, 255
             
-            draw.ShadowText(self:getVoteTitle(), self.VoteFont, 55, curY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            drawShadowText(self:getVoteTitle(), self.VoteFont, 55, curY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             curY = curY + self.VoteOptionSpacing
             
             for key, data in ipairs(self.VoteOptions) do
-                draw.ShadowText(self:getVoteText(key, data), self.VoteFont, 55, curY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                drawShadowText(self:getVoteText(key, data), self.VoteFont, 55, curY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                 curY = curY + self.VoteOptionSpacing
             end
             
@@ -73,7 +73,7 @@ function GM:drawVotePanel()
         
         self.HUDColors.white.a, self.HUDColors.black.a = 255, 255
         
-        draw.ShadowText("A vote will begin soon.", "CW_HUD24", 55, midY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        drawShadowText("A vote will begin soon.", "ChatFont", 55, midY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
     
     return false

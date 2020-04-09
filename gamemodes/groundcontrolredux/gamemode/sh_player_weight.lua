@@ -36,13 +36,15 @@ function GM:calculateImaginaryWeight(ply, withoutWeight, withWeight)
     secondaryMags = ply:adjustMagCount(secondaryData, secondaryMags)
     
     if primaryData then
-        totalWeight = totalWeight + primaryData.weight -- take weapon weight into account
-        totalWeight = totalWeight + self:getAmmoWeight(primaryData.weaponObject.Primary.Ammo, primaryData.weaponObject.Primary.ClipSize * (primaryMags + 1)) -- take ammo in weapon weight into account
+        totalWeight = totalWeight + primaryData.weaponObject.weight -- take weapon weight into account
+        local primaryMag = getWeaponMagazine(primaryData.weaponObject)
+        totalWeight = totalWeight + self:getAmmoWeight(primaryMag.Calibre, primaryMag.MagSize * (primaryMags + 1)) -- take ammo in weapon weight into account
     end
     
     if secondaryData then
-        totalWeight = totalWeight + (secondaryData.weight or 0)
-        totalWeight = totalWeight + self:getAmmoWeight(secondaryData.weaponObject.Primary.Ammo, secondaryData.weaponObject.Primary.ClipSize * (secondaryMags + 1))
+        totalWeight = totalWeight + (secondaryData.weaponObject.weight or 0)
+        local secondaryMag = getWeaponMagazine(secondaryData.weaponObject)
+        totalWeight = totalWeight + self:getAmmoWeight(secondaryMag.Calibre, secondaryMag.MagSize * (secondaryMags + 1))
     end
     
     if tertiaryData then
@@ -67,9 +69,11 @@ function PLAYER:calculateWeight(withoutWeight, withWeight)
     totalWeight = totalWeight + GAMEMODE:getArmorWeight("helmet", self:getDesiredHelmet())
     
     for key, weapon in pairs(self:GetWeapons()) do
-        totalWeight = totalWeight + weapon.weight or 0 -- take weapon weight into account
-    
-        totalWeight = totalWeight + GAMEMODE:getAmmoWeight(weapon.Primary.Ammo, weapon:Clip1() + self:GetAmmoCount(weapon.Primary.Ammo)) -- take ammo weight into account
+        totalWeight = totalWeight + ((weapon.weaponObject and weapon.weaponObject.weight) or 0) -- take weapon weight into account
+        local mag = getWeaponMagazine(weapon.weaponObject)
+        if mag ~= nil then
+            totalWeight = totalWeight + GAMEMODE:getAmmoWeight(mag.Calibre, weapon:Clip1() + self:GetAmmoCount(weapon.Primary.Ammo))
+        else end
     end
     
     for key, data in ipairs(self.gadgets) do

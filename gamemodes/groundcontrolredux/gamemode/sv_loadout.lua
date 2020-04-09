@@ -16,6 +16,7 @@ function PLAYER:attemptGiveWeapon(givenWeaponData)
     end
     
     if givenWeaponData.weaponClass and not givenWeaponData.skipWeaponGive then
+        -- print(givenWeaponData.weaponClass)
         self:Give(givenWeaponData.weaponClass)
     end
     
@@ -68,17 +69,17 @@ function PLAYER:giveLoadout(forceGive)
         
         if GAMEMODE.curGametype.skipAttachmentGive then
             if not GAMEMODE.curGametype:skipAttachmentGive(self) then
-                CustomizableWeaponry.giveAttachments(self, self.ownedAttachmentsNumeric, true, true)
+                -- CustomizableWeaponry.giveAttachments(self, self.ownedAttachmentsNumeric, true, true)
             end
         else
-            CustomizableWeaponry.giveAttachments(self, self.ownedAttachmentsNumeric, true, true)
+            -- CustomizableWeaponry.giveAttachments(self, self.ownedAttachmentsNumeric, true, true)
         end
         
         local primaryWepObj, secWepObj = nil, nil
         
         if primaryData then
             primaryWepObj = plyObj:GetWeapon(primaryData.weaponClass)
-            plyObj:setupAttachmentLoadTable(primaryWepObj)
+            plyObj:setupAttachmentLoadTable(primaryWepObj) -- todo: replace
             plyObj:equipAttachments(primaryWepObj, GAMEMODE.AttachmentLoadTable)
         end
         
@@ -91,16 +92,22 @@ function PLAYER:giveLoadout(forceGive)
         plyObj:RemoveAllAmmo() -- remove any ammo that may have been added to our reserve
         
         if primaryWepObj then
-            plyObj:GiveAmmo(primaryMags * primaryWepObj.Primary.ClipSize_Orig, primaryWepObj.Primary.Ammo) -- set the ammo after we've attached everything, since some attachments may modify mag size
-            primaryWepObj:maxOutWeaponAmmo(primaryWepObj.Primary.ClipSize_Orig) -- same for the magazine
+            primaryData.processedWeaponObject:RecalculateDefaultRounds()
+            for i=0,primaryMags do 
+                local primaryMag = table.Copy(primaryData.processedWeaponObject.DefaultMagazine)
+                plyObj:ACT3_GiveMagazine(primaryMag)
+            end
         end
         
         if secWepObj then
-            plyObj:GiveAmmo(secondaryMags * secWepObj.Primary.ClipSize_Orig, secWepObj.Primary.Ammo)
-            secWepObj:maxOutWeaponAmmo(secWepObj.Primary.ClipSize_Orig)
+            secondaryData.processedWeaponObject:RecalculateDefaultRounds()
+            for i=0,secondaryMags do
+                local secondaryMag = table.Copy(secondaryData.processedWeaponObject.DefaultMagazine)
+                plyObj:ACT3_GiveMagazine(secondaryMag)
+            end
         end
         
-        plyObj:GiveAmmo(1, "Frag Grenades")
+        -- plyObj:GiveAmmo(1, "Frag Grenades")
         
         if primaryData then
             plyObj:attemptGiveLoadoutAmmo(primaryData)

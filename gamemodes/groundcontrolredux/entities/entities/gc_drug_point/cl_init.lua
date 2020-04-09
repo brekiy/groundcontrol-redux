@@ -1,6 +1,6 @@
 include("shared.lua")
 
-local baseFont = "CW_HUD72"
+local baseFont = "ChatFont"
 
 function ENT:Initialize()
     GAMEMODE:addObjectiveEntity(self)
@@ -61,7 +61,7 @@ function ENT:drawHUD()
         surface.SetDrawColor(255, 255, 255, 255 * alpha)
         surface.DrawTexturedRect(screen.x - 8, screen.y - 8 - 16, 16, 16)
             
-        draw.ShadowText(text, "CW_HUD20", screen.x, screen.y, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText(text, "ChatFont", screen.x, screen.y, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end
 

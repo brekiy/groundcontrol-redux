@@ -10,6 +10,6 @@ function ENT:drawHUD()
         local text = self:getPenaltyText()
         text = string.gsub(text, "TIME", self:getTimeToDeath())
         
-        draw.ShadowText(text, "CW_HUD28", w * 0.5, h * 0.5, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText(text, "ChatFont", w * 0.5, h * 0.5, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end

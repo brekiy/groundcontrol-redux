@@ -168,8 +168,8 @@ function spareAmmo:draw(x, y)
     surface.SetTexture(self.icon)
     surface.DrawTexturedRect(x, y - 50, 50, 50)
     
-    draw.ShadowText(GAMEMODE:getKeyBind(self.useKey) .. " " .. self.display, GAMEMODE.GadgetDisplayFont, x + 25, y, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    draw.ShadowText("x" .. self.uses, GAMEMODE.GadgetDisplayFont, x + 25, y + 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText(GAMEMODE:getKeyBind(self.useKey) .. " " .. self.display, GAMEMODE.GadgetDisplayFont, x + 25, y, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    drawShadowText("x" .. self.uses, GAMEMODE.GadgetDisplayFont, x + 25, y + 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 GM:registerGadget(spareAmmo)

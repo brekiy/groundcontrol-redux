@@ -1,6 +1,7 @@
 include("shared.lua")
 
-local baseFont = "CW_HUD72"
+-- local baseFont = "ChatFont"
+local baseFont = "ChatFont"
 ENT.RetrieveAndProtect = "Retrieve & protect"
 ENT.ProtectText = "Protect"
 ENT.AttackAndCapture = "Attack & capture"
@@ -43,15 +44,16 @@ function ENT:Draw()
     pos.z = pos.z + 30
     
     cam.Start3D2D(pos, eyeAng, 0.05)
-        local clrs = CustomizableWeaponry.ITEM_PACKS_TOP_COLOR
-        surface.SetDrawColor(clrs.r, clrs.g, clrs.b, clrs.a)
+        -- local clrs = CustomizableWeaponry.ITEM_PACKS_TOP_COLOR
+        surface.SetDrawColor(190, 100, 50, 100)
         surface.DrawRect(-self.halfBaseHorSize, 0, self.baseHorSize, self.vertFontSize)
         
-        draw.ShadowText("Drugs", baseFont, 0, self.halfVertFontSize, white, black, 2, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText("Drugs", baseFont, 0, self.halfVertFontSize, white, black, 2, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     cam.End3D2D()
 end
 
-local displayFont = "CW_HUD14"
+-- local displayFont = "ChatFont"
+local displayFont = "ChatFont"
 local horizontalBoundary, verticalBoundary = 75, 75
 local point = surface.GetTextureID("ground_control/hud/point_of_interest")
 
@@ -87,6 +89,6 @@ function ENT:drawHUD()
         white.a = 255 * alpha
         black.a = 255 * alpha
         
-        draw.ShadowText(text, displayFont, screen.x, screen.y, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText(text, displayFont, screen.x, screen.y, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end

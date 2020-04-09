@@ -118,7 +118,7 @@ function PLAYER:finishClimb()
     local wep = self:GetActiveWeapon()
     
     if wep and wep.CW20Weapon then
-        wep.dt.State = CW_IDLE
+        wep.dt.State = ACT3_STATE_IDLE
         wep:setGlobalDelay(0)
     end
     
@@ -135,7 +135,7 @@ function PLAYER:abortClimb()
     local wep = self:GetActiveWeapon()
     
     if wep and wep.CW20Weapon then
-        wep.dt.State = CW_IDLE
+        wep.dt.State = ACT3_STATE_IDLE
         wep:setGlobalDelay(0)
     end
     

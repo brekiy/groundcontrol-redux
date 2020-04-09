@@ -13,7 +13,7 @@ function GM:drawTimeLimit()
         surface.SetDrawColor(0, 0, 0, 150)
         surface.DrawRect(midX - 50, y, 100, 30)
         
-        draw.ShadowText(string.ToMinutesSeconds(math.max(self.RoundTime - CurTime(), 0)), "CW_HUD28", midX, y + 15, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText(string.ToMinutesSeconds(math.max(self.RoundTime - CurTime(), 0)), "ChatFont", midX, y + 15, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end
 

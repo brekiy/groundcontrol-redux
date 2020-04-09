@@ -512,7 +512,7 @@ end
 
 function assault:deadDraw(w, h)
     if GAMEMODE:getActivePlayerAmount() < 2 then
-        draw.ShadowText("This gametype requires at least 2 players, waiting for more people...", "CW_HUD20", w * 0.5, 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText("This gametype requires at least 2 players, waiting for more people...", "ChatFont", w * 0.5, 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end
 
@@ -1130,7 +1130,7 @@ end
 
 function ghettoDrugBust:deadDraw(w, h)
     if GAMEMODE:getActivePlayerAmount() < 2 then
-        draw.ShadowText("This gametype requires at least 2 players, waiting for more people...", "CW_HUD20", w * 0.5, 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        drawShadowText("This gametype requires at least 2 players, waiting for more people...", "ChatFont", w * 0.5, 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end
 

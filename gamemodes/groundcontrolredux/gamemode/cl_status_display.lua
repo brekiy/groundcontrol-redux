@@ -83,7 +83,7 @@ function GM:drawStatusEffects(w, h)
         surface.SetDrawColor(255, 255, 255, 255)
         surface.DrawTexturedRect(xPos, yPos - height, height, height)
         
-        draw.ShadowText(effectData.text, "CW_HUD16", xPos, yPos + 10, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        drawShadowText(effectData.text, "ChatFont", xPos, yPos + 10, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         
         xPos = xPos + height + self.IconSpacing
         curIndex = curIndex + 1

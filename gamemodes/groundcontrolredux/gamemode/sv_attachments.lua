@@ -57,7 +57,7 @@ function PLAYER:updateNumericAttachmentsTable(fillWith)
 end
 
 function PLAYER:unlockAttachment(attachmentName, isFree)
-    local attachmentData = CustomizableWeaponry.registeredAttachmentsSKey[attachmentName]
+    -- local attachmentData = CustomizableWeaponry.registeredAttachmentsSKey[attachmentName]
     local price = nil
     
     if isFree then
@@ -123,7 +123,7 @@ end
 
 function PLAYER:equipAttachments(targetWeapon, data)
     -- and lastly, we load all the attachments via CW 2.0's attachment preset system
-    CustomizableWeaponry.preset.load(targetWeapon, data, "GroundControlPreset")
+    -- CustomizableWeaponry.preset.load(targetWeapon, data, "GroundControlPreset")
 end
 
 function PLAYER:sendUnlockedAttachmentSlots()

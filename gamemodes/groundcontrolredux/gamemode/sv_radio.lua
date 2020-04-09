@@ -90,6 +90,6 @@ concommand.Add("gc_radio_command", function(ply, com, args)
     end
 end)
 
-CustomizableWeaponry.callbacks:addNew("beginThrowGrenade", "GroundControl_beginThrowGrenade", function(wep)
-    GAMEMODE:SendRadioCommand(wep.Owner, 9, 1, nil)
-end)
+-- CustomizableWeaponry.callbacks:addNew("beginThrowGrenade", "GroundControl_beginThrowGrenade", function(wep)
+--     GAMEMODE:SendRadioCommand(wep.Owner, 9, 1, nil)
+-- end)

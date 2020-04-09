@@ -73,7 +73,7 @@ function GM:CreateMove(cmd)
         if ply.adrenaline > 0 then
             local wep = ply:GetActiveWeapon()
             
-            if IsValid(wep) and wep.CW20Weapon and wep.dt.State == CW_AIMING then
+            if IsValid(wep) and wep.State == ACT3_STATE_INSIGHTS then
                 local curTime = CurTime()
                 local shakeData = self.ShakeData
                 

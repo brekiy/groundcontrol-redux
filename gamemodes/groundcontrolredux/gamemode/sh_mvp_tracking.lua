@@ -64,7 +64,7 @@ if CLIENT then
         local panelHeight = GAMEMODE.MVPPanelBaseHeight + (GAMEMODE.SizePerMVPEntry + GAMEMODE.SpacingBetweenMVPEntries) * #list
         
         local panel = vgui.Create("GCPanel")
-        panel:SetFont("CW_HUD20")
+        panel:SetFont("ChatFont")
         panel:SetText("Most Valuable Players")
         panel:SetSize(GAMEMODE.MVPPanelWidth, panelHeight)
         panel:CenterHorizontal()

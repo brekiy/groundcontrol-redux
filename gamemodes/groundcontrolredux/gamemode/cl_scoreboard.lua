@@ -1,7 +1,7 @@
 -- todo: make the scoreboard a derma element
 -- this code in general is pretty bad (locals defined outside of functions), was written back in 2012, needs a rewrite
 
-local clr, rect, orect, stext, lgrad = surface.SetDrawColor, surface.DrawRect, surface.DrawOutlinedRect, draw.ShadowText, draw.LinearGradient
+local clr, rect, orect, stext, lgrad = surface.SetDrawColor, surface.DrawRect, surface.DrawOutlinedRect, drawShadowText, draw.LinearGradient
 local lp, X, Y, X2, Y2, ply, scale1, scale2, state, statecolor, dtint1, ktext, kcolor, FT, slot, blue, red, f1, f2, n, d1, d2, n1, n2
 local PTBL = {}
 
@@ -60,7 +60,7 @@ GM.ScoreboardColors = {
 local ttf = team.TotalFrags
 local sleft = string.Left
 
-local CW_HUD16 = "CW_HUD16"
+local ChatFont = "ChatFont"
 
 function GM:HUDDrawScoreBoard()
     if not self.ShowScoreboard then
@@ -85,26 +85,26 @@ function GM:HUDDrawScoreBoard()
     lgrad(X2 - 399, Y2 - 250, 398, 20, clrs.ColorBlue1, clrs.ColorBlue2, draw.VERTICAL)
     lgrad(X2 + 1, Y2 - 250, 398, 20, clrs.ColorRed1, clrs.ColorRed2, draw.VERTICAL)
     
-    draw.ShadowText("RED", CW_HUD16, X2 + 10, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
-    draw.ShadowText(ttf(TEAM_RED), CW_HUD16, X2 + 50, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
-    draw.ShadowText("K", CW_HUD16, X2 + 230, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-    draw.ShadowText("D", CW_HUD16, X2 + 260, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-    draw.ShadowText("SCORE", CW_HUD16, X2 + 310, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-    draw.ShadowText("PING", CW_HUD16, X2 + 370, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+    drawShadowText("RED", ChatFont, X2 + 10, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
+    drawShadowText(ttf(TEAM_RED), ChatFont, X2 + 50, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
+    drawShadowText("K", ChatFont, X2 + 230, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+    drawShadowText("D", ChatFont, X2 + 260, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+    drawShadowText("SCORE", ChatFont, X2 + 310, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+    drawShadowText("PING", ChatFont, X2 + 370, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
     
-    draw.ShadowText("BLUE", CW_HUD16, X2 - 390, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
-    draw.ShadowText(ttf(TEAM_BLUE), CW_HUD16, X2 - 340, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
-    draw.ShadowText("K", CW_HUD16, X2 - 170, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-    draw.ShadowText("D", CW_HUD16, X2 - 140, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-    draw.ShadowText("SCORE", CW_HUD16, X2 - 90, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-    draw.ShadowText("PING", CW_HUD16, X2 - 30, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+    drawShadowText("BLUE", ChatFont, X2 - 390, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
+    drawShadowText(ttf(TEAM_BLUE), ChatFont, X2 - 340, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
+    drawShadowText("K", ChatFont, X2 - 170, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+    drawShadowText("D", ChatFont, X2 - 140, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+    drawShadowText("SCORE", ChatFont, X2 - 90, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+    drawShadowText("PING", ChatFont, X2 - 30, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
     
     local myTeam = lp:Team()
     
     if myTeam == TEAM_RED then
-        draw.ShadowText("ALIVE: " .. (self.AlivePlayers[TEAM_BLUE] or 0), CW_HUD16, X2 - 255, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+        drawShadowText("ALIVE: " .. (self.AlivePlayers[TEAM_BLUE] or 0), ChatFont, X2 - 255, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
     elseif myTeam == TEAM_BLUE then
-        draw.ShadowText("ALIVE: " .. (self.AlivePlayers[TEAM_RED] or 0), CW_HUD16, X2 + 140, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+        drawShadowText("ALIVE: " .. (self.AlivePlayers[TEAM_RED] or 0), ChatFont, X2 + 140, Y2 - 240, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
     end
     
     for k, v in pairs(self:SortPlayers(TEAM_RED)) do
@@ -127,12 +127,12 @@ function GM:HUDDrawScoreBoard()
             clrs.ColorWhite.b = 150
         end
         
-        draw.ShadowText(k, CW_HUD16, X2 + 10, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
-        draw.ShadowText(#n <= 21 and n or sleft(n, 21) .. "...", CW_HUD16, X2 + 40, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
-        draw.ShadowText(v:Frags(), CW_HUD16, X2 + 230, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-        draw.ShadowText(v:Deaths(), CW_HUD16, X2 + 260, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-        draw.ShadowText(v:GetNWInt("GC_SCORE"), CW_HUD16, X2 + 310, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-        draw.ShadowText(v:Ping(), CW_HUD16, X2 + 370, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+        drawShadowText(k, ChatFont, X2 + 10, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
+        drawShadowText(#n <= 21 and n or sleft(n, 21) .. "...", ChatFont, X2 + 40, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
+        drawShadowText(v:Frags(), ChatFont, X2 + 230, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+        drawShadowText(v:Deaths(), ChatFont, X2 + 260, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+        drawShadowText(v:GetNWInt("GC_SCORE"), ChatFont, X2 + 310, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+        drawShadowText(v:Ping(), ChatFont, X2 + 370, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
         
         clrs.ColorWhite.r = 255
         clrs.ColorWhite.g = 255
@@ -159,13 +159,13 @@ function GM:HUDDrawScoreBoard()
             clrs.ColorWhite.b = 150
         end
         
-        draw.ShadowText(k, CW_HUD16, X2 - 390, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
+        drawShadowText(k, ChatFont, X2 - 390, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
         
-        draw.ShadowText(#n <= 21 and n or sleft(n, 21) .. "...", CW_HUD16, X2 + 40 - 400, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
-        draw.ShadowText(v:Frags(), CW_HUD16, X2 - 170, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-        draw.ShadowText(v:Deaths(), CW_HUD16, X2 - 140, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-        draw.ShadowText(v:GetNWInt("GC_SCORE"), CW_HUD16, X2 - 90, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
-        draw.ShadowText(v:Ping(), CW_HUD16, X2 - 30, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+        drawShadowText(#n <= 21 and n or sleft(n, 21) .. "...", ChatFont, X2 + 40 - 400, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER) 
+        drawShadowText(v:Frags(), ChatFont, X2 - 170, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+        drawShadowText(v:Deaths(), ChatFont, X2 - 140, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+        drawShadowText(v:GetNWInt("GC_SCORE"), ChatFont, X2 - 90, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
+        drawShadowText(v:Ping(), ChatFont, X2 - 30, Y2 - 239 + k * 21, clrs.ColorWhite, clrs.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER) 
         
         clrs.ColorWhite.r = 255
         clrs.ColorWhite.g = 255

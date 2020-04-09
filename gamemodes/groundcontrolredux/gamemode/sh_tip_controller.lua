@@ -30,7 +30,7 @@ GM.tipController.delayBetweenTips = 30
 GM.tipController.alpha = 0
 GM.tipController.displayTime = 0
 GM.tipController.displayText = ""
-GM.tipController.displayFont = "CW_HUD16"
+GM.tipController.displayFont = "ChatFont"
 
 GM.tipController.SAVE_DIRECTORY = "ground_control/shown_hints.txt"
 
@@ -115,7 +115,7 @@ if CLIENT then
             
             hudColors.white.a = 255 * self.alpha
             hudColors.black.a = 255 * self.alpha
-                draw.ShadowText(self.displayText, self.displayFont, w * 0.5 + 20, h * 0.5 + 80, hudColors.white, hudColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                drawShadowText(self.displayText, self.displayFont, w * 0.5 + 20, h * 0.5 + 80, hudColors.white, hudColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             hudColors.white.a = 255
             hudColors.black.a = 255
         end

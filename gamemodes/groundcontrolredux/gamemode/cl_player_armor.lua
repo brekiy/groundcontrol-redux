@@ -54,7 +54,7 @@ function GM:drawArmor(ply, baseX, baseY)
                 surface.SetTexture(data.armorData.icon)
                 surface.DrawTexturedRect(curPos, baseY - 45, 40, 40)
                 
-                draw.ShadowText(math.max(data.health, 0) .. "%", "CW_HUD14", curPos + spacing * 0.5 - 10, baseY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                drawShadowText(math.max(data.health, 0) .. "%", "ChatFont", curPos + spacing * 0.5 - 10, baseY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             end
             
             offset = offset + spacing

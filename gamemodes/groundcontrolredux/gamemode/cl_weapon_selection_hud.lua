@@ -107,7 +107,7 @@ function GM:drawWeaponSelection(w, h, curTime)
                     realWeapons[2] = weaponObj
                 elseif weaponObj.isTertiaryWeapon then -- tertiary
                     realWeapons[3] = weaponObj
-                elseif weaponObj.isKnife then
+                elseif weaponObj:GetClass() == GAMEMODE.KnifeWeaponClass then
                     realWeapons[4] = weaponObj
                 end
                 
@@ -156,16 +156,16 @@ function GM:drawWeaponSelection(w, h, curTime)
                 
                 local ammoCountColor = self.HUDColors.white
                 
-                if weaponObj:isLowOnTotalAmmo() then
-                    ammoCountColor = self.HUDColors.red
-                end
+                -- if weaponObj:isLowOnTotalAmmo() then
+                --     ammoCountColor = self.HUDColors.red
+                -- end
                 
                 if isTargetWeapon then
-                    draw.ShadowText(weaponObj.PrintName, "CW_HUD20", startW + 5, drawY + 57, self.HUDColors.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-                    draw.ShadowText("[" .. i .. "]", "CW_HUD20", self.weaponSelectionElementWidth + startW - 5, drawY + 57, self.HUDColors.white, backColor, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+                    drawShadowText(weaponObj.PrintName, "ChatFont", startW + 5, drawY + 57, self.HUDColors.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    drawShadowText("[" .. i .. "]", "ChatFont", self.weaponSelectionElementWidth + startW - 5, drawY + 57, self.HUDColors.white, backColor, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
                     
                     if weaponObj.IconLetter then
-                        draw.ShadowText(weaponObj.IconLetter, "GroundControl_SelectIcons", startW + 5, drawY + 5, self.HUDColors.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        drawShadowText(weaponObj.IconLetter, "GroundControl_SelectIcons", startW + 5, drawY + 5, self.HUDColors.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     elseif weaponObj.SelectIcon then
                         surface.SetDrawColor(0, 0, 0, 255 * self.weaponSelectionAlpha)
                         surface.SetTexture(weaponObj.SelectIcon)
@@ -175,16 +175,16 @@ function GM:drawWeaponSelection(w, h, curTime)
                         surface.DrawTexturedRect(startW + 4, drawY - 11, 80, 80)
                     end
                     
-                    if usesAmmo then
-                        draw.ShadowText(weaponObj:getMagCapacity() .. " / " .. weaponObj:getReserveAmmoText(), "CW_HUD20", startW + 5, drawY + 77, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-                    end
+                    -- if usesAmmo then
+                    --     drawShadowText(weaponObj:getMagCapacity() .. " / " .. weaponObj:getReserveAmmoText(), "ChatFont", startW + 5, drawY + 77, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    -- end
                 else
-                    draw.ShadowText(weaponObj.PrintName, "CW_HUD20", startW + 5, drawY + 3, self.HUDColors.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-                    draw.ShadowText("[" .. i .. "]", "CW_HUD20", self.weaponSelectionElementWidth + startW - 5, drawY + 3, self.HUDColors.white, backColor, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+                    drawShadowText(weaponObj.PrintName, "ChatFont", startW + 5, drawY + 3, self.HUDColors.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    drawShadowText("[" .. i .. "]", "ChatFont", self.weaponSelectionElementWidth + startW - 5, drawY + 3, self.HUDColors.white, backColor, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
                     
-                    if usesAmmo then
-                        draw.ShadowText(weaponObj:getMagCapacity() .. " / " .. weaponObj:getReserveAmmoText(), "CW_HUD20", startW + 5, drawY + 23, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-                    end
+                    -- if usesAmmo then
+                    --     drawShadowText(weaponObj:getMagCapacity() .. " / " .. weaponObj:getReserveAmmoText(), "ChatFont", startW + 5, drawY + 23, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    -- end
                 end
             end
         end

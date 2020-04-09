@@ -110,29 +110,30 @@ function GM:getFreeSlotCount()
 end
 
 function GM:registerAttachment(data)
-    local attData = CustomizableWeaponry.registeredAttachmentsSKey[data.attachmentName]
+    -- local attData = CustomizableWeaponry.registeredAttachmentsSKey[data.attachmentName]
+    attData = {}
     attData.price = data.price
     attData.unlockedByDefault = data.unlockedByDefault
 end
 
 function GM:setAttachmentPrice(attachmentName, desiredPrice)
-    CustomizableWeaponry.registeredAttachmentsSKey[data.attachmentName].price = desiredPrice
+    -- CustomizableWeaponry.registeredAttachmentsSKey[data.attachmentName].price = desiredPrice
 end
 
-for key, value in pairs(CustomizableWeaponry.registeredAttachmentsSKey) do -- iterate over the attachments
-    if value.price == nil then -- check which ones don't have a price set on them, and set the default price (specifically a nil check, since if the price is 'false', it'll still get set to DefaultAttachmentPrice)
-        value.price = GM.DefaultAttachmentPrice
-    end
-end
+-- for key, value in pairs(CustomizableWeaponry.registeredAttachmentsSKey) do -- iterate over the attachments
+--     if value.price == nil then -- check which ones don't have a price set on them, and set the default price (specifically a nil check, since if the price is 'false', it'll still get set to DefaultAttachmentPrice)
+--         value.price = GM.DefaultAttachmentPrice
+--     end
+-- end
 
 for attName, price in pairs(GM.attachmentPrices) do
-    CustomizableWeaponry.registeredAttachmentsSKey[attName].price = price
+    -- CustomizableWeaponry.registeredAttachmentsSKey[attName].price = price
 end
 
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:hasUnlockedAttachment(attachmentName)
-    local attData = CustomizableWeaponry.registeredAttachmentsSKey[attachmentName]
+    -- local attData = CustomizableWeaponry.registeredAttachmentsSKey[attachmentName]
     
     if not attData then
         return false

@@ -128,10 +128,10 @@ function GM:drawRadioDisplay(frameTime)
             surface.DrawRect(50, basePos, 235, categoryCount * 20)
             
             for key, data in ipairs(self.VisibleRadioCommands) do
-                draw.ShadowText(key .. ". " .. data.display, "CW_HUD16", 55, basePos + key * 20 - 10, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                drawShadowText(key .. ". " .. data.display, "ChatFont", 55, basePos + key * 20 - 10, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
             
-            draw.ShadowText(self:getKeyBind("+attack2") .. " - close radio", "CW_HUD16", 55, basePos + categoryCount * 20 - 10, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            drawShadowText(self:getKeyBind("+attack2") .. " - close radio", "ChatFont", 55, basePos + categoryCount * 20 - 10, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         else
             local category = self.RadioCommands[self.RadioSelection.selectedCategory]
             local commandCount = #category.commands + 1
@@ -147,10 +147,10 @@ function GM:drawRadioDisplay(frameTime)
                     color = self.HUDColors.green
                 end
                 
-                draw.ShadowText(key .. ". " .. data.menuText, "CW_HUD16", 55, basePos + key * 20 - 10, color, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                drawShadowText(key .. ". " .. data.menuText, "ChatFont", 55, basePos + key * 20 - 10, color, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
             
-            draw.ShadowText(self:getKeyBind("+attack2") .. " - go back", "CW_HUD16", 55, basePos + commandCount * 20 - 10, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            drawShadowText(self:getKeyBind("+attack2") .. " - go back", "ChatFont", 55, basePos + commandCount * 20 - 10, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
         
         self.HUDColors.white.a, self.HUDColors.black.a, self.HUDColors.green.a = 255, 255, 255
