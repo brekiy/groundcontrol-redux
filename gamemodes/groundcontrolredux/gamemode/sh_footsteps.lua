@@ -204,8 +204,8 @@ if CLIENT then
             return
         end
         
-        local loudnessID = net.ReadShort()
-        local materialID = net.ReadShort()        
+        local loudnessID = net.ReadInt(16)
+        local materialID = net.ReadInt(16)        
         
         GAMEMODE:playFootstepSound(object, loudnessID, materialID)
     end)

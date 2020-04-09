@@ -1,5 +1,6 @@
 AddCSLuaFile()
 
+-- maybe in the future i'll decompile this and remove the scope from the model
 -- 0	lo_Circle0
 -- 1	lo_body002
 -- 2	Object001
@@ -14,7 +15,7 @@ CustomizableWeaponry:registerAmmo(".338 Lapua", ".338 Lapua", 8.58, 69.20)
 
 if CLIENT then
 	SWEP.DrawCrosshair = false
-	SWEP.PrintName = "GC L115"
+	SWEP.PrintName = "L115"
 	SWEP.CSMuzzleFlashes = true
 	SWEP.ViewModelMovementScale = 1.15
 	
@@ -80,7 +81,7 @@ if CLIENT then
 	SWEP.AttachmentModelsVM = {
         ["md_aimpoint"] = {model = "models/wystan/attachments/aimpoint.mdl", bone = "lo_body002",  pos = Vector(-0.281, -4.3, -2.086), adjustment = {min = -4.3, max = -2.8, axis = "y", inverseOffsetCalc = true}, angle = Angle(0, 0, 0), size = Vector(1, 1, 1)},
         ["md_eotech"] = {model = "models/wystan/attachments/2otech557sight.mdl", bone = "lo_body002", pos = Vector(0.238, -9.2, -7.223), adjustment = {min = -9.2, max = -7.6, axis = "y", inverseOffsetCalc = true}, angle = Angle(0, -90, 0), size = Vector(1, 1, 1)},
-        ["md_saker"] = {model = "models/cw2/attachments/556suppressor.mdl", bone = "lo_body002", pos = Vector(0, 9.1, -0.8), angle = Angle(0, 0, 0), size = Vector(1, 1, 1)},
+        ["md_saker"] = {model = "models/cw2/attachments/556suppressor.mdl", bone = "lo_body002", pos = Vector(0, 4.4, -1.5), angle = Angle(0, 0, 0), size = Vector(1, 1, 1)},
         ["md_microt1"] = {model = "models/cw2/attachments/microt1.mdl", bone = "lo_body002", pos = Vector(-0.027, 1.25, 2.634), adjustment = {min = 1.25, max = 3.6, axis = "y", inverseOffsetCalc = true}, angle = Angle(0, 180, 0), size = Vector(0.4, 0.4, 0.4)},
         ["md_acog"] = {model = "models/wystan/attachments/2cog.mdl", bone = "lo_body002", pos = Vector(-0.401, -3.291, -2.22), angle = Angle(0, 0, 0), size = Vector(1, 1, 1)},
         ["md_schmidt_shortdot"] = {model = "models/cw2/attachments/schmidt.mdl", bone = "lo_body002", pos = Vector(-0.35, -2.554, -1.627), angle = Angle(0, -90, 0), size = Vector(0.899, 0.899, 0.899)}
@@ -89,8 +90,12 @@ end
 
 SWEP.MuzzleVelocity = 936 -- in meter/s
 
-SWEP.Attachments = {[1] = {header = "Sight", offset = {800, -500}, atts = {"bg_foldsight", "md_microt1", "md_eotech", "md_aimpoint", "md_schmidt_shortdot", "md_acog"}},
-    [2] = {header = "Barrel", offset = {300, -500}, atts = {"md_saker"}},
+-- SWEP.Attachments = {[1] = {header = "Sight", offset = {800, -500}, atts = {"bg_foldsight", "md_microt1", "md_eotech", "md_aimpoint", "md_schmidt_shortdot", "md_acog"}},
+--     [2] = {header = "Barrel", offset = {300, -500}, atts = {"md_saker"}},
+--     ["+reload"] = {header = "Ammo", offset = {800, 0}, atts = {"am_magnum", "am_matchgrade"}}}
+
+SWEP.Attachments = {
+    [1] = {header = "Barrel", offset = {300, -500}, atts = {"md_saker"}},
     ["+reload"] = {header = "Ammo", offset = {800, 0}, atts = {"am_magnum", "am_matchgrade"}}}
 
 SWEP.SightBGs = {main = 2, foldsight = 1, none = 0}
@@ -258,4 +263,32 @@ if CLIENT then
 			self.TSGlass:SetTexture("$basetexture", self.ScopeRT)
 		end
 	end
+end
+
+function SWEP:AdjustMouseSensitivity()
+    local sensitivity = 1
+    local mod = math.Clamp(self.OverallMouseSens, 0.1, 1) -- not lower than 10% and not higher than 100% (in case someone uses atts that increase handling)
+    local freeAimMod = 1
+    
+    if self.freeAimOn and not self.dt.BipodDeployed then
+        local dist = math.abs(self:getFreeAimDotToCenter())
+        
+        local mouseImpendance = GetConVarNumber("cw_freeaim_center_mouse_impendance")
+        freeAimMod = 1 - (mouseImpendance - mouseImpendance * dist)
+    end
+    
+    if self.dt.State == CW_RUNNING then
+        if self.RunMouseSensMod then
+            return self.RunMouseSensMod * mod
+        end
+    end
+    
+    if self.dt.State == CW_AIMING then
+        sensitivity = math.Clamp(sensitivity - self.ZoomAmount / 100, 0.1, 1) 
+    end
+    
+    sensitivity = sensitivity * mod
+    sensitivity = sensitivity * freeAimMod
+    
+    return sensitivity --1 * self.OverallMouseSens
 end

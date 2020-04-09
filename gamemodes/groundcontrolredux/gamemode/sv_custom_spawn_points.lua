@@ -73,3 +73,17 @@ GM:registerStartingPoint("nt_isolation", TEAM_BLUE, Vector(1121.047, 2390.863, 2
 GM:registerStartingPoint("nt_isolation", TEAM_BLUE, Vector(950.595, 2417.172, 224.031), Angle(15.097, -140.573, 0), "all")
 GM:registerStartingPoint("nt_isolation", TEAM_BLUE, Vector(757.248, 2501.082, 208.690), Angle(15.097, -140.573, 0), "all")
 GM:registerStartingPoint("nt_isolation", TEAM_BLUE, Vector(626.997, 2646.809, 185.323), Angle(15.097, -140.573, 0), "all")
+
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_RED, Vector(-492.385101, 296.429291, 30.031250), Angle(0, 0, 0), "ghettodrugbust")
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_RED, Vector(-332.031250, 301.012726, 30.031250), Angle(0, 0, 0), "ghettodrugbust")
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_RED, Vector(-426.483612, 303.694519, 30.031250), Angle(0, 0, 0), "ghettodrugbust")
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_RED, Vector(-336.708435, 414.968750, 30.031250), Angle(0, 0, 0), "ghettodrugbust")
+ 
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(524.110779, -13.729248, 30.031250), Angle(0, -180, 0), "ghettodrugbust")
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(-64.379730, -19.504768, 30.031250), Angle(0, -180, 0), "ghettodrugbust")
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(679.060852, 52.632523, 204.03125), Angle(0, 180, 0), "ghettodrugbust")
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(114.275032, 92.612358, 204.031250), Angle(0, 0, 0), "ghettodrugbust")
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(98.0934753, 647.548035, 164.031250), Angle(0, 0, 0), "ghettodrugbust")
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(967.719849, 523.605042, 166.031250), Angle(0, -180, 0), "ghettodrugbust")
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(896.461548, 646.612915, 314.0312503), Angle(0, 180, 0), "ghettodrugbust")
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(326.047882, 382.250549, 554.031250), Angle(0, 0, 0), "ghettodrugbust")

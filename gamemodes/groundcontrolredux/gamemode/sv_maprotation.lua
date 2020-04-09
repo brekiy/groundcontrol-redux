@@ -33,10 +33,8 @@ function GM:hasMap(mapName)
     return file.Exists("maps/" .. mapName .. ".bsp", "GAME")
 end
 
+-- GM:registerMapRotation("one_side_rush", {"de_dust", "de_dust2", "cs_assault", "cs_compound", "cs_havana", "de_cbble", "de_inferno", "de_nuke", "de_port", "de_tides", "de_aztec", "de_chateau", "de_piranesi", "de_prodigy", "de_train", "de_secretcamp", "nt_isolation", "cs_jungle", "cs_siege_2010", "gc_outpost", "de_desert_atrocity_v3", "gc_depot_b2"})
 GM:registerMapRotation("one_side_rush", {"de_dust", "de_dust2", "cs_assault", "cs_compound", "cs_havana", "de_cbble", "de_inferno", "de_nuke", "de_port", "de_tides", "de_aztec", "de_chateau", "de_piranesi", "de_prodigy", "de_train", "de_secretcamp", "nt_isolation"})
-
-GM:registerMapRotation("ghetto_drug_bust_maps", {"cs_assault", "cs_compound", "cs_havana", "cs_militia", "cs_italy", "de_chateau", "de_inferno", "de_shanty_v3_fix"})
-
+GM:registerMapRotation("ghetto_drug_bust_maps", {"cs_assault", "cs_compound", "cs_havana", "cs_militia", "cs_italy", "de_chateau", "de_inferno", "de_shanty_v3_fix", "gm_blackbrook_asylum"})
 GM:registerMapRotation("assault_maps", {"cs_jungle", "cs_siege_2010", "gc_outpost", "de_desert_atrocity_v3", "gc_depot_b2", "nt_isolation"}) -- "rp_downtown_v2"
-
 GM:registerMapRotation("urbanwarfare_maps", {"ph_skyscraper_construct", "de_desert_atrocity_v3", "nt_isolation"})
