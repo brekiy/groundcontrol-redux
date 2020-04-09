@@ -644,10 +644,14 @@ function PLAYER:setSpawnPoint(vec)
             return
         end
         
-        umsg.Start("GC_LOADOUTPOSITION", self)
-            umsg.Vector(vec)
-            umsg.Float(GAMEMODE.LoadoutSelectTime)
-        umsg.End()
+        -- umsg.Start("GC_LOADOUTPOSITION", self)
+        --     umsg.Vector(vec)
+        --     umsg.Float(GAMEMODE.LoadoutSelectTime)
+        -- umsg.End()
+        net.Start("GC_LOADOUTPOSITION")
+        net.WriteVector(vec)
+        net.WriteFloat(GAMEMODE.LoadoutSelectTime)
+        net.Send(self)
     end
 end
 
