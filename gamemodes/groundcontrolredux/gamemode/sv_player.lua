@@ -205,6 +205,7 @@ end
 function GM:DoPlayerDeath(ply, attacker, dmgInfo)
     ply:dropWeaponNicely(nil, VectorRand() * 20, VectorRand() * 200)
     ply:abortClimb()
+    ply:EmitSound("GC_DEATH_SOUND")
     
     if IsValid(attacker) and attacker:IsPlayer() then
         if attacker:Team() ~= ply:Team() then

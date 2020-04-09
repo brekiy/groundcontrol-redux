@@ -66,7 +66,6 @@ CreateConVar("gc_force_pip_scopes", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLI
 CreateConVar("gc_force_free_aim", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "0/1 to turn on/off free-aim hipfire for everyone", 0, 1)
 CreateConVar("gc_damage_multiplier", 1.55, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "bullet damage multiplier")
 CreateConVar("gc_base_run_speed", 280, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base run speed in hammer units, for context csgo is 250 with the knife out", 100)
--- CreateConVar("gc_physical_bullets", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 
 include("sh_sounds.lua")
 
@@ -76,7 +75,6 @@ CustomizableWeaponry.customizationEnabled = true
 CustomizableWeaponry.useAttachmentPossessionSystem = true
 CustomizableWeaponry.playSoundsOnInteract = true
 CustomizableWeaponry.physicalBulletsEnabled = false -- physical bullets for cw 2.0, unfortunately 
--- CustomizableWeaponry.physicalBulletsEnabled = GetConVarNumber("gc_physical_bullets") > 0 -- physical bullets for cw 2.0, unfortunately 
 CustomizableWeaponry.suppressOnSpawnAttachments = true
 -- Override this from the weapon base to toss our special ground control frag grenade
 function CustomizableWeaponry.quickGrenade:createThrownGrenade(player)
