@@ -322,7 +322,7 @@ function GM:postInitEntity()
 
     -- Disabled by default since it literally adds nothing over the base one.
     -- local mp5a4 = {}
-    -- mp5a4.weaponClass = "khr_mp5a4a4"
+    -- mp5a4.weaponClass = "khr_mp5a4"
     -- mp5a4.weight = 2.5
     -- mp5a4.penetration = 9
    
@@ -330,7 +330,7 @@ function GM:postInitEntity()
    
     -- Fires .22LR for some ungodly reason. Can be here as a meme I guess
     local mp5a5 = {
-        weaponClass = "khr_mp5a5a5",
+        weaponClass = "khr_mp5a5",
         weight = 2.5,
         penetration = 4
     }
