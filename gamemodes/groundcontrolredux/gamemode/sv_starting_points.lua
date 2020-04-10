@@ -7,7 +7,6 @@ GM.TeamRedFallbackSpawnPoints = {"info_player_counterterrorist", "info_player_re
 GM.TeamBlueFallbackSpawnPoints = {"info_player_terrorist", "info_player_combine"}
 
 local zeroAngles = Angle(0, 0, 0)
-
 function GM:registerStartingPoint(map, team, position, viewAngles, gametype)
     self.StartingPoints[map] = self.StartingPoints[map] or {}
     self.StartingPoints[map][team] = self.StartingPoints[map][team] or {}
@@ -156,7 +155,7 @@ function GM:pickValidStartingPoint(ply)
         self.LastPickedStartPoint[team] = 0
         return self:pickValidStartingPoint(ply)
     end
-    
+
     -- nothing was returned - means all points are used up, so reset their used up state, and recursively try to pick a valid start point again
     self:resetStartPointUseState(team)
     return self:pickValidStartingPoint(ply)

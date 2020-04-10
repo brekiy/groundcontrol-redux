@@ -4,8 +4,6 @@ GM.BleedTime = 5 -- we will lose BleedHealthLose health points this amount of se
 GM.BleedHealthLose = 1 -- how much health should we lose per bleed tick
 GM.BandageTime = 2.3
 
--- CreateConVar("gc_bleed_time", 5, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "time in seconds between each bleed tick", 0.5)
--- CreateConVar("gc_bleed_hp_lost_per_tick", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "health lost per bleed tick")
 
 local PLAYER = FindMetaTable("Player")
 
