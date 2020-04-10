@@ -78,12 +78,12 @@ GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_RED, Vector(-492.385101, 2
 GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_RED, Vector(-332.031250, 301.012726, 30.031250), Angle(0, 0, 0), "ghettodrugbust")
 GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_RED, Vector(-426.483612, 303.694519, 30.031250), Angle(0, 0, 0), "ghettodrugbust")
 GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_RED, Vector(-336.708435, 414.968750, 30.031250), Angle(0, 0, 0), "ghettodrugbust")
- 
+
 GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(524.110779, -13.729248, 30.031250), Angle(0, -180, 0), "ghettodrugbust")
 GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(-64.379730, -19.504768, 30.031250), Angle(0, -180, 0), "ghettodrugbust")
 GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(679.060852, 52.632523, 204.03125), Angle(0, 180, 0), "ghettodrugbust")
 GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(114.275032, 92.612358, 204.031250), Angle(0, 0, 0), "ghettodrugbust")
 GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(98.0934753, 647.548035, 164.031250), Angle(0, 0, 0), "ghettodrugbust")
 GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(967.719849, 523.605042, 166.031250), Angle(0, -180, 0), "ghettodrugbust")
-GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(896.461548, 646.612915, 314.0312503), Angle(0, 180, 0), "ghettodrugbust")
+GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(879.92279, 652.6461, 280.03), Angle(0, 180, 0), "ghettodrugbust")
 GM:registerStartingPoint("gm_blackbrook_asylum", TEAM_BLUE, Vector(326.047882, 382.250549, 554.031250), Angle(0, 0, 0), "ghettodrugbust")
