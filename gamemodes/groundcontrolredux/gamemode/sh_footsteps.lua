@@ -166,7 +166,9 @@ function GM:PlayerFootstep(ply, position, foot, sound, volume, filter)
     if CLIENT and ply ~= LocalPlayer() then
         return true
     end
-    local materialID = (self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound]) ? self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound] : MAT_CONCRETE
+    local materialID = MAT_CONCRETE
+    if self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound] ~= nil then materialID = self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound]
+    else end
     local loudnessID, noiseLevel = self:getLoudnessLevel(ply)
     self:playFootstepSound(ply, loudnessID, materialID)
     
@@ -202,8 +204,8 @@ if CLIENT then
             return
         end
         
-        local loudnessID = net.ReadShort()
-        local materialID = net.ReadShort()        
+        local loudnessID = net.ReadInt(16)
+        local materialID = net.ReadInt(16)        
         
         GAMEMODE:playFootstepSound(object, loudnessID, materialID)
     end)

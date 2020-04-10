@@ -205,6 +205,7 @@ end
 function GM:DoPlayerDeath(ply, attacker, dmgInfo)
     ply:dropWeaponNicely(nil, VectorRand() * 20, VectorRand() * 200)
     ply:abortClimb()
+    ply:EmitSound("GC_DEATH_SOUND")
     
     if IsValid(attacker) and attacker:IsPlayer() then
         if attacker:Team() ~= ply:Team() then
@@ -643,11 +644,11 @@ function PLAYER:setSpawnPoint(vec)
         if GAMEMODE.curGametype.canReceiveLoadout and not GAMEMODE.curGametype:canReceiveLoadout(self) then
             return
         end
-        
-        umsg.Start("GC_LOADOUTPOSITION", self)
-            umsg.Vector(vec)
-            umsg.Float(GAMEMODE.LoadoutSelectTime)
-        umsg.End()
+
+        net.Start("GC_LOADOUTPOSITION")
+        net.WriteVector(vec)
+        net.WriteFloat(GAMEMODE.LoadoutSelectTime)
+        net.Send(self)
     end
 end
 
