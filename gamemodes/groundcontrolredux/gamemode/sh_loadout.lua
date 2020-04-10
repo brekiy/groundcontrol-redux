@@ -165,7 +165,7 @@ end
 function GM:postInitEntity()
     -- battle rifles
     local g3a3 = {
-        weaponClass = "cw_g3a3", -- gc_cw_g3a3
+        weaponClass = "cw_g3a3",
         weight = 4.1,
         penetration = 18
     }
@@ -208,14 +208,14 @@ function GM:postInitEntity()
     
     -- assault rifles
     local ak74 = {
-        weaponClass = "cw_ak74", -- gc_cw_ak74
+        weaponClass = "cw_ak74",
         weight = 3.07,
         penetration = 16
     }
     self:registerPrimaryWeapon(ak74)
 
     local ar15 = {
-        weaponClass = "cw_ar15", -- gc_cw_ar15
+        weaponClass = "cw_ar15",
         weight = 2.88,
         penetration = 16
     }
@@ -262,10 +262,17 @@ function GM:postInitEntity()
         penetration = 17
     }
     self:registerPrimaryWeapon(cz858)
+
+    local m4a4 = {
+        weaponClass = "khr_m4a4",
+        weight = 2.88,
+        penetration = 16
+    }
+    self:registerPrimaryWeapon(m4a4)
     
     -- sub-machine guns
     local mp5 = {
-        weaponClass = "cw_mp5", -- gc_cw_mp5
+        weaponClass = "cw_mp5",
         weight = 2.5,
         penetration = 9
     }
@@ -315,7 +322,7 @@ function GM:postInitEntity()
 
     -- Disabled by default since it literally adds nothing over the base one.
     -- local mp5a4 = {}
-    -- mp5a4.weaponClass = "khr_mp5a4a4"
+    -- mp5a4.weaponClass = "khr_mp5a4"
     -- mp5a4.weight = 2.5
     -- mp5a4.penetration = 9
    
@@ -323,7 +330,7 @@ function GM:postInitEntity()
    
     -- Fires .22LR for some ungodly reason. Can be here as a meme I guess
     local mp5a5 = {
-        weaponClass = "khr_mp5a5a5",
+        weaponClass = "khr_mp5a5",
         weight = 2.5,
         penetration = 4
     }
