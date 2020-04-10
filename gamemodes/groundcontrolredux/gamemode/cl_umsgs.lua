@@ -210,16 +210,6 @@ end
 
 usermessage.Hook("GC_RESET_STATUS_EFFECTS", GC_ResetStatusEffects)
 
--- receives loadout position and duration
--- local function GC_LoadoutPosition(um)
---     local vector = um:ReadVector()
---     local duration = um:ReadFloat()
-    
---     GAMEMODE:setLoadoutAvailabilityInfo(vector, duration)
--- end
-
--- usermessage.Hook("GC_LOADOUTPOSITION", GC_LoadoutPosition)
-
 net.Receive("GC_LOADOUTPOSITION", function()
     local vector = net.ReadVector()
     local duration = net.ReadFloat()
