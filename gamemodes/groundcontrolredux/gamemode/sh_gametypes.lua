@@ -220,6 +220,7 @@ function oneSideRush:roundStart()
     if SERVER then
         if not self.swappedTeams then
             if GAMEMODE.RoundsPlayed >= GAMEMODE.RoundsPerMap * 0.5 then
+            -- if GAMEMODE.RoundsPlayed >= GetConVar("gc_rounds_per_map"):GetInt() * 0.5 then
                 GAMEMODE:swapTeams(self.attackerTeam, self.defenderTeam, oneSideRush.teamSwapCallback, oneSideRush.teamSwapCallback)
                 self.swappedTeams = true
             end
