@@ -105,7 +105,7 @@ dyneemaVest.protection = 10
 dyneemaVest.protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true}
 dyneemaVest.protectionDeltaToDamageDecrease = 0.01
 dyneemaVest.damageDecrease = 0.25
-dyneemaVest.damageDecreasePenetration = 0.1
+dyneemaVest.damageDecreasePenetration = 0.125
 dyneemaVest.icon = "ground_control/hud/armor/aa_dyneema_vest"
 dyneemaVest.description = "Soft vest. Provides type II protection against projectiles."
 
@@ -166,7 +166,7 @@ steelHelmet.displayName = "Steel Helmet"
 steelHelmet.weight = 1.5
 steelHelmet.protection = 6
 steelHelmet.protectionAreas = {[HITGROUP_HEAD] = true}
-steelHelmet.damageDecrease = 0.25
+steelHelmet.damageDecrease = 0.3
 steelHelmet.protectionDeltaToDamageDecrease = 0.015
 steelHelmet.damageDecreasePenetration = 0.15
 steelHelmet.icon = "ground_control/hud/armor/aa_steel_helmet"
@@ -193,8 +193,8 @@ local altynHelmet = {}
 altynHelmet.category = "helmet"
 altynHelmet.id = "altyn_helmet"
 altynHelmet.displayName = "Altyn Helmet"
-altynHelmet.weight = 2.5
-altynHelmet.protection = 17
+altynHelmet.weight = 3
+altynHelmet.protection = 16
 altynHelmet.protectionAreas = {[HITGROUP_HEAD] = true}
 altynHelmet.damageDecrease = 0.5
 altynHelmet.protectionDeltaToDamageDecrease = 0.03
