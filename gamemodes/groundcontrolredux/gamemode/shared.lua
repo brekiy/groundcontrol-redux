@@ -1,11 +1,11 @@
-GM.Version = "1.09"
+GM.Version = "1.02"
 
-GM.Name     = "Ground Control " .. GM.Version
+GM.Name     = "Ground Control Redux" .. GM.Version
 GM.Author     = "brekiy"
 GM.Email     = "N/A"
 GM.Website     = "N/A"
 
-GM.MainDataDirectory = "ground_control"
+GM.MainDataDirectory = "ground_control" -- I'd like to change this but this would wipe server progress
 
 GM.BaseRunSpeed = 280
 GM.BaseWalkSpeed = 130
@@ -20,8 +20,8 @@ GM.PreparationTime = 0
 GM.StaminaPerJump = 5
 GM.StaminaPerJumpBaselineNoWeightPenalty = 5 -- if our weight does not exceed this much we don't get an extra stamina drain penalty from jumping
 GM.StaminaPerJumpWeightIncrease = 0.8 -- per each kilogram we will drain this much extra stamina when our weight exceeds StaminaPerJumpBaselineNoWeightPenalty
-GM.NotOnGroundRecoilMultiplier = 6
-GM.NotOnGroundSpreadMultiplier = 16
+GM.NotOnGroundRecoilMultiplier = 1.5
+GM.NotOnGroundSpreadMultiplier = 4
 GM.JumpStaminaRegenDelay = 1
 GM.DamageMultiplier = 1.55 -- multiplier for the damage when we shot an enemy
 GM.MaxHealth = 100

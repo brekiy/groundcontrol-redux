@@ -35,7 +35,7 @@ function GM:removeTrashProps(entList)
     for k, v in pairs(entList) do
         local phys = v:GetPhysicsObject()
         
-        if phys and phys:GetMass() <= self.TrashPropMaxWeight then
+        if IsValid(phys) and phys:GetMass() <= self.TrashPropMaxWeight then
             SafeRemoveEntity(v)
         end
     end
@@ -99,7 +99,7 @@ function GM:checkRoundOverPossibility(teamId, ignoreDisplay)
 
 function GM:canRestartRound()
     if GetConVarNumber("gc_randomly_pick_gametype_and_map") >= 1 then
-        return  self.RoundsPlayed < self.RoundsPerMap - 1
+        return self.RoundsPlayed < self.RoundsPerMap - 1
     end
     
     return true
