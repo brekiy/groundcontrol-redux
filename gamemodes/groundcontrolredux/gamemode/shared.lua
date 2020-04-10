@@ -293,6 +293,48 @@ hook.Add("CW20HasAttachment", "GroundControl.CW20HasAttachment", function(ply, a
     return ply:hasUnlockedAttachment(attachmentID)
 end)
 
+hook.Add("AdjustMouseSensitivity", "GCR OverrideAimSens", function(wpnSens)
+    -- This code was taken straight from the base - override it to stop scopes and attachments from slowing your sens to a crawl
+    local ply = LocalPlayer()
+    if ply and ply:Alive() then
+        local plyWep = ply:GetActiveWeapon()
+        local plyWepTable = plyWep:GetTable()
+        if plyWep and plyWepTable then
+            local sensitivity = 1
+            local mod = math.Clamp(plyWepTable.OverallMouseSens or 1, 0.1, 1) -- not lower than 50% and not higher than 100% (in case someone uses atts that increase handling)
+            local freeAimMod = 1
+
+            if plyWep.freeAimOn and not plyWep.dt.BipodDeployed then
+                local dist = math.abs(plyWep:getFreeAimDotToCenter())
+                
+                local mouseImpendance = GetConVarNumber("cw_freeaim_center_mouse_impendance")
+                freeAimMod = 1 - (mouseImpendance - mouseImpendance * dist)
+            end
+            
+            if plyWep.dt and plyWep.dt.State == CW_RUNNING then
+                if plyWepTable.RunMouseSensMod then
+                    return plyWepTable.RunMouseSensMod * mod
+                end
+            end
+            
+            if plyWep.dt and plyWep.dt.State == CW_AIMING then
+                -- if we're aiming and our aiming position is that of the sight we have installed - decrease our mouse sensitivity
+                if (plyWepTable.OverrideAimMouseSens and plyWepTable.AimPos == plyWepTable.ActualSightPos) and 
+                (plyWep.dt.M203Active and CustomizableWeaponry.grenadeTypes:canUseProperSights(plyWepTable.Grenade40MM) or not plyWep.dt.M203Active) then
+                    sensitivity = plyWepTable.OverrideAimMouseSens
+                end
+
+                sensitivity = math.Clamp(sensitivity - plyWepTable.ZoomAmount / 100, 0.1, 1) 
+            end
+            
+            sensitivity = sensitivity * mod
+            sensitivity = sensitivity * freeAimMod
+            sensitivity = math.Clamp(sensitivity, 0.35, 1)
+            return sensitivity
+        end
+    end
+end)
+
 if SERVER then
     CustomizableWeaponry.callbacks:addNew("finalizePhysicalBullet", "GroundControl_finalizePhysicalBullet", function(self, bulletStruct)
         bulletStruct.penetrationValue = self.penetrationValue
