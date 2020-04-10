@@ -644,11 +644,7 @@ function PLAYER:setSpawnPoint(vec)
         if GAMEMODE.curGametype.canReceiveLoadout and not GAMEMODE.curGametype:canReceiveLoadout(self) then
             return
         end
-        
-        -- umsg.Start("GC_LOADOUTPOSITION", self)
-        --     umsg.Vector(vec)
-        --     umsg.Float(GAMEMODE.LoadoutSelectTime)
-        -- umsg.End()
+
         net.Start("GC_LOADOUTPOSITION")
         net.WriteVector(vec)
         net.WriteFloat(GAMEMODE.LoadoutSelectTime)
