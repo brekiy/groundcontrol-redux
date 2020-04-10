@@ -264,31 +264,3 @@ if CLIENT then
 		end
 	end
 end
-
-function SWEP:AdjustMouseSensitivity()
-    local sensitivity = 1
-    local mod = math.Clamp(self.OverallMouseSens, 0.1, 1) -- not lower than 10% and not higher than 100% (in case someone uses atts that increase handling)
-    local freeAimMod = 1
-    
-    if self.freeAimOn and not self.dt.BipodDeployed then
-        local dist = math.abs(self:getFreeAimDotToCenter())
-        
-        local mouseImpendance = GetConVarNumber("cw_freeaim_center_mouse_impendance")
-        freeAimMod = 1 - (mouseImpendance - mouseImpendance * dist)
-    end
-    
-    if self.dt.State == CW_RUNNING then
-        if self.RunMouseSensMod then
-            return self.RunMouseSensMod * mod
-        end
-    end
-    
-    if self.dt.State == CW_AIMING then
-        sensitivity = math.Clamp(sensitivity - self.ZoomAmount / 100, 0.1, 1) 
-    end
-    
-    sensitivity = sensitivity * mod
-    sensitivity = sensitivity * freeAimMod
-    
-    return sensitivity --1 * self.OverallMouseSens
-end
