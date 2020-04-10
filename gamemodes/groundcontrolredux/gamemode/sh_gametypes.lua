@@ -680,6 +680,31 @@ if SERVER then
             }
         }
     }
+
+    GM.StartingPoints.dm_zavod_yantar = {
+        [TEAM_RED] = {
+            urbanwarfare = {
+                {position = Vector(1614.767822, -1474.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
+                {position = Vector(1614.767822, -1374.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
+                {position = Vector(1614.767822, -1274.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
+                {position = Vector(1514.767822, -1474.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
+                {position = Vector(1514.767822, -1374.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
+                {position = Vector(1514.767822, -1274.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
+            }
+        },
+            
+        [TEAM_BLUE] = {
+            urbanwarfare = {
+                {position = Vector(-2799.968750, -1740.101318, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
+                {position = Vector(-2799.968750, -1814.330933, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
+                {position = Vector(-2699.968750, -1740.101318, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
+                {position = Vector(-2699.968750, -1814.330933, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
+                {position = Vector(-2599.968750, -1740.101318, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
+                {position = Vector(-2599.968750, -1814.330933, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
+
+            }
+        }
+    }
 end
 
 function urbanwarfare:assignPointID(point)
@@ -839,6 +864,7 @@ GM:addObjectivePositionToGametype("urbanwarfare", "de_desert_atrocity_v3", Vecto
 
 GM:addObjectivePositionToGametype("urbanwarfare", "nt_isolation", Vector(-586.738, -859.093, 411.031), "gc_urban_warfare_capture_point", {capMin = Vector(-44.464, -417.267, 286.639), capMax = Vector(-1025.326, -1111.352, 328.549)})
 
+GM:addObjectivePositionToGametype("urbanwarfare", "dm_zavod_yantar", Vector(-397.236969, 1539.315308, 743.031250), "gc_urban_warfare_capture_point", {capMin = Vector(172.090851, 1113.220947, 543.680664), capMax = Vector(-992.968750, 2007.968750, 1003.031250)})
 
 local ghettoDrugBust = {}
 ghettoDrugBust.name = "ghettodrugbust"
