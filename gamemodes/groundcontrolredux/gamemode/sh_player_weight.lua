@@ -1,7 +1,7 @@
 AddCSLuaFile()
 
 -- weight is in kilograms
-GM.MaxWeight = 25
+GM.MaxWeight = 30
 -- our stamina will drain this much faster when our weight is at max (40% faster at 20kg, 20% faster at 10kg, etc.)
 GM.SprintStaminaDrainWeightIncrease = 0.4
 -- threshold at which runspeed starts to get affected by weight carried
@@ -11,7 +11,7 @@ GM.MaxSpeedDecrease = 0.05
 -- ???
 GM.MaxSpeedDecreaseWeightDelta = GM.MaxWeight - GM.MinWeightForSpeedDecrease
 -- Amount to subtract from runspeed per weight over threshold
-GM.RunSpeedPerWeightPoint = 1
+GM.RunSpeedPerWeightPoint = 0.8
 
 local PLAYER = FindMetaTable("Player")
 
