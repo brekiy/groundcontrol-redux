@@ -184,13 +184,6 @@ function GM:postInitEntity()
         penetration = 18
     }
     self:registerPrimaryWeapon(m14)
-
-    local delisle = {
-        weaponClass = "khr_delisle",
-        weight = 3.74,
-        penetration = 8
-    }
-    self:registerPrimaryWeapon(delisle)
    
     local fnfal = {
         weaponClass = "khr_fnfal",
@@ -198,13 +191,6 @@ function GM:postInitEntity()
         penetration = 18
     }
     self:registerPrimaryWeapon(fnfal)
-   
-    local m1carbine = {
-        weaponClass = "khr_m1carbine",
-        weight = 2.6,
-        penetration = 13
-    }
-    self:registerPrimaryWeapon(m1carbine)
     
     -- assault rifles
     local ak74 = {
@@ -269,8 +255,22 @@ function GM:postInitEntity()
         penetration = 16
     }
     self:registerPrimaryWeapon(m4a4)
+
+    local simsks = {
+        weaponClass = "khr_simsks",
+        weight = 3.9,
+        penetration = 17
+    }
+    self:registerPrimaryWeapon(simsks)
+   
+    local sks = {
+        weaponClass = "khr_sks",
+        weight = 4.0,
+        penetration = 17
+    }
+    self:registerPrimaryWeapon(sks)
     
-    -- sub-machine guns
+    -- sub-machine guns/light carbines
     local mp5 = {
         weaponClass = "cw_mp5",
         weight = 2.5,
@@ -349,6 +349,20 @@ function GM:postInitEntity()
         penetration = 7
     }
     self:registerPrimaryWeapon(l2a3)
+
+    local m1carbine = {
+        weaponClass = "khr_m1carbine",
+        weight = 2.6,
+        penetration = 13
+    }
+    self:registerPrimaryWeapon(m1carbine)
+
+    local delisle = {
+        weaponClass = "khr_delisle",
+        weight = 3.74,
+        penetration = 8
+    }
+    self:registerPrimaryWeapon(delisle)
 
     -- heavy weapons
     local m249 = {
@@ -506,20 +520,6 @@ function GM:postInitEntity()
         penetration = 30
     }
     self:registerPrimaryWeapon(sr338)
-   
-    local simsks = {
-        weaponClass = "khr_simsks",
-        weight = 3.9,
-        penetration = 17
-    }
-    self:registerPrimaryWeapon(simsks)
-   
-    local sks = {
-        weaponClass = "khr_sks",
-        weight = 4.0,
-        penetration = 17
-    }
-    self:registerPrimaryWeapon(sks)
    
     local svt40 = {
         weaponClass = "khr_svt40",

@@ -35,7 +35,8 @@ if CLIENT then
 	SWEP.ForeGripOffsetCycle_Draw = 0
 	SWEP.ForeGripOffsetCycle_Reload = 0.9
 	SWEP.ForeGripOffsetCycle_Reload_Empty = 0.8
-	SWEP.FireMoveMod = 0.6
+    SWEP.FireMoveMod = 0.6
+    SWEP.OverrideAimMouseSens = 0.2
 	
 	SWEP.DrawTraditionalWorldModel = false
 	SWEP.WM = "models/weapons/w_cstm_l96.mdl"
