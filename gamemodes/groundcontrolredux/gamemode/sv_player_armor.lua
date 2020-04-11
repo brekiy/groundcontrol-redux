@@ -38,8 +38,8 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 self:resetHealthRegenData() -- if our armor gets penetrated, it doesn't matter how much health we had in our regen pool, we still start bleeding
             end
             
-            self:takeArmorDamage(armorPiece, dmgInfo)
             dmgInfo:ScaleDamage(1 - damageNegation)
+            self:takeArmorDamage(armorPiece, dmgInfo) -- Use the scaled damage in calculating armor degredation
             
             local health = armorPiece.health
             
@@ -81,6 +81,7 @@ function PLAYER:giveHelmet()
 end
 
 function PLAYER:takeArmorDamage(armorData, dmgInfo)
+    local armorDamage = dmgInfo:GetDamage - armorData.
     armorData.health = math.ceil(armorData.health - dmgInfo:GetDamage() * 0.85)
 end
 

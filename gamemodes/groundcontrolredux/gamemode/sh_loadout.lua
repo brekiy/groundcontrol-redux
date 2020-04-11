@@ -449,7 +449,8 @@ function GM:postInitEntity()
     }
     self:registerPrimaryWeapon(khr_cb4)
     
-    -- sniper rifles    
+    -- sniper rifles
+    -- bolt-action versions of "regular" rifle rounds like 7.62 NATO and mmR will get penetration buffs for balance
     local l115 = {
         weaponClass = "gc_cw_l115",
         weight = 6.5,
@@ -488,7 +489,7 @@ function GM:postInitEntity()
     local mosin = {
         weaponClass = "khr_mosin",
         weight = 4,
-        penetration = 18
+        penetration = 20 -- sniper load 7.62mmR or something, +2 pen
     }
     self:registerPrimaryWeapon(mosin)
    
