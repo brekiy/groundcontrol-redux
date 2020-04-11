@@ -7,8 +7,8 @@ GM.StaminaDrainTickTime = 0.75 -- how often we lose stamina when sprinting
 GM.StaminaRegenTickTime = 0.35 -- how often we regenerate stamina when not sprinting
 GM.PostDrainStaminaRegenTickDelay = 1 -- we have to wait this much after our stamina being drained
 GM.StaminaRegenAmount = 1 -- how much stamina we regen when we're in idle state
-GM.MinStaminaFromSprinting = 50 -- how far our stamina will drop from sprinting
-GM.RunSpeedImpactStaminaLevel = 75 -- when our stamina value is lower than this, our run speed becomes impacted
+GM.MinStaminaFromSprinting = 25 -- how far our stamina will drop from sprinting
+GM.RunSpeedImpactStaminaLevel = 60 -- when our stamina value is lower than this, our run speed becomes impacted
 GM.RunSpeedPerStaminaPoint = 1.5 -- we lose this much run speed per each point of stamina below the stamina impact level
 GM.StaminaDecreasePerHealthPoint = 80 -- we lose this much max stamina by the time our health reaches 0
 
