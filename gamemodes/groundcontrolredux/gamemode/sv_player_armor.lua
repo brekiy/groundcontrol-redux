@@ -26,7 +26,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
 
             if not penetratesArmor then
                 shouldBleed = false
-                
+                if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK")
                 damageNegation = armorData.damageDecrease + protectionDelta * armorData.protectionDeltaToDamageDecrease
                 local regenAmount = math.floor(dmgInfo:GetDamage() * damageNegation)
                 self:addHealthRegen(regenAmount)
