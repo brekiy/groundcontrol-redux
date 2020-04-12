@@ -148,14 +148,14 @@ local lbxVest = {
     displayName = "LBX Vest",
     weight = 10,
     protection = 25,
-    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true},
-    damageDecrease = 0.525,
-    protectionDeltaToDamageDecrease = 0.0175,
+    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
+    damageDecrease = 0.5,
+    protectionDeltaToDamageDecrease = 0.0155,
     damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_lbx_vest",
     description = "Advanced plate carrier. Provides type VI protection against projectiles."
 }
-GM:registerArmor(ratnikVest)
+GM:registerArmor(lbxVest)
 
 -- Helmets
 -- =======================
