@@ -99,7 +99,7 @@ function ENT:Fuse(t)
 							
 							intensity = math.min((intensity + 0.25) * dotToGeneralDirection, 1)
 							local duration = intensity * self.FlashDuration
-							
+							-- Can't change this... it's baked into the weapon base
 							umsg.Start("CW_FLASHBANGED", obj)
 								umsg.Float(intensity)
 								umsg.Float(duration)

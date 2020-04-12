@@ -92,8 +92,8 @@ GM:registerRadioVoiceVariant("us", "US", nil, "models/player/swat.mdl", "models/
 GM:registerRadioVoiceVariant("aus", "AUS", nil, "models/player/urban.mdl", "models/player/guerilla.mdl")
 GM:registerRadioVoiceVariant("rus", "RUS", nil, "models/player/riot.mdl", "models/player/phoenix.mdl", false, true)
 GM:registerRadioVoiceVariant("bandlet", "Cheeki", nil, "models/player/bandit_backpack.mdl", "models/custom/stalker_bandit_veteran.mdl", true, true)
-GM:registerRadioVoiceVariant("ghetto", "ghetto", nil, 
-    {"models/player/group01/male_03.mdl", "models/player/group01/male_01.mdl"}, {"models/player/group01/male_03.mdl", "models/player/group01/male_01.mdl"}, true)
+-- GM:registerRadioVoiceVariant("combine", "Combine", nil, 
+--     {"models/player/group01/male_03.mdl", "models/player/group01/male_01.mdl"}, {"models/player/group01/male_03.mdl", "models/player/group01/male_01.mdl"}, true)
 GM:registerRadioVoiceVariant("franklin", "Franklin", nil, 
     {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, true)
 GM:registerRadioVoiceVariant("trevor", "Trevor", nil, 
@@ -241,7 +241,7 @@ function command:send(ply, commandId, category)
 end
 
 function command:receive(sender, commandId, category, data)
-    local markPos = data:ReadVector()
+    local markPos = net.ReadVector()
     GAMEMODE:AddMarker(markPos, self.onScreenText, self.onScreenColor, self.displayTime)
 end
 
@@ -285,7 +285,8 @@ command.variations = {
     franklin = {
         {sound = "ground_control/radio/franklin/enemy_down1.ogg", text = "Yeah, you have a nice day."},
         {sound = "ground_control/radio/franklin/enemy_down2.ogg", text = "Goodnight!"},
-        {sound = "ground_control/radio/franklin/enemy_down3.ogg", text = "I guess that settles that."}
+        {sound = "ground_control/radio/franklin/enemy_down3.ogg", text = "I guess that settles that."},
+        {sound = "ground_control/radio/franklin/areaclear2.ogg", text = "You punkass bitches done, now!"}
     },
 
     trevor = {
@@ -327,7 +328,7 @@ end
 local worldSpawn = Vector(0, 0, 0)
 
 function command:receive(sender, commandId, category, data)
-    local markPos = data:ReadVector()
+    local markPos = net.ReadVector()
     
     if markPos ~= worldSpawn then
         GAMEMODE:AddMarker(markPos, self.onScreenText, self.onScreenColor, self.displayTime)
@@ -506,15 +507,14 @@ command.variations = {us = {
     },
 
     franklin = {
-        {sound = "ground_control/radio/franklin/thanks1.ogg", text = "Thank you for that."},
-        {sound = "ground_control/radio/franklin/thanks2.ogg", text = "That's cool, homie, thanks."},
-        {sound = "ground_control/radio/franklin/thanks3.ogg", text = "Yeah, thanks a lot."}
+        {sound = "ground_control/radio/franklin/wait1.ogg", text = "Ey man, I'm comin'."},
+        {sound = "ground_control/radio/franklin/wait2.ogg", text = "Don't leave my ass!"},
+        {sound = "ground_control/radio/franklin/wait3.ogg", text = "Hold on a second, dog!"}
     },
 
     trevor = {
-        {sound = "ground_control/radio/trevor/thanks1.ogg", text = "Thank you."},
-        {sound = "ground_control/radio/trevor/thanks2.ogg", text = "Thank you."},
-        {sound = "ground_control/radio/trevor/thanks3.ogg", text = "Why, thank you."}
+        {sound = "ground_control/radio/trevor/wait1.ogg", text = "Wait up!"},
+        {sound = "ground_control/radio/trevor/wait2.ogg", text = "Don't forget about me, assholes!"}
     }
 }
 
@@ -625,7 +625,7 @@ function command:send(ply, commandId, category)
 end
 
 function command:receive(sender, commandId, category, data)
-    local markPos = data:ReadVector()
+    local markPos = net.ReadVector()
     GAMEMODE:AddMarker(markPos, self.onScreenText, self.onScreenColor, self.displayTime)
 end
 
@@ -689,7 +689,7 @@ function command:send(ply, commandId, category)
 end
 
 function command:receive(sender, commandId, category, data)
-    local markPos = data:ReadVector()
+    local markPos = net.ReadVector()
     GAMEMODE:AddMarker(markPos, self.onScreenText, self.onScreenColor, self.displayTime)
 end
 
@@ -792,7 +792,7 @@ function command:send(ply, commandId, category)
 end
 
 function command:receive(sender, commandId, category, data)
-    local markPos = data:ReadVector()
+    local markPos = net.ReadVector()
     GAMEMODE:AddMarker(markPos, self.onScreenText, self.onScreenColor, self.displayTime)
 end
 
@@ -852,7 +852,7 @@ function command:send(ply, commandId, category)
 end
 
 function command:receive(sender, commandId, category, data)
-    local markPos = data:ReadVector()
+    local markPos = net.ReadVector()
     GAMEMODE:AddMarker(markPos, self.onScreenText, self.onScreenColor, self.displayTime)
 end
 
@@ -911,7 +911,7 @@ function command:send(ply, commandId, category)
 end
 
 function command:receive(sender, commandId, category, data)
-    local markPos = data:ReadVector()
+    local markPos = net.ReadVector()
     GAMEMODE:AddMarker(markPos, self.onScreenText, self.onScreenColor, self.displayTime)
 end
 
@@ -970,7 +970,7 @@ function command:send(ply, commandId, category)
 end
 
 function command:receive(sender, commandId, category, data)
-    local markPos = data:ReadVector()
+    local markPos = net.ReadVector()
     GAMEMODE:AddMarker(markPos, self.onScreenText, self.onScreenColor, self.displayTime)
 end
 
@@ -1033,7 +1033,7 @@ function command:send(ply, commandId, category)
 end
 
 function command:receive(sender, commandId, category, data)
-    local markPos = data:ReadVector()
+    local markPos = net.ReadVector()
     GAMEMODE:AddMarker(markPos, self.onScreenText, self.onScreenColor, self.displayTime)
 end
 
@@ -1118,8 +1118,7 @@ command.variations = {
     },
 
     franklin = {
-        {sound = "ground_control/radio/franklin/areaclear1.ogg", text = "Any more of you marked? Nobody here, then."},
-        {sound = "ground_control/radio/franklin/areaclear2.ogg", text = "You punkass bitches done, now! Place is empty!"}
+        {sound = "ground_control/radio/franklin/areaclear1.ogg", text = "Any more of you marked? Nobody here, then."}
     },
 
     trevor = {
@@ -1145,7 +1144,7 @@ function command:send(ply, commandId, category)
 end
 
 function command:receive(sender, commandId, category, data)
-    local markPos = data:ReadVector()
+    local markPos = net.ReadVector()
     GAMEMODE:AddMarker(markPos, self.onScreenText, self.onScreenColor, self.displayTime)
 end
 

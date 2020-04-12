@@ -19,13 +19,6 @@ function GM:SendRadioCommand(ply, category, radioId, command)
     else
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
             self:sendRadio(ply, obj, category, radioId)
-            
-            --[[umsg.Start("GC_RADIO", obj)
-                umsg.Char(category)
-                umsg.Char(radioId)
-                umsg.Char(ply.voiceVariant)
-                umsg.Entity(ply)
-            umsg.End()]]--
         end
     end
 end
@@ -44,24 +37,40 @@ function GM:attemptSetMemeRadio(ply)
 end
 
 function GM:sendRadio(ply, target, category, radioId)
-    umsg.Start("GC_RADIO", target)
-        umsg.Float(CurTime())
-        umsg.Char(category)
-        umsg.Char(radioId)
-        umsg.Char(ply.voiceVariant)
-        umsg.Entity(ply)
-    umsg.End()
+    -- umsg.Start("GC_RADIO", target)
+    --     umsg.Float(CurTime())
+    --     umsg.Char(category)
+    --     umsg.Char(radioId)
+    --     umsg.Char(ply.voiceVariant)
+    --     umsg.Entity(ply)
+    -- umsg.End()
+
+    net.Start("GC_RADIO")
+    net.WriteFloat(CurTime())
+    net.WriteUInt(category, 8)
+    net.WriteUInt(radioId, 8)
+    net.WriteUInt(ply.voiceVariant, 8)
+    net.WriteEntity(ply)
+    net.Send(target)
 end
 
 function GM:sendMarkedSpot(category, commandId, sender, receiver, pos)
-    umsg.Start("GC_RADIO_MARKED", receiver)
-        umsg.Float(CurTime())
-        umsg.Char(category)
-        umsg.Char(commandId)
-        umsg.Char(sender.voiceVariant)
-        umsg.Entity(sender)
-        umsg.Vector(pos)
-    umsg.End()
+    -- umsg.Start("GC_RADIO_MARKED", receiver)
+    --     umsg.Float(CurTime())
+    --     umsg.Char(category)
+    --     umsg.Char(commandId)
+    --     umsg.Char(sender.voiceVariant)
+    --     umsg.Entity(sender)
+    --     umsg.Vector(pos)
+    -- umsg.End()
+    net.Start("GC_RADIO_MARKED")
+    net.WriteFloat(CurTime())
+    net.WriteUInt(category, 8)
+    net.WriteUInt(commandId, 8)
+    net.WriteUInt(sender.voiceVariant, 8)
+    net.WriteEntity(sender)
+    net.WriteVector(pos)
+    net.Send(receiver)
 end
 
 concommand.Add("gc_radio_command", function(ply, com, args)
@@ -91,5 +100,6 @@ concommand.Add("gc_radio_command", function(ply, com, args)
 end)
 
 CustomizableWeaponry.callbacks:addNew("beginThrowGrenade", "GroundControl_beginThrowGrenade", function(wep)
+    -- Automatically call the frag out command
     GAMEMODE:SendRadioCommand(wep.Owner, 9, 1, nil)
 end)

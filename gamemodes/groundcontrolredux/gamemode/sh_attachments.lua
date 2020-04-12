@@ -208,7 +208,7 @@ function GM:registerAttachment(data)
     attData.price = data.price
     attData.unlockedByDefault = data.unlockedByDefault
 end
-PrintTable(CustomizableWeaponry.registeredAttachmentsSKey)
+-- PrintTable(CustomizableWeaponry.registeredAttachmentsSKey)
 function GM:setAttachmentPrice(attachmentName, desiredPrice)
     CustomizableWeaponry.registeredAttachmentsSKey[data.attachmentName].price = desiredPrice
 end

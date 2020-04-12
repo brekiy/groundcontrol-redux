@@ -73,14 +73,7 @@ function GM:attemptJoinTeam(ply, targetTeam)
         RunConsoleCommand("gc_attempt_join_team", targetTeam)
         return
     end
-    
-    --if not self:canJoinTeam(ply, targetTeam) then
-    --    SendUserMessage("GC_RETRYTEAMSELECTION", ply)
-    --    return false
-    --end
-    
     ply:joinTeam(targetTeam)
-    
     return true
 end
 
