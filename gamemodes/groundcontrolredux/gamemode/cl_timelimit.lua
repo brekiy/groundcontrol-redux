@@ -23,11 +23,8 @@ function GM:setTimeLimit(start, duration)
     self.RoundTime = start + duration
 end
 
-local function GC_TimeLimit(data)
-    local start = data:ReadFloat()
-    local duration = data:ReadFloat()
-    
+net.Receive("GC_TIMELIMIT", function(a, b)
+    local start = net.ReadFloat()
+    local duration = net.ReadFloat()
     GAMEMODE:setTimeLimit(start, duration)
-end
-
-usermessage.Hook("GC_TIMELIMIT", GC_TimeLimit)
+end)

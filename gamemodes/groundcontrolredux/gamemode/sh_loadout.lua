@@ -191,6 +191,13 @@ function GM:postInitEntity()
         penetration = 18
     }
     self:registerPrimaryWeapon(fnfal)
+
+    local svt40 = {
+        weaponClass = "khr_svt40",
+        weight = 3.9,
+        penetration = 18
+    }
+    self:registerPrimaryWeapon(svt40)
     
     -- assault rifles
     local ak74 = {
@@ -224,7 +231,7 @@ function GM:postInitEntity()
     local vss = {
         weaponClass = "cw_vss",
         weight = 2.6,
-        penetration = 15
+        penetration = 16
     }
     self:registerPrimaryWeapon(vss)
 
@@ -520,13 +527,6 @@ function GM:postInitEntity()
         penetration = 30
     }
     self:registerPrimaryWeapon(sr338)
-   
-    local svt40 = {
-        weaponClass = "khr_svt40",
-        weight = 3.9,
-        penetration = 18
-    }
-    self:registerPrimaryWeapon(svt40)
     
     -- handguns
     local deagle = {

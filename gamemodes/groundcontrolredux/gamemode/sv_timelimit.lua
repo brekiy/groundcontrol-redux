@@ -11,11 +11,11 @@ function GM:sendTimeLimit(target)
     if not self.TimeLimit then
         return
     end
-    
-    umsg.Start("GC_TIMELIMIT", target)
-        umsg.Float(self.RoundStart)
-        umsg.Float(self.TimeLimit)
-    umsg.End()
+
+    net.Start("GC_TIMELIMIT")
+    net.WriteFloat(self.RoundStart)
+    net.WriteFloat(self.TimeLimit)
+    net.Send(target)
 end
 
 function GM:hasTimeLimit()

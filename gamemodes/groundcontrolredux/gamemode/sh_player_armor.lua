@@ -1,15 +1,13 @@
 --[[
-    you can easily add more armor vests, along with things like helmets and leg armor
-    the reason why I did not add helmets and leg armor is because, despite the game focusing a lot on realism/playing slowly, this is garry's mod, and noone plays this slowly
-    so naturally I saw no reason to add super extensive armor options
-    all you need to do is specify the cvar it should use, create that cvar on the client, specify the hitgroups which the armor should protect, and add some UI elements for the selection of the armor to the loadout menu
+    Adding extra armor options shouldn't be too hard if you really want anything more than
+    body armor and a helmet. I think this is enough complexity for a pick up and play Gmod gamemode.
 ]]--
 
 AddCSLuaFile()
 AddCSLuaFile("cl_player_armor.lua")
 
-GM.DefaultArmor = 1 -- 1 is dyneema vest by default
-GM.DefaultHelmet = 1 -- 1 is steel helmet by default
+GM.DefaultArmor = 1
+GM.DefaultHelmet = 1
 
 if CLIENT then
     include("cl_player_armor.lua")
@@ -65,143 +63,146 @@ end
 
 -- Armor properties
 -- =======================
--- category: denotes what this armor piece is grouped with, valid options are vest, helmet, arms.
--- id: an internal reference name.
--- displayName: what's displayed to the client in the GUI.
--- weight: weight of the armor in KG.
--- protection: an arbitrary value. weapons that have a penetration value less than the armor's protection value do reduced damage and don't cause bleeding.
---      buckshot: 5
---      9mm Mak: 6
---      .45 ACP: 6-9
---      9mm Para: 7-9
---      5.7x28: 11
---      .44 Mag: 14
---      .50 AE: 15 (nerfed from 17 vanilla, since there are tests of it being stopped by IIIA vests)
---      9x39: 15
---      5.56 NATO: 16
---      5.45x39: 17
---      7.62 NATO: 18
---      .338 Lapua: 30
--- protectionAreas: the various hitgroups that this armor protects.
+-- category: Denotes what this armor piece is grouped with, e.g. vest, helmet.
+-- id: Internal reference name.
+-- displayName: Displayed to client in the GUI.
+-- weight: Armor weight in KG.
+-- protection: Arbitrary value. Weapons with a penetration value less than this do reduced damage and don't cause bleeding.
+-- protectionAreas: protected hitgroup table.
 -- protectionDeltaToDamageDecrease: in the event of no penetration, damage is scaled by an additional amount determined by
---      (penetrationValue (weapon variable set in sh_loadout.lua) - protection) * protectionDeltaToDamageDecrease
---      ie if a weapon's penetration value is 6 and the vest's protection value is 10, 
---      an additional 4% ((10 - 6) * 0.01) damage reduction will be added to the final calculation.
--- damageDecrease: percent damage reduction in case of no penetration. represents blunt trauma suffered.
--- damageDecreasePenetration: percent damage reduction in case of penetration. original suggestion is to not raise this above 20%.
--- icon: path to the icon in the GUI.
--- description: description displayed in the GUI.
+--      (protection - penetration) * protectionDeltaToDamageDecrease
+--      e.g. if a weapon's penetration value is 6 shoots a guy wearing the dyneema vest, 
+--      an additional 12% ((10 - 6) * 0.05) damage reduction will be added to the final calculation.
+-- damageDecrease: Percent damage reduction in case of no penetration. Represents blunt trauma suffered.
+-- damageDecreasePenetration: Percent damage reduction in case of penetration. original suggestion is to not raise this above 20%.
+-- icon: Path to the icon in the GUI.
+-- description: Description displayed in the GUI.
 -- =======================
 
 -- Vests
 -- =======================
 
-local dyneemaVest = {}
-dyneemaVest.category = "vest"
-dyneemaVest.id = "dyneema_vest"
-dyneemaVest.displayName = "Dyneema Vest"
-dyneemaVest.weight = 1.36
-dyneemaVest.protection = 10
-dyneemaVest.protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true}
-dyneemaVest.protectionDeltaToDamageDecrease = 0.01
-dyneemaVest.damageDecrease = 0.25
-dyneemaVest.damageDecreasePenetration = 0.125
-dyneemaVest.icon = "ground_control/hud/armor/aa_dyneema_vest"
-dyneemaVest.description = "Soft vest. Provides type II protection against projectiles."
-
+local dyneemaVest = {
+    category = "vest",
+    id = "dyneema_vest",
+    displayName = "Dyneema Vest",
+    weight = 1.7,
+    protection = 10,
+    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
+    protectionDeltaToDamageDecrease = 0.015,
+    damageDecrease = 0.3,
+    damageDecreasePenetration = 0.125,
+    icon = "ground_control/hud/armor/aa_dyneema_vest",
+    description = "Thin soft vest. Provides type II protection against projectiles."
+}
 GM:registerArmor(dyneemaVest)
 
-local kevlarVest = {}
-kevlarVest.category = "vest"
-kevlarVest.id = "kevlar_vest"
-kevlarVest.displayName = "Kevlar Vest"
-kevlarVest.weight = 3.27
-kevlarVest.protection = 15
-kevlarVest.protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true}
-kevlarVest.damageDecrease = 0.275
-kevlarVest.protectionDeltaToDamageDecrease = 0.008
-kevlarVest.damageDecreasePenetration = 0.125
-kevlarVest.icon = "ground_control/hud/armor/aa_kevlar_vest"
-kevlarVest.description = "Soft vest. Provides type IIIA protection against projectiles."
-
+local kevlarVest = {
+    category = "vest",
+    id = "kevlar_vest",
+    displayName = "Kevlar Vest",
+    weight = 3.3,
+    protection = 15,
+    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
+    damageDecrease = 0.3,
+    protectionDeltaToDamageDecrease = 0.015,
+    damageDecreasePenetration = 0.125,
+    icon = "ground_control/hud/armor/aa_kevlar_vest",
+    description = "Soft vest. Provides type IIIA protection against projectiles."
+}
 GM:registerArmor(kevlarVest)
 
-local spectraVest = {}
-spectraVest.category = "vest"
-spectraVest.id = "spectra_vest"
-spectraVest.displayName = "SPECTRA Vest"
-spectraVest.weight = 6.3
-spectraVest.protection = 20
-spectraVest.protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true}
-spectraVest.damageDecrease = 0.3
-spectraVest.protectionDeltaToDamageDecrease = 0.015
-spectraVest.damageDecreasePenetration = 0.15
-spectraVest.icon = "ground_control/hud/armor/aa_spectra_vest"
-spectraVest.description = "Vest with hard plates. Provides type III protection against projectiles."
-
+local spectraVest = {
+    category = "vest",
+    id = "spectra_vest",
+    displayName = "SPECTRA Vest",
+    weight = 6.3,
+    protection = 20,
+    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
+    damageDecrease = 0.5,
+    protectionDeltaToDamageDecrease = 0.0155,
+    damageDecreasePenetration = 0.15,
+    icon = "ground_control/hud/armor/aa_spectra_vest",
+    description = "Vest with hard plates. Provides type III protection against projectiles."
+}
 GM:registerArmor(spectraVest)
 
-local ratnikVest = {}
-ratnikVest.category = "vest"
-ratnikVest.id = "heavy_vest"
-ratnikVest.displayName = "Ratnik Vest"
-ratnikVest.weight = 12.8
-ratnikVest.protection = 20
-ratnikVest.protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true}
-ratnikVest.damageDecrease = 0.35
-ratnikVest.protectionDeltaToDamageDecrease = 0.02
-ratnikVest.damageDecreasePenetration = 0.15
-ratnikVest.icon = "ground_control/hud/armor/aa_ratnik_vest"
-ratnikVest.description = "Vest with hard plates and upper arm protection. Provides type III protection against projectiles."
+local ratnikVest = {
+    category = "vest",
+    id = "ratnik_vest",
+    displayName = "Ratnik Vest",
+    weight = 14,
+    protection = 20,
+    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true},
+    damageDecrease = 0.525,
+    protectionDeltaToDamageDecrease = 0.0155,
+    damageDecreasePenetration = 0.15,
+    icon = "ground_control/hud/armor/aa_ratnik_vest",
+    description = "Heavy body armor. Provides type III protection against projectiles."
+}
+GM:registerArmor(ratnikVest)
 
+local lbxVest = {
+    category = "vest",
+    id = "lbx_vest",
+    displayName = "LBX Vest",
+    weight = 10,
+    protection = 25,
+    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true},
+    damageDecrease = 0.525,
+    protectionDeltaToDamageDecrease = 0.0175,
+    damageDecreasePenetration = 0.15,
+    icon = "ground_control/hud/armor/aa_lbx_vest",
+    description = "Advanced plate carrier. Provides type VI protection against projectiles."
+}
 GM:registerArmor(ratnikVest)
 
 -- Helmets
 -- =======================
 
-local steelHelmet = {}
-steelHelmet.category = "helmet"
-steelHelmet.id = "steel_helmet"
-steelHelmet.displayName = "Steel Helmet"
-steelHelmet.weight = 1.5
-steelHelmet.protection = 6
-steelHelmet.protectionAreas = {[HITGROUP_HEAD] = true}
-steelHelmet.damageDecrease = 0.3
-steelHelmet.protectionDeltaToDamageDecrease = 0.015
-steelHelmet.damageDecreasePenetration = 0.15
-steelHelmet.icon = "ground_control/hud/armor/aa_steel_helmet"
-steelHelmet.description = "Provides type I protection against projectiles."
-
+local steelHelmet = {
+    category = "helmet",
+    id = "steel_helmet",
+    displayName = "Steel Helmet",
+    weight = 1.25,
+    protection = 8,
+    protectionAreas = {[HITGROUP_HEAD] = true},
+    damageDecrease = 0.4,
+    protectionDeltaToDamageDecrease = 0.0125,
+    damageDecreasePenetration = 0.15,
+    icon = "ground_control/hud/armor/aa_steel_helmet",
+    description = "Provides type II protection against projectiles."
+}
 GM:registerArmor(steelHelmet)
 
-local spectraHelmet = {}
-spectraHelmet.category = "helmet"
-spectraHelmet.id = "spectra_helmet"
-spectraHelmet.displayName = "SPECTRA Helmet"
-spectraHelmet.weight = 1.75
-spectraHelmet.protection = 14
-spectraHelmet.protectionAreas = {[HITGROUP_HEAD] = true}
-spectraHelmet.damageDecrease = 0.4
-spectraHelmet.protectionDeltaToDamageDecrease = 0.02
-spectraHelmet.damageDecreasePenetration = 0.15
-spectraHelmet.icon = "ground_control/hud/armor/aa_spectra_helmet"
-spectraHelmet.description = "Provides type IIIA protection against projectiles."
-
+local spectraHelmet = {
+    category = "helmet",
+    id = "spectra_helmet",
+    displayName = "SPECTRA Helmet",
+    weight = 1.75,
+    protection = 13,
+    protectionAreas = {[HITGROUP_HEAD] = true},
+    damageDecrease = 0.4,
+    protectionDeltaToDamageDecrease = 0.0125,
+    damageDecreasePenetration = 0.15,
+    icon = "ground_control/hud/armor/aa_spectra_helmet",
+    description = "Provides type IIIA protection against projectiles."
+}
 GM:registerArmor(spectraHelmet)
 
-local altynHelmet = {}
-altynHelmet.category = "helmet"
-altynHelmet.id = "altyn_helmet"
-altynHelmet.displayName = "Altyn Helmet"
-altynHelmet.weight = 3
-altynHelmet.protection = 16
-altynHelmet.protectionAreas = {[HITGROUP_HEAD] = true}
-altynHelmet.damageDecrease = 0.5
-altynHelmet.protectionDeltaToDamageDecrease = 0.03
-altynHelmet.damageDecreasePenetration = 0.15
-altynHelmet.icon = "ground_control/hud/armor/aa_altyn_helmet"
-altynHelmet.description = "Provides type III protection against projectiles."
-
+local altynHelmet = {
+    category = "helmet",
+    id = "altyn_helmet",
+    displayName = "Altyn Helmet",
+    weight = 4,
+    protection = 18,
+    protectionAreas = {[HITGROUP_HEAD] = true},
+    damageDecrease = 0.4,
+    protectionDeltaToDamageDecrease = 0.0125,
+    damageDecreasePenetration = 0.15,
+    icon = "ground_control/hud/armor/aa_altyn_helmet",
+    description = "Provides type III protection against projectiles."
+}
 GM:registerArmor(altynHelmet)
 
 
@@ -210,10 +211,8 @@ local PLAYER = FindMetaTable("Player")
 function PLAYER:setArmor(armorData)
     if CLIENT then
         self:resetArmorData()
-
         for key, data in ipairs(armorData) do
             self:setupArmorPiece(data)
-            -- print("vest received "..GAMEMODE:getArmorData(data.id, data.category).displayName)
             self.armor = armorData
         end
     end
@@ -222,10 +221,8 @@ end
 function PLAYER:setHelmet(armorData)
     if CLIENT then
         self:resetHelmetData()
-
         for key, data in ipairs(armorData) do
             self:setupArmorPiece(data)
-            -- print("helmet received "..GAMEMODE:getArmorData(data.id, data.category).displayName)
             self.helmet = armorData
         end
     end

@@ -42,4 +42,4 @@ end
 
 GM:registerSound("GC_BANDAGE", {"ground_control/player/bandage1.mp3", "ground_control/player/bandage2.mp3", "ground_control/player/bandage3.mp3"})
 GM:registerSound("GC_BLEED", {"ground_control/player/bleed1.mp3", "ground_control/player/bleed2.mp3", "ground_control/player/bleed3.mp3", "ground_control/player/bleed4.mp3", "ground_control/player/bleed5.mp3"})
-GM:registerSound("GC_DEATH_SOUND", {"player/death1.wav", "player/death2.wav", "player/death3.wav", "player/death4.wav", "player/death5.wav", "player/death6.wav"}) 
+GM:registerSound("GC_DEATH_SOUND", {"player/death1.wav", "player/death2.wav", "player/death3.wav", "player/death4.wav", "player/death5.wav", "player/death6.wav"}, 1, 150, CHAN_VOICE) 
