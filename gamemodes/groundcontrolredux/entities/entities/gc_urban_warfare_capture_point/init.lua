@@ -68,13 +68,11 @@ function ENT:getClosePlayers(position, listOfPlayers)
     for key, ply in ipairs(listOfPlayers) do
         if ply:Alive() then
             alive = alive + 1
-            
             if self:isWithinCaptureAABB(ply:GetPos()) then
                 total = total + 1
             end
         end
     end
-    
     return total, alive
 end
 
@@ -199,7 +197,6 @@ function ENT:advanceCapture(capSpeed, capturerTeam)
             end
         end
     end
-    
     self.deCaptureDelay = CurTime() + self.deCaptureTimeOnCapture
 end
 

@@ -266,6 +266,14 @@ function oneSideRush:playerDisconnected(ply)
         GAMEMODE:checkRoundOverPossibility(hisTeam, true)
     end)
 end
+-- dunno why this wasn't defined initially...
+function oneSideRush:playerInitialSpawn(ply)
+    if GAMEMODE.RoundsPlayed == 0 then
+        if #player.GetAll() >= 2 then
+            GAMEMODE:endRound(nil)
+        end
+    end
+end
 
 function oneSideRush:playerJoinTeam(ply, teamId)
     GAMEMODE:checkRoundOverPossibility(nil, true)
@@ -351,7 +359,7 @@ GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-586.738
 GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-1029.633667, -22.739532, 0.031250), "gc_contended_point", {captureDistance = 384})
 
 -- ASSAULT GAMETYPE
-
+-- fuck this gametype, its WACK
 local assault = {}
 assault.name = "assault"
 assault.prettyName = "Assault"
@@ -453,16 +461,6 @@ function assault:prepare()
     if CLIENT then
         RunConsoleCommand("gc_team_selection")
     end
-    
-    --[[if SERVER then
-        local map = string.lower(game.GetMap())
-        local startPoints = self.spawnPoints[map]
-        
-        if startPoints then
-            GAMEMODE:setupStartingPoints(TEAM_RED, nil, startPoints[TEAM_RED])
-            GAMEMODE:setupStartingPoints(TEAM_BLUE, nil, startPoints[TEAM_BLUE])
-        end
-    end]]--
 end
 
 function assault:think()
@@ -559,7 +557,6 @@ GM:addObjectivePositionToGametype("assault", "gc_depot_b2", Vector(-5565.1865, 8
 GM:addObjectivePositionToGametype("assault", "gc_depot_b2", Vector(-7676.4849, -597.2024, -351.9687), "gc_capture_point", {captureDistance = 150, capturerTeam = assault.defenderTeam, defenderTeam = assault.attackerTeam})
 GM:addObjectivePositionToGametype("assault", "gc_depot_b2", Vector(-5108.8721, -1509.1794, -933.2501), "gc_offlimits_area_aabb", {distance = 2000, targetTeam = assault.attackerTeam, min = Vector(-5108.8721, -1509.1794, -933.2501), max = Vector(930.1258, 5336.1563, 686.4084)})
 
--- GM:addObjectivePositionToGametype("assault", "nt_isolation", Vector(-586.738, -859.093, 411.031), "gc_capture_point", {captureDistance = 200})
 
 local urbanwarfare = {}
 urbanwarfare.name = "urbanwarfare"
@@ -577,54 +574,6 @@ urbanwarfare.waveWinReward = {cash = 50, exp = 50}
 
 if SERVER then
     urbanwarfare.mapRotation = GM:getMapRotation("urbanwarfare_maps")
-    
-    GM.StartingPoints.rp_downtown_v4c_v2 = {
-        [TEAM_RED] = {
-            urbanwarfare = {
-                {position = Vector(690.0195, 3803.3743, -203.9687), viewAngles = Angle(13.09, -93.2347, 0)},
-                {position = Vector(769.6985, 3802.8523, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(841.5054, 3802.2739, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(941.3118, 3801.4734, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(1057.3527, 3800.5432, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(1152.2914, 3799.7825, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(1263.0477, 3798.8953, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(1372.0547, 3798.0215, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(1465.8802, 3797.2693, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(1473.9479, 3876.8828, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(1400.933, 3877.4688, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(1297.2017, 3878.3005, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(1196.9884, 3879.1033, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(1096.7743, 3879.9063, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(998.3176, 3880.6951, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(901.6295, 3881.47, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(799.6418, 3882.2871, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)}
-            }
-        },
-        
-        [TEAM_BLUE] = {
-            urbanwarfare = {
-                {position = Vector(704.7042, 3883.0476, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(608.0021, 3883.8225, -203.9687), viewAngles = Angle(3.696, -90.4627, 0)},
-                {position = Vector(-670.2028, -4399.5659, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-746.2972, -4400.6152, -198.9688), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-857.0679, -4402.1406, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-951.9993, -4403.4482, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-1048.7062, -4404.7803, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-1140.1229, -4406.0396, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-1235.0531, -4407.3472, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-1337.0193, -4408.752, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-1433.7092, -4410.0825, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-1530.3984, -4411.415, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-1621.8171, -4412.6743, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-1718.4994, -4414.0054, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-1811.6622, -4415.2886, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-1906.6072, -4416.5967, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-1989.2278, -4417.7344, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-2084.1621, -4419.0415, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)},
-                {position = Vector(-2179.0879, -4420.3491, -198.9687), viewAngles = Angle(4.004, 90.7955, 0)}
-            }
-        }
-    }
     
     GM.StartingPoints.ph_skyscraper_construct = {
         [TEAM_RED] = {
@@ -677,31 +626,6 @@ if SERVER then
                 {position = Vector(-806.413, -735.1838, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
                 {position = Vector(-804.3742, -817.8115, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
                 {position = Vector(-802.6829, -886.3654, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)}
-            }
-        }
-    }
-
-    GM.StartingPoints.dm_zavod_yantar = {
-        [TEAM_RED] = {
-            urbanwarfare = {
-                {position = Vector(1614.767822, -1474.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
-                {position = Vector(1614.767822, -1374.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
-                {position = Vector(1614.767822, -1274.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
-                {position = Vector(1514.767822, -1474.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
-                {position = Vector(1514.767822, -1374.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
-                {position = Vector(1514.767822, -1274.400146, 744.282288), viewAngles = Angle(6.447776, 92.769669, 0)},
-            }
-        },
-            
-        [TEAM_BLUE] = {
-            urbanwarfare = {
-                {position = Vector(-2799.968750, -1740.101318, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
-                {position = Vector(-2799.968750, -1814.330933, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
-                {position = Vector(-2699.968750, -1740.101318, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
-                {position = Vector(-2699.968750, -1814.330933, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
-                {position = Vector(-2599.968750, -1740.101318, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
-                {position = Vector(-2599.968750, -1814.330933, 747.031250), viewAngles = Angle(22.141068, 3.644182, 0)},
-
             }
         }
     }
@@ -862,7 +786,7 @@ GM:addObjectivePositionToGametype("urbanwarfare", "ph_skyscraper_construct", Vec
 
 GM:addObjectivePositionToGametype("urbanwarfare", "de_desert_atrocity_v3", Vector(2424.1348, -920.4495, 120.0313), "gc_urban_warfare_capture_point", {capMin = Vector(2288.031250, -816.031250, 120.031250), capMax = Vector(2598.074951, -1092.377441, 200)})
 
-GM:addObjectivePositionToGametype("urbanwarfare", "nt_isolation", Vector(-586.738, -859.093, 411.031), "gc_urban_warfare_capture_point", {capMin = Vector(-44.464, -417.267, 286.639), capMax = Vector(-1025.326, -1111.352, 328.549)})
+GM:addObjectivePositionToGametype("urbanwarfare", "nt_isolation", Vector(-553.745, -827.579, 401.031), "gc_urban_warfare_capture_point", {capMin = Vector(-48.781, -422.024, 339.031), capMax = Vector(-1092.570, -1140.968, 423.031)})
 
 GM:addObjectivePositionToGametype("urbanwarfare", "dm_zavod_yantar", Vector(-397.236969, 1539.315308, 743.031250), "gc_urban_warfare_capture_point", {capMin = Vector(172.090851, 1113.220947, 543.680664), capMax = Vector(-992.968750, 2007.968750, 1003.031250)})
 

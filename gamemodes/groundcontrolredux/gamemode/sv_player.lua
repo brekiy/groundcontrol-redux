@@ -244,8 +244,8 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
         end
                 
         net.Start("GC_KILLED_BY")
-            net.WriteEntity(attacker)
-            net.WriteString(inflictor:GetClass())
+        net.WriteEntity(attacker)
+        net.WriteString(inflictor:GetClass())
         net.Send(ply)
         
         local markedSpots = self.MarkedSpots[attacker:Team()]
@@ -275,7 +275,7 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
     end
     
     ply.spawnWait = CurTime() + 5
-    
+    -- AddDamageLogEntry(attacker, ply, dmgInfo)
     ply:CreateRagdoll()
 end
 

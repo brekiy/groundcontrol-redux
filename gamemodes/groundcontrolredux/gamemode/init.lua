@@ -154,6 +154,23 @@ function GM:EntityTakeDamage(target, dmgInfo)
     end
 end
 
+-- we play a sound from a specific table instead
 function GM:PlayerDeathSound()
     return true
+end
+
+-- wip
+function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
+    local entryText = nil
+    PrintTable(dmgInfo)
+    local attackerWep = attacker:GetActiveWeapon():GetClass()
+    local attackerNick = attacker:Nick()
+    local targetNick = target:Nick()
+    if targetDied then
+        if attacker:Team() == target.Team() then
+            entryText = Format("KILL: %s teamkilled %s with %s", attackerNick, targetNick, attackerWep)
+        else
+            entryText = Format("KILL: %s killed %s with %s", attackerNick, targetNick, attackerWep)
+        end
+    end
 end

@@ -60,13 +60,11 @@ function GM:checkRoundOverPossibility(teamId, ignoreDisplay)
             if allPlayers == 0 then -- if everyone disconnected, reset rounds played
                 self.RoundsPlayed = 0
             end
-            
             return
         end
-    
+
         local redMembers = team.GetPlayers(TEAM_RED)
         local blueMembers = team.GetPlayers(TEAM_BLUE)
-        
         if #redMembers == 0 or #blueMembers == 0 then -- if neither team has AT LEAST ONE member, we don't restart rounds at all
             return
         end
@@ -94,8 +92,8 @@ function GM:checkRoundOverPossibility(teamId, ignoreDisplay)
         if not ignoreDisplay then
             self:createLastManStandingDisplay(teamId)
         end
-        end
     end
+end
 
 function GM:canRestartRound()
     if GetConVarNumber("gc_randomly_pick_gametype_and_map") >= 1 then
