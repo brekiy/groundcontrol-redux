@@ -348,9 +348,6 @@ GM:addObjectivePositionToGametype("onesiderush", "gc_outpost", Vector(3947.8335,
 GM:addObjectivePositionToGametype("onesiderush", "rp_downtown_v2", Vector(686.9936, 1363.9843, -195.9687), "gc_capture_point", {captureDistance = 200,capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 GM:addObjectivePositionToGametype("onesiderush", "rp_downtown_v2", Vector(-144.8516, 1471.2026, -195.9687), "gc_capture_point", {captureDistance = 200,capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "de_desert_atrocity_v3", Vector(384.5167, -1567.5787, -2.5376), "gc_capture_point", {captureDistance = 200,capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
-GM:addObjectivePositionToGametype("onesiderush", "de_desert_atrocity_v3", Vector(3832.3855, -2022.0819, 248.0313), "gc_capture_point", {captureDistance = 200,capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
-
 GM:addObjectivePositionToGametype("onesiderush", "gc_depot_b2", Vector(-5565.1865, 832.9864, 128.0313), "gc_capture_point", {captureDistance = 150,capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 GM:addObjectivePositionToGametype("onesiderush", "gc_depot_b2", Vector(-7676.4849, -597.2024, -351.9687), "gc_capture_point", {captureDistance = 150,capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
@@ -374,70 +371,6 @@ assault.objectiveEnts = {}
 
 if SERVER then
     assault.mapRotation = GM:getMapRotation("assault_maps")
-    
-    GM.StartingPoints.rp_downtown_v2 = {
-        [TEAM_BLUE] = {
-            assault = {
-                {position = Vector(1229.6053, 1217.8403, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1129.8442, 1216.5354, -203.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1054.2517, 1215.5464, -203.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(968.0956, 1214.4189, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(930.4415, 1278.582, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(929.465, 1362.9808, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1027.2296, 1333.2775, -200.7752), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1123.923, 1334.3507, -203.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1213.5834, 1335.5228, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1235.2239, 1416.9071, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1175.3423, 1454.0934, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1096.2295, 1453.2295, -203.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1020.6302, 1452.2424, -199.1253), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(953.8265, 1451.3683, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(927.4063, 1525.8455, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1008.4684, 1551.7803, -196.1028), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1087.5789, 1552.8534, -203.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1166.6895, 1553.8884, -196.2973), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1232.5876, 1554.7507, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1257.8757, 1623.142, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1194.9629, 1657.7408, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1105.3007, 1656.7305, -203.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1022.6866, 1655.651, -199.6394), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(931.2745, 1654.4548, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(924.8574, 1733.795, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(999.5837, 1763.2145, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1083.9647, 1764.38, -203.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1173.6332, 1765.5533, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)},
-                {position = Vector(1243.9458, 1766.4733, -195.9687), viewAngles = Angle(1.0781, -89.2518, 0)}
-            }
-        },
-        
-        [TEAM_RED] = { 
-            assault = {
-                {position = Vector(-1729.4055, -2125.4785, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1641.4254, -2126.1833, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1513.0774, -2127.2119, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1395.2834, -2128.1558, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1282.7672, -2129.0574, -203.9688), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1189.568, -2129.8042, -203.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1110.4552, -2130.4382, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1092.9962, -2224.7693, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1165.8156, -2267.3735, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1271.885, -2266.6086, -203.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1373.8727, -2265.7913, -203.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1482.8696, -2264.9177, -203.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1591.8787, -2264.0442, -203.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1686.8107, -2263.2839, -203.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1778.226, -2262.5513, -203.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1788.5939, -2359.5466, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1714.2246, -2360.1423, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1606.9722, -2361.002, -195.9688), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1501.4767, -2361.8472, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1392.4775, -2362.7207, -195.9688), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1294.0206, -2363.5098, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1195.5615, -2364.2986, -195.9687), viewAngles = Angle(3.08, 89.542, 0)},
-                {position = Vector(-1107.6656, -2365.0027, -195.9687), viewAngles = Angle(3.08, 89.542, 0)}
-            }
-        }
-    }
 end
 
 function assault:assignPointID(point)

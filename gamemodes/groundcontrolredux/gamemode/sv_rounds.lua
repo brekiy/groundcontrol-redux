@@ -162,7 +162,7 @@ function GM:endRound(winningTeam)
             self:startVoteMap()
         end
     else
-        print(canPickRandomMapAndGametype)
+        print("Can pick random map/gametype?", canPickRandomMapAndGametype)
         if self.RoundsPlayed == self.RoundsPerMap - 1 and self:gametypeVotesEnabled() and not canPickRandomMapAndGametype then -- start a vote for next gametype if we're on the second last round
             self:startGameTypeVote()
         end
@@ -279,6 +279,7 @@ function GM:setupLoadoutSelectionTime()
 end
 
 function GM:setupRoundPreparation()
+    table.Empty(self.DamageLog)
     self.PreparationTime = CurTime() + self.RoundPreparationTime
     self:setupLoadoutSelectionTime()
     
@@ -299,6 +300,5 @@ function GM:countLivingPlayers(teamToCheck)
             alive = alive + 1
         end
     end
-    
     return alive
 end

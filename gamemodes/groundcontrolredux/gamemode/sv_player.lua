@@ -268,6 +268,7 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
                 end
             end
         end
+        AddDamageLogEntry(attacker, ply, dmgInfo, true)
     end
     
     if self.curGametype.playerDeath then
@@ -275,7 +276,6 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
     end
     
     ply.spawnWait = CurTime() + 5
-    -- AddDamageLogEntry(attacker, ply, dmgInfo)
     ply:CreateRagdoll()
 end
 

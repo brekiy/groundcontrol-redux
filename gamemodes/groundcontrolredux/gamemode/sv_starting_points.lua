@@ -7,6 +7,7 @@ GM.TeamRedFallbackSpawnPoints = {"info_player_counterterrorist", "info_player_re
 GM.TeamBlueFallbackSpawnPoints = {"info_player_terrorist", "info_player_combine"}
 
 local zeroAngles = Angle(0, 0, 0)
+
 function GM:registerStartingPoint(map, team, position, viewAngles, gametype)
     self.StartingPoints[map] = self.StartingPoints[map] or {}
     self.StartingPoints[map][team] = self.StartingPoints[map][team] or {}
@@ -35,11 +36,10 @@ function GM:resetStartingPoints()
     self:clearStartingPoints()
     self:setupStartingPoints(TEAM_RED, nil, self:getCustomSpawnPoints(TEAM_RED))
     self:setupStartingPoints(TEAM_BLUE, nil, self:getCustomSpawnPoints(TEAM_BLUE))
-    
     for key, entClass in ipairs(self.TeamRedFallbackSpawnPoints) do
         self:setupStartingPoints(TEAM_RED, entClass)
     end
-    
+
     for key, entClass in ipairs(self.TeamBlueFallbackSpawnPoints) do
         self:setupStartingPoints(TEAM_BLUE, entClass)
     end
@@ -66,10 +66,10 @@ end
 function GM:setupStartingPoints(targetTeam, entityClass, positionList)
     self.LastPickedStartPoint[targetTeam] = 0
     self.ValidStartingPoints[targetTeam] = self.ValidStartingPoints[targetTeam] or {}
-    
+
     if not positionList then -- if we weren't given a specific position list, get the registered points for this specific map + team
         local list = self.StartingPoints[self.CurrentMap]
-        
+
         if list then
             list = list[team]
             
@@ -82,9 +82,9 @@ function GM:setupStartingPoints(targetTeam, entityClass, positionList)
             end
         end
     end
-    
+
     if positionList then -- if we have a specific position list, we set up valid starting points from that
-        for key, data in pairs(positionList) do
+        for key, data in ipairs(positionList) do
             table.insert(self.ValidStartingPoints[targetTeam], self:prepareSpawnPointData(data.position, data.viewAngles))
         end
     end
@@ -141,7 +141,7 @@ function GM:pickValidStartingPoint(ply)
     end
     
     local pointTable = self.ValidStartingPoints[team]
-    
+
     if #pointTable == 0 then -- no points in starting point table, return nil
         return nil
     end
