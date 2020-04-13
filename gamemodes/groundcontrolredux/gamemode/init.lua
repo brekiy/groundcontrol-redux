@@ -151,6 +151,9 @@ function GM:EntityTakeDamage(target, dmgInfo)
                 end
             end
         end
+        if not dmgInfo:IsFallDamage() then 
+            AddDamageLogEntry(attacker, target, dmgInfo, false)
+        end
     end
 end
 
@@ -162,15 +165,26 @@ end
 -- wip
 function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
     local entryText = nil
-    PrintTable(dmgInfo)
-    local attackerWep = attacker:GetActiveWeapon():GetClass()
-    local attackerNick = attacker:Nick()
     local targetNick = target:Nick()
-    if targetDied then
-        if attacker:Team() == target.Team() then
-            entryText = Format("KILL: %s teamkilled %s with %s", attackerNick, targetNick, attackerWep)
-        else
-            entryText = Format("KILL: %s killed %s with %s", attackerNick, targetNick, attackerWep)
-        end
+    local inflictor = dmgInfo:GetInflictor()
+    local attackerWep = nil
+    local attackerNick = nil
+    if attacker and attacker:IsPlayer() then
+        attackerNick = attacker:Nick()
+        attackerWep = attacker:GetActiveWeapon():GetClass()
     end
+    if targetDied then
+        if attacker and attacker:IsPlayer() and attacker ~= target then
+            if attacker:Team() == target:Team() then
+                entryText = Format("KILL: %s teamkilled %s with %s", attackerNick, targetNick, attackerWep)
+            else
+                entryText = Format("KILL: %s killed %s with %s", attackerNick, targetNick, attackerWep)
+            end
+        else
+            entryText = Format("DEATH: %s died due to blood loss", targetNick)
+        end
+    elseif attacker and attacker:IsPlayer() then
+        entryText = Format("HIT: %s shot %s for %f damage with %s", attackerNick, targetNick, dmgInfo:GetDamage(), attackerWep)
+    else end
+    table.insert(GAMEMODE.DamageLog, entryText)
 end
