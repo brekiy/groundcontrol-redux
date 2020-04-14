@@ -14,8 +14,8 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
     local shouldBleed = true
     local removeIndex = 1
     local combinedArmor = self:getTotalArmorPieces()
-
     for i = 1, #combinedArmor do
+        if removeIndex > #combinedArmor then return end
         local armorPiece = combinedArmor[removeIndex]
         local armorData = GAMEMODE:getArmorData(armorPiece.id, armorPiece.category)
         local removeArmor = false
@@ -23,7 +23,6 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
             local protectionDelta = armorData.protection - penetrationValue
             local penetratesArmor = protectionDelta < 0
             local damageNegation = nil
-
             if not penetratesArmor then
                 shouldBleed = false
                 if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
@@ -62,6 +61,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 self:calculateWeight()
             end
         end
+        removeIndex = removeIndex + 1
     end
     
     if allowBleeding and shouldBleed then
