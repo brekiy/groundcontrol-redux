@@ -26,7 +26,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
 
             if not penetratesArmor then
                 shouldBleed = false
-                -- if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
+                if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
                 damageNegation = armorData.damageDecrease + protectionDelta * armorData.protectionDeltaToDamageDecrease
                 local regenAmount = math.floor(dmgInfo:GetDamage() * damageNegation)
                 self:addHealthRegen(regenAmount)
@@ -108,6 +108,7 @@ function PLAYER:sendHelmet()
 end
 
 function PLAYER:sendArmorPiece(index, health, category)
+    print("gc_armor_piece", index, health, category)
     net.Start("GC_ARMOR_PIECE")
     net.WriteInt(index, 32)
     net.WriteFloat(health)

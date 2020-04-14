@@ -43,4 +43,4 @@ end
 GM:registerSound("GC_BANDAGE", {"ground_control/player/bandage1.mp3", "ground_control/player/bandage2.mp3", "ground_control/player/bandage3.mp3"})
 GM:registerSound("GC_BLEED", {"ground_control/player/bleed1.mp3", "ground_control/player/bleed2.mp3", "ground_control/player/bleed3.mp3", "ground_control/player/bleed4.mp3", "ground_control/player/bleed5.mp3"})
 GM:registerSound("GC_DEATH_SOUND", {"vo/npc/Barney/ba_pain01.wav", "vo/npc/Barney/ba_pain02.wav", "vo/npc/Barney/ba_pain03.wav", "vo/npc/Barney/ba_pain04.wav", "vo/npc/Barney/ba_pain05.wav", "vo/npc/Barney/ba_pain06.wav", "vo/npc/Barney/ba_pain07.wav", "vo/npc/Barney/ba_pain08.wav", "vo/npc/Barney/ba_pain09.wav", "vo/npc/male01/pain01.wav", "vo/npc/male01/pain02.wav", "vo/npc/male01/pain03.wav", "vo/npc/male01/pain04.wav", "vo/npc/male01/pain05.wav"}, 1, 400) 
-GM:registerSound("GC_DINK", {"physics/metal/metal_sheet_impact_bullet1.wav", "physics/metal/metal_sheet_impact_bullet2.wav"})
+GM:registerSound("GC_DINK", {"physics/metal/metal_sheet_impact_bullet1.wav", "physics/metal/metal_sheet_impact_bullet2.wav"}, 1, 400)

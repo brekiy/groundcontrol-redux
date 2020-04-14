@@ -220,7 +220,8 @@ for key, value in pairs(CustomizableWeaponry.registeredAttachmentsSKey) do -- it
 end
 
 for attName, price in pairs(GM.attachmentPrices) do
-    CustomizableWeaponry.registeredAttachmentsSKey[attName].price = price
+    local attData = CustomizableWeaponry.registeredAttachmentsSKey[attName]
+    if attData ~= nil then attData.price = price end
 end
 
 local PLAYER = FindMetaTable("Player")
