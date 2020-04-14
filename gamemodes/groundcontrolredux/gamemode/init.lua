@@ -73,7 +73,6 @@ include("sv_config.lua")
 include("sv_server_name_updater.lua")
 include("sv_killcount.lua")
 include("sv_net_strings.lua")
-include("sv_convars.lua")
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")

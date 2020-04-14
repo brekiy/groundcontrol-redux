@@ -70,8 +70,15 @@ local PLAYER = FindMetaTable("Player")
 PLAYER._armorFlashTime = 0.3
 PLAYER._armorFlashRedAmount = 255
 
-function PLAYER:updateArmorPiece(index, newHealth)
-    local armorData = self.armor[index]
+function PLAYER:updateArmorPiece(index, newHealth, category)
+    print("update armor piece", index, newHealth, category)
+    local armorData = nil
+    if category == "vest" then 
+        armorData = self.armor[index]
+    elseif category == "helmet" then
+        armorData = self.helmet[index]
+    else return
+    end
     local oldHealth = armorData.health
     armorData.health = newHealth
     
