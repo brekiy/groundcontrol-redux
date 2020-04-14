@@ -72,7 +72,7 @@ end
 -- protectionDeltaToDamageDecrease: in the event of no penetration, damage is scaled by an additional amount determined by
 --      (protection - penetration) * protectionDeltaToDamageDecrease
 --      e.g. if a weapon's penetration value is 6 shoots a guy wearing the dyneema vest, 
---      an additional 12% ((10 - 6) * 0.05) damage reduction will be added to the final calculation.
+--      an additional 6% ((10 - 6) * 0.015) damage reduction will be added to the final calculation.
 -- damageDecrease: Percent damage reduction in case of no penetration. Represents blunt trauma suffered.
 -- damageDecreasePenetration: Percent damage reduction in case of penetration. original suggestion is to not raise this above 20%.
 -- icon: Path to the icon in the GUI.
@@ -239,11 +239,11 @@ function PLAYER:resetHelmetData()
 end    
 
 function PLAYER:getDesiredVest()
-    return tonumber(self:GetInfoNum("gc_armor_vest", 0))
+    return tonumber(self:GetInfoNum("gc_armor_vest", 1))
 end
 
 function PLAYER:getDesiredHelmet()
-    return tonumber(self:GetInfoNum("gc_armor_helmet", 0))
+    return tonumber(self:GetInfoNum("gc_armor_helmet", 1))
 end
 
 function PLAYER:getTotalArmorPieces()

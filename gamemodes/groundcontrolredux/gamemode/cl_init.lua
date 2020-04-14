@@ -249,6 +249,7 @@ function GM:PlayerBindPress(ply, bind, pressed)
                         local selection = tonumber(bind:Right(1))
                         
                         if self:showWeaponSelection(selection) then
+                            ply:selectWeaponNicely(self.desiredWeaponToDraw)
                             return true
                         else
                             self:hideWeaponSelection()

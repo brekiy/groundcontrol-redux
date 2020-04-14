@@ -71,12 +71,13 @@ PLAYER._armorFlashTime = 0.3
 PLAYER._armorFlashRedAmount = 255
 
 function PLAYER:updateArmorPiece(index, newHealth, category)
-    print("update armor piece", index, newHealth, category)
+    local combinedArmor = self:getTotalArmorPieces()
     local armorData = nil
+    -- very hacky lol
     if category == "vest" then 
-        armorData = self.armor[index]
+        armorData = self.armor[1]
     elseif category == "helmet" then
-        armorData = self.helmet[index]
+        armorData = self.helmet[1]
     else return
     end
     local oldHealth = armorData.health
