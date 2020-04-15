@@ -108,7 +108,6 @@ function PLAYER:sendHelmet()
 end
 
 function PLAYER:sendArmorPiece(index, health, category)
-    print("gc_armor_piece", index, health, category)
     net.Start("GC_ARMOR_PIECE")
     net.WriteInt(index, 32)
     net.WriteFloat(health)
