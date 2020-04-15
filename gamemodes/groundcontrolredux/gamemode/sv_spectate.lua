@@ -6,11 +6,13 @@ function PLAYER:resetSpectateData()
     self.spectatedPlayers = self.spectatedPlayers or {}
     self.spectateDelay = 0
     self.currentSpectateEntity = nil
+    self.spectatedCamera = self.spectatedCamera or OBS_MODE_CHASE
     
     table.clear(self.spectatedPlayers)
 end
 
-function PLAYER:spectateNext()
+-- take a bool whether to go back or not
+function PLAYER:spectateNext(goBack)
     local wasFound = false
     local alivePlayers = 0
     local teamPlayers = nil 
@@ -24,7 +26,7 @@ function PLAYER:spectateNext()
     end
     
     local teamPlayerCount = #teamPlayers
-    
+    -- PrintTable(self.spectatedPlayers)
     for key, ply in ipairs(teamPlayers) do
         if ply:Alive() then
             if not self.spectatedPlayers[ply] then
@@ -41,13 +43,13 @@ function PLAYER:spectateNext()
     
     if not wasFound and alivePlayers > 0 then
         self:resetSpectateData()
-        self:spectateNext()
+        self:spectateNext(goBack)
     end
 end
 
 function PLAYER:reSpectate()
     self:resetSpectateData()
-    self:spectateNext()
+    self:spectateNext(false)
 end
 
 function PLAYER:isSpectateTargetValid()
@@ -58,14 +60,27 @@ function PLAYER:delaySpectate(time)
     self.spectateDelay = CurTime() + time
 end
 
-function PLAYER:attemptSpectate()
+function PLAYER:attemptSpectate(goBack)
     if self:Alive() or CurTime() < self.spectateDelay then
         return
     end
     
-    self:spectateNext()
+    self:spectateNext(goBack)
+end
+
+function PLAYER:changeSpectateCamera()
+    if self.spectatedCamera == OBS_MODE_CHASE then
+        self.spectatedCamera = OBS_MODE_IN_EYE
+    elseif self.spectatedCamera == OBS_MODE_IN_EYE then
+        self.spectatedCamera = OBS_MODE_CHASE
+    end
+    self:Spectate(self.spectatedCamera)
 end
 
 concommand.Add("gc_spectate_next", function(ply, com, args)
     ply:attemptSpectate()
+end)
+
+concommand.Add("gc_spectate_perspective", function(ply, com, args)
+    ply:changeSpectateCamera()
 end)

@@ -13,33 +13,39 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
 
     local shouldBleed = true
     local removeIndex = 1
-
     local combinedArmor = self:getTotalArmorPieces()
-
     for i = 1, #combinedArmor do
+        if removeIndex > #combinedArmor then return end
         local armorPiece = combinedArmor[removeIndex]
         local armorData = GAMEMODE:getArmorData(armorPiece.id, armorPiece.category)
         local removeArmor = false
         if armorData.protectionAreas[hitGroup] then
-            -- print(armorData.displayName.." is mitigating damage")
             local protectionDelta = armorData.protection - penetrationValue
             local penetratesArmor = protectionDelta < 0
             local damageNegation = nil
-            
             if not penetratesArmor then
                 shouldBleed = false
-                
+                if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
                 damageNegation = armorData.damageDecrease + protectionDelta * armorData.protectionDeltaToDamageDecrease
                 local regenAmount = math.floor(dmgInfo:GetDamage() * damageNegation)
                 self:addHealthRegen(regenAmount)
                 self:delayHealthRegen()
             else
+                --[[ 
+                    Potential new penetration dmg formula:
+                    armorData.damageDecreasePenetration + protectionDelta * 0.01
+                    with this formula, the higher the round's penetrative power, the less the vest will reduce damage after being penetrated.
+                ]]--
                 damageNegation = armorData.damageDecreasePenetration
-                self:resetHealthRegenData() -- if our armor gets penetrated, it doesn't matter how much health we had in our regen pool, we still start bleeding
+                -- if our armor gets penetrated, it doesn't matter how much health we had in our regen pool, we still start bleeding
+                self:resetHealthRegenData()
             end
-            
-            self:takeArmorDamage(armorPiece, dmgInfo)
+
+            -- Clamp ballistic damage reduction between 0-90%, would go in with the above penetration formula
+            -- damageNegation = math.clamp(damageNegation, 0, 0.9) 
             dmgInfo:ScaleDamage(1 - damageNegation)
+            -- Use the scaled damage in calculating armor degredation, so bb pellets will never destroy hard plates
+            self:takeArmorDamage(armorPiece, dmgInfo)
             
             local health = armorPiece.health
             
@@ -55,6 +61,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 self:calculateWeight()
             end
         end
+        removeIndex = removeIndex + 1
     end
     
     if allowBleeding and shouldBleed then
@@ -81,7 +88,7 @@ function PLAYER:giveHelmet()
 end
 
 function PLAYER:takeArmorDamage(armorData, dmgInfo)
-    armorData.health = math.ceil(armorData.health - dmgInfo:GetDamage() * 0.85)
+    armorData.health = math.ceil(armorData.health - dmgInfo:GetDamage())
 end
 
 function PLAYER:addArmorPart(id, category)
@@ -101,6 +108,7 @@ function PLAYER:sendHelmet()
 end
 
 function PLAYER:sendArmorPiece(index, health, category)
+    print("gc_armor_piece", index, health, category)
     net.Start("GC_ARMOR_PIECE")
     net.WriteInt(index, 32)
     net.WriteFloat(health)

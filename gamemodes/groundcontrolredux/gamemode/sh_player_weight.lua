@@ -1,9 +1,9 @@
 AddCSLuaFile()
 
 -- weight is in kilograms
-GM.MaxWeight = 25
+GM.MaxWeight = 35
 -- our stamina will drain this much faster when our weight is at max (40% faster at 20kg, 20% faster at 10kg, etc.)
-GM.SprintStaminaDrainWeightIncrease = 0.4
+GM.SprintStaminaDrainWeightIncrease = 0.7
 -- threshold at which runspeed starts to get affected by weight carried
 GM.MinWeightForSpeedDecrease = 7.5
 -- ???
@@ -11,7 +11,7 @@ GM.MaxSpeedDecrease = 0.05
 -- ???
 GM.MaxSpeedDecreaseWeightDelta = GM.MaxWeight - GM.MinWeightForSpeedDecrease
 -- Amount to subtract from runspeed per weight over threshold
-GM.RunSpeedPerWeightPoint = 1
+GM.RunSpeedPerWeightPoint = 0.85
 
 local PLAYER = FindMetaTable("Player")
 
@@ -49,7 +49,8 @@ function GM:calculateImaginaryWeight(ply, withoutWeight, withWeight)
         totalWeight = totalWeight + (tertiaryData.weight or 0)
     end
     
-    totalWeight = totalWeight + self:getBandageWeight(ply:getDesiredBandageCount()) -- bandages, spare ammo, vest, etc.
+    -- tally up other equipment weight
+    totalWeight = totalWeight + self:getBandageWeight(ply:getDesiredBandageCount()) 
     totalWeight = totalWeight + self:getSpareAmmoWeight(ply:getDesiredAmmoCount())
     totalWeight = totalWeight + self:getArmorWeight("vest", ply:getDesiredVest())
     totalWeight = totalWeight + self:getArmorWeight("helmet", ply:getDesiredHelmet())
@@ -67,9 +68,11 @@ function PLAYER:calculateWeight(withoutWeight, withWeight)
     totalWeight = totalWeight + GAMEMODE:getArmorWeight("helmet", self:getDesiredHelmet())
     
     for key, weapon in pairs(self:GetWeapons()) do
-        totalWeight = totalWeight + weapon.weight or 0 -- take weapon weight into account
-    
-        totalWeight = totalWeight + GAMEMODE:getAmmoWeight(weapon.Primary.Ammo, weapon:Clip1() + self:GetAmmoCount(weapon.Primary.Ammo)) -- take ammo weight into account
+        -- take weapon weight into account, move conditional check up here to avoid arithmetic error
+        local weaponWeight = weapon.weight or 0
+        totalWeight = totalWeight + weaponWeight
+        -- take ammo weight into account
+        totalWeight = totalWeight + GAMEMODE:getAmmoWeight(weapon.Primary.Ammo, weapon:Clip1() + self:GetAmmoCount(weapon.Primary.Ammo))
     end
     
     for key, data in ipairs(self.gadgets) do
@@ -83,7 +86,6 @@ end
 
 function PLAYER:getJumpStaminaDrain(weight)
     weight = weight or self.weight
-    
     return GAMEMODE.StaminaPerJump + math.max(0, -GAMEMODE.StaminaPerJumpBaselineNoWeightPenalty + weight * GAMEMODE.StaminaPerJumpWeightIncrease)
 end
 
@@ -107,9 +109,9 @@ function PLAYER:canCarryWeight(desiredWeight)
 end
 
 function PLAYER:getWeightRunSpeedModifier()
-    local difference = self.weight - 7.5
-    -- local difference = self.weight - GetConVar("gc_min_weight_speed_decrease"):GetFloat()
+    -- local difference = self.weight - 7.5
+    local difference = self.weight - GetConVar("gc_min_weight_speed_decrease"):GetFloat()
     local runSpeedImpact = math.max(difference, 0)
-    -- return runSpeedImpact * GetConVar("gc_run_speed_penalty_per_weight"):GetFloat()
-    return runSpeedImpact * 1
+    return runSpeedImpact * GetConVar("gc_run_speed_penalty_per_weight"):GetFloat()
+    -- return runSpeedImpact * 1
 end

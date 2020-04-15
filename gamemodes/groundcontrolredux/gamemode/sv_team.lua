@@ -67,10 +67,8 @@ end
 
 function PLAYER:autobalancedSwitchTeam(teamId)
     self:SetTeam(teamId)
-    
-    umsg.Start("GC_AUTOBALANCED_TO_TEAM", self)
-        umsg.Short(teamId)
-    umsg.End()
-    
+    net.Start("GC_AUTOBALANCED_TO_TEAM")
+    net.WriteInt(teamId, 16)
+    net.Send(self)
     GAMEMODE:resetKillcountData()
 end

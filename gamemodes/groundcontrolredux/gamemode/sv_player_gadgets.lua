@@ -24,7 +24,8 @@ function PLAYER:useGadget(gadgetId)
     end
 end
 
-function PLAYER:setSpareAmmo(amount) -- spare ammo is an independent gadget
+-- spare ammo is an independent gadget
+function PLAYER:setSpareAmmo(amount)
     amount = amount or self:GetInfoNum("gc_spare_ammo", 0)
     
     if amount == 0 then

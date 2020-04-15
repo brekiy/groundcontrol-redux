@@ -14,7 +14,7 @@ local PLAYER = FindMetaTable("Player")
 
 function PLAYER:selectWeaponNicely(weaponObj)
     self.selectWeaponTarget = weaponObj
-    GAMEMODE.weaponSelectionTime = 0 -- make it fade out
+    GAMEMODE.weaponSelectionTime = CurTime() + 1 -- make it fade out
 end
 
 function GM:showWeaponSelection(desiredWeapon)

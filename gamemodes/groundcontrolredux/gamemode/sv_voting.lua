@@ -129,11 +129,11 @@ end
 
 function GM:sendVoteDataUpdate(target, index)
     local votes = self.VoteOptions[index].votes
-    
-    umsg.Start("GC_VOTE_UPDATE", target)
-        umsg.Char(index)
-        umsg.Char(votes)
-    umsg.End()
+    -- Original used a char, so we're gonna use a single byte and an unsigned int to emulate it
+    net.Start("GC_VOTE_UPDATE")
+    net.WriteUInt(index, 8)
+    net.WriteUInt(votes, 8)
+    net.Send(target)
 end
 
 function GM:finishCurrentVote()

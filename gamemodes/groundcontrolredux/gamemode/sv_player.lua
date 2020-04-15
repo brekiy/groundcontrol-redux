@@ -244,8 +244,8 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
         end
                 
         net.Start("GC_KILLED_BY")
-            net.WriteEntity(attacker)
-            net.WriteString(inflictor:GetClass())
+        net.WriteEntity(attacker)
+        net.WriteString(inflictor:GetClass())
         net.Send(ply)
         
         local markedSpots = self.MarkedSpots[attacker:Team()]
@@ -268,6 +268,7 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
                 end
             end
         end
+        AddDamageLogEntry(attacker, ply, dmgInfo, true)
     end
     
     if self.curGametype.playerDeath then
@@ -275,7 +276,6 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
     end
     
     ply.spawnWait = CurTime() + 5
-    
     ply:CreateRagdoll()
 end
 
@@ -419,11 +419,11 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
         
         if attacker:Team() ~= ply:Team() then
             dmgInfo:ScaleDamage(GetConVar("gc_damage_multiplier"):GetFloat())
-            -- dmgInfo:ScaleDamage(GetConVarNumber("gc_damage_multiplier"))
             attacker:storeRecentVictim(ply)
             ply:storeAttacker(attacker, dmgInfo)
             ply:processArmorDamage(dmgInfo, penValue, hitGroup, true)
         else
+            -- Team damage does no bleeding if it penetrates
             ply:processArmorDamage(dmgInfo, penValue, hitGroup, false)
         end
     end
@@ -653,10 +653,10 @@ function PLAYER:setSpawnPoint(vec)
 end
 
 function PLAYER:sendStatusEffect(id, state)
-    umsg.Start("GC_STATUS_EFFECT", self)
-        umsg.String(id)
-        umsg.Bool(state)
-    umsg.End()
+    net.Start("GC_STATUS_EFFECT")
+    net.WriteString(id)
+    net.WriteBool(state)
+    net.Send(self)
     
     local statusEffect = GAMEMODE.StatusEffects[id]
     
@@ -665,9 +665,9 @@ function PLAYER:sendStatusEffect(id, state)
         for key, playerObject in ipairs(team.GetPlayers(self:Team())) do
             if playerObject ~= self then                
                 net.Start("GC_STATUS_EFFECT_ON_PLAYER")
-                    net.WriteEntity(self)
-                    net.WriteString(id)
-                    net.WriteBool(state)
+                net.WriteEntity(self)
+                net.WriteString(id)
+                net.WriteBool(state)
                 net.Send(playerObject)
             end
         end

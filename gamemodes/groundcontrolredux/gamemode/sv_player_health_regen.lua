@@ -16,7 +16,7 @@ function PLAYER:addHealthRegen(amount)
 end
 
 function PLAYER:delayHealthRegen()
-    self.regenDelay = CurTime() + GAMEMODE.HealthRegenTickDelay
+    self.regenDelay = CurTime() + GetConVar("gc_health_regen_time"):GetFloat()
 end
 
 function PLAYER:regenHealth()

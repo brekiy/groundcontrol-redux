@@ -208,7 +208,7 @@ function GM:registerAttachment(data)
     attData.price = data.price
     attData.unlockedByDefault = data.unlockedByDefault
 end
-PrintTable(CustomizableWeaponry.registeredAttachmentsSKey)
+-- PrintTable(CustomizableWeaponry.registeredAttachmentsSKey)
 function GM:setAttachmentPrice(attachmentName, desiredPrice)
     CustomizableWeaponry.registeredAttachmentsSKey[data.attachmentName].price = desiredPrice
 end
@@ -220,7 +220,8 @@ for key, value in pairs(CustomizableWeaponry.registeredAttachmentsSKey) do -- it
 end
 
 for attName, price in pairs(GM.attachmentPrices) do
-    CustomizableWeaponry.registeredAttachmentsSKey[attName].price = price
+    local attData = CustomizableWeaponry.registeredAttachmentsSKey[attName]
+    if attData ~= nil then attData.price = price end
 end
 
 local PLAYER = FindMetaTable("Player")
