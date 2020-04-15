@@ -1,6 +1,6 @@
 GM.Version = "1.04"
 
-GM.Name     = "Ground Control Redux" .. GM.Version
+GM.Name     = "Ground Control Redux"
 GM.Author     = "brekiy"
 GM.Email     = "N/A"
 GM.Website     = "N/A"
@@ -463,7 +463,7 @@ function PLAYER:setSpectateTarget(target)
     self.currentSpectateEntity = target
     
     if SERVER then
-        self:Spectate(OBS_MODE_CHASE)
+        self:Spectate(self.spectatedCamera)
         self:SpectateEntity(target)
 
         net.Start("GC_SPECTATE_TARGET")

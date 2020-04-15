@@ -507,61 +507,6 @@ urbanwarfare.waveWinReward = {cash = 50, exp = 50}
 
 if SERVER then
     urbanwarfare.mapRotation = GM:getMapRotation("urbanwarfare_maps")
-    
-    GM.StartingPoints.ph_skyscraper_construct = {
-        [TEAM_RED] = {
-            urbanwarfare = {
-                {position = Vector(774.0888, 983.2716, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(774.344, 902.5513, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(774.6385, 809.3679, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(774.9553, 709.1458, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(775.2556, 614.2077, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(775.5556, 519.2693, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(775.8668, 420.8229, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(776.1726, 324.1125, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(776.4672, 230.9174, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(776.7599, 138.3155, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(852.5703, 127.1812, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(852.3819, 186.7617, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(852.0763, 283.4687, -131.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(851.7705, 380.1672, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(851.4926, 468.0828, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(851.217, 555.2672, -127.9687), viewAngles = Angle(10.9339, -89.8191, 0)},
-                {position = Vector(851.1285, 626.7723, -127.9687), viewAngles = Angle(8.3159, 90.0529, 0)},
-                {position = Vector(851.0486, 714.6813, -127.9687), viewAngles = Angle(8.3159, 90.0529, 0)},
-                {position = Vector(850.9801, 790.283, -127.9687), viewAngles = Angle(8.3159, 90.0529, 0)},
-                {position = Vector(850.9099, 867.6542, -127.9687), viewAngles = Angle(8.3159, 90.0529, 0)},
-                {position = Vector(850.8647, 917.1987, -127.9687), viewAngles = Angle(8.3159, 90.0529, 0)}
-            }
-        },
-            
-        [TEAM_BLUE] = {
-            urbanwarfare = {
-                {position = Vector(-762.5663, -847.2106, -127.9687), viewAngles = Angle(2.0019, 90.0528, 0)},
-                {position = Vector(-762.6284, -779.3649, -127.9687), viewAngles = Angle(2.0019, 90.0528, 0)},
-                {position = Vector(-762.7089, -691.1991, -127.9687), viewAngles = Angle(2.0019, 90.0528, 0)},
-                {position = Vector(-762.7861, -606.497, -127.9687), viewAngles = Angle(2.0019, 90.0528, 0)},
-                {position = Vector(-762.8611, -523.8428, -127.9687), viewAngles = Angle(2.0019, 90.0528, 0)},
-                {position = Vector(-762.9329, -444.7097, -127.9687), viewAngles = Angle(2.0019, 90.0528, 0)},
-                {position = Vector(-762.9976, -373.6328, -127.9687), viewAngles = Angle(2.0019, 90.0528, 0)},
-                {position = Vector(-763.1141, -245.7027, -127.9687), viewAngles = Angle(2.0019, 90.0528, 0)},
-                {position = Vector(-763.1843, -168.337, -127.9687), viewAngles = Angle(2.0019, 90.0528, 0)},
-                {position = Vector(-763.2594, -85.692, -127.9687), viewAngles = Angle(2.0019, 90.0528, 0)},
-                {position = Vector(-823.4547, -44.4427, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
-                {position = Vector(-821.9818, -104.148, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
-                {position = Vector(-820.1603, -177.9798, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
-                {position = Vector(-818.382, -250.0601, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
-                {position = Vector(-815.1729, -380.1232, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
-                {position = Vector(-813.395, -452.1877, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
-                {position = Vector(-811.7037, -520.7379, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
-                {position = Vector(-810.0989, -585.7841, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
-                {position = Vector(-808.1475, -664.8785, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
-                {position = Vector(-806.413, -735.1838, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
-                {position = Vector(-804.3742, -817.8115, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)},
-                {position = Vector(-802.6829, -886.3654, -127.9687), viewAngles = Angle(2.9259, -88.5871, 0)}
-            }
-        }
-    }
 end
 
 function urbanwarfare:assignPointID(point)

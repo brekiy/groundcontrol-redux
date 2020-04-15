@@ -152,7 +152,7 @@ medic.pricePerLevel = 500
 medic.healthRestorePerLevel = 1
 medic.description = {
     {t = "You've undergone extensive medical training to treat wounds efficiently.", c = GM.HUDColors.white},
-    {t = "Allows to restore some health when bandaging self or team mates.", c = GM.HUDColors.white},
+    {t = "You can restore health when bandaging yourself or team mates.", c = GM.HUDColors.white},
     {t = "Each level increases health restored by %s point.", c = GM.HUDColors.green, formatFunc = function(textToFormat) return string.format(textToFormat, medic.healthRestorePerLevel) end},
     {
         t = "Current health restore amount: +CURRENT%",

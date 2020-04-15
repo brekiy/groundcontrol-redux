@@ -472,7 +472,6 @@ function GM:postInitEntity()
     self:registerPrimaryWeapon(khr_cb4)
     
     -- sniper rifles
-    -- bolt-action versions of "regular" rifle rounds like 7.62 NATO and mmR will get penetration buffs for balance
     local l115 = {
         weaponClass = "gc_cw_l115",
         weight = 6.5,
@@ -777,7 +776,7 @@ function GM:postInitEntity()
     self:registerCaliberWeight("5.7x28MM", 6.15)
     self:registerCaliberWeight("9x18MM", 8)
     self:registerCaliberWeight("9x21MM", 8.1)
-    self:registerCaliberWeight(".50 BMG", 70)
+    self:registerCaliberWeight(".50 BMG", 70) -- real weight is like 100g+
     self:registerCaliberWeight(".410 Bore", 20)
     self:registerCaliberWeight(".357 Magnum", 14)
     self:registerCaliberWeight(".38 Special", 12.5)
