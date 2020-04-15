@@ -1,6 +1,7 @@
 net.Receive("GC_ARMOR", function(a, b)
     LocalPlayer():resetArmorData()
     LocalPlayer():setArmor(net.ReadTable())
+    -- attachArmorPM(LocalPlayer())
 end)
 
 net.Receive("GC_HELMET", function(a, b)
@@ -11,6 +12,26 @@ end)
 net.Receive("GC_ARMOR_PIECE", function(a, b)
     LocalPlayer():updateArmorPiece(net.ReadInt(32), net.ReadFloat(), net.ReadString())
 end)
+
+-- function attachArmorPM(ply)
+--     if SERVER then
+--         print("starting attach armor")
+--         if not IsValid(ply.hat) then
+--             print("spawning attach armor")
+--             local hat = ents.Create("gc_armor_vest")
+--             if not IsValid(hat) then return end
+
+--             hat:SetPos(ply:GetPos() + Vector(0,0,70))
+--             hat:SetAngles(ply:GetAngles())
+
+--             hat:SetParent(ply)
+
+--             ply.hat = hat
+
+--             hat:Spawn()
+--         end
+--     end
+-- end
 
 function GM:drawArmor(ply, baseX, baseY)
     local offset = 0
