@@ -199,7 +199,11 @@ function GM:PlayerBindPress(ply, bind, pressed)
     if pressed then
         if self.DeadState == 3 then
             if bind == "+attack" then
-                RunConsoleCommand("gc_spectate_next")
+                RunConsoleCommand("gc_spectate_next", false)
+            -- elseif bind == "+attack2" then
+            --     RunConsoleCommand("gc_spectate_next", true)
+            elseif bind == "+jump" then
+                RunConsoleCommand("gc_spectate_perspective")
             end
         end
         
