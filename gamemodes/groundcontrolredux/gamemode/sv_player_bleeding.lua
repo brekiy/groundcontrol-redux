@@ -23,7 +23,6 @@ function PLAYER:bleed(silentBleed)
 end
 
 function PLAYER:delayBleed(time)
-    -- time = time or GAMEMODE.BleedTime
     time = time or GetConVar("gc_bleed_time"):GetFloat()
     self.bleedHealthDrainTime = CurTime() + time
 end

@@ -9,11 +9,11 @@ function GM:SelectRadioCommand(id)
 end
 
 function GM:ReceiveRadioCommand(data)
-    local seed = data:ReadFloat()
-    local category = data:ReadChar()
-    local commandId = data:ReadChar()
-    local voiceVariant = data:ReadChar()
-    local sender = data:ReadEntity()
+    local seed = net.ReadFloat()
+    local category = net.ReadUInt(8)
+    local commandId = net.ReadUInt(8)
+    local voiceVariant = net.ReadUInt(8)
+    local sender = net.ReadEntity()
     
     if not IsValid(sender) then
         return
@@ -179,20 +179,23 @@ end
 
 hook.Add("entity_killed", "GroundControl.entity_killed", entity_killed)
 
-local function GC_Radio(data)
-    GAMEMODE:ReceiveRadioCommand(data)
-end
+-- local function GC_Radio(data)
+--     GAMEMODE:ReceiveRadioCommand(data)
+-- end
 
-usermessage.Hook("GC_RADIO", GC_Radio)
+-- usermessage.Hook("GC_RADIO", GC_Radio)
 
-local function GC_Radio_Marked(data)
-    GAMEMODE:ReceiveRadioCommand(data)
-end
+-- original functions using umsg would pass in the bf_read message. hopefully this will never break again lol
+net.Receive("GC_RADIO", function(a, b)
+    GAMEMODE:ReceiveRadioCommand(nil)
+end)
 
-usermessage.Hook("GC_RADIO_MARKED", GC_Radio_Marked)
+net.Receive("GC_RADIO_MARKED", function(a, b)
+    GAMEMODE:ReceiveRadioCommand(nil)
+end)
 
 local function GC_FragOut(data)
-    local variant = data:ReadChar()
+    local variant = data:ReadUInt(8)
     local emitter = data:ReadEntity()
     
     GAMEMODE:PlayRadioCommand(9, 1, variant, emitter)

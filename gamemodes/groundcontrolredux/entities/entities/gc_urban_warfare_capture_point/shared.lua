@@ -24,7 +24,6 @@ end
 function ENT:isWithinCaptureAABB(pos)
     local min, max = self:GetCaptureMin(), self:GetCaptureMax()
     pos.z = pos.z + 32
-
     if pos.x > min.x and pos.y > min.y and pos.z > min.z and pos.x < max.x and pos.y < max.y and pos.z < max.z then
         return true
     end

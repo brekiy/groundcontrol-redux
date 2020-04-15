@@ -6,14 +6,11 @@ net.Receive("GC_VOTE", function(a, b)
     GAMEMODE:setVotes(title, voteStartTime, voteTime, data)
 end)
 
-local function GC_Vote_Update(data)
-    local index = data:ReadChar()
-    local value = data:ReadChar()
-    
+net.Receive("GC_VOTE_UPDATE", function(a, b)
+    local index = net.ReadUInt(8)
+    local value = net.ReadUInt(8)
     GAMEMODE:updateVote(index, value)
-end
-
-usermessage.Hook("GC_VOTE_UPDATE", GC_Vote_Update)
+end)
 
 function GM:updateVote(index, value)
     self.VoteOptions[index].votes = value

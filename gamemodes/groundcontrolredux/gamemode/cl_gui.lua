@@ -1921,14 +1921,31 @@ function gcArmorDisplay:OnCursorEntered()
     if not IsValid(self.descBox) then
         self.descBox = vgui.Create("GCGenericDescbox")
         self.descBox:SetDrawOnTop(true)
-        
+
         if self.armorData then
+            local tempTbl = {}
+            for key, value in pairs(table.GetKeys(self.armorData.protectionAreas)) do table.insert(tempTbl, value) end
+            table.sort(tempTbl)
+            local protectZonesArr = {}
+            for key, value in pairs(tempTbl) do
+                if value == 1 then table.insert(protectZonesArr, "Head")
+                elseif value == 2 then table.insert(protectZonesArr, "Thorax")
+                elseif value == 3 then table.insert(protectZonesArr, "Abdomen")
+                elseif value == 4 then table.insert(protectZonesArr, "Left Arm")
+                elseif value == 5 then table.insert(protectZonesArr, "Right Arm")
+                elseif value == 6 then table.insert(protectZonesArr, "Left Leg")
+                elseif value == 7 then table.insert(protectZonesArr, "Right Leg")
+                else print("got weird hitgroup enum "..value)
+                end
+            end
+            local protectZones = table.concat(protectZonesArr, ", ")
             self.descBox:InsertText(self.armorData.displayName, "CW_HUD28", 0)
             self.descBox:InsertText(self.armorData.description, "CW_HUD20", 0)
             self.descBox:InsertText("Weight: " .. self.armorData.weight .. "KG", "CW_HUD16", 0)
             self.descBox:InsertText("Max penetration value: " .. self.armorData.protection, "CW_HUD16", 0)
             self.descBox:InsertText("Blunt trauma reduction: " .. math.Round(self.armorData.damageDecrease * 100, 1) .. "%", "CW_HUD16", 0)
             self.descBox:InsertText("Penetration damage reduction: " .. math.Round(self.armorData.damageDecreasePenetration * 100, 1) .. "%", "CW_HUD16", 0)
+            self.descBox:InsertText("Protected areas: " .. protectZones, "CW_HUD16", 0)
         else
             if self.category == "vest" then
                 self.descBox:InsertText("No armor vest equipped.", "CW_HUD20", 0)
@@ -1938,7 +1955,7 @@ function gcArmorDisplay:OnCursorEntered()
                 self.descBox:InsertText("Headshots are almost certainly fatal.", "CW_HUD20", 0)
             end
         end
-        
+
         self.descBox:PositionBelow(self)
     end
 end

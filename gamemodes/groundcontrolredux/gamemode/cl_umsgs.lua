@@ -47,7 +47,7 @@ end)
 net.Receive("GC_ROUND_OVER", function(a, b)
     local winningTeam = net.ReadInt(8)
     local actionType = net.ReadInt(8)
-    
+
     GAMEMODE:resetRoundData()
     GAMEMODE:createRoundOverDisplay(winningTeam, actionType)
 end)
@@ -89,7 +89,7 @@ net.Receive("GC_GAMETYPE", function(a, b)
     GAMEMODE:setGametype(net.ReadInt(16))
 end)
 
-local function GC_AUTOBALANCED_TO_TEAM(um)
+net.Receive("GC_AUTOBALANCED_TO_TEAM", function(a, b)
     if GAMEMODE.teamSwitchPopup then
         GAMEMODE.teamSwitchPopup:Remove()
         GAMEMODE.teamSwitchPopup = nil
@@ -97,7 +97,7 @@ local function GC_AUTOBALANCED_TO_TEAM(um)
     
     local popup = vgui.Create("GCGenericPopup")
     popup:SetSize(310, 50)
-    popup:SetText("You've been autobalanced to " .. team.GetName(um:ReadShort()), "Don't shoot your new team mates.")
+    popup:SetText("You've been autobalanced to " .. team.GetName(net.ReadInt(8)), "Don't shoot your new team mates.")
     popup:SetExistTime(7)
     popup:Center()
     
@@ -105,11 +105,9 @@ local function GC_AUTOBALANCED_TO_TEAM(um)
     popup:SetPos(x, y - 140)
     
     GAMEMODE.teamSwitchPopup = popup
-end
+end)
 
-usermessage.Hook("GC_AUTOBALANCED_TO_TEAM", GC_AUTOBALANCED_TO_TEAM)
-
-local function GC_NEW_TEAM(um)
+net.Receive("GC_NEW_TEAM", function(a, b)
     if GAMEMODE.teamSwitchPopup then
         GAMEMODE.teamSwitchPopup:Remove()
         GAMEMODE.teamSwitchPopup = nil
@@ -117,7 +115,7 @@ local function GC_NEW_TEAM(um)
     
     local popup = vgui.Create("GCGenericPopup")
     popup:SetSize(310, 50)
-    popup:SetText("You are now on " .. team.GetName(um:ReadShort()), "Acknowledge your new objectives.")
+    popup:SetText("You are now on " .. team.GetName(net.ReadInt(16)), "Acknowledge your new objectives.")
     popup:SetExistTime(7)
     popup:Center()
     
@@ -125,12 +123,10 @@ local function GC_NEW_TEAM(um)
     popup:SetPos(x, y - 140)
     
     GAMEMODE.teamSwitchPopup = popup
-end
+end)
 
-usermessage.Hook("GC_NEW_TEAM", GC_NEW_TEAM)
-
-local function GC_NEW_WAVE(um)
-    local lostTickets = um:ReadShort()
+net.Receive("GC_NEW_WAVE", function(a, b)
+    local lostTickets = net.ReadInt(16)
     
     if GAMEMODE.teamSwitchPopup then
         GAMEMODE.teamSwitchPopup:Remove()
@@ -149,9 +145,7 @@ local function GC_NEW_WAVE(um)
     popup:SetPos(x, y - 140)
     
     GAMEMODE.teamSwitchPopup = popup
-end
-
-usermessage.Hook("GC_NEW_WAVE", GC_NEW_WAVE)
+end)
 
 local function GC_GOT_DRUGS(um)
     if GAMEMODE.teamSwitchPopup then
@@ -182,41 +176,39 @@ net.Receive("GC_DRUGS_REMOVED", function(a, b)
     LocalPlayer().hasDrugs = false
 end)
 
-local function GC_CARRIED_DRUGS_POSITION(um)
-    -- we're being sent 3 individual floats because vectors are compressed and that results in inaccuracy
-    local x, y, z = um:ReadFloat(), um:ReadFloat(), um:ReadFloat()
-    
+net.Receive("GC_CARRIED_DRUGS_POSITION", function(a, b)
+-- we're being sent 3 individual floats because vectors are compressed and that results in inaccuracy
+    local x, y, z = net.ReadFloat(), net.ReadFloat(), net.ReadFloat()
     GAMEMODE:AddMarker(Vector(x, y, z), "Taken drugs", GAMEMODE.HUDColors.red, GAMEMODE.curGametype.bugMarkerDuration)
-end
+end)
 
-usermessage.Hook("GC_CARRIED_DRUGS_POSITION", GC_CARRIED_DRUGS_POSITION)
-
-local function GC_StatusEffect(data)
-    local statusEffect = data:ReadString()
-    local state = data:ReadBool()
-        
+net.Receive("GC_STATUS_EFFECT", function()
+    local statusEffect = net.ReadString()
+    local state = net.ReadBool()
     if state then
         GAMEMODE:showStatusEffect(statusEffect)
     else
         GAMEMODE:removeStatusEffect(statusEffect)
     end
-end
+end)
 
-usermessage.Hook("GC_STATUS_EFFECT", GC_StatusEffect)
+-- local function GC_ResetStatusEffects(data)
+--     GAMEMODE:removeAllStatusEffects()
+-- end
 
-local function GC_ResetStatusEffects(data)
+-- usermessage.Hook("GC_RESET_STATUS_EFFECTS", GC_ResetStatusEffects)
+
+net.Receive("GC_RESET_STATUS_EFFECTS", function(a, b)
     GAMEMODE:removeAllStatusEffects()
-end
+end)
 
-usermessage.Hook("GC_RESET_STATUS_EFFECTS", GC_ResetStatusEffects)
-
-net.Receive("GC_LOADOUTPOSITION", function()
+net.Receive("GC_LOADOUTPOSITION", function(a, b)
     local vector = net.ReadVector()
     local duration = net.ReadFloat()
     GAMEMODE:setLoadoutAvailabilityInfo(vector, duration)
 end)
 
-net.Receive("GC_KILLED_BY", function()
+net.Receive("GC_KILLED_BY", function(a, b)
     local killerPlayer = net.ReadEntity()
     local killerEntClass = net.ReadString() -- the sent inflictor is not an entity, but is instead the entity class
     

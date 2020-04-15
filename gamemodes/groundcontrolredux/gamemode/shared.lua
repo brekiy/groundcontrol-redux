@@ -1,6 +1,6 @@
-GM.Version = "1.04"
+GM.Version = "v1.5.0"
 
-GM.Name     = "Ground Control Redux" .. GM.Version
+GM.Name     = "Ground Control Redux"
 GM.Author     = "brekiy"
 GM.Email     = "N/A"
 GM.Website     = "N/A"
@@ -68,6 +68,7 @@ CreateConVar("gc_damage_multiplier", 1.55, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "bulle
 CreateConVar("gc_base_run_speed", 280, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base run speed in hammer units, for context csgo is 250 with the knife out", 100)
 
 include("sh_sounds.lua")
+include("sh_convars.lua")
 
 -- configure CW 2.0, please do not change this (unless you know what you're doing)
 CustomizableWeaponry.canOpenInteractionMenu = true
@@ -462,11 +463,16 @@ function PLAYER:setSpectateTarget(target)
     self.currentSpectateEntity = target
     
     if SERVER then
-        self:Spectate(OBS_MODE_CHASE)
+        self:Spectate(self.spectatedCamera)
         self:SpectateEntity(target)
 
         net.Start("GC_SPECTATE_TARGET")
         net.WriteEntity(target)
         net.Send(self)
     end
+end
+
+function AccessorFuncDT(tbl, varname, name)
+   tbl["Get" .. name] = function(s) return s.dt and s.dt[varname] end
+   tbl["Set" .. name] = function(s, v) if s.dt then s.dt[varname] = v end end
 end

@@ -12,7 +12,6 @@ function GM:createLastManStandingDisplay(teamId)
     if living == 1 and obj then
         net.Start("GC_LAST_MAN_STANDING")
         net.Send(obj)
-        -- SendUserMessage("GC_LAST_MAN_STANDING", obj)
     end
 end
 

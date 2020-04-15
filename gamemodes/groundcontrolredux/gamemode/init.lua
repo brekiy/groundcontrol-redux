@@ -73,7 +73,6 @@ include("sv_config.lua")
 include("sv_server_name_updater.lua")
 include("sv_killcount.lua")
 include("sv_net_strings.lua")
-include("sv_convars.lua")
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
@@ -96,6 +95,7 @@ AddCSLuaFile("cl_killcount.lua")
 GM.MemeRadio = true -- hehe, set to true for very funny memes
 CreateConVar("gc_meme_radio_chance", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "chance out of 1000 to have special radio lines come up", 1, 1000) -- in 1000
 GM.MVPTracker = mvpTracker.new()
+GM.DamageLog = {} --- yoink from TTT
 
 CustomizableWeaponry.canDropWeapon = false -- don't let the players be able to drop weapons using the cw_dropweapon console command
 
@@ -150,9 +150,40 @@ function GM:EntityTakeDamage(target, dmgInfo)
                 end
             end
         end
+        if not dmgInfo:IsFallDamage() then 
+            AddDamageLogEntry(attacker, target, dmgInfo, false)
+        end
     end
 end
 
+-- we play a sound from a specific table instead
 function GM:PlayerDeathSound()
     return true
+end
+
+-- wip
+function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
+    local entryText = nil
+    local targetNick = target:Nick()
+    local inflictor = dmgInfo:GetInflictor()
+    local attackerWep = nil
+    local attackerNick = nil
+    if attacker and attacker:IsPlayer() then
+        attackerNick = attacker:Nick()
+        attackerWep = attacker:GetActiveWeapon():GetClass()
+    end
+    if targetDied then
+        if attacker and attacker:IsPlayer() and attacker ~= target then
+            if attacker:Team() == target:Team() then
+                entryText = Format("KILL: %s teamkilled %s with %s", attackerNick, targetNick, attackerWep)
+            else
+                entryText = Format("KILL: %s killed %s with %s", attackerNick, targetNick, attackerWep)
+            end
+        else
+            entryText = Format("DEATH: %s died due to blood loss", targetNick)
+        end
+    elseif attacker and attacker:IsPlayer() then
+        entryText = Format("HIT: %s shot %s for %f damage with %s", attackerNick, targetNick, dmgInfo:GetDamage(), attackerWep)
+    else end
+    table.insert(GAMEMODE.DamageLog, entryText)
 end
