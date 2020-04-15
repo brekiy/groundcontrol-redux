@@ -1,4 +1,4 @@
-GM.Version = "1.04"
+GM.Version = "v1.5.0"
 
 GM.Name     = "Ground Control Redux"
 GM.Author     = "brekiy"
