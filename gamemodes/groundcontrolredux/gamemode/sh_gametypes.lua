@@ -348,10 +348,17 @@ GM:addObjectivePositionToGametype("onesiderush", "gc_outpost", Vector(3947.8335,
 GM:addObjectivePositionToGametype("onesiderush", "rp_downtown_v2", Vector(686.9936, 1363.9843, -195.9687), "gc_capture_point", {captureDistance = 200,capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 GM:addObjectivePositionToGametype("onesiderush", "rp_downtown_v2", Vector(-144.8516, 1471.2026, -195.9687), "gc_capture_point", {captureDistance = 200,capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "gc_depot_b2", Vector(-5565.1865, 832.9864, 128.0313), "gc_capture_point", {captureDistance = 150,capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
-GM:addObjectivePositionToGametype("onesiderush", "gc_depot_b2", Vector(-7676.4849, -597.2024, -351.9687), "gc_capture_point", {captureDistance = 150,capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "gc_depot_b2", Vector(-5565.1865, 832.9864, 128.0313), "gc_capture_point", {captureDistance = 150, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "gc_depot_b2", Vector(-7676.4849, -597.2024, -351.9687), "gc_capture_point", {captureDistance = 150, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
 GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-586.738, -859.093, 411.031), "gc_capture_point", {captureDistance = 300})
+GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-2419.906, 329.347, 158.344), "gc_capture_point", {captureDistance = 300})
+
+GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(-92.797, 323.37, 34.39), "gc_capture_point", {captureDistance = 200, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(657.203, 621.576, 215.031), "gc_capture_point", {captureDistance = 200, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+
+GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(1107.868, 529.97, 36.86), "gc_capture_point", {captureDistance = 200})
+GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(113.076, -592.264, 37.031), "gc_capture_point", {captureDistance = 200})
 
 GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-1029.633667, -22.739532, 0.031250), "gc_contended_point", {captureDistance = 384})
 
@@ -668,6 +675,10 @@ GM:addObjectivePositionToGametype("urbanwarfare", "nt_isolation", Vector(-553.74
 
 GM:addObjectivePositionToGametype("urbanwarfare", "dm_zavod_yantar", Vector(-397.236969, 1539.315308, 743.031250), "gc_urban_warfare_capture_point", {capMin = Vector(172.090851, 1113.220947, 543.680664), capMax = Vector(-992.968750, 2007.968750, 1003.031250)})
 
+GM:addObjectivePositionToGametype("urbanwarfare", "nt_marketa", Vector(315.07, 1008.616, 206.031), "gc_urban_warfare_capture_point", {capMin = Vector(167.665, 1202.217, 206.031), capMax = Vector(442.073, 786.566, 347.967)})
+
+GM:addObjectivePositionToGametype("urbanwarfare", "nt_redlight", Vector(-25.995, 289.58, 33.031), "gc_urban_warfare_capture_point", {capMin = Vector(607.396, 388.482, 100.031), capMax = Vector(-783.968, -153.168, 32.031)})
+
 local ghettoDrugBust = {}
 ghettoDrugBust.name = "ghettodrugbust"
 ghettoDrugBust.prettyName = "Ghetto Drug Bust"
@@ -921,25 +932,6 @@ function ghettoDrugBust:postPlayerDeath(ply) -- check for round over possibility
     GAMEMODE:checkRoundOverPossibility(ply:Team())
 end
 
--- if CLIENT then
---     local handsMaterial = Material("models/weapons/v_models/hands/v_hands")
-    
---     function ghettoDrugBust:adjustHandTexture()
---         local ply = LocalPlayer()
---         local team = ply:Team()
-        
---         if team == self.regularTeam then
---             ply:setHandTexture("models/weapons/v_models/gc_black_hands/v_hands")
---         else
---             ply:setHandTexture("models/weapons/v_models/hands/v_hands")
---         end
---     end
-    
---     function ghettoDrugBust:think()
---         self:adjustHandTexture()
---     end
--- end
-
 function ghettoDrugBust:roundStart()
     if SERVER then
         local players = player.GetAll()
@@ -1023,5 +1015,14 @@ GM:addObjectivePositionToGametype("ghettodrugbust", "gm_blackbrook_asylum", Vect
 GM:addObjectivePositionToGametype("ghettodrugbust", "gm_blackbrook_asylum", Vector(391.3977, 289.818939, 520.03125), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "gm_blackbrook_asylum", Vector(-470.82025146484, 329.79114, 1.03125), "gc_drug_capture_point")
 
-GM:addObjectivePositionToGametype("ghettodrugbust", "nt_isolation", Vector(-586.738, -859.093, 411.031), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_isolation", Vector(-668.997, -908.508, 347.031), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_isolation", Vector(-2419.906, 329.347, 158.344), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_isolation", Vector(1214.574, 2681.112, 152.780), "gc_drug_capture_point")
+
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_marketa", Vector(-735.212, 1331.367, 35.031), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_marketa", Vector(684.374, 1265.75, 39.031), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_marketa", Vector(318.746, -1410.498, 34.031), "gc_drug_capture_point")
+
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(10.456, 939.878, 32.031), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(-72.994, -486.752, 32.031), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(1591.913, -1402.049, 33.031), "gc_drug_capture_point")
