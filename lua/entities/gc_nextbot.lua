@@ -16,20 +16,53 @@ ENT.HitBoxToHitGroup = {
 }
 
 function ENT:Initialize()
-    if SERVER then
-        self:SetModel("models/player/group01/male_01.mdl")
-        self.SetHealth(100)
+    self:SetModel("models/props_lab/huladoll.mdl")
+    self:SetNoDraw(true)
+    self:DrawShadow(false)
+    self:SetSolid(SOLID_NONE)
+    self.PosGen = nil
+end
+
+function ENT:SetEnemy(ent)
+	self.Enemy = ent
+end
+
+function ENT:GetEnemy()
+	return self.Enemy
+end
+
+function ENT:RunBehaviour()
+	while (true) do
+		if self.PosGen then
+			self:ChasePos()
+		end
+		coroutine.yield()
+	end
+end
+
+function ENT:ChasePos()
+    if self.PosGen == nil then return end
+    self.P = Path("Follow")
+    self.P:SetMinLookAheadDistance(00)
+    self.P:SetGoalTolerance(100)
+    self.P:Compute(self, self.PosGen)
+    if !self.P:IsValid() then return end
+
+    if self.P:GetAge() > 0.2 then
+        self.P:Compute(self, self.PosGen)
+    end
+    if GetConVar("gc_bot_nav_debug"):GetInt() == 1 then
+        self.P:Draw()
     end
 end
+-- function ENT:AimAt(pos)
+--     local angdiff = (pos - self:EyePosN()):Angle()
 
-function ENT:AimAt(pos)
-    local angdiff = (pos - self:EyePosN()):Angle()
+--     self:LookAt(pos)
 
-    self:LookAt(pos)
+--     local yaw = math.NormalizeAngle(angdiff.y - self:GetAngles().y)
+--     self:SetPoseParameter("aim_yaw", -yaw)
 
-    local yaw = math.NormalizeAngle(angdiff.y - self:GetAngles().y)
-    self:SetPoseParameter("aim_yaw", -yaw)
-
-    local pitch = math.Clamp(-math.NormalizeAngle(angdiff.p), -50, 50)
-    self:SetPoseParameter("aim_pitch", -pitch)
-end
+--     local pitch = math.Clamp(-math.NormalizeAngle(angdiff.p), -50, 50)
+--     self:SetPoseParameter("aim_pitch", -pitch)
+-- end
