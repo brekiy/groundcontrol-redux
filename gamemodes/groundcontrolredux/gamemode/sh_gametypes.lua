@@ -361,7 +361,7 @@ GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(1107.868,
 GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(113.076, -592.264, 37.031), "gc_capture_point", {captureDistance = 225})
 
 GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(507.465, 68.648, -524.883), "gc_capture_point", {captureDistance = 225})
-GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(-111.806, -299.695, -559.968), "gc_capture_point", {captureDistance = 225})
+GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(-102.238, 732.526, -559.968), "gc_capture_point", {captureDistance = 225})
 
 GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-1029.633667, -22.739532, 0.031250), "gc_contended_point", {captureDistance = 384})
 
@@ -682,7 +682,7 @@ GM:addObjectivePositionToGametype("urbanwarfare", "nt_marketa", Vector(315.07, 1
 
 GM:addObjectivePositionToGametype("urbanwarfare", "nt_redlight", Vector(-25.995, 289.58, 33.031), "gc_urban_warfare_capture_point", {capMin = Vector(607.396, 388.482, 100.031), capMax = Vector(-783.968, -153.168, 32.031)})
 
-GM:addObjectivePositionToGametype("urbanwarfare", "nt_redlight", Vector(-176.031, 672.708, -559.968), "gc_urban_warfare_capture_point", {capMin = Vector(18.337, 1065.509, -559.968), capMax = Vector(-495.968, 360.031, -559.968)})
+GM:addObjectivePositionToGametype("urbanwarfare", "nt_rise", Vector(-176.031, 672.708, -559.968), "gc_urban_warfare_capture_point", {capMin = Vector(18.337, 1065.509, -559.968), capMax = Vector(-495.968, 360.031, -559.968)})
 
 local ghettoDrugBust = {}
 ghettoDrugBust.name = "ghettodrugbust"
@@ -1032,6 +1032,6 @@ GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(10.456
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(-72.994, -486.752, 32.031), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(1591.913, -1402.049, 33.031), "gc_drug_capture_point")
 
-GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(-165.536, -21.666, -535.968), "gc_drug_point")
-GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(-336.469, 731.032, -528.951), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(75.829, 276.173, -847.968), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(-343.012, 805.753, -559.968), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(311.216, -247.248, -216.879), "gc_drug_capture_point")
