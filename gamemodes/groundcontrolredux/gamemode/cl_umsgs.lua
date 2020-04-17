@@ -154,7 +154,7 @@ local function GC_GOT_DRUGS(um)
     end
     
     local gametype = GAMEMODE.curGametype
-    local bottomText = LocalPlayer():Team() == gametype.regularTeam and "Now bring them back to the base!" or "Now deliver them to the secure point!"
+    local bottomText = LocalPlayer():Team() == gametype.gangTeam and "Now bring them back to the base!" or "Now deliver them to the secure point!"
     
     local popup = vgui.Create("GCGenericPopup")
     popup:SetSize(330, 50)

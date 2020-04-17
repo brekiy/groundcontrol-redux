@@ -27,7 +27,7 @@ end
 function ENT:drawHUD()
     local ply = LocalPlayer()
     
-    if ply:Team() == GAMEMODE.curGametype.loadoutTeam then
+    if ply:Team() == GAMEMODE.curGametype.swatTeam then
         return
     end
     
