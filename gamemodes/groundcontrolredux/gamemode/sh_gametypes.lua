@@ -1040,3 +1040,7 @@ GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(1591.9
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(75.829, 276.173, -847.968), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(-343.012, 805.753, -559.968), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(311.216, -247.248, -216.879), "gc_drug_capture_point")
+
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_dusk", Vector(357.424, 2568.138, -221.933), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_dusk", Vector(-31.3, 4883.031, -167.968), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_dusk", Vector(-1773.096, 3429.306, -191.968), "gc_drug_capture_point")
