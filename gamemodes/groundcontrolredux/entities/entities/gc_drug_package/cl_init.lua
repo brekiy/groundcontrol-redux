@@ -69,10 +69,10 @@ function ENT:drawHUD()
         local alpha = ply.hasDrugs and 0.4 or 1
             
         if self.dt.Dropped then
-            text = team == gametype.loadoutTeam and self.CaptureText or self.RetrieveAndProtect
+            text = team == gametype.swatTeam and self.CaptureText or self.RetrieveAndProtect
             alpha = alpha * (0.25 + 0.75 * math.flash(CurTime(), 1.5))
         else
-            text = team == gametype.loadoutTeam and self.AttackAndCapture or self.ProtectText
+            text = team == gametype.swatTeam and self.AttackAndCapture or self.ProtectText
         end
 
         local screen = pos:ToScreen()

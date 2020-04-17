@@ -16,7 +16,7 @@ local point = surface.GetTextureID("ground_control/hud/point_of_interest")
 function ENT:drawHUD()
     local ply = LocalPlayer()
     
-    if ply:Team() == GAMEMODE.curGametype.regularTeam then
+    if ply:Team() == GAMEMODE.curGametype.gangTeam then
         return
     end
     

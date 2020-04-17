@@ -354,11 +354,14 @@ GM:addObjectivePositionToGametype("onesiderush", "gc_depot_b2", Vector(-7676.484
 GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-586.738, -859.093, 411.031), "gc_capture_point", {captureDistance = 300})
 GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-2419.906, 329.347, 158.344), "gc_capture_point", {captureDistance = 300})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(-92.797, 323.37, 34.39), "gc_capture_point", {captureDistance = 200, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
-GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(657.203, 621.576, 215.031), "gc_capture_point", {captureDistance = 200, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(-92.797, 323.37, 34.39), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(657.203, 621.576, 215.031), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(1107.868, 529.97, 36.86), "gc_capture_point", {captureDistance = 200})
-GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(113.076, -592.264, 37.031), "gc_capture_point", {captureDistance = 200})
+GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(1107.868, 529.97, 36.86), "gc_capture_point", {captureDistance = 225})
+GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(113.076, -592.264, 37.031), "gc_capture_point", {captureDistance = 225})
+
+GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(507.465, 68.648, -524.883), "gc_capture_point", {captureDistance = 225})
+GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(-111.806, -299.695, -559.968), "gc_capture_point", {captureDistance = 225})
 
 GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-1029.633667, -22.739532, 0.031250), "gc_contended_point", {captureDistance = 384})
 
@@ -679,12 +682,14 @@ GM:addObjectivePositionToGametype("urbanwarfare", "nt_marketa", Vector(315.07, 1
 
 GM:addObjectivePositionToGametype("urbanwarfare", "nt_redlight", Vector(-25.995, 289.58, 33.031), "gc_urban_warfare_capture_point", {capMin = Vector(607.396, 388.482, 100.031), capMax = Vector(-783.968, -153.168, 32.031)})
 
+GM:addObjectivePositionToGametype("urbanwarfare", "nt_redlight", Vector(-176.031, 672.708, -559.968), "gc_urban_warfare_capture_point", {capMin = Vector(18.337, 1065.509, -559.968), capMax = Vector(-495.968, 360.031, -559.968)})
+
 local ghettoDrugBust = {}
 ghettoDrugBust.name = "ghettodrugbust"
 ghettoDrugBust.prettyName = "Ghetto Drug Bust"
 ghettoDrugBust.preventManualTeamJoining = true
-ghettoDrugBust.loadoutTeam = TEAM_RED
-ghettoDrugBust.regularTeam = TEAM_BLUE
+ghettoDrugBust.swatTeam = TEAM_RED
+ghettoDrugBust.gangTeam = TEAM_BLUE
 ghettoDrugBust.timeLimit = 195
 ghettoDrugBust.stopCountdown = true
 ghettoDrugBust.noTeamBalance = true
@@ -693,7 +698,7 @@ ghettoDrugBust.bandagesToGive = 4
 ghettoDrugBust.objectiveEnts = {}
 ghettoDrugBust.objectiveCounter = 0
 ghettoDrugBust.blueGuyPer = 3 -- for every 3rd player, 1 will be a red dude
-ghettoDrugBust.voiceOverride = {[ghettoDrugBust.regularTeam] = "ghetto"}
+ghettoDrugBust.voiceOverride = {[ghettoDrugBust.gangTeam] = "ghetto"}
 ghettoDrugBust.objectives = {}
 
 ghettoDrugBust.cashPerDrugReturn = 50
@@ -745,27 +750,27 @@ if SERVER then
 end
 
 function ghettoDrugBust:skipAttachmentGive(ply)
-    return ply:Team() == self.regularTeam
+    return ply:Team() == self.gangTeam
 end
 
 function ghettoDrugBust:canHaveAttachments(ply)
-    return ply:Team() == self.loadoutTeam
+    return ply:Team() == self.swatTeam
 end
 
 function ghettoDrugBust:canReceiveLoadout(ply)
     ply:Give(GAMEMODE.KnifeWeaponClass)
-    return ply:Team() == self.loadoutTeam
+    return ply:Team() == self.swatTeam
 end
 
 function ghettoDrugBust:pickupDrugs(drugEnt, ply)
     local team = ply:Team()
     
-    if team == self.loadoutTeam then
+    if team == self.swatTeam then
         if not ply.hasDrugs then
             self:giveDrugs(ply)
             return true
         end
-    elseif team == self.regularTeam then
+    elseif team == self.gangTeam then
         if drugEnt.dt.Dropped and not ply.hasDrugs then
             self:giveDrugs(ply)
             GAMEMODE:startAnnouncement("ghetto", "return_drugs", CurTime(), nil, ply)
@@ -785,15 +790,15 @@ function ghettoDrugBust:playerDeath(ply, attacker, dmginfo)
             end
         end
         
-        GAMEMODE:startAnnouncement("ghetto", "retrieve_drugs", CurTime(), self.regularTeam)
+        GAMEMODE:startAnnouncement("ghetto", "retrieve_drugs", CurTime(), self.gangTeam)
     
         ghettoDrugBust:dropDrugs(ply)
     end
 end
 
 function ghettoDrugBust:giveDrugs(ply)
-    if ply:Team() == self.loadoutTeam then
-        GAMEMODE:startAnnouncement("ghetto", "drugs_stolen", CurTime(), self.regularTeam)
+    if ply:Team() == self.swatTeam then
+        GAMEMODE:startAnnouncement("ghetto", "drugs_stolen", CurTime(), self.gangTeam)
     end
     
     ply.hasDrugs = true
@@ -830,7 +835,7 @@ end
 function ghettoDrugBust:attemptReturnDrugs(player, host)
     local team = player:Team()
     
-    if team == ghettoDrugBust.regularTeam and player.hasDrugs and not host.dt.HasDrugs then
+    if team == ghettoDrugBust.gangTeam and player.hasDrugs and not host.dt.HasDrugs then
         ghettoDrugBust:removeDrugs(player)
         
         host:createDrugPackageObject()
@@ -842,11 +847,11 @@ end
 function ghettoDrugBust:attemptCaptureDrugs(player, host)
     local team = player:Team()
     
-    if team == ghettoDrugBust.loadoutTeam and player.hasDrugs then
+    if team == ghettoDrugBust.swatTeam and player.hasDrugs then
         ghettoDrugBust:removeDrugs(player)
         
         player:addCurrency(self.cashPerDrugCapture, self.expPerDrugCapture, "SECURED_DRUGS")
-        GAMEMODE:startAnnouncement("ghetto", "drugs_secured", CurTime(), self.regularTeam)
+        GAMEMODE:startAnnouncement("ghetto", "drugs_secured", CurTime(), self.gangTeam)
         return true
     end
 end
@@ -866,7 +871,7 @@ end
 function ghettoDrugBust:playerSpawn(ply)
     ply.hasDrugs = false
     
-    if ply:Team() ~= self.loadoutTeam then
+    if ply:Team() ~= self.swatTeam then
         CustomizableWeaponry:removeAllAttachments(ply)
         ply:StripWeapons()
         ply:RemoveAllAmmo()
@@ -903,7 +908,7 @@ function ghettoDrugBust:playerSpawn(ply)
 end
 
 function ghettoDrugBust:getDesiredBandageCount(ply)
-    if ply:Team() ~= self.loadoutTeam then
+    if ply:Team() ~= self.swatTeam then
         return self.bandagesToGive
     end
     
@@ -913,7 +918,7 @@ end
 function ghettoDrugBust:think()
     if not self.stopCountdown then
         if GAMEMODE:hasTimeRunOut() then
-            GAMEMODE:endRound(self.regularTeam)
+            GAMEMODE:endRound(self.gangTeam)
         end
         
         local curTime = CurTime()
@@ -944,14 +949,14 @@ function ghettoDrugBust:roundStart()
             local dude = players[randomIndex]
             
             if dude then
-                dude:SetTeam(self.loadoutTeam)
+                dude:SetTeam(self.swatTeam)
             
                 table.remove(players, randomIndex)
             end
         end
         
         for key, ply in ipairs(players) do
-            ply:SetTeam(self.regularTeam)
+            ply:SetTeam(self.gangTeam)
         end
         
         GAMEMODE:initializeGameTypeEntities(self)
@@ -1026,3 +1031,7 @@ GM:addObjectivePositionToGametype("ghettodrugbust", "nt_marketa", Vector(318.746
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(10.456, 939.878, 32.031), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(-72.994, -486.752, 32.031), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(1591.913, -1402.049, 33.031), "gc_drug_capture_point")
+
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(-165.536, -21.666, -535.968), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(-336.469, 731.032, -528.951), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(311.216, -247.248, -216.879), "gc_drug_capture_point")
