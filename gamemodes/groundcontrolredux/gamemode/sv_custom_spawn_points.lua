@@ -235,7 +235,7 @@ GM:registerStartingPoint("nt_marketa", TEAM_BLUE, Vector(1077.382, 1448.98, 206.
 GM:registerStartingPoint("nt_marketa", TEAM_BLUE, Vector(1079.385, 1563.16, 206.584), Angle(11.519, 178.559, 0), "all")
 GM:registerStartingPoint("nt_marketa", TEAM_BLUE, Vector(974.927, 1567.882, 207.159), Angle(11.519, 178.559, 0), "all")
 GM:registerStartingPoint("nt_marketa", TEAM_BLUE, Vector(972.353, 1454.076, 207.748), Angle(11.519, 178.559, 0), "all")
-GM:registerStartingPoint("nt_marketa", TEAM_BLUE, Vector(839.15, 1456.663, 205.066, Angle(11.519, 178.559, 0), "all")
+GM:registerStartingPoint("nt_marketa", TEAM_BLUE, Vector(839.15, 1456.663, 205.066), Angle(11.519, 178.559, 0), "all")
 
 GM:registerStartingPoint("nt_redlight", TEAM_RED, Vector(-2156.903, 916.138, 15.242), Angle(3.788, -3.357, 0), "all")
 GM:registerStartingPoint("nt_redlight", TEAM_RED, Vector(-2151.755, 1014.532, 15.207), Angle(3.788, -3.357, 0), "all")
