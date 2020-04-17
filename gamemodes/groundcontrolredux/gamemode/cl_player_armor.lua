@@ -13,6 +13,7 @@ net.Receive("GC_ARMOR_PIECE", function(a, b)
     LocalPlayer():updateArmorPiece(net.ReadInt(32), net.ReadFloat(), net.ReadString())
 end)
 
+-- experimental dumb stuff
 -- function attachArmorPM(ply)
 --     if SERVER then
 --         print("starting attach armor")
