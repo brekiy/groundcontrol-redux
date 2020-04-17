@@ -363,6 +363,9 @@ GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(113.076, 
 GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(507.465, 68.648, -524.883), "gc_capture_point", {captureDistance = 225})
 GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(-102.238, 732.526, -559.968), "gc_capture_point", {captureDistance = 225})
 
+GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(389.854, 1686.257, -40.989), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(47.565, 4688.481, -167.968)), "gc_capture_point", {captureDistance = 250})
+
 GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-1029.633667, -22.739532, 0.031250), "gc_contended_point", {captureDistance = 384})
 
 -- ASSAULT GAMETYPE
@@ -683,6 +686,8 @@ GM:addObjectivePositionToGametype("urbanwarfare", "nt_marketa", Vector(315.07, 1
 GM:addObjectivePositionToGametype("urbanwarfare", "nt_redlight", Vector(-25.995, 289.58, 33.031), "gc_urban_warfare_capture_point", {capMin = Vector(607.396, 388.482, 100.031), capMax = Vector(-783.968, -153.168, 32.031)})
 
 GM:addObjectivePositionToGametype("urbanwarfare", "nt_rise", Vector(-176.031, 672.708, -559.968), "gc_urban_warfare_capture_point", {capMin = Vector(18.337, 1065.509, -559.968), capMax = Vector(-495.968, 360.031, -559.968)})
+
+GM:addObjectivePositionToGametype("urbanwarfare", "nt_dusk", Vector(78.944, 2896.031, -44.939), "gc_urban_warfare_capture_point", {Vector(488.873, 1524.945, -52.429), capMax = Vector(-413.863, 4536.108, -188.956)})
 
 local ghettoDrugBust = {}
 ghettoDrugBust.name = "ghettodrugbust"

@@ -6,7 +6,7 @@ GM.breatheSoundChangeDown = 0
 GM.breatheSoundChangeMax = 0.1
 GM.breatheSoundChange = 0.02
 GM.breatheSoundChangeAmount = 0
-GM.lowestBreatheSoundIntensity = 0.83
+GM.lowestBreatheSoundIntensity = 0.73
 
 function GM:Think()
     if not self.curGametypeID then
@@ -29,7 +29,7 @@ function GM:Think()
         if adrenalineData.currentVal >= 0.25 then
             if curTime > adrenalineData.soundTime then
                 local delay = 0.8 - (adrenalineData.currentVal - 0.25) * 0.5
-                local volume = 75 + (adrenalineData.currentVal - 0.25) * 33
+                local volume = 60 + (adrenalineData.currentVal - 0.25) * 33
                 local pitch = 100 + (adrenalineData.currentVal - 0.25) * 25
                 
                 adrenalineData.soundTime = curTime + delay
@@ -38,7 +38,7 @@ function GM:Think()
             end
         end
         
-        if ply.stamina <= 75 then
+        if ply.stamina <= 60 then
             local staminaData = self.StaminaData
             
             if curTime > staminaData.soundTime then
@@ -57,7 +57,7 @@ function GM:Think()
                     self.breatheSoundIntensity = math.Approach(self.breatheSoundIntensity, self.lowestBreatheSoundIntensity, self.breatheSoundChangeDown)
                 end
                             
-                local difference = (75 - ply.stamina) / 75
+                local difference = (60 - ply.stamina) / 60
                 local volume = Lerp(difference, staminaData.minVolume, staminaData.maxVolume)
                 local delay = Lerp(difference, staminaData.maxSoundTime, staminaData.minSoundTime)
                 
