@@ -52,7 +52,7 @@ GM.attachmentPrices = {
     bg_ar1560rndmag = 2000,
     bg_ar15heavystock = 1250,
     bg_ar15sturdystock = 1000,
-    bg_asval = 2000, -- cheap, since it's a variant of the VSS Vintorez
+    bg_asval = 2000, -- expensive, big powerspike over vss
     bg_asval_20rnd = 1000,
     bg_asval_30rnd = 1500,
     bg_bentbolt = false, -- the real cost is for the swaggy PU scope
@@ -116,7 +116,7 @@ GM.attachmentPrices = {
     bg_sksbayonetfold = false, -- purely cosmetic
     bg_sksbayonetunfold = false, -- ditto
     bg_skspuscope = 1500,
-    bg_sr3m = 2000,
+    bg_sr3m = 2000, -- expensive, big powerspike over vss
     bg_vss_foldable_stock = 1000,
     kry_docter_sight = 1000,
     kry_vz61_foregrip = 1500,
@@ -132,7 +132,7 @@ GM.attachmentPrices = {
     md_cblongbarrel = 1250,
     md_cblongerbarrel = 1500,
     md_cobram2 = 1000,
-    md_cobram22 = 1250,
+    md_cobram22 = 1000,
     md_cz52barrel = 1250,
     md_cz52chrome = false,
     md_cz52silver = false,
@@ -159,7 +159,7 @@ GM.attachmentPrices = {
     md_m203 = 2000,
     md_m2carbine = 1500,
     md_m98b_scope = 1500,
-    md_makeshift = 1000,
+    md_makeshift = 800,
     md_mchoke = 1250,
     md_microt1 = 1000, -- "eotech is cheaper than a micro t1? what gives?", the Micro T1 has no mobility decrease, that's why
     md_microt1kh = 1000,
@@ -174,7 +174,7 @@ GM.attachmentPrices = {
     md_pr2 = 1500,
     md_pr3 = 1500,
     md_prextmag = 1500,
-    md_pso1 = 1250,
+    md_pso1 = 1500,
     md_rmr = 1000,
     md_rugersup = 1000,
     md_saker = 1500,
@@ -185,7 +185,7 @@ GM.attachmentPrices = {
     md_tritiumispb = 800,
     md_tritiumispmm = 800,
     md_tundra9mm = 1000,
-    md_tundra9mm2 = 1250,
+    md_tundra9mm2 = 1000,
     md_uecw_csgo_acog = 1500,
     odec3d_barska_sight = 1000,
     odec3d_cmore_kry = 1000
@@ -286,7 +286,6 @@ function PLAYER:setExperience(exp)
         self.experience = exp
         self:checkForAttachmentSlotUnlock()
         self:saveExperience()
-        
         self:sendExperience()
     else
         self.experience = exp

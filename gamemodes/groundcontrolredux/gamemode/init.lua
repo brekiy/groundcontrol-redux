@@ -187,3 +187,8 @@ function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
     else end
     table.insert(GAMEMODE.DamageLog, entryText)
 end
+
+-- CSS fall damage approximation thans to gmod wiki
+function GM:GetFallDamage( ply, speed )
+	return math.max( 0, math.ceil( 0.2418*speed - 141.75 ) )
+end
