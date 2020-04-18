@@ -155,7 +155,7 @@ function GM:PlayerSpawn(ply)
     local desiredVoice = nil
     
     if self.curGametype.voiceOverride then
-        if self.curGametype.name == "ghettodrugbust" and team == self.curGametype.regularTeam then
+        if self.curGametype.name == "ghettodrugbust" and team == self.curGametype.gangTeam then
             if math.random(1, 2) == 1 then
                 desiredVoice = "franklin"
             else

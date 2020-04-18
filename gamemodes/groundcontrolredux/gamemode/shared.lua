@@ -1,4 +1,4 @@
-GM.Version = "v1.5.0"
+GM.Version = "v1.5.2"
 
 GM.Name     = "Ground Control Redux"
 GM.Author     = "brekiy"
@@ -192,7 +192,7 @@ if CLIENT then
         local gametype = GAMEMODE.curGametype
         local wepClass = self:GetClass()
         
-        if gametype.name == "ghettodrugbust" and gametype.regularTeam == LocalPlayer():Team() and gametype.sidewaysHoldingWeapons[wepClass] then
+        if gametype.name == "ghettodrugbust" and gametype.gangTeam == LocalPlayer():Team() and gametype.sidewaysHoldingWeapons[wepClass] then
             if sidewaysHoldingStates[self.dt.State] and not self:isReloading() and not self.isKnife then
                 if self.dt.State ~= CW_CUSTOMIZE then
                     if self.dt.State ~= CW_RUNNING and self.dt.State ~= CW_AIMING then

@@ -89,7 +89,7 @@ local dyneemaVest = {
     weight = 1.7,
     protection = 10,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    protectionDeltaToDamageDecrease = 0.015,
+    protectionDeltaToDamageDecrease = 0.0135,
     damageDecrease = 0.3,
     damageDecreasePenetration = 0.125,
     icon = "ground_control/hud/armor/aa_dyneema_vest",
@@ -105,7 +105,7 @@ local kevlarVest = {
     protection = 15,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
     damageDecrease = 0.3,
-    protectionDeltaToDamageDecrease = 0.015,
+    protectionDeltaToDamageDecrease = 0.0135,
     damageDecreasePenetration = 0.125,
     icon = "ground_control/hud/armor/aa_kevlar_vest",
     description = "Soft vest. Provides type IIIA protection against projectiles."
@@ -119,8 +119,8 @@ local spectraVest = {
     weight = 6.3,
     protection = 20,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    damageDecrease = 0.5,
-    protectionDeltaToDamageDecrease = 0.0155,
+    damageDecrease = 0.45,
+    protectionDeltaToDamageDecrease = 0.015,
     damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_spectra_vest",
     description = "Vest with hard plates. Provides type III protection against projectiles."
@@ -134,28 +134,28 @@ local ratnikVest = {
     weight = 14,
     protection = 20,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true},
-    damageDecrease = 0.525,
-    protectionDeltaToDamageDecrease = 0.0155,
+    damageDecrease = 0.45,
+    protectionDeltaToDamageDecrease = 0.015,
     damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_ratnik_vest",
     description = "Heavy body armor. Provides type III protection against projectiles."
 }
 GM:registerArmor(ratnikVest)
 
-local lbxVest = {
-    category = "vest",
-    id = "lbx_vest",
-    displayName = "LBX Vest",
-    weight = 10,
-    protection = 25,
-    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    damageDecrease = 0.5,
-    protectionDeltaToDamageDecrease = 0.0155,
-    damageDecreasePenetration = 0.15,
-    icon = "ground_control/hud/armor/aa_lbx_vest",
-    description = "Advanced plate carrier. Provides type VI protection against projectiles."
-}
-GM:registerArmor(lbxVest)
+-- local lbxVest = {
+--     category = "vest",
+--     id = "lbx_vest",
+--     displayName = "LBX Vest",
+--     weight = 10,
+--     protection = 25,
+--     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
+--     damageDecrease = 0.5,
+--     protectionDeltaToDamageDecrease = 0.0155,
+--     damageDecreasePenetration = 0.15,
+--     icon = "ground_control/hud/armor/aa_lbx_vest",
+--     description = "Advanced plate carrier. Provides type VI protection against projectiles."
+-- }
+-- GM:registerArmor(lbxVest)
 
 -- Helmets
 -- =======================
@@ -195,7 +195,7 @@ local altynHelmet = {
     id = "altyn_helmet",
     displayName = "Altyn Helmet",
     weight = 4,
-    protection = 18,
+    protection = 16,
     protectionAreas = {[HITGROUP_HEAD] = true},
     damageDecrease = 0.45,
     protectionDeltaToDamageDecrease = 0.0125,
