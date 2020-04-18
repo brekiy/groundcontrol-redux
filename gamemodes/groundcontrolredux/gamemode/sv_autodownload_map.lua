@@ -7,7 +7,7 @@ function GM:registerAutoDownloadMap(mapName, workshopID)
 end
 
 function GM:getAutoDownloadMapID(mapName)
-    return self.AutoDownloadMap[mapName]
+    return self.AutoDownloadMap[mapName] or "No Workshop ID found"
 end
 
 function GM:verifyAutoDownloadMap()
