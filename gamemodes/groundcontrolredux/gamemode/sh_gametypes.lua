@@ -351,8 +351,8 @@ GM:addObjectivePositionToGametype("onesiderush", "rp_downtown_v2", Vector(-144.8
 GM:addObjectivePositionToGametype("onesiderush", "gc_depot_b2", Vector(-5565.1865, 832.9864, 128.0313), "gc_capture_point", {captureDistance = 150, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 GM:addObjectivePositionToGametype("onesiderush", "gc_depot_b2", Vector(-7676.4849, -597.2024, -351.9687), "gc_capture_point", {captureDistance = 150, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-586.738, -859.093, 411.031), "gc_capture_point", {captureDistance = 300})
-GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-2419.906, 329.347, 158.344), "gc_capture_point", {captureDistance = 300})
+GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-586.738, -859.093, 411.031), "gc_capture_point", {captureDistance = 300, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-2419.906, 329.347, 158.344), "gc_capture_point", {captureDistance = 300, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
 GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(-92.797, 323.37, 34.39), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(657.203, 621.576, 215.031), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
