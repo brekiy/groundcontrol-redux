@@ -203,56 +203,56 @@ function GM:postInitEntity()
     local ak74 = {
         weaponClass = "cw_ak74",
         weight = 3.07,
-        penetration = 16
+        penetration = 15
     }
     self:registerPrimaryWeapon(ak74)
 
     local ar15 = {
         weaponClass = "cw_ar15",
         weight = 2.88,
-        penetration = 16
+        penetration = 15
     }
     self:registerPrimaryWeapon(ar15)
     
     local g36c = {
         weaponClass = "cw_g36c",
         weight = 2.82,
-        penetration = 16
+        penetration = 15
     }
     self:registerPrimaryWeapon(g36c)
     
     local g36c = {
         weaponClass = "cw_l85a2",
         weight = 3.82,
-        penetration = 16
+        penetration = 15
     }
     self:registerPrimaryWeapon(g36c)
     
     local vss = {
         weaponClass = "cw_vss",
         weight = 2.6,
-        penetration = 16
+        penetration = 15
     }
     self:registerPrimaryWeapon(vss)
 
     local aek971 = {
         weaponClass = "khr_aek971",
         weight = 3.3,
-        penetration = 16
+        penetration = 15
     }
     self:registerPrimaryWeapon(aek971)
    
     local ak103 = {
         weaponClass = "khr_ak103",
         weight = 3.4,
-        penetration = 17
+        penetration = 16
     }
     self:registerPrimaryWeapon(ak103)
    
     local cz858 = {
         weaponClass = "khr_cz858",
         weight = 2.91,
-        penetration = 17
+        penetration = 16
     }
     self:registerPrimaryWeapon(cz858)
 
@@ -260,21 +260,21 @@ function GM:postInitEntity()
     -- local m4a4 = {
     --     weaponClass = "khr_m4a4",
     --     weight = 2.88,
-    --     penetration = 16
+    --     penetration = 15
     -- }
     -- self:registerPrimaryWeapon(m4a4)
 
     local simsks = {
         weaponClass = "khr_simsks",
-        weight = 3.9,
-        penetration = 17
+        weight = 3.67,
+        penetration = 16
     }
     self:registerPrimaryWeapon(simsks)
    
     local sks = {
         weaponClass = "khr_sks",
-        weight = 4.0,
-        penetration = 17
+        weight = 3.8,
+        penetration = 16
     }
     self:registerPrimaryWeapon(sks)
     
@@ -282,28 +282,28 @@ function GM:postInitEntity()
     local mp5 = {
         weaponClass = "cw_mp5",
         weight = 2.5,
-        penetration = 8
+        penetration = 7
     }
     self:registerPrimaryWeapon(mp5)
     
     local mac11 = {
         weaponClass = "cw_mac11",
         weight = 1.59,
-        penetration = 7
+        penetration = 6
     }
     self:registerPrimaryWeapon(mac11)
     
     local ump45 = {
         weaponClass = "cw_ump45",
         weight = 2.5,
-        penetration = 8
+        penetration = 7
     }    
     self:registerPrimaryWeapon(ump45)
 
     local fmg9 = {
         weaponClass = "khr_fmg9",
         weight = 1.7,
-        penetration = 8
+        penetration = 7
     }
     self:registerPrimaryWeapon(fmg9)
    
@@ -317,14 +317,14 @@ function GM:postInitEntity()
     local vector = {
         weaponClass = "khr_vector",
         weight = 2.7,
-        penetration = 8
+        penetration = 7
     }
     self:registerPrimaryWeapon(vector)
    
     local mp40 = {
         weaponClass = "khr_mp40",
         weight = 3.97,
-        penetration = 8
+        penetration = 7
     }
     self:registerPrimaryWeapon(mp40)
 
@@ -340,35 +340,35 @@ function GM:postInitEntity()
     local mp5a5 = {
         weaponClass = "khr_mp5a5",
         weight = 2.5,
-        penetration = 4
+        penetration = 3
     }
     self:registerPrimaryWeapon(mp5a5)
 
     local veresk = {
         weaponClass = "khr_veresk",
         weight = 1.65,
-        penetration = 8
+        penetration = 7
     }
     self:registerPrimaryWeapon(veresk)
    
     local l2a3 = {
         weaponClass = "khr_l2a3",
         weight = 2.7,
-        penetration = 8
+        penetration = 7
     }
     self:registerPrimaryWeapon(l2a3)
 
     local m1carbine = {
         weaponClass = "khr_m1carbine",
         weight = 2.6,
-        penetration = 13
+        penetration = 12
     }
     self:registerPrimaryWeapon(m1carbine)
 
     local delisle = {
         weaponClass = "khr_delisle",
         weight = 3.74,
-        penetration = 8
+        penetration = 7
     }
     self:registerPrimaryWeapon(delisle)
 
@@ -376,7 +376,7 @@ function GM:postInitEntity()
     local m249 = {
         weaponClass = "cw_m249_official",
         weight = 7.5,
-        penetration = 16,
+        penetration = 15,
         maxMags = 2
     }
     self:registerPrimaryWeapon(m249)
@@ -406,13 +406,13 @@ function GM:postInitEntity()
     }
     self:registerPrimaryWeapon(m60)
    
-    local hmg = {
-        weaponClass = "khr_hmg",
-        weight = 15,
-        penetration = 40,
-        maxMags = 0
-    }
-    self:registerPrimaryWeapon(hmg)
+    -- local hmg = {
+    --     weaponClass = "khr_hmg",
+    --     weight = 15,
+    --     penetration = 30,
+    --     maxMags = 0
+    -- }
+    -- self:registerPrimaryWeapon(hmg)
     
     -- shotguns
     local m3super90 = {
@@ -460,7 +460,7 @@ function GM:postInitEntity()
     local khr_cb4 = {
         weaponClass = "khr_cb4",
         weight = 3.27,
-        penetration = 6
+        penetration = 5
     }
     self:registerPrimaryWeapon(khr_cb4)
     
@@ -489,14 +489,14 @@ function GM:postInitEntity()
     local m82a3 = {
         weaponClass = "khr_m82a3",
         weight = 13.5,
-        penetration = 40
+        penetration = 30
     }   
     self:registerPrimaryWeapon(m82a3)
    
     local m95 = {
         weaponClass = "khr_m95",
         weight = 10.3,
-        penetration = 40
+        penetration = 30
     }
     self:registerPrimaryWeapon(m95)
    
@@ -525,21 +525,21 @@ function GM:postInitEntity()
     local deagle = {
         weaponClass = "cw_deagle", -- "khr_deagle" Khris' deagle if you prefer it instead.
         weight = 1.998,
-        penetration = 13
+        penetration = 10
     }
     self:registerSecondaryWeapon(deagle)
     
     local mr96 = {
         weaponClass = "cw_mr96",
         weight = 1.22,
-        penetration = 14
+        penetration = 12
     }
     self:registerSecondaryWeapon(mr96)
     
     local m1911 = {
         weaponClass = "cw_m1911",
         weight = 1.105,
-        penetration = 8
+        penetration = 7
     }
     self:registerSecondaryWeapon(m1911)
     
@@ -553,63 +553,63 @@ function GM:postInitEntity()
     local p99 = {
         weaponClass = "cw_p99",
         weight = 0.63,
-        penetration = 8
+        penetration = 7
     }
     self:registerSecondaryWeapon(p99)
     
     local makarov = {
         weaponClass = "cw_makarov", -- "khr_makarov" if you prefer khris'
         weight = 0.73,
-        penetration = 7
+        penetration = 6
     }
     self:registerSecondaryWeapon(makarov)
     
     local vz61 = {
         weaponClass = "cw_vz61_kry",
         weight = 1.3,
-        penetration = 5
+        penetration = 4
     }
     self:registerSecondaryWeapon(vz61)
     
     local g18 = {
         weaponClass = "cw_g18",
         weight = 0.92,
-        penetration = 8
+        penetration = 7
     }
     self:registerSecondaryWeapon(g18)
    
     local microdeagle = {
         weaponClass = "khr_microdeagle",
         weight = 0.4,
-        penetration = 7
+        penetration = 6
     }
     self:registerSecondaryWeapon(microdeagle)
 
     local cz52 = {
         weaponClass = "khr_cz52",
         weight = 0.95,
-        penetration = 10
+        penetration = 9
     }
     self:registerSecondaryWeapon(cz52)
    
     local cz75 = {
         weaponClass = "khr_cz75",
         weight = 1.12,
-        penetration = 8
+        penetration = 7
     }
     self:registerSecondaryWeapon(cz75)
    
     local gsh18 = {
         weaponClass = "khr_gsh18",
         weight = 0.59,
-        penetration = 8
+        penetration = 7
     }
     self:registerSecondaryWeapon(gsh18)
    
     local m92fs = {
         weaponClass = "khr_m92fs",
         weight = 0.97,
-        penetration = 8
+        penetration = 7
     }
     self:registerSecondaryWeapon(m92fs)
    
@@ -623,28 +623,28 @@ function GM:postInitEntity()
     local ots33 = {
         weaponClass = "khr_ots33",
         weight = 1.15,
-        penetration = 7
+        penetration = 6
     }
     self:registerSecondaryWeapon(ots33)
    
     local ruby = {
         weaponClass = "khr_ruby",
         weight = 0.85,
-        penetration = 5
+        penetration = 4
     }
     self:registerSecondaryWeapon(ruby)
    
     local rugermk3 = {
         weaponClass = "khr_rugermk3",
         weight = 0.88,
-        penetration = 4
+        penetration = 3
     }
     self:registerSecondaryWeapon(rugermk3)
    
     local p345 = {
         weaponClass = "khr_p345",
         weight = 0.91,
-        penetration = 8
+        penetration = 7
     }
     self:registerSecondaryWeapon(p345)
    
@@ -665,28 +665,28 @@ function GM:postInitEntity()
     local tokarev = {
         weaponClass = "khr_tokarev",
         weight = 0.854,
-        penetration = 10
+        penetration = 9
     }
     self:registerSecondaryWeapon(tokarev)
    
     local model29 = {
         weaponClass = "khr_model29",
         weight = 1.28,
-        penetration = 14
+        penetration = 12
     }
     self:registerSecondaryWeapon(model29)
    
     local model642 = {
         weaponClass = "khr_38snub",
         weight = 0.56,
-        penetration = 7
+        penetration = 6
     }
     self:registerSecondaryWeapon(model642)
    
     local swr8 = {
         weaponClass = "khr_swr8",
         weight = 1.02,
-        penetration = 10
+        penetration = 8
     }
     self:registerSecondaryWeapon(swr8)
    
@@ -700,7 +700,7 @@ function GM:postInitEntity()
     local ragingbull = {
         weaponClass = "khr_ragingbull",
         weight = 1.5,
-        penetration = 14
+        penetration = 12
     }
     self:registerSecondaryWeapon(ragingbull)
     
@@ -769,7 +769,7 @@ function GM:postInitEntity()
     self:registerCaliberWeight("5.7x28MM", 6.15)
     self:registerCaliberWeight("9x18MM", 8)
     self:registerCaliberWeight("9x21MM", 8.1)
-    self:registerCaliberWeight(".50 BMG", 70) -- real weight is like 100g+
+    self:registerCaliberWeight(".50 BMG", 75) -- real weight is like 100g+
     self:registerCaliberWeight(".410 Bore", 20)
     self:registerCaliberWeight(".357 Magnum", 14)
     self:registerCaliberWeight(".38 Special", 12.5)
@@ -787,6 +787,9 @@ function GM:postInitEntity()
     self:findBestWeapons(self.PrimaryWeapons, BestPrimaryWeapons)
     self:findBestWeapons(self.SecondaryWeapons, BestSecondaryWeapons)
     weapons.GetStored("cw_base").AddSafeMode = false -- disable safe firemode
+    -- SWEP.RVBPitchMod = 0.5
+    -- SWEP.RVBYawMod = 0.5
+    -- SWEP.RVBRollMod = 0.5
     
     if CLIENT then
         self:createMusicObjects()
