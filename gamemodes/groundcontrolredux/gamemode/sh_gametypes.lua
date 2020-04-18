@@ -364,7 +364,19 @@ GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(507.465, 68.6
 GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(-102.238, 732.526, -559.968), "gc_capture_point", {captureDistance = 225})
 
 GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(389.854, 1686.257, -40.989), "gc_capture_point", {captureDistance = 250})
-GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(47.565, 4688.481, -167.968)), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(47.565, 4688.481, -167.968), "gc_capture_point", {captureDistance = 250})
+
+GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(389.854, 1686.257, -40.989), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(47.565, 4688.481, -167.968), "gc_capture_point", {captureDistance = 250})
+
+GM:addObjectivePositionToGametype("onesiderush", "nt_skyline", Vector(-50.813, 392.031, -127.968), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_skyline", Vector(152.424, 1071.968, -120.968), "gc_capture_point", {captureDistance = 250})
+
+GM:addObjectivePositionToGametype("onesiderush", "nt_transit", Vector(-886.097, 249.77, -127.968), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_transit", Vector(182.765, 368.824, -133.968), "gc_capture_point", {captureDistance = 250})
+
+GM:addObjectivePositionToGametype("onesiderush", "nt_shrine", Vector(-768.155, 1988.454, 90.031), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_shrine", Vector(922.37, 3423.223, 78.907), "gc_capture_point", {captureDistance = 250})
 
 GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-1029.633667, -22.739532, 0.031250), "gc_contended_point", {captureDistance = 384})
 
@@ -687,7 +699,13 @@ GM:addObjectivePositionToGametype("urbanwarfare", "nt_redlight", Vector(-25.995,
 
 GM:addObjectivePositionToGametype("urbanwarfare", "nt_rise", Vector(-176.031, 672.708, -559.968), "gc_urban_warfare_capture_point", {capMin = Vector(18.337, 1065.509, -559.968), capMax = Vector(-495.968, 360.031, -559.968)})
 
-GM:addObjectivePositionToGametype("urbanwarfare", "nt_dusk", Vector(78.944, 2896.031, -44.939), "gc_urban_warfare_capture_point", {Vector(488.873, 1524.945, -52.429), capMax = Vector(-413.863, 4536.108, -188.956)})
+GM:addObjectivePositionToGametype("urbanwarfare", "nt_dusk", Vector(78.944, 2896.031, -44.939), "gc_urban_warfare_capture_point", {capMin = Vector(488.873, 1524.945, -52.429), capMax = Vector(-413.863, 4536.108, -188.956)})
+
+GM:addObjectivePositionToGametype("urbanwarfare", "nt_skyline", Vector(78.944, 2896.031, -44.939), "gc_urban_warfare_capture_point", {capMin = Vector(-479.007, -498.685, 0.031), capMax = Vector(578.683, 559.266, -129.968)})
+
+GM:addObjectivePositionToGametype("urbanwarfare", "nt_transit", Vector(-173.56, -119.268, -127.968), "gc_urban_warfare_capture_point", {capMin = Vector(219.217, -310.638, -133.968), capMax = Vector(-601.865, 35.149, -23.968)})
+
+GM:addObjectivePositionToGametype("urbanwarfare", "nt_shrine", Vector(-908.194, 3617.923, 134.252), "gc_urban_warfare_capture_point", {capMin = Vector(-1444.414, 4119.525, 88.47), capMax = Vector(-170.031, 3000.031, 88.031)})
 
 local ghettoDrugBust = {}
 ghettoDrugBust.name = "ghettodrugbust"
@@ -1044,3 +1062,15 @@ GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(311.216, -
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_dusk", Vector(357.424, 2568.138, -221.933), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_dusk", Vector(-31.3, 4883.031, -167.968), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_dusk", Vector(-1773.096, 3429.306, -191.968), "gc_drug_capture_point")
+
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_skyline", Vector(89.317, 148.282, -127.968), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_skyline", Vector(284.703, 1128.617, -120.968), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_skyline", Vector(-1357.663, 86.206, 220.031), "gc_drug_capture_point")
+
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_transit", Vector(-617.042, 393.701, -113.002), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_transit", Vector(238.325, 384.474, -112.885), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_transit", Vector(-334.29, -1388.189, 112.042), "gc_drug_capture_point")
+
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_shrine", Vector(-568.914, 1925.868, 102.251), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_shrine", Vector(832.32, 3529.435, 136.397), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_shrine", Vector(-2469.47, 5674.688, 128.031), "gc_drug_capture_point")
