@@ -388,13 +388,6 @@ function GM:postInitEntity()
         maxMags = 2
     }
     self:registerPrimaryWeapon(pkp)
-    
-    local m79 = {
-        weaponClass = "cw_m79",
-        weight = 2.7,
-        penetration = 5
-    }
-    self:registerPrimaryWeapon(m79)
 
     -- Khris', feel free to enable this and disable the pkp
     local pkm = {
