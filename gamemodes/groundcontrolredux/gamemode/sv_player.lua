@@ -145,7 +145,7 @@ function GM:PlayerSpawn(ply)
     ply.crippledArm = false
     ply.sustainedArmDamage = 0 -- regardless of which arm was hit
     ply:setInvincibilityPeriod(self.postSpawnInvincibilityTimePeriod)
-    table.clear(ply.attackedBy)
+    table.Empty(ply.attackedBy)
     ply:SetHullDuck(self.DuckHullMin, self.DuckHullMax)
     ply:SetViewOffsetDucked(self.ViewOffsetDucked)
     ply:resetStatusEffects()

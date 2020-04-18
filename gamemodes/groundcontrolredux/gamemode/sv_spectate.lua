@@ -8,7 +8,7 @@ function PLAYER:resetSpectateData()
     self.currentSpectateEntity = nil
     self.spectatedCamera = self.spectatedCamera or OBS_MODE_CHASE
     
-    table.clear(self.spectatedPlayers)
+    table.Empty(self.spectatedPlayers)
 end
 
 -- take a bool whether to go back or not

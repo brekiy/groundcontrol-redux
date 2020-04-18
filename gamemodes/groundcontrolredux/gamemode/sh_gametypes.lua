@@ -230,7 +230,7 @@ function oneSideRush:roundStart()
         
         self.realAttackerTeam = self.attackerTeam
         self.realDefenderTeam = self.defenderTeam
-        table.clear(self.objectiveEnts)
+        table.Empty(self.objectiveEnts)
         self.stopCountdown = false
         
         GAMEMODE:initializeGameTypeEntities(self)
@@ -250,7 +250,7 @@ function oneSideRush:onTimeRanOut()
 end
 
 function oneSideRush:onRoundEnded(winTeam)
-    table.clear(self.objectiveEnts)
+    table.Empty(self.objectiveEnts)
     self.stopCountdown = true
     self.objectiveCounter = 0
 end
@@ -360,20 +360,20 @@ GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(657.203, 6
 GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(1107.868, 529.97, 36.86), "gc_capture_point", {captureDistance = 225})
 GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(113.076, -592.264, 37.031), "gc_capture_point", {captureDistance = 225})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(507.465, 68.648, -524.883), "gc_capture_point", {captureDistance = 225})
-GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(-102.238, 732.526, -559.968), "gc_capture_point", {captureDistance = 225})
+GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(507.465, 68.648, -524.883), "gc_capture_point", {captureDistance = 225, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(-102.238, 732.526, -559.968), "gc_capture_point", {captureDistance = 225, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(389.854, 1686.257, -40.989), "gc_capture_point", {captureDistance = 250})
-GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(47.565, 4688.481, -167.968), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(389.854, 1686.257, -40.989), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(47.565, 4688.481, -167.968), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
 GM:addObjectivePositionToGametype("onesiderush", "nt_skyline", Vector(-50.813, 392.031, -127.968), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 GM:addObjectivePositionToGametype("onesiderush", "nt_skyline", Vector(152.424, 1071.968, -120.968), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_transit", Vector(-886.097, 249.77, -127.968), "gc_capture_point", {captureDistance = 250})
-GM:addObjectivePositionToGametype("onesiderush", "nt_transit", Vector(182.765, 368.824, -133.968), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_transit", Vector(-886.097, 249.77, -127.968), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_transit", Vector(182.765, 368.824, -133.968), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_shrine", Vector(-768.155, 1988.454, 90.031), "gc_capture_point", {captureDistance = 250})
-GM:addObjectivePositionToGametype("onesiderush", "nt_shrine", Vector(922.37, 3423.223, 78.907), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_shrine", Vector(-768.155, 1988.454, 90.031), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_shrine", Vector(922.37, 3423.223, 78.907), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
 GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-1029.633667, -22.739532, 0.031250), "gc_contended_point", {captureDistance = 384})
 
@@ -461,7 +461,7 @@ GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-10
 --         self.realAttackerTeam = self.attackerTeam
 --         self.realDefenderTeam = self.defenderTeam
         
---         table.clear(self.objectiveEnts)
+--         table.Empty(self.objectiveEnts)
 --         self.stopCountdown = false
         
 --         GAMEMODE:initializeGameTypeEntities(self)
@@ -469,7 +469,7 @@ GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-10
 -- end
 
 -- function assault:onRoundEnded(winTeam)
---     table.clear(self.objectiveEnts)
+--     table.Empty(self.objectiveEnts)
 --     self.stopCountdown = true
 --     self.objectiveCounter = 0
 -- end
@@ -984,7 +984,7 @@ function ghettoDrugBust:roundStart()
 end
 
 function ghettoDrugBust:onRoundEnded(winTeam)
-    table.clear(self.objectiveEnts)
+    table.Empty(self.objectiveEnts)
     self.stopCountdown = true
     self.objectiveCounter = 0
 end

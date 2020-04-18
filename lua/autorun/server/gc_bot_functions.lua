@@ -34,7 +34,7 @@ hook.Add("PlayerSpawn", "GCBotsSpawn", function(bot)
             bot.nav:Spawn() // spawn the nav into the world
             bot.nav:SetPos(bot:GetPos())
         end
-        print("assigned nextbot nav")
+        -- print("assigned nextbot nav")
     end
 end)
 

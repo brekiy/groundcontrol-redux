@@ -119,12 +119,11 @@ function GM:resetRoundData() -- called upon the end of a round
 end
 
 function GM:clearObjectiveEntities()
-    table.clear(self.ObjectiveEntities)
+    table.Empty(self.ObjectiveEntities)
 end
 
 function GM:onLocalPlayerHurt(data, localPlayer)
     local damage = localPlayer:Health() - data.health
-    
     self:playHurtEffect(damage)
 end
 
@@ -162,7 +161,7 @@ function GM:removeObjectiveEntity(obj)
 end
 
 function GM:clearDrawEntities()
-    table.clear(self.DrawEntities)
+    table.Empty(self.DrawEntities)
 end
 
 function GM:addDrawEntity(obj)
@@ -219,8 +218,9 @@ function GM:PlayerBindPress(ply, bind, pressed)
             elseif bind == "undo" then
                 --RunConsoleCommand("use", self.KnifeWeaponClass)
             end
-            
-            if not self:isVoteActive() or (self:isVoteActive() and self.VotedPlayers[ply:SteamID64()]) then
+            -- if bind:find("slot") then print(self:isVoteActive(), self:didPlyVote(ply)) end
+            -- if not self:isVoteActive() or (self:isVoteActive() and self:didPlyVote(ply)) then
+            if not self:isVoteActive() then
                 if self.RadioSelection.active then
                     if bind == "+attack2" then
                         if self.RadioSelection.selectedCategory == 0 then

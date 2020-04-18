@@ -28,7 +28,7 @@ end
 
 function GM:clearStartingPoints()
     for key, value in pairs(self.ValidStartingPoints) do
-        table.clear(value)
+        table.Empty(value)
     end
 end
 
