@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-function table.clear(list)
+function table.Empty(list)
     for key, value in pairs(list) do
         list[key] = nil
     end

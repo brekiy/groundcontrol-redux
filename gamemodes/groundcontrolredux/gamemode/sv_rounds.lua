@@ -193,7 +193,8 @@ end
 
 GM.PreviousGametypeFile = "previous_gametype.txt"
 
--- doesn't actually remove the gametype, it just removes any mention of what the previous gametype from the file was, in case you switch maps a lot and want to have all gametypes up for voting
+-- doesn't actually remove the gametype, it just removes any mention of what the previous gametype from the file was,
+-- in case you switch maps a lot and want to have all gametypes up for voting
 -- bad name for the method though
 function GM:removeCurrentGametype() 
     file.Write(self.MainDataDirectory .. "/" .. self.PreviousGametypeFile, "")
@@ -279,7 +280,7 @@ function GM:setupLoadoutSelectionTime()
 end
 
 function GM:setupRoundPreparation()
-    -- if GetConVar("gc_print_damage_log"):GetBool() then PrintTable(self.DamageLog) end
+    if GetConVar("gc_print_damage_log"):GetBool() then PrintTable(self.DamageLog) end
     table.Empty(self.DamageLog)
     self.PreparationTime = CurTime() + self.RoundPreparationTime
     self:setupLoadoutSelectionTime()

@@ -353,7 +353,7 @@ function GM:saveWeaponLoadout(weaponObject, isPrimary, cvar)
     local weaponData = targetWeaponTable[GetConVarNumber(cvar)]
     
     if weaponData then
-        table.clear(self.LoadoutToSave)
+        table.Empty(self.LoadoutToSave)
         
         for key, cvarName in ipairs(targetTable) do
             local cvarValue = GetConVar(cvarName):GetString()

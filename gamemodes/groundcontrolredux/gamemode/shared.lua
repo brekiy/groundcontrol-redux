@@ -26,10 +26,11 @@ GM.JumpStaminaRegenDelay = 1
 GM.DamageMultiplier = 1.55 -- multiplier for the damage when we shot an enemy
 GM.MaxHealth = 100
 GM.VotePrepTime = 5
-GM.VoteTime = GM.VotePrepTime + 30
+GM.VoteTime = GM.VotePrepTime + 20
 GM.HeavyLandingVelocity = 500
 GM.HeavyLandingVelocityToWeight = 0.03 -- multiply velocity by this much, if the final value exceeds our weight, then it is considered a heavy landing and will make extra noise
 GM.CurMap = string.lower(game.GetMap())
+-- GM.VotedPlayers = {}
 
 GM.RoundOverAction = {
     NEW_ROUND = 1,
@@ -475,4 +476,10 @@ end
 function AccessorFuncDT(tbl, varname, name)
    tbl["Get" .. name] = function(s) return s.dt and s.dt[varname] end
    tbl["Set" .. name] = function(s, v) if s.dt then s.dt[varname] = v end end
+end
+
+function GM:didPlyVote(ply)
+    local result = self.VotedPlayers[ply:SteamID64()]
+    if result == nil then result = false end
+    return result
 end

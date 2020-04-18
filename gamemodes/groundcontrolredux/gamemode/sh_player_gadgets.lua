@@ -36,7 +36,7 @@ end
 
 function PLAYER:resetGadgetData()
     self.gadgets = self.gadgets or {}
-    table.clear(self.gadgets)
+    table.Empty(self.gadgets)
 end
 
 function PLAYER:getDesiredAmmoCount()
