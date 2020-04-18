@@ -36,15 +36,17 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                     armorData.damageDecreasePenetration + protectionDelta * 0.01
                     with this formula, the higher the round's penetrative power, the less the vest will reduce damage after being penetrated.
                 ]]--
-                damageNegation = armorData.damageDecreasePenetration
+                damageNegation = armorData.damageDecreasePenetration + protectionDelta * 0.01
+                -- damageNegation = armorData.damageDecreasePenetration
                 -- if our armor gets penetrated, it doesn't matter how much health we had in our regen pool, we still start bleeding
                 self:resetHealthRegenData()
             end
 
-            -- Clamp ballistic damage reduction between 0-90%, would go in with the above penetration formula
-            -- damageNegation = math.clamp(damageNegation, 0, 0.9) 
+            -- Clamp ballistic damage reduction between 0-100%, so mega powerful bullets dont end up doing more than 100 dmg
+            -- and super weak bullets vs super strong armor dont end up with a negative result for ScaleDamage()
+            damageNegation = math.clamp(damageNegation, 0, 1)
             dmgInfo:ScaleDamage(1 - damageNegation)
-            -- Use the scaled damage in calculating armor degredation, so bb pellets will never destroy hard plates
+            -- Use the scaled damage in calculating armor degradation, so bb pellets will never destroy hard plates
             self:takeArmorDamage(armorPiece, dmgInfo)
             
             local health = armorPiece.health
