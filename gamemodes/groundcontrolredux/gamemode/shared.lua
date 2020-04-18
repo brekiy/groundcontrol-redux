@@ -302,7 +302,7 @@ hook.Add("AdjustMouseSensitivity", "GCR OverrideAimSens", function(wpnSens)
         local plyWepTable = plyWep:GetTable()
         if plyWep and plyWepTable then
             local sensitivity = 1
-            local mod = math.Clamp(plyWepTable.OverallMouseSens or 1, 0.1, 1) -- not lower than 50% and not higher than 100% (in case someone uses atts that increase handling)
+            local mod = math.Clamp(plyWepTable.OverallMouseSens or 1, 0.1, 1) -- not lower than 10% and not higher than 100% (in case someone uses atts that increase handling)
             local freeAimMod = 1
 
             if plyWep.freeAimOn and not plyWep.dt.BipodDeployed then
@@ -330,7 +330,7 @@ hook.Add("AdjustMouseSensitivity", "GCR OverrideAimSens", function(wpnSens)
             
             sensitivity = sensitivity * mod
             sensitivity = sensitivity * freeAimMod
-            sensitivity = math.Clamp(sensitivity, 0.35, 1)
+            sensitivity = math.Clamp(sensitivity, 0.3, 1) -- clamp final sens
             return sensitivity
         end
     end

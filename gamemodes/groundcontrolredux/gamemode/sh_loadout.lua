@@ -787,9 +787,9 @@ function GM:postInitEntity()
     self:findBestWeapons(self.PrimaryWeapons, BestPrimaryWeapons)
     self:findBestWeapons(self.SecondaryWeapons, BestSecondaryWeapons)
     weapons.GetStored("cw_base").AddSafeMode = false -- disable safe firemode
-    -- SWEP.RVBPitchMod = 0.5
-    -- SWEP.RVBYawMod = 0.5
-    -- SWEP.RVBRollMod = 0.5
+    weapons.GetStored("cw_base").RVBPitchMod = 0.4
+    weapons.GetStored("cw_base").RVBYawMod = 0.4
+    weapons.GetStored("cw_base").RVBRollMod = 0.4
     
     if CLIENT then
         self:createMusicObjects()

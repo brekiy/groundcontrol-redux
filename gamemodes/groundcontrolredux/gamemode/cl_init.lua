@@ -220,7 +220,7 @@ function GM:PlayerBindPress(ply, bind, pressed)
                 --RunConsoleCommand("use", self.KnifeWeaponClass)
             end
             
-            if not self:isVoteActive() then
+            if not self:isVoteActive() or (self:isVoteActive() and self.VotedPlayers[ply:SteamID64()]) then
                 if self.RadioSelection.active then
                     if bind == "+attack2" then
                         if self.RadioSelection.selectedCategory == 0 then
