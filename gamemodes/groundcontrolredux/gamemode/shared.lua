@@ -7,7 +7,7 @@ GM.Website     = "N/A"
 
 GM.MainDataDirectory = "ground_control" -- I'd like to change this but this would wipe server progress
 
-GM.BaseRunSpeed = 280
+-- GM.BaseRunSpeed = 280
 GM.BaseWalkSpeed = 130
 GM.CrouchedWalkSpeed = 0.6
 GM.CurrentMap = game.GetMap()
@@ -23,7 +23,7 @@ GM.StaminaPerJumpWeightIncrease = 0.8 -- per each kilogram we will drain this mu
 GM.NotOnGroundRecoilMultiplier = 1.5
 GM.NotOnGroundSpreadMultiplier = 4
 GM.JumpStaminaRegenDelay = 1
-GM.DamageMultiplier = 1.55 -- multiplier for the damage when we shot an enemy
+-- GM.DamageMultiplier = 1.55 -- multiplier for the damage when we shot an enemy
 GM.MaxHealth = 100
 GM.VotePrepTime = 5
 GM.VoteTime = GM.VotePrepTime + 20
