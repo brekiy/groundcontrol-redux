@@ -15,7 +15,7 @@ end
 
 function PLAYER:resetAttachmentData()
     self.ownedAttachments = self.ownedAttachments or {}
-    table.clear(self.ownedAttachments)
+    table.Empty(self.ownedAttachments)
 end
 
 net.Receive("GC_ATTACHMENTS", function(len, ply)

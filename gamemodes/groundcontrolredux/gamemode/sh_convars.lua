@@ -6,4 +6,4 @@ CreateConVar("gc_bleed_hp_lost_per_tick", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "hea
 CreateConVar("gc_rounds_per_map", 16, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "num rounds per map - currently does nothing", 0)
 CreateConVar("gc_health_regen_time", 1.5, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "time between each regen tick from blunt trauma", 0)
 CreateConVar("gc_enable_traits", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "allow traits to take effect - currently does nothing")
-CreateConVar("gc_print_damage_log", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "show damage log in console after round - currently does nothing")
+CreateConVar("gc_print_damage_log", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "show damage log in console after round")

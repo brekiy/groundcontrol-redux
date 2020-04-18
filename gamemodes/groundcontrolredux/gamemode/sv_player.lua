@@ -22,15 +22,15 @@ GM.ExpPerBandage = 25
 GM.CashPerResupply = 15 -- we get this much money when we resupply someone's ammo
 GM.ExpPerResupply = 20
 
-GM.MinHealthForCloseCall = 15
-GM.MinHealthForSave = 20
+GM.MinHealthForCloseCall = 25
+GM.MinHealthForSave = 25
 GM.SaveEventTimeWindow = 5
 
 GM.CashPerOneManArmy = 15
 GM.ExpPerOneManArmy = 10
 
-GM.CashPerTeamKill = -200
-GM.ExpPerTeamKill = -400
+GM.CashPerTeamKill = -50
+GM.ExpPerTeamKill = -80
 
 GM.SendCurrencyAmount = {cash = nil, exp = nil}
 
@@ -145,7 +145,7 @@ function GM:PlayerSpawn(ply)
     ply.crippledArm = false
     ply.sustainedArmDamage = 0 -- regardless of which arm was hit
     ply:setInvincibilityPeriod(self.postSpawnInvincibilityTimePeriod)
-    table.clear(ply.attackedBy)
+    table.Empty(ply.attackedBy)
     ply:SetHullDuck(self.DuckHullMin, self.DuckHullMax)
     ply:SetViewOffsetDucked(self.ViewOffsetDucked)
     ply:resetStatusEffects()

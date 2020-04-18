@@ -230,7 +230,7 @@ function oneSideRush:roundStart()
         
         self.realAttackerTeam = self.attackerTeam
         self.realDefenderTeam = self.defenderTeam
-        table.clear(self.objectiveEnts)
+        table.Empty(self.objectiveEnts)
         self.stopCountdown = false
         
         GAMEMODE:initializeGameTypeEntities(self)
@@ -250,7 +250,7 @@ function oneSideRush:onTimeRanOut()
 end
 
 function oneSideRush:onRoundEnded(winTeam)
-    table.clear(self.objectiveEnts)
+    table.Empty(self.objectiveEnts)
     self.stopCountdown = true
     self.objectiveCounter = 0
 end
@@ -351,8 +351,8 @@ GM:addObjectivePositionToGametype("onesiderush", "rp_downtown_v2", Vector(-144.8
 GM:addObjectivePositionToGametype("onesiderush", "gc_depot_b2", Vector(-5565.1865, 832.9864, 128.0313), "gc_capture_point", {captureDistance = 150, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 GM:addObjectivePositionToGametype("onesiderush", "gc_depot_b2", Vector(-7676.4849, -597.2024, -351.9687), "gc_capture_point", {captureDistance = 150, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-586.738, -859.093, 411.031), "gc_capture_point", {captureDistance = 300})
-GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-2419.906, 329.347, 158.344), "gc_capture_point", {captureDistance = 300})
+GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-586.738, -859.093, 411.031), "gc_capture_point", {captureDistance = 300, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_isolation", Vector(-2419.906, 329.347, 158.344), "gc_capture_point", {captureDistance = 300, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
 GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(-92.797, 323.37, 34.39), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(657.203, 621.576, 215.031), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
@@ -360,160 +360,157 @@ GM:addObjectivePositionToGametype("onesiderush", "nt_marketa", Vector(657.203, 6
 GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(1107.868, 529.97, 36.86), "gc_capture_point", {captureDistance = 225})
 GM:addObjectivePositionToGametype("onesiderush", "nt_redlight", Vector(113.076, -592.264, 37.031), "gc_capture_point", {captureDistance = 225})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(507.465, 68.648, -524.883), "gc_capture_point", {captureDistance = 225})
-GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(-102.238, 732.526, -559.968), "gc_capture_point", {captureDistance = 225})
+GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(507.465, 68.648, -524.883), "gc_capture_point", {captureDistance = 225, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_rise", Vector(-102.238, 732.526, -559.968), "gc_capture_point", {captureDistance = 225, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(389.854, 1686.257, -40.989), "gc_capture_point", {captureDistance = 250})
-GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(47.565, 4688.481, -167.968), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(389.854, 1686.257, -40.989), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(47.565, 4688.481, -167.968), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(389.854, 1686.257, -40.989), "gc_capture_point", {captureDistance = 250})
-GM:addObjectivePositionToGametype("onesiderush", "nt_dusk", Vector(47.565, 4688.481, -167.968), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_skyline", Vector(-50.813, 392.031, -127.968), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_skyline", Vector(152.424, 1071.968, -120.968), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_skyline", Vector(-50.813, 392.031, -127.968), "gc_capture_point", {captureDistance = 250})
-GM:addObjectivePositionToGametype("onesiderush", "nt_skyline", Vector(152.424, 1071.968, -120.968), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_transit", Vector(-886.097, 249.77, -127.968), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_transit", Vector(182.765, 368.824, -133.968), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
-GM:addObjectivePositionToGametype("onesiderush", "nt_transit", Vector(-886.097, 249.77, -127.968), "gc_capture_point", {captureDistance = 250})
-GM:addObjectivePositionToGametype("onesiderush", "nt_transit", Vector(182.765, 368.824, -133.968), "gc_capture_point", {captureDistance = 250})
-
-GM:addObjectivePositionToGametype("onesiderush", "nt_shrine", Vector(-768.155, 1988.454, 90.031), "gc_capture_point", {captureDistance = 250})
-GM:addObjectivePositionToGametype("onesiderush", "nt_shrine", Vector(922.37, 3423.223, 78.907), "gc_capture_point", {captureDistance = 250})
+GM:addObjectivePositionToGametype("onesiderush", "nt_shrine", Vector(-768.155, 1988.454, 90.031), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
+GM:addObjectivePositionToGametype("onesiderush", "nt_shrine", Vector(922.37, 3423.223, 78.907), "gc_capture_point", {captureDistance = 250, capturerTeam = TEAM_RED, defenderTeam = TEAM_BLUE})
 
 GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-1029.633667, -22.739532, 0.031250), "gc_contended_point", {captureDistance = 384})
 
 -- ASSAULT GAMETYPE
 -- fuck this gametype, its WACK
-local assault = {}
-assault.name = "assault"
-assault.prettyName = "Assault"
-assault.attackerTeam = TEAM_RED
-assault.defenderTeam = TEAM_BLUE
-assault.timeLimit = 315
-assault.stopCountdown = true
-assault.attackersPerDefenders = 3
-assault.objectiveCounter = 0
-assault.spawnDuringPreparation = true
-assault.objectiveEnts = {}
+-- local assault = {}
+-- assault.name = "assault"
+-- assault.prettyName = "Assault"
+-- assault.attackerTeam = TEAM_RED
+-- assault.defenderTeam = TEAM_BLUE
+-- assault.timeLimit = 315
+-- assault.stopCountdown = true
+-- assault.attackersPerDefenders = 3
+-- assault.objectiveCounter = 0
+-- assault.spawnDuringPreparation = true
+-- assault.objectiveEnts = {}
 
-if SERVER then
-    assault.mapRotation = GM:getMapRotation("assault_maps")
-end
+-- if SERVER then
+--     assault.mapRotation = GM:getMapRotation("assault_maps")
+-- end
 
-function assault:assignPointID(point)
-    self.objectiveCounter = self.objectiveCounter + 1
-    point.dt.PointID = self.objectiveCounter
-end
+-- function assault:assignPointID(point)
+--     self.objectiveCounter = self.objectiveCounter + 1
+--     point.dt.PointID = self.objectiveCounter
+-- end
 
-function assault:arePointsFree()
-    local curTime = CurTime()
+-- function assault:arePointsFree()
+--     local curTime = CurTime()
     
-    for key, obj in ipairs(self.objectiveEnts) do
-        if obj.winDelay and obj.winDelay > curTime then
-            return false
-        end
-    end
+--     for key, obj in ipairs(self.objectiveEnts) do
+--         if obj.winDelay and obj.winDelay > curTime then
+--             return false
+--         end
+--     end
     
-    return true
-end
+--     return true
+-- end
 
-function assault:prepare()
-    if CLIENT then
-        RunConsoleCommand("gc_team_selection")
-    end
-end
+-- function assault:prepare()
+--     if CLIENT then
+--         RunConsoleCommand("gc_team_selection")
+--     end
+-- end
 
-function assault:think()
-    if not self.stopCountdown then
-        if GAMEMODE:hasTimeRunOut() and self:arePointsFree() then
-            GAMEMODE:endRound(self.defenderTeam)
-        end
-    end
-end
+-- function assault:think()
+--     if not self.stopCountdown then
+--         if GAMEMODE:hasTimeRunOut() and self:arePointsFree() then
+--             GAMEMODE:endRound(self.defenderTeam)
+--         end
+--     end
+-- end
 
-function assault:playerInitialSpawn(ply)
-    if GAMEMODE.RoundsPlayed == 0 then
-        if #player.GetAll() >= 2 then
-            GAMEMODE:endRound(nil)
-        end
-    end
-end
+-- function assault:playerInitialSpawn(ply)
+--     if GAMEMODE.RoundsPlayed == 0 then
+--         if #player.GetAll() >= 2 then
+--             GAMEMODE:endRound(nil)
+--         end
+--     end
+-- end
 
-function assault:postPlayerDeath(ply) -- check for round over possibility
-    GAMEMODE:checkRoundOverPossibility(ply:Team())
-end
+-- function assault:postPlayerDeath(ply) -- check for round over possibility
+--     GAMEMODE:checkRoundOverPossibility(ply:Team())
+-- end
 
-function assault:playerDisconnected(ply)
-    local hisTeam = ply:Team()
+-- function assault:playerDisconnected(ply)
+--     local hisTeam = ply:Team()
     
-    timer.Simple(0, function() -- nothing fancy, just skip 1 frame and call postPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
-        GAMEMODE:checkRoundOverPossibility(hisTeam, true)
-    end)
-end
+--     timer.Simple(0, function() -- nothing fancy, just skip 1 frame and call postPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
+--         GAMEMODE:checkRoundOverPossibility(hisTeam, true)
+--     end)
+-- end
 
-function assault.teamSwapCallback(player)
-    net.Start("GC_NEW_TEAM")
-    net.WriteInt(player:Team(), 16)
-    net.Send(player)
-end
+-- function assault.teamSwapCallback(player)
+--     net.Start("GC_NEW_TEAM")
+--     net.WriteInt(player:Team(), 16)
+--     net.Send(player)
+-- end
 
-function assault:roundStart()
-    if SERVER then
-        GAMEMODE:swapTeams(self.attackerTeam, self.defenderTeam, assault.teamSwapCallback, assault.teamSwapCallback) -- swap teams on every round start
+-- function assault:roundStart()
+--     if SERVER then
+--         GAMEMODE:swapTeams(self.attackerTeam, self.defenderTeam, assault.teamSwapCallback, assault.teamSwapCallback) -- swap teams on every round start
         
-        GAMEMODE:setTimeLimit(self.timeLimit)
+--         GAMEMODE:setTimeLimit(self.timeLimit)
         
-        self.realAttackerTeam = self.attackerTeam
-        self.realDefenderTeam = self.defenderTeam
+--         self.realAttackerTeam = self.attackerTeam
+--         self.realDefenderTeam = self.defenderTeam
         
-        table.clear(self.objectiveEnts)
-        self.stopCountdown = false
+--         table.Empty(self.objectiveEnts)
+--         self.stopCountdown = false
         
-        GAMEMODE:initializeGameTypeEntities(self)
-    end
-end
+--         GAMEMODE:initializeGameTypeEntities(self)
+--     end
+-- end
 
-function assault:onRoundEnded(winTeam)
-    table.clear(self.objectiveEnts)
-    self.stopCountdown = true
-    self.objectiveCounter = 0
-end
+-- function assault:onRoundEnded(winTeam)
+--     table.Empty(self.objectiveEnts)
+--     self.stopCountdown = true
+--     self.objectiveCounter = 0
+-- end
 
-function assault:playerJoinTeam(ply, teamId)
-    GAMEMODE:checkRoundOverPossibility(nil, true)
-    GAMEMODE:sendTimeLimit(ply)
-    ply:reSpectate()
-end
+-- function assault:playerJoinTeam(ply, teamId)
+--     GAMEMODE:checkRoundOverPossibility(nil, true)
+--     GAMEMODE:sendTimeLimit(ply)
+--     ply:reSpectate()
+-- end
 
-function assault:deadDraw(w, h)
-    if GAMEMODE:getActivePlayerAmount() < 2 then
-        draw.ShadowText("This gametype requires at least 2 players, waiting for more people...", "CW_HUD20", w * 0.5, 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    end
-end
+-- function assault:deadDraw(w, h)
+--     if GAMEMODE:getActivePlayerAmount() < 2 then
+--         draw.ShadowText("This gametype requires at least 2 players, waiting for more people...", "CW_HUD20", w * 0.5, 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+--     end
+-- end
 
-GM:registerNewGametype(assault)
+-- GM:registerNewGametype(assault)
 
-GM:addObjectivePositionToGametype("assault", "cs_jungle", Vector(560.8469, 334.9528, -127.9688), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
-GM:addObjectivePositionToGametype("assault", "cs_jungle", Vector(1962.2684, 425.7988, -95.9687), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
-GM:addObjectivePositionToGametype("assault", "cs_jungle", Vector(1442.923218, 489.496857, -127.968758), "gc_offlimits_area", {distance = 2048, targetTeam = assault.defenderTeam, inverseFunctioning = true})
+-- GM:addObjectivePositionToGametype("assault", "cs_jungle", Vector(560.8469, 334.9528, -127.9688), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
+-- GM:addObjectivePositionToGametype("assault", "cs_jungle", Vector(1962.2684, 425.7988, -95.9687), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
+-- GM:addObjectivePositionToGametype("assault", "cs_jungle", Vector(1442.923218, 489.496857, -127.968758), "gc_offlimits_area", {distance = 2048, targetTeam = assault.defenderTeam, inverseFunctioning = true})
 
-GM:addObjectivePositionToGametype("assault", "cs_siege_2010", Vector(3164.2295, -1348.2546, -143.9687), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
-GM:addObjectivePositionToGametype("assault", "cs_siege_2010", Vector(3983.9688, -480.3419, -47.9687), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
-GM:addObjectivePositionToGametype("assault", "cs_siege_2010", Vector(3878.5757, -1108.7665, -143.9687), "gc_offlimits_area", {distance = 2500, targetTeam = assault.defenderTeam, inverseFunctioning = true})
+-- GM:addObjectivePositionToGametype("assault", "cs_siege_2010", Vector(3164.2295, -1348.2546, -143.9687), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
+-- GM:addObjectivePositionToGametype("assault", "cs_siege_2010", Vector(3983.9688, -480.3419, -47.9687), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
+-- GM:addObjectivePositionToGametype("assault", "cs_siege_2010", Vector(3878.5757, -1108.7665, -143.9687), "gc_offlimits_area", {distance = 2500, targetTeam = assault.defenderTeam, inverseFunctioning = true})
 
-GM:addObjectivePositionToGametype("assault", "gc_outpost", Vector(4718.394, 1762.6437, 0.0313), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
-GM:addObjectivePositionToGametype("assault", "gc_outpost", Vector(3947.8335, 2541.6055, 0.0313), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
-GM:addObjectivePositionToGametype("assault", "gc_outpost", Vector(3147.9561, 1540.1907, -8.068), "gc_offlimits_area", {distance = 2048, targetTeam = assault.defenderTeam, inverseFunctioning = true})
+-- GM:addObjectivePositionToGametype("assault", "gc_outpost", Vector(4718.394, 1762.6437, 0.0313), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
+-- GM:addObjectivePositionToGametype("assault", "gc_outpost", Vector(3947.8335, 2541.6055, 0.0313), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
+-- GM:addObjectivePositionToGametype("assault", "gc_outpost", Vector(3147.9561, 1540.1907, -8.068), "gc_offlimits_area", {distance = 2048, targetTeam = assault.defenderTeam, inverseFunctioning = true})
 
-GM:addObjectivePositionToGametype("assault", "rp_downtown_v2", Vector(686.9936, 1363.9843, -195.9687), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
-GM:addObjectivePositionToGametype("assault", "rp_downtown_v2", Vector(-144.8516, 1471.2026, -195.9687), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
-GM:addObjectivePositionToGametype("assault", "rp_downtown_v2", Vector(816.7338, 847.4449, -195.9687), "gc_offlimits_area", {distance = 1400, targetTeam = assault.defenderTeam, inverseFunctioning = true})
+-- GM:addObjectivePositionToGametype("assault", "rp_downtown_v2", Vector(686.9936, 1363.9843, -195.9687), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
+-- GM:addObjectivePositionToGametype("assault", "rp_downtown_v2", Vector(-144.8516, 1471.2026, -195.9687), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.attackerTeam, defenderTeam = assault.defenderTeam})
+-- GM:addObjectivePositionToGametype("assault", "rp_downtown_v2", Vector(816.7338, 847.4449, -195.9687), "gc_offlimits_area", {distance = 1400, targetTeam = assault.defenderTeam, inverseFunctioning = true})
 
-GM:addObjectivePositionToGametype("assault", "de_desert_atrocity_v3", Vector(384.5167, -1567.5787, -2.5376), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.defenderTeam, defenderTeam = assault.attackerTeam})
-GM:addObjectivePositionToGametype("assault", "de_desert_atrocity_v3", Vector(3832.3855, -2022.0819, 248.0313), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.defenderTeam, defenderTeam = assault.attackerTeam})
-GM:addObjectivePositionToGametype("assault", "de_desert_atrocity_v3", Vector(1898.58, -1590.46, 136.0313), "gc_offlimits_area", {distance = 2000, targetTeam = assault.attackerTeam, inverseFunctioning = true})
+-- GM:addObjectivePositionToGametype("assault", "de_desert_atrocity_v3", Vector(384.5167, -1567.5787, -2.5376), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.defenderTeam, defenderTeam = assault.attackerTeam})
+-- GM:addObjectivePositionToGametype("assault", "de_desert_atrocity_v3", Vector(3832.3855, -2022.0819, 248.0313), "gc_capture_point", {captureDistance = 200, capturerTeam = assault.defenderTeam, defenderTeam = assault.attackerTeam})
+-- GM:addObjectivePositionToGametype("assault", "de_desert_atrocity_v3", Vector(1898.58, -1590.46, 136.0313), "gc_offlimits_area", {distance = 2000, targetTeam = assault.attackerTeam, inverseFunctioning = true})
 
-GM:addObjectivePositionToGametype("assault", "gc_depot_b2", Vector(-5565.1865, 832.9864, 128.0313), "gc_capture_point", {captureDistance = 150, capturerTeam = assault.defenderTeam, defenderTeam = assault.attackerTeam})
-GM:addObjectivePositionToGametype("assault", "gc_depot_b2", Vector(-7676.4849, -597.2024, -351.9687), "gc_capture_point", {captureDistance = 150, capturerTeam = assault.defenderTeam, defenderTeam = assault.attackerTeam})
-GM:addObjectivePositionToGametype("assault", "gc_depot_b2", Vector(-5108.8721, -1509.1794, -933.2501), "gc_offlimits_area_aabb", {distance = 2000, targetTeam = assault.attackerTeam, min = Vector(-5108.8721, -1509.1794, -933.2501), max = Vector(930.1258, 5336.1563, 686.4084)})
+-- GM:addObjectivePositionToGametype("assault", "gc_depot_b2", Vector(-5565.1865, 832.9864, 128.0313), "gc_capture_point", {captureDistance = 150, capturerTeam = assault.defenderTeam, defenderTeam = assault.attackerTeam})
+-- GM:addObjectivePositionToGametype("assault", "gc_depot_b2", Vector(-7676.4849, -597.2024, -351.9687), "gc_capture_point", {captureDistance = 150, capturerTeam = assault.defenderTeam, defenderTeam = assault.attackerTeam})
+-- GM:addObjectivePositionToGametype("assault", "gc_depot_b2", Vector(-5108.8721, -1509.1794, -933.2501), "gc_offlimits_area_aabb", {distance = 2000, targetTeam = assault.attackerTeam, min = Vector(-5108.8721, -1509.1794, -933.2501), max = Vector(930.1258, 5336.1563, 686.4084)})
 
 
 local urbanwarfare = {}
@@ -987,7 +984,7 @@ function ghettoDrugBust:roundStart()
 end
 
 function ghettoDrugBust:onRoundEnded(winTeam)
-    table.clear(self.objectiveEnts)
+    table.Empty(self.objectiveEnts)
     self.stopCountdown = true
     self.objectiveCounter = 0
 end
@@ -1051,8 +1048,8 @@ GM:addObjectivePositionToGametype("ghettodrugbust", "nt_marketa", Vector(-735.21
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_marketa", Vector(684.374, 1265.75, 39.031), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_marketa", Vector(318.746, -1410.498, 34.031), "gc_drug_capture_point")
 
-GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(10.456, 939.878, 32.031), "gc_drug_point")
-GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(-72.994, -486.752, 32.031), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(-272.03, 621.03, 96.03), "gc_drug_point")
+GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(-657.96, -875.49, 104.03), "gc_drug_point")
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_redlight", Vector(1591.913, -1402.049, 33.031), "gc_drug_capture_point")
 
 GM:addObjectivePositionToGametype("ghettodrugbust", "nt_rise", Vector(75.829, 276.173, -847.968), "gc_drug_point")

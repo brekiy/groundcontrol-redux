@@ -6,7 +6,7 @@ function GM:resetKillcountData()
     for teamID, teamData in pairs(self.RegisteredTeamData) do
         self.KillCountByTeam[teamID] = 0
         
-        self.ReportedDeadEnemies[teamID] = self.ReportedDeadEnemies[teamID] and table.clear(self.ReportedDeadEnemies[teamID]) or {}
+        self.ReportedDeadEnemies[teamID] = self.ReportedDeadEnemies[teamID] and table.Empty(self.ReportedDeadEnemies[teamID]) or {}
         self.AlivePlayers[teamID] = #team.GetPlayers(teamID) -- get the amount of players at the start of round
         
         self:sendAlivePlayerCount(self.OpposingTeam[teamID])
@@ -91,7 +91,7 @@ end
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:resetKillcountData()
-    self.unconfirmedKills = self.unconfirmedKills and table.clear(self.unconfirmedKills) or {}
+    self.unconfirmedKills = self.unconfirmedKills and table.Empty(self.unconfirmedKills) or {}
     self.confirmedKills = 0
 end
 

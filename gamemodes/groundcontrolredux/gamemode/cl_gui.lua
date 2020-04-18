@@ -13,7 +13,8 @@ function GM:removeFrame(frame)
     end
 end
 
-function GM:ClampVGUIPosition(element)-- clamps position to screen size, so that the descbox does not go out of the screen's boundaries
+-- Clamps position to screen size, so that the descbox does not go out of the screen's boundaries
+function GM:ClampVGUIPosition(element)
     local scrW, scrH = ScrW(), ScrH()
     local x, y = element:GetPos()
     local w, h = element:GetSize()

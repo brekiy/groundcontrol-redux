@@ -145,9 +145,9 @@ function GM:finishCurrentVote()
 end
 
 function GM:resetVoteData()
-    table.clear(self.VoteOptions)
-    table.clear(self.VotedPlayers)
-    table.clear(self.PossibleVoteOptions)
+    table.Empty(self.VoteOptions)
+    table.Empty(self.VotedPlayers)
+    table.Empty(self.PossibleVoteOptions)
     self.VoteActive = false
     self.VoteStartTime = nil
     self.VoteTitle = nil
@@ -190,14 +190,16 @@ function GM:attemptVote(ply, voteOption)
 end
 
 function GM:assignVote(ply, voteOption)
+    -- print("assigning vote")
     local voteData = self.VoteOptions[voteOption]
     voteData.votes = voteData.votes + 1
     self.VotedPlayers[ply:SteamID64()] = true
+    -- PrintTable(self.VotedPlayers)
     self:sendVoteDataUpdateToTargets(self.CurrentVoteTargets, voteOption)
 end
 
 concommand.Add("gc_vote", function(ply, com, args)
-    if not GAMEMODE.VoteActive then -- nigger, what are you doing
+    if not GAMEMODE.VoteActive then
         return
     end
     

@@ -101,7 +101,7 @@ function PLAYER:sendAttachments()
 end
 
 function PLAYER:setupAttachmentLoadTable(weaponObject)
-    table.clear(GAMEMODE.AttachmentLoadTable)
+    table.Empty(GAMEMODE.AttachmentLoadTable)
     
     --local baseConvarName = weaponObject.isPrimaryWeapon and "gc_primary_attachment_" or "gc_secondary_attachment_"
     local targetTable = weaponObject.isPrimaryWeapon and GAMEMODE.PrimaryAttachmentStrings or GAMEMODE.SecondaryAttachmentStrings

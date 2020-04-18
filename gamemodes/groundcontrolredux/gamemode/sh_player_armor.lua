@@ -87,11 +87,11 @@ local dyneemaVest = {
     id = "dyneema_vest",
     displayName = "Dyneema Vest",
     weight = 1.7,
-    protection = 10,
+    protection = 8,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    protectionDeltaToDamageDecrease = 0.0135,
+    protectionDeltaToDamageDecrease = 0.015,
     damageDecrease = 0.3,
-    damageDecreasePenetration = 0.125,
+    damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_dyneema_vest",
     description = "Thin soft vest. Provides type II protection against projectiles."
 }
@@ -102,11 +102,11 @@ local kevlarVest = {
     id = "kevlar_vest",
     displayName = "Kevlar Vest",
     weight = 3.3,
-    protection = 15,
+    protection = 12,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
     damageDecrease = 0.3,
-    protectionDeltaToDamageDecrease = 0.0135,
-    damageDecreasePenetration = 0.125,
+    protectionDeltaToDamageDecrease = 0.015,
+    damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_kevlar_vest",
     description = "Soft vest. Provides type IIIA protection against projectiles."
 }
@@ -116,14 +116,14 @@ local spectraVest = {
     category = "vest",
     id = "spectra_vest",
     displayName = "SPECTRA Vest",
-    weight = 6.3,
+    weight = 8.5,
     protection = 20,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    damageDecrease = 0.45,
-    protectionDeltaToDamageDecrease = 0.015,
+    damageDecrease = 0.4,
+    protectionDeltaToDamageDecrease = 0.0175,
     damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_spectra_vest",
-    description = "Vest with hard plates. Provides type III protection against projectiles."
+    description = "Vest with rifle plates. Provides type IV protection against projectiles."
 }
 GM:registerArmor(spectraVest)
 
@@ -131,17 +131,18 @@ local ratnikVest = {
     category = "vest",
     id = "ratnik_vest",
     displayName = "Ratnik Vest",
-    weight = 14,
+    weight = 16.5,
     protection = 20,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true},
-    damageDecrease = 0.45,
-    protectionDeltaToDamageDecrease = 0.015,
+    damageDecrease = 0.4,
+    protectionDeltaToDamageDecrease = 0.0175,
     damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_ratnik_vest",
-    description = "Heavy body armor. Provides type III protection against projectiles."
+    description = "Heavy body armor. Provides type IV protection against projectiles."
 }
 GM:registerArmor(ratnikVest)
 
+-- maybe a little too broken
 -- local lbxVest = {
 --     category = "vest",
 --     id = "lbx_vest",
@@ -150,7 +151,7 @@ GM:registerArmor(ratnikVest)
 --     protection = 25,
 --     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
 --     damageDecrease = 0.5,
---     protectionDeltaToDamageDecrease = 0.0155,
+--     protectionDeltaToDamageDecrease = 0.0135,
 --     damageDecreasePenetration = 0.15,
 --     icon = "ground_control/hud/armor/aa_lbx_vest",
 --     description = "Advanced plate carrier. Provides type VI protection against projectiles."
@@ -171,7 +172,7 @@ local steelHelmet = {
     protectionDeltaToDamageDecrease = 0.0125,
     damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_steel_helmet",
-    description = "Provides type II protection against projectiles."
+    description = "Old milsurp helmet. Provides type II protection against projectiles."
 }
 GM:registerArmor(steelHelmet)
 
@@ -179,14 +180,14 @@ local spectraHelmet = {
     category = "helmet",
     id = "spectra_helmet",
     displayName = "SPECTRA Helmet",
-    weight = 2,
-    protection = 13,
+    weight = 2.5,
+    protection = 12,
     protectionAreas = {[HITGROUP_HEAD] = true},
     damageDecrease = 0.45,
     protectionDeltaToDamageDecrease = 0.0125,
     damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_spectra_helmet",
-    description = "Provides type IIIA protection against projectiles."
+    description = "Modern ballistic helmet. Provides type IIIA protection against projectiles."
 }
 GM:registerArmor(spectraHelmet)
 
@@ -194,14 +195,14 @@ local altynHelmet = {
     category = "helmet",
     id = "altyn_helmet",
     displayName = "Altyn Helmet",
-    weight = 4,
+    weight = 5,
     protection = 16,
     protectionAreas = {[HITGROUP_HEAD] = true},
     damageDecrease = 0.45,
     protectionDeltaToDamageDecrease = 0.0125,
     damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_altyn_helmet",
-    description = "Provides type III protection against projectiles."
+    description = "Heavy titanium helmet. Provides type III protection against projectiles."
 }
 GM:registerArmor(altynHelmet)
 

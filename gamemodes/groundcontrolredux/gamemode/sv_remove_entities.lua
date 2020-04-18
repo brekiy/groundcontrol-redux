@@ -29,7 +29,16 @@ GM.RemoveEntities = {
     weapon_shotgun = true,
     weapon_slam = true,
     weapon_smg1 = true,
-    weapon_stunstick = true}
+    weapon_stunstick = true,
+
+    --neotokyo map stuff
+    neo_ghostspawnpoint = true,
+    neo_ghost_retrieval_point = true,
+    neo_bloom_controller = true,
+    neo_game_config = true,
+    info_player_defender = true,
+    info_player_attacker = true
+}
     
 GM.RemoveEntitiesByIndex = {
     cs_siege_2010 = {

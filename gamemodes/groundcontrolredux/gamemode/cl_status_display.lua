@@ -43,7 +43,7 @@ function GM:removeStatusEffect(id) -- on self
 end    
 
 function GM:removeAllStatusEffects() -- on self
-    table.clear(self.ActiveStatusEffects)
+    table.Empty(self.ActiveStatusEffects)
 end
 
 GM.BaseStatusEffectX = GM.BaseHUDX

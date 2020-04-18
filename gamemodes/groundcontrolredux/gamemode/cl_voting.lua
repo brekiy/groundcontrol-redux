@@ -1,3 +1,11 @@
+GM.VoteFont = "CW_HUD16"
+GM.VoteOptionSpacing = 20
+GM.VoteStartTime = 0
+GM.VoteDuration = 0
+GM.VoteTitle = nil
+GM.VoteTextWidth = nil -- the widest vote text
+GM.BaseVotePanelWidth = 250
+
 net.Receive("GC_VOTE", function(a, b)
     local title = net.ReadString()
     local voteStartTime = net.ReadFloat()
@@ -15,14 +23,6 @@ end)
 function GM:updateVote(index, value)
     self.VoteOptions[index].votes = value
 end
-
-GM.VoteFont = "CW_HUD16"
-GM.VoteOptionSpacing = 20
-GM.VoteStartTime = 0
-GM.VoteDuration = 0
-GM.VoteTitle = nil
-GM.VoteTextWidth = nil -- the widest vote text
-GM.BaseVotePanelWidth = 250
 
 function GM:setVotes(title, startTime, voteDuration, data)
     self.VoteStartTime = startTime + self.VotePrepTime

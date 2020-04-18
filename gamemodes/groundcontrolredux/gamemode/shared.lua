@@ -1,4 +1,4 @@
-GM.Version = "v1.5.2"
+GM.Version = "v1.5.4"
 
 GM.Name     = "Ground Control Redux"
 GM.Author     = "brekiy"
@@ -7,7 +7,7 @@ GM.Website     = "N/A"
 
 GM.MainDataDirectory = "ground_control" -- I'd like to change this but this would wipe server progress
 
-GM.BaseRunSpeed = 280
+-- GM.BaseRunSpeed = 280
 GM.BaseWalkSpeed = 130
 GM.CrouchedWalkSpeed = 0.6
 GM.CurrentMap = game.GetMap()
@@ -23,13 +23,14 @@ GM.StaminaPerJumpWeightIncrease = 0.8 -- per each kilogram we will drain this mu
 GM.NotOnGroundRecoilMultiplier = 1.5
 GM.NotOnGroundSpreadMultiplier = 4
 GM.JumpStaminaRegenDelay = 1
-GM.DamageMultiplier = 1.55 -- multiplier for the damage when we shot an enemy
+-- GM.DamageMultiplier = 1.55 -- multiplier for the damage when we shot an enemy
 GM.MaxHealth = 100
 GM.VotePrepTime = 5
-GM.VoteTime = GM.VotePrepTime + 30
+GM.VoteTime = GM.VotePrepTime + 20
 GM.HeavyLandingVelocity = 500
 GM.HeavyLandingVelocityToWeight = 0.03 -- multiply velocity by this much, if the final value exceeds our weight, then it is considered a heavy landing and will make extra noise
 GM.CurMap = string.lower(game.GetMap())
+-- GM.VotedPlayers = {}
 
 GM.RoundOverAction = {
     NEW_ROUND = 1,
@@ -302,7 +303,7 @@ hook.Add("AdjustMouseSensitivity", "GCR OverrideAimSens", function(wpnSens)
         local plyWepTable = plyWep:GetTable()
         if plyWep and plyWepTable then
             local sensitivity = 1
-            local mod = math.Clamp(plyWepTable.OverallMouseSens or 1, 0.1, 1) -- not lower than 50% and not higher than 100% (in case someone uses atts that increase handling)
+            local mod = math.Clamp(plyWepTable.OverallMouseSens or 1, 0.1, 1) -- not lower than 10% and not higher than 100% (in case someone uses atts that increase handling)
             local freeAimMod = 1
 
             if plyWep.freeAimOn and not plyWep.dt.BipodDeployed then
@@ -330,7 +331,7 @@ hook.Add("AdjustMouseSensitivity", "GCR OverrideAimSens", function(wpnSens)
             
             sensitivity = sensitivity * mod
             sensitivity = sensitivity * freeAimMod
-            sensitivity = math.Clamp(sensitivity, 0.35, 1)
+            sensitivity = math.Clamp(sensitivity, 0.3, 1) -- clamp final sens
             return sensitivity
         end
     end
@@ -475,4 +476,10 @@ end
 function AccessorFuncDT(tbl, varname, name)
    tbl["Get" .. name] = function(s) return s.dt and s.dt[varname] end
    tbl["Set" .. name] = function(s, v) if s.dt then s.dt[varname] = v end end
+end
+
+function GM:didPlyVote(ply)
+    local result = self.VotedPlayers[ply:SteamID64()]
+    if result == nil then result = false end
+    return result
 end
