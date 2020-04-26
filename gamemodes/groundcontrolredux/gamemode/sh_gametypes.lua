@@ -717,7 +717,7 @@ ghettoDrugBust.magsToGive = 3
 ghettoDrugBust.bandagesToGive = 4
 ghettoDrugBust.objectiveEnts = {}
 ghettoDrugBust.objectiveCounter = 0
-ghettoDrugBust.blueGuyPer = 3 -- for every 3rd player, 1 will be a red dude
+ghettoDrugBust.blueGuyPer = 2.5 -- for every 3rd player, 1 will be a red dude
 ghettoDrugBust.voiceOverride = {[ghettoDrugBust.gangTeam] = "ghetto"}
 ghettoDrugBust.objectives = {}
 

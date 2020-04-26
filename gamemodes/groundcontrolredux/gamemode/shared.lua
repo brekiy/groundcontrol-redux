@@ -23,7 +23,6 @@ GM.StaminaPerJumpWeightIncrease = 0.8 -- per each kilogram we will drain this mu
 GM.NotOnGroundRecoilMultiplier = 1.5
 GM.NotOnGroundSpreadMultiplier = 4
 GM.JumpStaminaRegenDelay = 1
--- GM.DamageMultiplier = 1.55 -- multiplier for the damage when we shot an enemy
 GM.MaxHealth = 100
 GM.VotePrepTime = 5
 GM.VoteTime = GM.VotePrepTime + 20
@@ -430,7 +429,7 @@ function GM:Move(ply, moveData)
     -- for some reason the value returned by GetMaxSpeed is equivalent to player's run speed - 30
     local adrenalineModifier = 1 + ply:getRunSpeedAdrenalineModifier()
     local runSpeed = (GetConVar("gc_base_run_speed"):GetInt() - ply:getStaminaRunSpeedModifier() - ply:getWeightRunSpeedModifier()) * adrenalineModifier * ply:GetDTFloat(0)
-    runSpeed = math.Max(runSpeed, 150) -- don't slow down players too much, keeps stuff like lmgs viable - min movespeed is 150 same as negev in csgo
+    -- runSpeed = math.Max(runSpeed, GetConVar("gc_base_run_speed"):GetInt() * 0.) -- don't slow down players too much, keeps stuff like lmgs viable - min movespeed is 150 same as negev in csgo
     ply:SetRunSpeed(runSpeed)
     
     if ply:KeyDown(IN_SPEED) and not ply:Crouching() then
