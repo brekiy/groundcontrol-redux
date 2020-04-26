@@ -169,7 +169,7 @@ local steelHelmet = {
     protection = 8,
     protectionAreas = {[HITGROUP_HEAD] = true},
     damageDecrease = 0.5,
-    protectionDeltaToDamageDecrease = 0.0125,
+    protectionDeltaToDamageDecrease = 0.0145,
     damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_steel_helmet",
     description = "Old milsurp helmet. Provides type II protection against projectiles."
@@ -184,7 +184,7 @@ local spectraHelmet = {
     protection = 12,
     protectionAreas = {[HITGROUP_HEAD] = true},
     damageDecrease = 0.5,
-    protectionDeltaToDamageDecrease = 0.0125,
+    protectionDeltaToDamageDecrease = 0.0145,
     damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_spectra_helmet",
     description = "Modern ballistic helmet. Provides type IIIA protection against projectiles."
@@ -199,7 +199,7 @@ local altynHelmet = {
     protection = 16,
     protectionAreas = {[HITGROUP_HEAD] = true},
     damageDecrease = 0.5,
-    protectionDeltaToDamageDecrease = 0.0125,
+    protectionDeltaToDamageDecrease = 0.0145,
     damageDecreasePenetration = 0.15,
     icon = "ground_control/hud/armor/aa_altyn_helmet",
     description = "Heavy titanium helmet. Provides type III protection against projectiles."
