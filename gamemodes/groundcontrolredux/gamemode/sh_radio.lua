@@ -91,13 +91,13 @@ end
 GM:registerRadioVoiceVariant("us", "US", nil, "models/player/swat.mdl", "models/player/leet.mdl")
 GM:registerRadioVoiceVariant("aus", "AUS", nil, "models/player/urban.mdl", "models/player/guerilla.mdl")
 GM:registerRadioVoiceVariant("rus", "RUS", nil, "models/player/riot.mdl", "models/player/phoenix.mdl", false, true)
-GM:registerRadioVoiceVariant("bandlet", "Cheeki", nil, "models/player/bandit_backpack.mdl", "models/custom/stalker_bandit_veteran.mdl", true, true)
+GM:registerRadioVoiceVariant("bandlet", "Cheeki", nil, "models/player/bandit_backpack.mdl", "models/custom/stalker_bandit_veteran.mdl", false, true)
 -- GM:registerRadioVoiceVariant("combine", "Combine", nil, 
 --     {"models/player/group01/male_03.mdl", "models/player/group01/male_01.mdl"}, {"models/player/group01/male_03.mdl", "models/player/group01/male_01.mdl"}, true)
 GM:registerRadioVoiceVariant("franklin", "Franklin", nil, 
-    {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, true)
+    {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, true, true)
 GM:registerRadioVoiceVariant("trevor", "Trevor", nil, 
-    {"models/player/Group02/Male_04.mdl", "models/player/Group02/male_02.mdl", "models/player/Group01/male_07.mdl"}, {"models/player/Group02/Male_04.mdl", "models/player/Group02/male_02.mdl", "models/player/Group01/male_07.mdl"}, true)
+    {"models/player/Group02/Male_04.mdl", "models/player/Group02/male_02.mdl", "models/player/Group01/male_07.mdl"}, {"models/player/Group02/Male_04.mdl", "models/player/Group02/male_02.mdl", "models/player/Group01/male_07.mdl"}, true, true)
 
 function GM:registerRadioCommand(data)
     table.insert(self.RadioCommands[data.category].commands, data)

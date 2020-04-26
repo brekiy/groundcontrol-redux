@@ -92,7 +92,7 @@ AddCSLuaFile("cl_player_counting.lua")
 AddCSLuaFile("cl_config.lua")
 AddCSLuaFile("cl_killcount.lua")
 
-GM.MemeRadio = true -- hehe, set to true for very funny memes
+GM.MemeRadio = false -- hehe, set to true for very funny memes
 CreateConVar("gc_meme_radio_chance", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "chance out of 1000 to have special radio lines come up", 1, 1000) -- in 1000
 GM.MVPTracker = mvpTracker.new()
 GM.DamageLog = {} --- yoink from TTT
