@@ -1,17 +1,13 @@
 AddCSLuaFile()
 
 -- weight is in kilograms
-GM.MaxWeight = 35
--- our stamina will drain this much faster when our weight is at max (40% faster at 20kg, 20% faster at 10kg, etc.)
+GM.MaxWeight = 40
+-- our stamina will drain this much faster when our weight is at max
 GM.SprintStaminaDrainWeightIncrease = 0.7
--- threshold at which runspeed starts to get affected by weight carried
-GM.MinWeightForSpeedDecrease = 7.5
 -- ???
 GM.MaxSpeedDecrease = 0.05
 -- ???
-GM.MaxSpeedDecreaseWeightDelta = GM.MaxWeight - GM.MinWeightForSpeedDecrease
--- Amount to subtract from runspeed per weight over threshold
-GM.RunSpeedPerWeightPoint = 0.85
+GM.MaxSpeedDecreaseWeightDelta = GM.MaxWeight - GetConVar("gc_min_weight_speed_decrease"):GetFloat()
 
 local PLAYER = FindMetaTable("Player")
 
@@ -109,9 +105,7 @@ function PLAYER:canCarryWeight(desiredWeight)
 end
 
 function PLAYER:getWeightRunSpeedModifier()
-    -- local difference = self.weight - 7.5
     local difference = self.weight - GetConVar("gc_min_weight_speed_decrease"):GetFloat()
     local runSpeedImpact = math.max(difference, 0)
     return runSpeedImpact * GetConVar("gc_run_speed_penalty_per_weight"):GetFloat()
-    -- return runSpeedImpact * 1
 end

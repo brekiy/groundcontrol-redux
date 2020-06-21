@@ -32,7 +32,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 self:delayHealthRegen()
             else
                 --[[ 
-                    Potential new penetration dmg formula:
+                    New penetration dmg formula:
                     armorData.damageDecreasePenetration + protectionDelta * 0.01
                     with this formula, the higher the round's penetrative power, the less the vest will reduce damage after being penetrated.
                 ]]--
