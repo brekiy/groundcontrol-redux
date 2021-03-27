@@ -20,24 +20,24 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
         local armorData = GAMEMODE:getArmorData(armorPiece.id, armorPiece.category)
         local removeArmor = false
         if armorData.protectionAreas[hitGroup] then
-            local protectionDelta = armorData.protection - penetrationValue
-            local penetratesArmor = protectionDelta < 0
+            local penetrationDelta = armorData.protection - penetrationValue
+            local penetratesArmor = penetrationDelta < 0
             local damageNegation = nil
             if not penetratesArmor then
                 shouldBleed = false
                 if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
-                damageNegation = armorData.damageDecrease + protectionDelta * armorData.protectionDeltaToDamageDecrease
+                damageNegation = armorData.damageDecrease + penetrationDelta * armorData.protectionDelta
                 local regenAmount = math.floor(dmgInfo:GetDamage() * damageNegation)
                 self:addHealthRegen(regenAmount)
                 self:delayHealthRegen()
             else
                 --[[ 
                     New penetration dmg formula:
-                    armorData.damageDecreasePenetration + protectionDelta * 0.01
+                    armorData.damageDecreasePenetrated + penetrationDelta * 0.01
                     with this formula, the higher the round's penetrative power, the less the vest will reduce damage after being penetrated.
                 ]]--
-                damageNegation = armorData.damageDecreasePenetration + protectionDelta * 0.01
-                -- damageNegation = armorData.damageDecreasePenetration
+                damageNegation = armorData.damageDecreasePenetrated + penetrationDelta * 0.01
+                -- damageNegation = armorData.damageDecreasePenetrated
                 -- if our armor gets penetrated, it doesn't matter how much health we had in our regen pool, we still start bleeding
                 self:resetHealthRegenData()
             end

@@ -61,12 +61,6 @@ GM.BackwardsSprintSpeedAffector = 0.25 -- if we're sprinting backwards, we take 
 
 GM.MaxLadderMovementSpeed = 20 -- how fast should the player move when using a ladder
 
--- convars for selected constants
-CreateConVar("gc_force_pip_scopes", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "0/1 to turn on/off pip scopes for everyone", 0, 1)
-CreateConVar("gc_force_free_aim", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "0/1 to turn on/off free-aim hipfire for everyone", 0, 1)
-CreateConVar("gc_damage_multiplier", 1.55, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "bullet damage multiplier")
-CreateConVar("gc_base_run_speed", 280, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base run speed in hammer units, for context csgo is 250 with the knife out", 100)
-
 include("sh_sounds.lua")
 include("sh_convars.lua")
 

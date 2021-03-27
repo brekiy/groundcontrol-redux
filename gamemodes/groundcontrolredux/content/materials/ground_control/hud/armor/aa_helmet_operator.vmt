@@ -1,0 +1,5 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "ground_control/hud/armor/aa_helmet_operator"
+	"$translucent" 1
+}
