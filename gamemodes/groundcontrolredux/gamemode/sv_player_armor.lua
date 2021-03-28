@@ -42,8 +42,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 self:resetHealthRegenData()
             end
 
-            -- Clamp ballistic damage reduction between 0-100%, so mega powerful bullets dont end up doing more than 100 dmg
-            -- and super weak bullets vs super strong armor dont end up with a negative result for ScaleDamage()
+            -- Clamp ballistic damage reduction between 0-100%
             damageNegation = math.clamp(damageNegation, 0, 1)
             dmgInfo:ScaleDamage(1 - damageNegation)
             -- Use the scaled damage in calculating armor degradation, so bb pellets will never destroy hard plates

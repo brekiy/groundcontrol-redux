@@ -48,7 +48,7 @@ function GM:prepareArmorPiece(ply, armorId, category)
         return
     end
     
-    local armorObject = {health = 100, id = armorId, category = category}
+    local armorObject = {health = armorPiece.durability, id = armorId, category = category}
     if (category == "vest") then
         table.insert(ply.armor, armorObject)
     elseif (category == "helmet") then
@@ -92,9 +92,9 @@ local vestPaca = {
     protection = 8,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
     protectionDelta = 0.01,
-    damageDecrease = 0.6,
+    damageDecrease = 0.75,
     damageDecreasePenetrated = 0.15,
-    durability = 100,
+    durability = 40,
     pointCost = 4,
     icon = "ground_control/hud/armor/aa_vest_dyneema",
     description = "Minimalist carrier with level II soft panels."
@@ -108,11 +108,11 @@ local vestIba = {
     weight = 10,
     protection = 16,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    damageDecrease = 0.7,
+    damageDecrease = 0.9,
     protectionDelta = 0.011,
     damageDecreasePenetrated = 0.15,
     durability = 120,
-    pointCost = 8
+    pointCost = 10,
     icon = "ground_control/hud/armor/aa_vest_spectra",
     description = "Surplus soft armor with level III rifle plates."
 }
@@ -128,8 +128,8 @@ local vestPc = {
     damageDecrease = 0.9,
     protectionDelta = 0.011,
     damageDecreasePenetrated = 0.15,
-    durability = 120,
-    pointCost = 14,
+    durability = 80,
+    pointCost = 16,
     icon = "ground_control/hud/armor/aa_vest_lbx",
     description = "High-speed plate carrier with level IV rifle plates."
 }
@@ -179,7 +179,7 @@ local helmetPasgt = {
     weight = 1.1,
     protection = 12,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.8,
+    damageDecrease = 0.9,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
     durability = 30,
@@ -196,7 +196,7 @@ local helmetAltyn = {
     weight = 4,
     protection = 12,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.8,
+    damageDecrease = 0.9,
     protectionDelta = 0.011,
     damageDecreasePenetrated = 0.15,
     durability = 60,
@@ -213,7 +213,7 @@ local helmetOperator = {
     weight = 0.9,
     protection = 16,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.8,
+    damageDecrease = 0.9,
     protectionDelta = 0.011,
     damageDecreasePenetrated = 0.15,
     durability = 40,
@@ -230,7 +230,7 @@ local helmetVulkan = {
     weight = 4.5,
     protection = 20,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.8,
+    damageDecrease = 0.9,
     protectionDelta = 0.011,
     damageDecreasePenetrated = 0.15,
     durability = 50,
