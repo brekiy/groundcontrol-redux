@@ -1,6 +1,7 @@
 # Ground Control Redux
 ---
-ABANDONED SINCE 2020-06-20 because I don't play Gmod anymore
+~~ABANDONED SINCE 2020-06-20 because I don't play Gmod anymore~~
+Back under slow development
 
 
 This is my personal fork of the [Ground Control](https://steamcommunity.com/sharedfiles/filedetails/?id=800900816) gamemode for Garry's Mod. It'll have a few updates to it.
