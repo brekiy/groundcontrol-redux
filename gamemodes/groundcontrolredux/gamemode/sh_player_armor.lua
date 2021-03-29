@@ -156,22 +156,6 @@ GM:registerArmor(vestRatnik)
 -- Helmets
 -- =======================
 
--- worthless
--- local steelHelmet = {
---     category = "helmet",
---     id = "steel_helmet",
---     displayName = "Steel Helmet",
---     weight = 1.25,
---     protection = 8,
---     protectionAreas = {[HITGROUP_HEAD] = true},
---     damageDecrease = 0.5,
---     protectionDelta = 0.0145,
---     damageDecreasePenetrated = 0.15,
---     icon = "ground_control/hud/armor/aa_steel_helmet",
---     description = "Old milsurp helmet. Provides type II protection against projectiles."
--- }
--- GM:registerArmor(steelHelmet)
-
 local helmetPasgt = {
     category = "helmet",
     id = "helmet_pasgt",
@@ -236,7 +220,7 @@ local helmetVulkan = {
     durability = 50,
     pointCost = 18,
     icon = "ground_control/hud/armor/aa_helmet_vulkan",
-    description = "Heavy composite helmet. Provides type IV protection."
+    description = "Heavy composite helmet. Provides level IV protection."
 }
 GM:registerArmor(helmetVulkan)
 

@@ -117,7 +117,7 @@ function GM:HUDPaint()
         
         draw.ShadowText(healthText, self.HealthDisplayFont, 55, scrH - 82 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         draw.ShadowText(bandageText, self.BandageDisplayFont, 55, scrH - 82 + 32 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        -- draw.ShadowText(staminaText, self.BandageDisplayFont, 55, scrH - 82 + 64 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.ShadowText(staminaText, self.BandageDisplayFont, 55, scrH - 82 + 64 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         
         local offset = 60
         local baseY = scrH - 50

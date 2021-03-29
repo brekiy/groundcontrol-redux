@@ -1947,6 +1947,7 @@ function gcArmorDisplay:OnCursorEntered()
             self.descBox:InsertText("Blunt trauma reduction: " .. math.Round(self.armorData.damageDecrease * 100, 1) .. "%", "CW_HUD16", 0)
             self.descBox:InsertText("Penetration damage reduction: " .. math.Round(self.armorData.damageDecreasePenetrated * 100, 1) .. "%", "CW_HUD16", 0)
             self.descBox:InsertText("Protected areas: " .. protectZones, "CW_HUD16", 0)
+            self.descBox:InsertText("Durability: " .. self.armorData.durability, "CW_HUD16", 0)
         else
             if self.category == "vest" then
                 self.descBox:InsertText("No armor vest equipped.", "CW_HUD20", 0)

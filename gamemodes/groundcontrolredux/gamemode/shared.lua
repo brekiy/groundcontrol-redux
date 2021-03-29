@@ -1,3 +1,6 @@
+include("sh_sounds.lua")
+include("sh_convars.lua")
+
 GM.Version = "v1.5.4"
 
 GM.Name     = "Ground Control Redux"
@@ -7,8 +10,8 @@ GM.Website     = "N/A"
 
 GM.MainDataDirectory = "ground_control" -- I'd like to change this but this would wipe server progress
 
--- GM.BaseRunSpeed = 280
-GM.BaseWalkSpeed = 130
+GM.BaseRunSpeed = GetConVar("gc_base_run_speed"):GetInt()
+GM.BaseWalkSpeed = GetConVar("gc_base_walk_speed"):GetInt()
 GM.CrouchedWalkSpeed = 0.6
 GM.CurrentMap = game.GetMap()
 GM.RoundRestartTime = 10 -- how much time to restart a round after it has ended
@@ -61,8 +64,6 @@ GM.BackwardsSprintSpeedAffector = 0.25 -- if we're sprinting backwards, we take 
 
 GM.MaxLadderMovementSpeed = 20 -- how fast should the player move when using a ladder
 
-include("sh_sounds.lua")
-include("sh_convars.lua")
 
 -- configure CW 2.0, please do not change this (unless you know what you're doing)
 CustomizableWeaponry.canOpenInteractionMenu = true

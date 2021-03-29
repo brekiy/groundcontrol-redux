@@ -1,11 +1,8 @@
 CreateClientConVar("gc_primary_weapon", GM.DefaultPrimaryIndex, true, true)
 CreateClientConVar("gc_primary_mags", GM.DefaultPrimaryMagCount, true, true)
-
 CreateClientConVar("gc_secondary_weapon", GM.DefaultSecondaryIndex, true, true)
 CreateClientConVar("gc_secondary_mags", GM.DefaultSecondaryMagCount, true, true)
-
 CreateClientConVar("gc_tertiary_weapon", GM.DefaultTertiaryIndex, true, true)
-
 CreateClientConVar("gc_spare_ammo", GM.DefaultSpareAmmoCount, true, true)
 
 concommand.Add("gc_loadout_menu", function(ply, com, args)
