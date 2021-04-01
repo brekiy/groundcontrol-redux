@@ -6,7 +6,7 @@ function PLAYER:resetHealthRegenData()
     self.regenPool = 0
     self.regenDelay = 0
     self.sentHPRegenHint = false
-    
+
     self:setStatusEffect("healing", false)
 end
 
@@ -25,17 +25,17 @@ function PLAYER:regenHealth()
         self:setStatusEffect("healing", false)
         return
     end
-    
+
     self.regenPool = self.regenPool - 1
     self:SetHealth(self:Health() + 1)
     self:delayHealthRegen()
-    
-    -- if we run out of the regen pool, then notify the player's status effect display that we're not healing anymore
+
+    -- if we run out of the regen pool, then notify the player's status effect display that we're !healing anymore
     if self.regenPool == 0 then
         self:setStatusEffect("healing", false)
     end
-    
-    if not self.sentHPRegenHint then
+
+    if !self.sentHPRegenHint then
         self:sendTip("HEALTH_REGEN")
     end
 end

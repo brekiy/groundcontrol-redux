@@ -7,7 +7,7 @@ local PLAYER = FindMetaTable("Player")
     degredation and health damage that the player takes.
 ]]--
 function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBleeding)
-    if not penetrationValue then
+    if !penetrationValue then
         return
     end
 
@@ -23,7 +23,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
             local penetrationDelta = armorData.protection - penetrationValue
             local penetratesArmor = penetrationDelta < 0
             local damageNegation = nil
-            if not penetratesArmor then
+            if !penetratesArmor then
                 shouldBleed = false
                 if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
                 damageNegation = armorData.damageDecrease + penetrationDelta * armorData.protectionDelta
@@ -31,7 +31,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 self:addHealthRegen(regenAmount)
                 self:delayHealthRegen()
             else
-                --[[ 
+                --[[
                     New penetration dmg formula:
                     armorData.damageDecreasePenetrated + penetrationDelta * 0.01
                     with this formula, the higher the round's penetrative power, the less the vest will reduce damage after being penetrated.
@@ -47,15 +47,15 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
             dmgInfo:ScaleDamage(1 - damageNegation)
             -- Use the scaled damage in calculating armor degradation, so bb pellets will never destroy hard plates
             self:takeArmorDamage(armorPiece, dmgInfo)
-            
+
             local health = armorPiece.health
-            
+
             if armorPiece.health > 0 then
                 removeIndex = removeIndex + 1
             else
                 removeArmor = true
             end
-            
+
             self:sendArmorPiece(i, health, armorData.category)
             if removeArmor then
                 table.remove(combinedArmor, removeIndex)
@@ -64,7 +64,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
         end
         removeIndex = removeIndex + 1
     end
-    
+
     if allowBleeding and shouldBleed then
         self:startBleeding(dmgInfo:GetAttacker())
     end
