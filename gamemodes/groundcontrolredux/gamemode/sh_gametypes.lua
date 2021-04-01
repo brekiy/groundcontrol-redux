@@ -25,7 +25,7 @@ function GM:setGametype(gameTypeID)
 end
 
 function GM:setGametypeCVarByPrettyName(targetName)
-    local key, data = self:getGametypeFromConVar(targetName)
+    local key, _ = self:getGametypeFromConVar(targetName)
 
     if key then
         self:changeGametype(key)
@@ -551,8 +551,8 @@ function urbanwarfare:endWave(capturer, noTicketDrainForWinners)
             self:checkEndWaveTickets(TEAM_BLUE)
         end
 
-        self:spawnPlayersNewWave(capturer, TEAM_RED, (capturer and (noTicketDrainForWinners and TEAM_RED == capturer)))
-        self:spawnPlayersNewWave(capturer, TEAM_BLUE, (capturer and (noTicketDrainForWinners and TEAM_BLUE == capturer)))
+        self:spawnPlayersNewWave(capturer, TEAM_RED, capturer and (noTicketDrainForWinners and TEAM_RED == capturer))
+        self:spawnPlayersNewWave(capturer, TEAM_BLUE, capturer and (noTicketDrainForWinners and TEAM_BLUE == capturer))
         self.waveEnded = false
 
         GAMEMODE:resetAllKillcountData()
@@ -814,7 +814,9 @@ function ghettoDrugBust:giveDrugs(ply)
     end
 
     ply.hasDrugs = true
-    SendUserMessage("GC_GOT_DRUGS", ply)
+    net.start("GC_GOT_DRUGS", ply)
+    net.Send(ply)
+    -- SendUserMessage("GC_GOT_DRUGS", ply)
 end
 
 function ghettoDrugBust:dropDrugs(ply)
@@ -841,7 +843,7 @@ function ghettoDrugBust:removeDrugs(ply)
     ply.hasDrugs = false
     net.Start("GC_DRUGS_REMOVED")
     net.Send(ply)
-    SendUserMessage("GC_DRUGS_REMOVED", ply)
+    -- SendUserMessage("GC_DRUGS_REMOVED", ply)
 end
 
 function ghettoDrugBust:attemptReturnDrugs(player, host)
@@ -906,8 +908,6 @@ function ghettoDrugBust:playerSpawn(ply)
 
         -- if for some reason the chance roll failed and no weapon was chosen, we pick one at random
         pickedWeapon = pickedWeapon or self.redTeamWeapons[math.random(1, #self.redTeamWeapons)]
-
-        local randIndex = self.redTeamWeapons[math.random(1, #self.redTeamWeapons)]
         local givenWeapon = ply:Give(pickedWeapon.weapon)
 
         ply:GiveAmmo(pickedWeapon.mags * givenWeapon.Primary.ClipSize_Orig, givenWeapon.Primary.Ammo)
@@ -928,12 +928,9 @@ function ghettoDrugBust:getDesiredBandageCount(ply)
 end
 
 function ghettoDrugBust:think()
-    if !self.stopCountdown then
-        if GAMEMODE:hasTimeRunOut() then
-            GAMEMODE:endRound(self.gangTeam)
-        end
-
-        local curTime = CurTime()
+    if !self.stopCountdown and GAMEMODE:hasTimeRunOut() then
+        GAMEMODE:endRound(self.gangTeam)
+        -- local curTime = CurTime()
     end
 end
 
