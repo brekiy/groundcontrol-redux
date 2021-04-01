@@ -11,10 +11,10 @@ CreateConVar("gc_allow_gametype_votes", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
     it gets old really fast and you might get pissed if every
     time you log on the server all you see is ghetto drug bust being played over and over again
 ]]
-GM.RemovePreviousGametype = false 
+GM.RemovePreviousGametype = false
 
 function GM:gametypeVotesEnabled()
-    return GetConVarNumber("gc_allow_gametype_votes") >= 1
+    return GetConVar("gc_allow_gametype_votes"):GetInt() >= 1
 end
 
 local PLAYER = FindMetaTable("Player")
@@ -31,17 +31,17 @@ end)
 
 concommand.Add("gc_gametypelist", function(ply, com, args)
     local text = "\n[GROUND CONTROL] Gametypes list:\n"
-    
+
     for key, data in ipairs(GAMEMODE.Gametypes) do
         text = text .. GAMEMODE:getGametypeNameData(key) .. "\n"
     end
-    
+
     print(text)
 end)
 
 concommand.Add("gc_gametype_maplist", function(ply, com, args)
     local text = "\n[GROUND CONTROL] Supported map list for gametypes:\n"
-    
+
     for key, data in ipairs(GAMEMODE.Gametypes) do
         text = text .. GAMEMODE:getGametypeNameData(key) .. "\n"
         for key, map in pairs(data.mapRotation) do
@@ -54,7 +54,7 @@ concommand.Add("gc_gametype_maplist", function(ply, com, args)
             end
         end
     end
-    
+
     print(text)
 end)
 

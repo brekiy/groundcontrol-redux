@@ -65,29 +65,29 @@ GM.BackwardsSprintSpeedAffector = 0.25 -- if we're sprinting backwards, we take 
 GM.MaxLadderMovementSpeed = 20 -- how fast should the player move when using a ladder
 
 
--- configure CW 2.0, please do not change this (unless you know what you're doing)
+-- configure CW 2.0, please don't change this (unless you know what you're doing)
 CustomizableWeaponry.canOpenInteractionMenu = true
 CustomizableWeaponry.customizationEnabled = true
 CustomizableWeaponry.useAttachmentPossessionSystem = true
 CustomizableWeaponry.playSoundsOnInteract = true
-CustomizableWeaponry.physicalBulletsEnabled = false -- physical bullets for cw 2.0, unfortunately 
+CustomizableWeaponry.physicalBulletsEnabled = false -- physical bullets for cw 2.0, unfortunately
 CustomizableWeaponry.suppressOnSpawnAttachments = true
 -- Override this from the weapon base to toss our special ground control frag grenade
 function CustomizableWeaponry.quickGrenade:createThrownGrenade(player)
-	local pos = player:GetShootPos()
-	local offset = CustomizableWeaponry.quickGrenade:getThrowOffset(player)
-	local eyeAng = player:EyeAngles()
-	local forward = eyeAng:Forward()
-	
-	local nade = ents.Create("gc_cw_grenade_thrown")
-	nade:SetPos(pos + offset)
-	nade:SetAngles(eyeAng)
-	nade:Spawn()
-	nade:Activate()
-	nade:Fuse(3)
-	nade:SetOwner(player)
-	
-	return nade
+    local pos = player:GetShootPos()
+    local offset = CustomizableWeaponry.quickGrenade:getThrowOffset(player)
+    local eyeAng = player:EyeAngles()
+    local forward = eyeAng:Forward()
+
+    local nade = ents.Create("gc_cw_grenade_thrown")
+    nade:SetPos(pos + offset)
+    nade:SetAngles(eyeAng)
+    nade:Spawn()
+    nade:Activate()
+    nade:Fuse(3)
+    nade:SetOwner(player)
+
+    return nade
 end
 
 -- CW 2.0 configuration over
@@ -109,20 +109,20 @@ FULL_INIT = true
 CustomizableWeaponry.callbacks:addNew("calculateAccuracy", "GroundControl_calculateAccuracy", function(self)
     local hipMod, aimMod = self.Owner:getAdrenalineAccuracyModifiers()
     local hipMult, aimMult, maxSpread = 1, 1, 1
-    
-    if not self.Owner:OnGround() then
+
+    if !self.Owner:OnGround() then
         local mult = GAMEMODE.NotOnGroundSpreadMultiplier
         hipMult, aimMult, maxSpread = mult, mult, mult -- if we aren't on the ground, we get a huge spread increase
     end
-    
+
     hipMult = hipMult * hipMod
     aimMult = aimMult * aimMod
-    
+
     return aimMult, hipMult, maxSpread
 end)
 
 CustomizableWeaponry.callbacks:addNew("calculateRecoil", "GroundControl_calculateRecoil", function(self, modifier)
-    if not self.Owner:OnGround() then
+    if !self.Owner:OnGround() then
         modifier = modifier * GAMEMODE.NotOnGroundRecoilMultiplier -- if we aren't on the ground, we get a huge recoil increase
     end
 
@@ -147,10 +147,10 @@ end)
 
 CustomizableWeaponry.callbacks:addNew("preventAttachment", "GroundControl_preventAttachment", function(self, attachmentList, currentAttachmentIndex, currentAttachmentCategory, currentAttachment)
     local desiredAttachments = 0
-    
+
     for key, category in pairs(self.Attachments) do
         if category == currentAttachmentCategory then
-            if not category.last then
+            if !category.last then
                 desiredAttachments = desiredAttachments + 1
             end
         else
@@ -159,16 +159,16 @@ CustomizableWeaponry.callbacks:addNew("preventAttachment", "GroundControl_preven
             end
         end
     end
-    
-    return desiredAttachments > self.Owner:getUnlockedAttachmentSlots()
+
+    return desiredAttachments > self:GetOwner():getUnlockedAttachmentSlots()
 end)
 
 CustomizableWeaponry.callbacks:addNew("disableInteractionMenu", "GroundControl_disableInteractionMenu", function(self)
-    if GAMEMODE.curGametype.canHaveAttachments and not GAMEMODE.curGametype:canHaveAttachments(self.Owner) then
+    if GAMEMODE.curGametype.canHaveAttachments and !GAMEMODE.curGametype:canHaveAttachments(self.Owner) then
         return true
     end
-    
-    return not GAMEMODE:isPreparationPeriod()
+
+    return !GAMEMODE:isPreparationPeriod()
 end)
 
 if CLIENT then
@@ -178,36 +178,36 @@ if CLIENT then
         [2] = true, -- CW_AIMING
         [4] = true -- CW_CUSTOMIZE
     }
-    
+
     local zeroVector = Vector(0, 0, 0)
     local downwardsVector = Vector(0, 0, 0)
     local downwardsAngle = Vector(-30, 0, -45)
-    
+
     CustomizableWeaponry.callbacks:addNew("adjustViewmodelPosition", "GroundControl_adjustViewmodelPosition", function(self, targetPos, targetAng)
         local gametype = GAMEMODE.curGametype
         local wepClass = self:GetClass()
-        
+
         if gametype.name == "ghettodrugbust" and gametype.gangTeam == LocalPlayer():Team() and gametype.sidewaysHoldingWeapons[wepClass] then
-            if sidewaysHoldingStates[self.dt.State] and not self:isReloading() and not self.isKnife then
-                if self.dt.State ~= CW_CUSTOMIZE then
-                    if self.dt.State ~= CW_RUNNING and self.dt.State ~= CW_AIMING then
+            if sidewaysHoldingStates[self.dt.State] and !self:isReloading() and !self.isKnife then
+                if self.dt.State != CW_CUSTOMIZE then
+                    if self.dt.State != CW_RUNNING and self.dt.State != CW_AIMING then
                         targetAng = targetAng * 1
                         targetAng.z = targetAng.z - 90
                     end
-                    
+
                     if self.dt.State == CW_RUNNING then
                         targetPos = downwardsVector
                         targetAng = downwardsAngle
-                    elseif self.dt.State ~= CW_AIMING then
+                    elseif self.dt.State != CW_AIMING then
                         targetPos = targetPos * 1
                         targetPos.z = targetPos.z - 3
                         targetPos.x = targetPos.x - 4
                     end
                 end
-                
+
                 local vm = self.CW_VM
                 local bones = gametype.sidewaysHoldingBoneOffsets[wepClass]
-                
+
                 if bones then
                     for boneName, offsets in pairs(bones) do
                         offsets.current = LerpVectorCW20(FrameTime() * 15, offsets.current, offsets.target)
@@ -217,10 +217,10 @@ if CLIENT then
                 end
             else
                 local bones = gametype.sidewaysHoldingBoneOffsets[wepClass]
-                
+
                 if bones then
                     local vm = self.CW_VM
-                    
+
                     for boneName, offsets in pairs(bones) do
                         offsets.current = LerpVectorCW20(FrameTime() * 15, offsets.current, zeroVector)
                         local bone = vm:LookupBone(boneName)
@@ -229,56 +229,56 @@ if CLIENT then
                 end
             end
         end
-        
+
         return targetPos, targetAng
     end)
-    
+
     GM.attachmentSlotDisplaySize = 60
     GM.attachmentSlotSpacing = 5
-    
+
     CustomizableWeaponry.callbacks:addNew("drawToHUD", "GroundControl_drawToHUD", function(self)
         if self.dt.State == CW_CUSTOMIZE then
-            if not self.Owner.unlockedAttachmentSlots then
+            if !self:GetOwner().unlockedAttachmentSlots then
                 RunConsoleCommand("gc_request_data")
             else
-                local availableSlots = self.Owner:getUnlockedAttachmentSlots()
+                local availableSlots = self:GetOwner():getUnlockedAttachmentSlots()
                 local overallSize = (GAMEMODE.attachmentSlotDisplaySize + GAMEMODE.attachmentSlotSpacing)
                 local baseX = ScrW() * 0.5 - overallSize * availableSlots * 0.5
                 local baseY = 90
-                
+
                 for i = 1, availableSlots do
                     local x = baseX + (i - 1) * overallSize
-                    
+
                     surface.SetDrawColor(0, 0, 0, 150)
                     surface.DrawRect(x, baseY, GAMEMODE.attachmentSlotDisplaySize, GAMEMODE.attachmentSlotDisplaySize)
                 end
-                
+
                 local curPos = 1
-                
+
                 for key, category in pairs(self.Attachments) do
                     if category.last then
                         local x = baseX + (curPos - 1) * overallSize
-                        
+
                         local curAtt = category.atts[category.last]
                         local attData = CustomizableWeaponry.registeredAttachmentsSKey[curAtt]
-                        
+
                         surface.SetDrawColor(200, 255, 200, 255)
                         surface.DrawRect(x, baseY - 5, GAMEMODE.attachmentSlotDisplaySize, 5)
-                        
+
                         surface.SetDrawColor(255, 255, 255, 255)
                         surface.SetTexture(attData.displayIcon)
                         surface.DrawTexturedRect(x + 2, baseY + 2, GAMEMODE.attachmentSlotDisplaySize - 4, GAMEMODE.attachmentSlotDisplaySize - 4)
-                        
+
                         curPos = curPos + 1
                     end
                 end
-                
+
                 for i = 1, availableSlots do
                     local x = baseX + (i - 1) * overallSize
-                    
+
                     draw.ShadowText("Slot " .. i, GAMEMODE.AttachmentSlotDisplayFont, x + GAMEMODE.attachmentSlotDisplaySize - 5, baseY + GAMEMODE.attachmentSlotDisplaySize, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
                 end
-                
+
                 draw.ShadowText("Used slots " .. curPos - 1 .. "/" .. availableSlots , GAMEMODE.AttachmentSlotDisplayFont, ScrW() * 0.5, baseY + GAMEMODE.attachmentSlotDisplaySize + 20, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
             end
         end
@@ -297,32 +297,30 @@ hook.Add("AdjustMouseSensitivity", "GCR OverrideAimSens", function(wpnSens)
         local plyWepTable = plyWep:GetTable()
         if plyWep and plyWepTable then
             local sensitivity = 1
-            local mod = math.Clamp(plyWepTable.OverallMouseSens or 1, 0.1, 1) -- not lower than 10% and not higher than 100% (in case someone uses atts that increase handling)
+            local mod = math.Clamp(plyWepTable.OverallMouseSens or 1, 0.1, 1) -- !lower than 10% and !higher than 100% (in case someone uses atts that increase handling)
             local freeAimMod = 1
 
-            if plyWep.freeAimOn and not plyWep.dt.BipodDeployed then
+            if plyWep.freeAimOn and !plyWep.dt.BipodDeployed then
                 local dist = math.abs(plyWep:getFreeAimDotToCenter())
-                
-                local mouseImpendance = GetConVarNumber("cw_freeaim_center_mouse_impendance")
+
+                local mouseImpendance = GetConVar("cw_freeaim_center_mouse_impendance"):GetFloat()
                 freeAimMod = 1 - (mouseImpendance - mouseImpendance * dist)
             end
-            
-            if plyWep.dt and plyWep.dt.State == CW_RUNNING then
-                if plyWepTable.RunMouseSensMod then
-                    return plyWepTable.RunMouseSensMod * mod
-                end
+
+            if plyWep.dt and plyWep.dt.State == CW_RUNNING and plyWepTable.RunMouseSensMod then
+                return plyWepTable.RunMouseSensMod * mod
             end
-            
+
             if plyWep.dt and plyWep.dt.State == CW_AIMING then
                 -- if we're aiming and our aiming position is that of the sight we have installed - decrease our mouse sensitivity
-                if (plyWepTable.OverrideAimMouseSens and plyWepTable.AimPos == plyWepTable.ActualSightPos) and 
-                (plyWep.dt.M203Active and CustomizableWeaponry.grenadeTypes:canUseProperSights(plyWepTable.Grenade40MM) or not plyWep.dt.M203Active) then
+                if (plyWepTable.OverrideAimMouseSens and plyWepTable.AimPos == plyWepTable.ActualSightPos) and
+                (plyWep.dt.M203Active and CustomizableWeaponry.grenadeTypes:canUseProperSights(plyWepTable.Grenade40MM) or !plyWep.dt.M203Active) then
                     sensitivity = plyWepTable.OverrideAimMouseSens
                 end
 
-                sensitivity = math.Clamp(sensitivity - plyWepTable.ZoomAmount / 100, 0.1, 1) 
+                sensitivity = math.Clamp(sensitivity - plyWepTable.ZoomAmount / 100, 0.1, 1)
             end
-            
+
             sensitivity = sensitivity * mod
             sensitivity = sensitivity * freeAimMod
             sensitivity = math.Clamp(sensitivity, 0.3, 1) -- clamp final sens
@@ -337,16 +335,15 @@ if SERVER then
     end)
 end
 
-local ZeroVector = Vector(0, 0, 0)
 
 function GM:OnPlayerHitGround(ply)
     ply:SetDTFloat(0, math.Clamp(ply:GetDTFloat(0) - 0.25, 0.5, 1))
     ply:SetDTFloat(1, CurTime() + 0.25)
-    
+
     local vel = ply:GetVelocity()
     local len = vel:Length()
     local weightCorrelation = math.max(0, self.MaxWeight - len * self.HeavyLandingVelocityToWeight)
-    
+
     if ply.weight >= weightCorrelation then
         ply:EmitSound("npc/combine_soldier/gear" .. math.random(3, 6) .. ".wav", 70, math.random(95, 105))
     end
@@ -354,7 +351,7 @@ end
 
 function GM:attemptRestoreMovementSpeed(ply)
     if CurTime() > ply:GetDTFloat(1) then
-        ply:SetDTFloat(0, math.Clamp(ply:GetDTFloat(0) + FrameTime(), 0, 1))            
+        ply:SetDTFloat(0, math.Clamp(ply:GetDTFloat(0) + FrameTime(), 0, 1))
     end
 end
 
@@ -362,17 +359,17 @@ function GM:PlayerStepSoundTime(ply, iType, bWalking)
     local len = ply:GetVelocity():Length()
     ply.StepLen = len
     local steptime =  math.Clamp(450 - len * 0.5, 100, 500)
-    
+
     if ( iType == STEPSOUNDTIME_ON_LADDER ) then
-        steptime = 450 
+        steptime = 450
     elseif ( iType == STEPSOUNDTIME_WATER_KNEE ) then
-        steptime = 600 
+        steptime = 600
     end
 
     if ply:Crouching() then
         steptime = steptime + 50
     end
-    
+
     return steptime
 end
 
@@ -381,10 +378,10 @@ function GM:isPreparationPeriod()
 end
 
 function GM:Move(ply, moveData)
-    if not ply:Alive() or ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED then
+    if !ply:Alive() or ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED then
         return
     end
-    
+
     if CurTime() < self.PreparationTime then
         moveData:SetMaxSpeed(0)
         local velocity = moveData:GetVelocity()
@@ -392,21 +389,21 @@ function GM:Move(ply, moveData)
         velocity.y = 0
         moveData:SetVelocity(velocity)
         moveData:SetMaxClientSpeed(0)
-        
+
         return
     end
-    
+
     local wep = ply:GetActiveWeapon()
-    
+
     if IsValid(wep) and wep.CW20Weapon and wep:isPlayerProne() then
         return
     end
-    
+
     if SERVER then
         local jumpDown = ply:GetCurrentCommand():KeyDown(IN_JUMP)
         local onGround = ply:OnGround()
-        
-        if jumpDown then -- sure way to get whether the player jumped (ply:KeyDown(IN_JUMP) can be bypassed by simply running the command, not by pressing the key bound to the jump key)
+
+        if jumpDown then -- sure way to get whether the player jumped (ply:KeyDown(IN_JUMP) can be bypassed by simply running the command, !by pressing the key bound to the jump key)
             if onGround and ply.hasReleasedJumpKey then
                 ply:setStamina(ply.stamina - ply:getJumpStaminaDrain()) -- fuck your bunnyhopping
                 ply:delayStaminaRegen(self.JumpStaminaRegenDelay)
@@ -419,17 +416,17 @@ function GM:Move(ply, moveData)
             end
         end
     end
-    
+
     ws, rs = ply:GetWalkSpeed(), ply:GetRunSpeed()
     -- for some reason the value returned by GetMaxSpeed is equivalent to player's run speed - 30
     local adrenalineModifier = 1 + ply:getRunSpeedAdrenalineModifier()
     local runSpeed = (GetConVar("gc_base_run_speed"):GetInt() - ply:getStaminaRunSpeedModifier() - ply:getWeightRunSpeedModifier()) * adrenalineModifier * ply:GetDTFloat(0)
     -- runSpeed = math.Max(runSpeed, GetConVar("gc_base_run_speed"):GetInt() * 0.) -- don't slow down players too much, keeps stuff like lmgs viable - min movespeed is 150 same as negev in csgo
     ply:SetRunSpeed(runSpeed)
-    
-    if ply:KeyDown(IN_SPEED) and not ply:Crouching() then
+
+    if ply:KeyDown(IN_SPEED) and !ply:Crouching() then
         local finalMult = 1
-        
+
         if ply:KeyDown(IN_MOVELEFT) or ply:KeyDown(IN_MOVERIGHT) then
             if ply:KeyDown(IN_FORWARD) then
                 finalMult = finalMult - self.SidewaysSprintSpeedAffector
@@ -437,13 +434,13 @@ function GM:Move(ply, moveData)
                 finalMult = finalMult - self.OnlySidewaysSprintSpeedAffector
             end
         end
-        
+
         if ply:KeyDown(IN_BACK) then
             finalMult = finalMult - self.BackwardsSprintSpeedAffector
         end
-        
+
         local finalRunSpeed = math.max(math.min(moveData:GetMaxSpeed(), runSpeed) * finalMult, self.BaseWalkSpeed)
-        
+
         moveData:SetMaxSpeed(finalRunSpeed)
         moveData:SetMaxClientSpeed(finalRunSpeed)
     end
@@ -457,7 +454,7 @@ end
 
 function PLAYER:setSpectateTarget(target)
     self.currentSpectateEntity = target
-    
+
     if SERVER then
         self:Spectate(self.spectatedCamera)
         self:SpectateEntity(target)
