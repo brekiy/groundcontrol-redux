@@ -67,6 +67,8 @@ function GM:HUDDrawScoreBoard()
         return
     end
     
+    -- Read this shit later https://gist.github.com/f1ndme/5651385 and the TTT scoreboard
+    
     lp = LocalPlayer()    
     X = ScrW()
     Y = ScrH()

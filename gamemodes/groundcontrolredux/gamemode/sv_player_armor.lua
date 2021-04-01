@@ -73,7 +73,7 @@ end
 function PLAYER:giveArmor()
     self:resetArmorData()
     local desiredVest = self:getDesiredVest()
-    if desiredVest ~= 0 then
+    if desiredVest != 0 then
         self:addArmorPart(desiredVest, "vest")
     end
     self:sendArmor()
@@ -82,7 +82,7 @@ end
 function PLAYER:giveHelmet()
     self:resetHelmetData()
     local desiredHelmet = self:getDesiredHelmet()
-    if desiredHelmet ~= 0 then
+    if desiredHelmet != 0 then
         self:addArmorPart(desiredHelmet, "helmet")
     end
     self:sendHelmet()

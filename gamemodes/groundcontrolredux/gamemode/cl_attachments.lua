@@ -5,9 +5,9 @@ function PLAYER:unlockAttachment(attachmentName)
         RunConsoleCommand("gc_request_data")
         return
     end
-    
+
     self.ownedAttachments[attachmentName] = true
-    
+
     if IsValid(GAMEMODE.activeAttachmentSelectionHover) then
         GAMEMODE.activeAttachmentSelectionHover:recreateInfoBox()
     end
