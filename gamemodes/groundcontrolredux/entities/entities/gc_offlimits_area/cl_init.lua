@@ -10,7 +10,7 @@ end
 
 function ENT:Think()
     if self:canPenalizePlayer(LocalPlayer()) then
-        if not self.penalizeTime then
+        if !self.penalizeTime then
             self.penalizeTime = CurTime() + self.timeToPenalize
         end
     else

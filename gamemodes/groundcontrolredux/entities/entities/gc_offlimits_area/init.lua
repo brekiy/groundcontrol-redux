@@ -26,7 +26,7 @@ function ENT:Think()
 
     for key, ply in ipairs(targets) do
         if self:canPenalizePlayer(ply, ownPos) then
-            if not ply.penalizeTime then
+            if !ply.penalizeTime then
                 ply.penalizeTime = curTime + self.timeToPenalize
             else
                 if curTime >= ply.penalizeTime then

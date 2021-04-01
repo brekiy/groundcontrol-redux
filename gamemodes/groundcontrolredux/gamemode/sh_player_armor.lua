@@ -21,12 +21,11 @@ GM.ArmorById = {}
 function GM:registerArmor(data)
     self.Armor[data.category] = self.Armor[data.category] or {}
     table.insert(self.Armor[data.category], data)
-    
+
     self.ArmorById[data.category] = self.ArmorById[data.category] or {}
     self.ArmorById[data.category][data.id] = data
-    
+
     if CLIENT then
-        local string = data.icon
         data.icon = surface.GetTextureID(data.icon)
     end
 end
@@ -37,17 +36,13 @@ end
 
 function GM:prepareArmorPiece(ply, armorId, category)
     local armorPiece = self.Armor[category]
-    
-    if not armorPiece then
+
+    if !armorPiece or !armorPiece[armorId] then
         return
     end
-    
+
     armorPiece = armorPiece[armorId]
-    
-    if not armorPiece then
-        return
-    end
-    
+
     local armorObject = {health = armorPiece.durability, id = armorId, category = category}
     if (category == "vest") then
         table.insert(ply.armor, armorObject)
@@ -71,7 +66,7 @@ end
 -- protectionAreas: protected hitgroup table.
 -- protectionDelta: in the event of no penetration, damage is scaled by an additional amount determined by
 --      (protection - penetration) * protectionDelta
---      e.g. if a weapon's penetration value is 6 and shoots someone wearing a 10 protection vest with 0.015 protectionDelta, 
+--      e.g. if a weapon's penetration value is 6 and shoots someone wearing a 10 protection vest with 0.015 protectionDelta,
 --      an additional ((10 - 6) * 0.015) damage reduction will be added to the final calculation.
 -- damageDecrease: Percent damage reduction in case of no penetration. Represents blunt trauma suffered.
 -- damageDecreasePenetrated: Percent damage reduction in case of penetration. original suggestion is to not raise this above 20%.
@@ -254,7 +249,7 @@ end
 function PLAYER:resetHelmetData()
     self.helmet = self.helmet or {}
     table.Empty(self.helmet)
-end    
+end
 
 function PLAYER:getDesiredVest()
     return tonumber(self:GetInfoNum("gc_armor_vest", 1))

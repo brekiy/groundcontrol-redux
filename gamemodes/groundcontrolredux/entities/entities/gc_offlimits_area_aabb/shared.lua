@@ -39,7 +39,7 @@ function ENT:canPenalizePlayer(ply, ownPos)
         return false
     end
 
-    if not ply:Alive() then
+    if !ply:Alive() then
         return false
     end
 
@@ -48,7 +48,7 @@ function ENT:canPenalizePlayer(ply, ownPos)
     end
 
     if self.dt.inverseFunctioning then
-        return not self:isWithinCaptureAABB(ply:GetPos())
+        return !self:isWithinCaptureAABB(ply:GetPos())
     end
 
     return self:isWithinCaptureAABB(ply:GetPos())

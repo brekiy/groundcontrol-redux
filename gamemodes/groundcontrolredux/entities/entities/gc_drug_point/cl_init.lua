@@ -33,7 +33,7 @@ function ENT:drawHUD()
 
     local pos = nil
 
-    if not self.ownPos then -- we know that this entity's position isn't going to be changed (it's a static ent) so just get it's position once instead of spamming tables per each draw call
+    if !self.ownPos then -- we know that this entity's position isn't going to be changed (it's a static ent) so just get it's position once instead of spamming tables per each draw call
         self.ownPos = self:GetPos()
         self.ownPos.z = self.ownPos.z + 32
     end
@@ -43,7 +43,7 @@ function ENT:drawHUD()
 
     local text = nil
 
-    if ply.hasDrugs and not self.dt.HasDrugs then
+    if ply.hasDrugs and !self.dt.HasDrugs then
         text = self.DeliverText
         alpha = alpha * (0.2 + 0.8 * math.flash(CurTime(), 2))
     end

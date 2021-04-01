@@ -61,24 +61,24 @@ function PLAYER:getDesiredTertiaryWeapon()
 end
 
 function PLAYER:adjustMagCount(weaponData, desiredMags)
-    if not weaponData then
+    if !weaponData then
         return 0
     end
-    
+
     if weaponData.magOverride then
         return weaponData.magOverride
     end
-    
+
     if weaponData.maxMags then
         desiredMags = math.min(desiredMags, weaponData.maxMags)
     end
-    
+
     return desiredMags
 end
 
 function checkWeaponExists(weaponClassname)
     local storedWep = weapons.GetStored(weaponClassname)
-    if not storedWep then print("Attempted to register non-existing weapon "..weaponClassname) end
+    if !storedWep then print("Attempted to register non-existing weapon " .. weaponClassname) end
     return storedWep
 end
 
@@ -116,7 +116,7 @@ function GM:registerSecondaryWeapon(weaponData)
     if checkWeaponExists(weaponData.weaponClass) then
         weaponData.id = weaponData.id or weaponData.weaponClass
         self.RegisteredWeaponData[weaponData.id] = weaponData
-        
+
         self:applyWeaponDataToWeaponClass(weaponData, false, 1)
         self.SecondaryWeapons[#self.SecondaryWeapons + 1] = weaponData
     end
@@ -126,7 +126,7 @@ function GM:registerTertiaryWeapon(weaponData)
     if checkWeaponExists(weaponData.weaponClass) then
         weaponData.id = weaponData.id or weaponData.weaponClass
         self.RegisteredWeaponData[weaponData.id] = weaponData
-        
+
         self:applyWeaponDataToWeaponClass(weaponData, false, 2)
         weapons.GetStored(weaponData.weaponClass).isTertiaryWeapon = true
         self.TertiaryWeapons[#self.TertiaryWeapons + 1] = weaponData
@@ -142,8 +142,8 @@ function GM:findBestWeapons(lookInto, output)
     for key, weaponData in ipairs(lookInto) do
         local wepObj = weaponData.weaponObject
         -- Handle edge cases where the SWEP creator didn't define this property explicitly
-        if not wepObj.Shots then wepObj.Shots = 1 end
-        
+        if !wepObj.Shots then wepObj.Shots = 1 end
+
         output.damage = math.max(output.damage, wepObj.Damage * wepObj.Shots)
         output.recoil = math.max(output.recoil, wepObj.Recoil)
         output.aimSpread = math.min(output.aimSpread, wepObj.AimSpread)
@@ -155,10 +155,10 @@ function GM:findBestWeapons(lookInto, output)
         output.speedDec = math.min(output.speedDec, wepObj.SpeedDec)
         output.weight = math.max(output.weight, wepObj.weight)
         output.penetrationValue = math.max(output.penetrationValue, wepObj.penetrationValue)
-        
+
         local magWeight = self:getAmmoWeight(wepObj.Primary.Ammo, wepObj.Primary.ClipSize)
         wepObj.magWeight = magWeight
-        
+
         output.magWeight = math.max(output.magWeight, magWeight)
     end
 end
@@ -185,7 +185,7 @@ function GM:postInitEntity()
         {t = "2x grenades.", font = "CW_HUD20", c = Color(255, 255, 255, 255)}
     }
     self:registerTertiaryWeapon(flash)
-    
+
     local smoke = {}
     smoke.weaponClass = "gc_cw_smoke_grenade"
     smoke.weight = 0.5
@@ -196,7 +196,7 @@ function GM:postInitEntity()
         {t = "2x grenades.", font = "CW_HUD20", c = Color(255, 255, 255, 255)}
     }
     self:registerTertiaryWeapon(smoke)
-    
+
     local spareGrenade = {}
     spareGrenade.weaponClass = "gc_cw_frag_grenade"
     spareGrenade.weight = 0.5
@@ -206,19 +206,19 @@ function GM:postInitEntity()
     spareGrenade.description = {{t = "Spare frag grenade", font = "CW_HUD24", c = Color(255, 255, 255, 255)},
         {t = "Allows for a second frag grenade to be thrown.", font = "CW_HUD20", c = Color(255, 255, 255, 255)}
     }
-    
+
     function spareGrenade:postGive(ply)
         ply:GiveAmmo(self.amountToGive, "Frag Grenades")
     end
-    
+
     self:registerTertiaryWeapon(spareGrenade)
-    
+
     -- KNIFE, give it 0 weight and make it undroppable (can't shoot out of hand, can't drop when dying)
     local wepObj = weapons.GetStored(self.KnifeWeaponClass)
     wepObj.weight = 0
     wepObj.dropsDisabled = true
     wepObj.isKnife = true
-    
+
     self:registerCaliberWeight("7.62x54mmR", 25.6)
     self:registerCaliberWeight("7.62x54MMR", 25.6) -- lol
     self:registerCaliberWeight("7.92x57MM Mauser", 26.0)
@@ -249,16 +249,16 @@ function GM:postInitEntity()
     self:registerCaliberWeight(".380 ACP", 7.5)
     self:registerCaliberWeight(".32 ACP", 6.8)
     self:registerCaliberWeight(".22LR", 4.5)
-    
+
     hook.Call("GroundControlPostInitEntity", nil)
-    
+
     self:findBestWeapons(self.PrimaryWeapons, BestPrimaryWeapons)
     self:findBestWeapons(self.SecondaryWeapons, BestSecondaryWeapons)
     weapons.GetStored("cw_base").AddSafeMode = false -- disable safe firemode
     weapons.GetStored("cw_base").RVBPitchMod = 0.4
     weapons.GetStored("cw_base").RVBYawMod = 0.4
     weapons.GetStored("cw_base").RVBRollMod = 0.4
-    
+
     if CLIENT then
         self:createMusicObjects()
     end

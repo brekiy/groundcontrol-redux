@@ -30,7 +30,7 @@ function ENT:Draw()
 
     -- local ply = LocalPlayer()
 
-    if not self.inRange then
+    if !self.inRange then
         return
     end
 
@@ -56,7 +56,7 @@ local horizontalBoundary, verticalBoundary = 75, 75
 local point = surface.GetTextureID("ground_control/hud/point_of_interest")
 
 function ENT:drawHUD()
-    if not self.inRange then
+    if !self.inRange then
         local ply = LocalPlayer()
 
         local pos = self:GetPos()

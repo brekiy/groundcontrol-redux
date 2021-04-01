@@ -21,7 +21,7 @@ function ENT:canPenalizePlayer(ply, ownPos)
         return false
     end
 
-    if not ply:Alive() then
+    if !ply:Alive() then
         return false
     end
 
@@ -32,7 +32,7 @@ function ENT:canPenalizePlayer(ply, ownPos)
     ownPos = ownPos or self:GetPos()
 
     if self.dt.inverseFunctioning then
-        return not self:isInRange(ply, ownPos)
+        return !self:isInRange(ply, ownPos)
     end
 
     return self:isInRange(ply, ownPos)
