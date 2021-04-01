@@ -9,7 +9,7 @@ local freezeEnts = {
     prop_physics_multiplayer = true
 }
 
-function ENT:Initialize() 
+function ENT:Initialize()
     self:PhysicsInit(SOLID_NONE)
     self:SetMoveType(MOVETYPE_NONE)
     self:SetSolid(SOLID_NONE)
@@ -27,7 +27,7 @@ end
 
 function ENT:setHasDrugs(has)
     self.dt.HasDrugs = has
-    
+
     if has then
         self:createDrugPackageObject()
     end
@@ -44,16 +44,16 @@ end
 
 function ENT:createDrugPackageObject()
     local randAngle = AngleRand()
-    
+
     local pos = self:GetPos()
     pos.z = pos.z + 6
-    
+
     local ent = ents.Create("gc_drug_package")
     ent:SetPos(pos)
     ent:SetAngles(Angle(0, randAngle.y, randAngle.r))
     ent:Spawn()
     ent:SetHost(self)
-    
+
     self.dt.HasDrugs = true
 end
 
