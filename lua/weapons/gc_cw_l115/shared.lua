@@ -1,15 +1,15 @@
 AddCSLuaFile()
 
 -- maybe in the future i'll decompile this and remove the scope from the model
--- 0	lo_Circle0
--- 1	lo_body002
--- 2	Object001
--- 3	Object002
--- 4	Object003
--- 5	Object004
--- 6	Object005
--- 7	Object006
--- 63	Object007
+-- 0    lo_Circle0
+-- 1    lo_body002
+-- 2    Object001
+-- 3    Object002
+-- 4    Object003
+-- 5    Object004
+-- 6    Object005
+-- 7    Object006
+-- 63    Object007
 
 CustomizableWeaponry:registerAmmo(".338 Lapua", ".338 Lapua", 8.58, 69.20)
 
@@ -137,23 +137,23 @@ SWEP.FireModes = {"bolt"}
 SWEP.Base = "cw_base"
 SWEP.Category = "CW 2.0"
 
-SWEP.Author			= "brekiy"
-SWEP.Contact		= ""
-SWEP.Purpose		= ""
-SWEP.Instructions	= ""
+SWEP.Author            = "brekiy"
+SWEP.Contact        = ""
+SWEP.Purpose        = ""
+SWEP.Instructions    = ""
 
-SWEP.ViewModelFOV	= 70
-SWEP.ViewModelFlip	= false
-SWEP.ViewModel		= "models/cw2/rifles/l96.mdl"
-SWEP.WorldModel		= "models/weapons/w_cstm_l96.mdl"
+SWEP.ViewModelFOV    = 70
+SWEP.ViewModelFlip    = false
+SWEP.ViewModel        = "models/cw2/rifles/l96.mdl"
+SWEP.WorldModel        = "models/weapons/w_cstm_l96.mdl"
 
-SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.Spawnable            = true
+SWEP.AdminSpawnable        = true
 
-SWEP.Primary.ClipSize		= 5
-SWEP.Primary.DefaultClip	= 5
-SWEP.Primary.Automatic		= false
-SWEP.Primary.Ammo			= ".338 Lapua"
+SWEP.Primary.ClipSize        = 5
+SWEP.Primary.DefaultClip    = 5
+SWEP.Primary.Automatic        = false
+SWEP.Primary.Ammo            = ".338 Lapua"
 
 SWEP.FireDelay = 1.5
 SWEP.FireSound = "CW_L96_FIRE"
@@ -232,7 +232,7 @@ if CLIENT then
         cd.w = size
         cd.h = size
         cd.angles = ang
-        cd.origin = self.Owner:GetShootPos()
+        cd.origin = self:GetOwner():GetShootPos()
         render.SetRenderTarget(self.ScopeRT)
         render.SetViewPort(0, 0, size, size)
             if alpha < 1 or Ini then
@@ -240,13 +240,13 @@ if CLIENT then
                 Ini = false
             end
 
-            ang = self.Owner:EyeAngles()
+            ang = self:GetOwner():EyeAngles()
             ang.p = ang.p + self.BlendAng.x
             ang.y = ang.y + self.BlendAng.y
             ang.r = ang.r + self.BlendAng.z
             ang = -ang:Forward()
 
-            local light = render.ComputeLighting(self.Owner:GetShootPos(), ang)
+            local light = render.ComputeLighting(self:GetOwner():GetShootPos(), ang)
 
             cam.Start2D()
                 surface.SetDrawColor(255, 255, 255, 255)

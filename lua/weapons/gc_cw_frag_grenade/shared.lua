@@ -4,10 +4,10 @@ if CLIENT then
     SWEP.DrawCrosshair = false
     SWEP.PrintName = "Frag Grenade"
     SWEP.CSMuzzleFlashes = true
-    
+
     SWEP.IconLetter = "O"
     killicon.AddFont("cw_frag_grenade", "CW_KillIcons", SWEP.IconLetter, Color(255, 80, 0, 150))
-    
+
     SWEP.MoveType = 2
     SWEP.ViewModelMovementScale = 0.8
     SWEP.DisableSprintViewSimulation = true
@@ -23,12 +23,12 @@ SWEP.Animations = {throw = {"throw"},
     pullpin = {"pullpin", "pullpin2", "pullpin3", "pullpin4"},
     idle = "idle",
     draw = "deploy"}
-    
+
 SWEP.Sounds = {pullpin = sounds,
     pullpin2 = sounds,
     pullpin3 = sounds,
     pullpin4 = sounds}
-    
+
 SWEP.SpeedDec = 5
 
 SWEP.NoFreeAim = true
