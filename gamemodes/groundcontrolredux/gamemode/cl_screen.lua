@@ -69,7 +69,7 @@ function GM:RenderScreenspaceEffects()
         DrawColorModify(self.ColorCorrectionData)
     end
 
-    local unpredictedCurTime = UnPredictedCurTime()
+    -- local unpredictedCurTime = UnPredictedCurTime()
 
     if self.currentHurtProgress < self.currentHurtDuration then
         local frameTime = FrameTime()

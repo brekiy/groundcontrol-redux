@@ -107,10 +107,10 @@ CustomizableWeaponry.ITEM_PACKS_TOP_COLOR = Color(0, 0, 0, 230)
 FULL_INIT = true
 
 CustomizableWeaponry.callbacks:addNew("calculateAccuracy", "GroundControl_calculateAccuracy", function(self)
-    local hipMod, aimMod = self.Owner:getAdrenalineAccuracyModifiers()
+    local hipMod, aimMod = self:GetOwner():getAdrenalineAccuracyModifiers()
     local hipMult, aimMult, maxSpread = 1, 1, 1
 
-    if !self.Owner:OnGround() then
+    if !self:GetOwner():OnGround() then
         local mult = GAMEMODE.NotOnGroundSpreadMultiplier
         hipMult, aimMult, maxSpread = mult, mult, mult -- if we aren't on the ground, we get a huge spread increase
     end
@@ -122,7 +122,7 @@ CustomizableWeaponry.callbacks:addNew("calculateAccuracy", "GroundControl_calcul
 end)
 
 CustomizableWeaponry.callbacks:addNew("calculateRecoil", "GroundControl_calculateRecoil", function(self, modifier)
-    if !self.Owner:OnGround() then
+    if !self:GetOwner():OnGround() then
         modifier = modifier * GAMEMODE.NotOnGroundRecoilMultiplier -- if we aren't on the ground, we get a huge recoil increase
     end
 
@@ -135,13 +135,13 @@ end)
 
 CustomizableWeaponry.callbacks:addNew("forceFreeAim", "GroundControl_forceFreeAim", function(self)
     -- return GAMEMODE.FORCE_FREE_AIM
-    return GetConVar("gc_force_free_aim"):GetInt() == 1
+    return GetConVar("gc_force_free_aim"):GetBool()
     -- return GetConVarNumber("gc_force_free_aim") > 0
 end)
 
 CustomizableWeaponry.callbacks:addNew("forceComplexTelescopics", "GroundControl_forceComplexTelescopics", function(self)
     -- return GAMEMODE.FORCE_COMPLEX_TELESCOPICS
-    return GetConVar("gc_force_pip_scopes"):GetInt() == 1
+    return GetConVar("gc_force_pip_scopes"):GetBool()
     -- return GetConVarNumber("gc_force_pip_scopes") > 0
 end)
 
@@ -164,7 +164,7 @@ CustomizableWeaponry.callbacks:addNew("preventAttachment", "GroundControl_preven
 end)
 
 CustomizableWeaponry.callbacks:addNew("disableInteractionMenu", "GroundControl_disableInteractionMenu", function(self)
-    if GAMEMODE.curGametype.canHaveAttachments and !GAMEMODE.curGametype:canHaveAttachments(self.Owner) then
+    if GAMEMODE.curGametype.canHaveAttachments and !GAMEMODE.curGametype:canHaveAttachments(self:GetOwner()) then
         return true
     end
 

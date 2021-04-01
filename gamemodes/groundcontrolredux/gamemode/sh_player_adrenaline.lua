@@ -59,7 +59,7 @@ function PLAYER:getStaminaRegenAdrenalineModifier()
 end
 
 function PLAYER:getAdrenalineAccuracyModifiers()
-    return 1 + GAMEMODE.HipFireAccuracyAdrenalineModifier * self.adrenaline, 1+ GAMEMODE.AimFireAccuracyAdrenalineModifier
+    return 1 + GAMEMODE.HipFireAccuracyAdrenalineModifier * self.adrenaline, 1 + GAMEMODE.AimFireAccuracyAdrenalineModifier
 end
 
 AddCSLuaFile("cl_player_adrenaline.lua")

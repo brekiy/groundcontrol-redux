@@ -5,6 +5,7 @@ ENT.Type = "nextbot"
 
 -- Credits to wyozi-gmod's gamemode and nextbot base.
 -- https://github.com/wyozi-gmod/budgetday/blob/master/entities/entities/bd_nextbotbase.lua
+-- https://github.com/lepotatur/tttbots
 ENT.HitBoxToHitGroup = {
     [0] = HITGROUP_HEAD,
     [16] = HITGROUP_CHEST,

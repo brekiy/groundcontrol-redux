@@ -79,7 +79,6 @@ function GM:CreateMove(cmd)
 
                 if curTime > shakeData.lastRoll then
                     shakeData.lastRoll = curTime + 0.1
-                    local angle = math.random(0, 360)
                     shakeData.targetAngle = math.random(0, 360)
 
                     shakeData.lastX = dirX

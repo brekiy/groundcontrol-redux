@@ -14,7 +14,7 @@ CreateConVar("gc_allow_gametype_votes", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 GM.RemovePreviousGametype = false
 
 function GM:gametypeVotesEnabled()
-    return GetConVar("gc_allow_gametype_votes"):GetInt() >= 1
+    return GetConVar("gc_allow_gametype_votes"):GetBool()
 end
 
 local PLAYER = FindMetaTable("Player")

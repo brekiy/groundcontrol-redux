@@ -29,7 +29,7 @@ include("sv_player_stamina.lua")
 include("sv_player_health_regen.lua")
 include("sv_general.lua")
 
-include('shared.lua')
+include("shared.lua")
 include("sv_player.lua")
 include("sv_loop.lua")
 include("sh_keybind.lua")
@@ -64,7 +64,6 @@ include("sv_map_start_callbacks.lua")
 include("sh_tip_controller.lua")
 include("sh_entity_initializer.lua")
 include("sh_announcer.lua")
--- include("sh_climbing.lua")
 include("sh_footsteps.lua")
 include("sh_status_display.lua")
 include("sh_mvp_tracking.lua")
@@ -165,7 +164,7 @@ end
 function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
     local entryText = nil
     local targetNick = target:Nick()
-    local inflictor = dmgInfo:GetInflictor()
+    -- local inflictor = dmgInfo:GetInflictor()
     local attackerWep = nil
     local attackerNick = nil
     if attacker and attacker:IsPlayer() then
@@ -184,7 +183,7 @@ function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
         end
     elseif attacker and attacker:IsPlayer() then
         entryText = Format("HIT: %s shot %s for %f damage with %s", attackerNick, targetNick, dmgInfo:GetDamage(), attackerWep)
-    else end
+    end
     table.insert(GAMEMODE.DamageLog, entryText)
 end
 

@@ -6,7 +6,7 @@ GM.DeadState = 0
 GM.ObjectiveEntities = {}
 GM.DrawEntities = {}
 
-include('shared.lua')
+include("shared.lua")
 include("sh_mixins.lua")
 include("cl_hud.lua")
 include("cl_weapon_selection_hud.lua")
@@ -46,7 +46,6 @@ include("sh_general.lua")
 include("sh_tip_controller.lua")
 include("cl_gametypes.lua")
 include("sh_announcer.lua")
-include("sh_climbing.lua")
 include("sh_footsteps.lua")
 include("cl_status_display.lua")
 include("sh_mvp_tracking.lua")
@@ -66,13 +65,13 @@ function GM:InitPostEntity()
     ply:resetGadgetData()
     ply:resetAttachmentData()
     ply:resetTraitData()
-    
+
     self:postInitEntity()
-    
+
     RunConsoleCommand("cw_customhud_ammo", "1")
     ply:SetHullDuck(self.DuckHullMin, self.DuckHullMax)
     ply:SetViewOffsetDucked(self.ViewOffsetDucked)
-    
+
     self.tipController:loadShownEvents()
 end
 
@@ -85,17 +84,17 @@ function PLAYER:spawn()
     ply:resetStaminaData()
     ply:resetWeightData()
     GAMEMODE:removeAllStatusEffects()
-    
+
     RunConsoleCommand("cw_freeaim_autocenter", 1)
     RunConsoleCommand("cw_freeaim_autocenter_time", 0.650000)
     RunConsoleCommand("cw_freeaim_center_mouse_impendance", 0.3)
     RunConsoleCommand("cw_freeaim_lazyaim", 0.03)
     RunConsoleCommand("cw_freeaim_yawlimit", 15)
-    
+
     timer.Simple(1, function()
         for key, tipId in ipairs(GAMEMODE.tipController.genericTips) do
             local result = GAMEMODE.tipController:handleEvent(tipId)
-            
+
             if result == false or result == true then
                 break
             end
@@ -112,7 +111,7 @@ end
 
 function GM:resetRoundData() -- called upon the end of a round
     self:resetTimeLimit()
-    
+
     if GAMEMODE.curGametype.resetRoundData then
         GAMEMODE.curGametype:resetRoundData()
     end
@@ -130,7 +129,7 @@ end
 -- 'data' is the data provided in the entity_killed event, called when you die
 function GM:onLocalPlayerDied(data)
     local ply = LocalPlayer()
-    
+
     self:removeAllStatusEffects()
     ply:resetBleedData()
     ply:resetAdrenalineData()
@@ -205,22 +204,22 @@ function GM:PlayerBindPress(ply, bind, pressed)
                 RunConsoleCommand("gc_spectate_perspective")
             end
         end
-        
+
         local wep = ply:GetActiveWeapon()
-        
-        if (IsValid(wep) and wep.CW20Weapon and wep.dt.State ~= CW_CUSTOMIZE) or not IsValid(wep) then
+
+        if (IsValid(wep) and wep.CW20Weapon and wep.dt.State != CW_CUSTOMIZE) or !IsValid(wep) then
             if bind == self.TeamSelectionKey then
                 RunConsoleCommand("gc_team_selection")
             elseif bind == self.LoadoutMenuKey then
                 RunConsoleCommand("gc_loadout_menu")
             elseif bind == self.RadioMenuKey then
                 RunConsoleCommand("gc_voice_menu")
-            elseif bind == "undo" then
+            -- elseif bind == "undo" then
                 --RunConsoleCommand("use", self.KnifeWeaponClass)
             end
             -- if bind:find("slot") then print(self:isVoteActive(), self:didPlyVote(ply)) end
-            -- if not self:isVoteActive() or (self:isVoteActive() and self:didPlyVote(ply)) then
-            if not self:isVoteActive() then
+            -- if !self:isVoteActive() or (self:isVoteActive() and self:didPlyVote(ply)) then
+            if !self:isVoteActive() then
                 if self.RadioSelection.active then
                     if bind == "+attack2" then
                         if self.RadioSelection.selectedCategory == 0 then
@@ -231,15 +230,15 @@ function GM:PlayerBindPress(ply, bind, pressed)
                             return true
                         end
                     end
-                    
+
                     if bind:find("slot") then
                         local selection = tonumber(bind:Right(1))
-                        
+
                         if self.RadioSelection.selectedCategory == 0 then
                             if self.VisibleRadioCommands[selection] then
                                 self.RadioSelection.selectedCategory = selection
                             end
-                            
+
                             return true
                         else
                             if self.VisibleRadioCommands[self.RadioSelection.selectedCategory].commands[selection] then
@@ -251,7 +250,7 @@ function GM:PlayerBindPress(ply, bind, pressed)
                 else
                     if bind:find("slot") then
                         local selection = tonumber(bind:Right(1))
-                        
+
                         if self:showWeaponSelection(selection) then
                             ply:selectWeaponNicely(self.desiredWeaponToDraw)
                             return true
@@ -276,13 +275,13 @@ function GM:PlayerBindPress(ply, bind, pressed)
             else
                 if bind:find("slot") then
                     local selection = tonumber(bind:Right(1))
-                    
+
                     if self:attemptVote(selection) then
                         return true
                     end
                 end
             end
-            
+
             if self:performAction(bind) then
                 return true
             end
@@ -302,7 +301,7 @@ end)
 
 CustomizableWeaponry.callbacks:addNew("postAttachAttachment", "GroundControl_postAttachAttachment", function(self, attCategory)
     local attachmentName = self.Attachments[attCategory].atts[self.Attachments[attCategory].last]
-    
+
     if self.BackupSights and self.BackupSights[attachmentName] then
         GAMEMODE.tipController:handleEvent("BACKUP_SIGHTS")
     end
@@ -310,7 +309,7 @@ end)
 
 hook.Add("player_spawn", "GroundControl.player_spawn", function(data)
     local player = Player(data.userid)
-    
+
     if IsValid(player) and player == LocalPlayer() then
         player:spawn()
     end

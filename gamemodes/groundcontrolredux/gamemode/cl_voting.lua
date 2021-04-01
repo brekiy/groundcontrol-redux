@@ -30,7 +30,7 @@ function GM:setVotes(title, startTime, voteDuration, data)
     self.VoteTitle = title
     self.VoteOptions = data
     self.VoteTextWidth = math.max(self:getWidestVoteText() + 10, self.BaseVotePanelWidth)
-    
+
     self:hideWeaponSelection()
     self:hideRadio()
 end
@@ -46,33 +46,33 @@ function GM:drawVotePanel()
             local scrH = ScrH()
             local midY = scrH * 0.5
             local curY = midY - halfOptions + 10 - 20
-            
+
             surface.SetDrawColor(0, 0, 0, 150)
             surface.DrawRect(50, midY - halfOptions - 20, self.VoteTextWidth, totalOptions * self.VoteOptionSpacing + 20)
-            
+
             self.HUDColors.white.a, self.HUDColors.black.a = 255, 255
-            
+
             draw.ShadowText(self:getVoteTitle(), self.VoteFont, 55, curY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             curY = curY + self.VoteOptionSpacing
-            
+
             for key, data in ipairs(self.VoteOptions) do
                 draw.ShadowText(self:getVoteText(key, data), self.VoteFont, 55, curY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                 curY = curY + self.VoteOptionSpacing
             end
-            
+
             return true
         end
     else
         local midY = ScrH() * 0.5
-        
+
         surface.SetDrawColor(0, 0, 0, 150)
         surface.DrawRect(50, midY - 12, 250, 24)
-        
+
         self.HUDColors.white.a, self.HUDColors.black.a = 255, 255
-        
+
         draw.ShadowText("A vote will begin soon.", "CW_HUD24", 55, midY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
-    
+
     return false
 end
 
@@ -92,15 +92,15 @@ end
 function GM:getWidestVoteText()
     local titleW = self:getTextSize(self.VoteFont, self:getVoteTitle())
     local optionW = -math.huge
-    
+
     for key, data in ipairs(self.VoteOptions) do
         local w = self:getTextSize(self.VoteFont, self:getVoteText(key, data))
-        
+
         if w > optionW then
             optionW = w
         end
     end
-    
+
     return math.max(titleW, optionW)
 end
 
@@ -118,6 +118,6 @@ function GM:attemptVote(selection)
         RunConsoleCommand("gc_vote", selection)
         return true
     end
-    
+
     return false
 end
