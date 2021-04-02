@@ -17,10 +17,10 @@ end)
 -- function attachArmorPM(ply)
 --     if SERVER then
 --         print("starting attach armor")
---         if not IsValid(ply.hat) then
+--         if !IsValid(ply.hat) then
 --             print("spawning attach armor")
 --             local hat = ents.Create("gc_armor_vest")
---             if not IsValid(hat) then return end
+--             if !IsValid(hat) then return end
 
 --             hat:SetPos(ply:GetPos() + Vector(0,0,70))
 --             hat:SetAngles(ply:GetAngles())
@@ -47,18 +47,16 @@ function GM:drawArmor(ply, baseX, baseY)
 
         for i = 1, #combinedArmor do
             local curPos = baseX + offset
-            
+
             local data = combinedArmor[removeIndex]
             local colorFade = curTime > data.colorHold
-            if data.red > 0 then
-                if colorFade then
-                    data.red = math.Approach(data.red, 0, frameTime * 1000)
-                end
+            if data.red > 0 and colorFade then
+                data.red = math.Approach(data.red, 0, frameTime * 1000)
             end
-        
+
             if data.health <= 0 then
                 data.alpha = math.Approach(data.alpha, 0, frameTime)
-            
+
                 if data.alpha == 0 then
                     table.remove(ply.armor, removeIndex)
                     offset = offset - spacing
@@ -68,23 +66,23 @@ function GM:drawArmor(ply, baseX, baseY)
             else
                 removeIndex = removeIndex + 1
             end
-            
+
             if data.alpha > 0 then
                 white.a, black.a = white.a * data.alpha, black.a * data.alpha
-                
+
                 surface.SetDrawColor(255, 255 - data.red, 255 - data.red, 255 * data.alpha)
                 surface.SetTexture(data.armorData.icon)
                 surface.DrawTexturedRect(curPos, baseY - 45, 40, 40)
-                
-                draw.ShadowText(math.max(data.health, 0) .. "%", "CW_HUD14", curPos + spacing * 0.5 - 10, baseY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+                draw.ShadowText(math.max(data.health, 0), "CW_HUD14", curPos + spacing * 0.5 - 10, baseY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             end
-            
+
             offset = offset + spacing
         end
-        
+
         white.a, black.a = 255, 255
     end
-    
+
     return offset
 end
 
@@ -93,18 +91,18 @@ PLAYER._armorFlashTime = 0.3
 PLAYER._armorFlashRedAmount = 255
 
 function PLAYER:updateArmorPiece(index, newHealth, category)
-    local combinedArmor = self:getTotalArmorPieces()
+    -- local combinedArmor = self:getTotalArmorPieces()
     local armorData = nil
     -- very hacky lol
-    if category == "vest" then 
-        armorData = self.armor[1]
+    if category == "vest" then
+        armorData = self.armor[index]
     elseif category == "helmet" then
-        armorData = self.helmet[1]
+        armorData = self.helmet[index]
     else return
     end
     local oldHealth = armorData.health
     armorData.health = newHealth
-    
+
     if newHealth < oldHealth then
         self:flashArmorPiece(armorData)
     end
@@ -114,7 +112,7 @@ function PLAYER:updateHelmetPiece(index, newHealth)
     local armorData = self.helmet[index]
     local oldHealth = armorData.health
     armorData.health = newHealth
-    
+
     if newHealth < oldHealth then
         self:flashArmorPiece(armorData)
     end

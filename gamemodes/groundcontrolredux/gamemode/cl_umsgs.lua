@@ -94,16 +94,16 @@ net.Receive("GC_AUTOBALANCED_TO_TEAM", function(a, b)
         GAMEMODE.teamSwitchPopup:Remove()
         GAMEMODE.teamSwitchPopup = nil
     end
-    
+
     local popup = vgui.Create("GCGenericPopup")
     popup:SetSize(310, 50)
     popup:SetText("You've been autobalanced to " .. team.GetName(net.ReadInt(8)), "Don't shoot your new team mates.")
     popup:SetExistTime(7)
     popup:Center()
-    
+
     local x, y = popup:GetPos()
     popup:SetPos(x, y - 140)
-    
+
     GAMEMODE.teamSwitchPopup = popup
 end)
 
@@ -112,38 +112,38 @@ net.Receive("GC_NEW_TEAM", function(a, b)
         GAMEMODE.teamSwitchPopup:Remove()
         GAMEMODE.teamSwitchPopup = nil
     end
-    
+
     local popup = vgui.Create("GCGenericPopup")
     popup:SetSize(310, 50)
     popup:SetText("You are now on " .. team.GetName(net.ReadInt(16)), "Acknowledge your new objectives.")
     popup:SetExistTime(7)
     popup:Center()
-    
+
     local x, y = popup:GetPos()
     popup:SetPos(x, y - 140)
-    
+
     GAMEMODE.teamSwitchPopup = popup
 end)
 
 net.Receive("GC_NEW_WAVE", function(a, b)
     local lostTickets = net.ReadInt(16)
-    
+
     if GAMEMODE.teamSwitchPopup then
         GAMEMODE.teamSwitchPopup:Remove()
         GAMEMODE.teamSwitchPopup = nil
     end
-    
+
     local popup = vgui.Create("GCGenericPopup")
-    
+
     local bottomText = lostTickets > 0 and ("Lost " .. lostTickets .. " tickets last wave.") or "No ticket loss."
     popup:SetSize(310, 50)
     popup:SetText("New wave.", bottomText)
     popup:SetExistTime(7)
     popup:Center()
-    
+
     local x, y = popup:GetPos()
     popup:SetPos(x, y - 140)
-    
+
     GAMEMODE.teamSwitchPopup = popup
 end)
 
@@ -152,21 +152,21 @@ local function GC_GOT_DRUGS(um)
         GAMEMODE.teamSwitchPopup:Remove()
         GAMEMODE.teamSwitchPopup = nil
     end
-    
+
     local gametype = GAMEMODE.curGametype
     local bottomText = LocalPlayer():Team() == gametype.gangTeam and "Now bring them back to the base!" or "Now deliver them to the secure point!"
-    
+
     local popup = vgui.Create("GCGenericPopup")
     popup:SetSize(330, 50)
     popup:SetText("You picked up the drugs!", bottomText)
     popup:SetExistTime(7)
     popup:Center()
-    
+
     local x, y = popup:GetPos()
     popup:SetPos(x, y - 140)
-    
+
     GAMEMODE.teamSwitchPopup = popup
-    
+
     LocalPlayer().hasDrugs = true
 end
 
@@ -211,7 +211,7 @@ end)
 net.Receive("GC_KILLED_BY", function(a, b)
     local killerPlayer = net.ReadEntity()
     local killerEntClass = net.ReadString() -- the sent inflictor is not an entity, but is instead the entity class
-    
+
     if IsValid(killerPlayer) and killerEntClass then
         GAMEMODE:createKilledByDisplay(killerPlayer, killerEntClass)
     end

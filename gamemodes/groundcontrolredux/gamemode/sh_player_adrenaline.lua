@@ -2,26 +2,26 @@ AddCSLuaFile()
 
 -- adrenaline and suppression is the same thing in Ground Control
 -- gameplay-wise it increases when enemy bullets hit nearby surfaces,
--- it's effects are increased run speed and hip fire accuracy at the 
+-- it's effects are increased run speed and hip fire accuracy at the
 -- expense of a shaking view when taking aim and lower aim accuracy
 
 -- max additional units/sec we can achieve from adrenaline
 GM.MaxSpeedIncreaseFromAdrenaline = 0.1
--- our stamina drain decrease from sprinting will be multiplied by this value depending on our adrenaline level 
+-- our stamina drain decrease from sprinting will be multiplied by this value depending on our adrenaline level
 -- (ie. with this value at 0.5: 100% adrenaline = 50% less stamina drained from sprinting, 0% adrenaline = 0% less stamina drain)
 GM.AdrenalineStaminaDrainModifier = 0.5
 -- same as with draining, but for regeneration
 GM.AdrenalineStaminaRegenModifier = 0.1
 -- when adrenaline reaches 100%, our hip fire accuracy should increase by this much; this value should be negative to increase hip fire accuracy
 GM.HipFireAccuracyAdrenalineModifier = -0.3
--- when adrenaline reaches 100%, our aim accuracy should decrease by this much; this value should be positive to increase aim fire spread 
+-- when adrenaline reaches 100%, our aim accuracy should decrease by this much; this value should be positive to increase aim fire spread
 GM.AimFireAccuracyAdrenalineModifier = 0.3
 
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:setAdrenaline(amount)
     self.adrenaline = math.Clamp(amount, 0, 1)
-    
+
     if SERVER then
         net.Start("GC_ADRENALINE")
         net.WriteFloat(self.adrenaline)
@@ -30,7 +30,7 @@ function PLAYER:setAdrenaline(amount)
 end
 
 function PLAYER:canSuppress(suppressedBy)
-    return self:Alive() and self:Team() ~= suppressedBy:Team()
+    return self:Alive() and self:Team() != suppressedBy:Team()
 end
 
 function PLAYER:resetAdrenalineData()
@@ -42,7 +42,7 @@ function PLAYER:resetAdrenalineData()
         self.adrenalineIncreaseMultiplier = 1
         self.maxAdrenalineDurationMultiplier = 1
     end
-    
+
     self.adrenaline = 0
 end
 
@@ -59,7 +59,7 @@ function PLAYER:getStaminaRegenAdrenalineModifier()
 end
 
 function PLAYER:getAdrenalineAccuracyModifiers()
-    return 1 + GAMEMODE.HipFireAccuracyAdrenalineModifier * self.adrenaline, 1+ GAMEMODE.AimFireAccuracyAdrenalineModifier
+    return 1 + GAMEMODE.HipFireAccuracyAdrenalineModifier * self.adrenaline, 1 + GAMEMODE.AimFireAccuracyAdrenalineModifier
 end
 
 AddCSLuaFile("cl_player_adrenaline.lua")

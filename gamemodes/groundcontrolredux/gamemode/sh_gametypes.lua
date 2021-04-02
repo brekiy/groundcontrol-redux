@@ -13,26 +13,27 @@ end
 function GM:setGametype(gameTypeID)
     self.curGametypeID = gameTypeID
     self.curGametype = self.Gametypes[gameTypeID]
-    
+
     if self.curGametype.prepare then
         self.curGametype:prepare()
     end
-    
-    if SERVER then -- does not do what the method says it does, please look in sv_gametypes.lua to see what it really does (bad name for the method, I know)
+
+    if SERVER then
+        -- doesn't do what the method says it does, please look in sv_gametypes.lua to see what it really does (bad name for the method, I know)
         self:removeCurrentGametype()
     end
 end
 
 function GM:setGametypeCVarByPrettyName(targetName)
-    local key, data = self:getGametypeFromConVar(targetName)
-    
+    local key, _ = self:getGametypeFromConVar(targetName)
+
     if key then
         self:changeGametype(key)
         game.ConsoleCommand("gc_gametype " .. key .. "\n")
-        
+
         return true
     end
-    
+
     return false
 end
 
@@ -43,10 +44,10 @@ end
 function GM:getGametypeFromConVar(targetValue)
     local cvarValue = targetValue and targetValue or GetConVar("gc_gametype"):GetString()
     local newGID = tonumber(cvarValue)
-    
-    if not newGID then
+
+    if !newGID then
         local lowered = string.lower(cvarValue)
-        
+
         for key, gametype in ipairs(self.Gametypes) do
             if string.lower(gametype.prettyName) == lowered or string.lower(gametype.name) == lowered then
                 return key, gametype
@@ -57,7 +58,7 @@ function GM:getGametypeFromConVar(targetValue)
             return newGID, self.Gametypes[newGID]
         end
     end
-    
+
     -- in case of failure
     print(self:appendHelpText("[GROUND CONTROL] Error - non-existent gametype ID '" .. targetValue .. "', last gametype in gametype table is '" .. GAMEMODE:getGametypeNameData(#self.Gametypes) .. "', resetting to default gametype"))
     return self.DefaultGametypeID, self.Gametypes[self.DefaultGametypeID]
@@ -71,26 +72,25 @@ end
 
 -- changes the gametype for the next map
 function GM:changeGametype(newGametypeID)
-    if not newGametypeID then
+    if !newGametypeID then
         return
     end
-    
+
     local newGID = tonumber(newGametypeID) -- check if the passed on value is a string
-    
-    if not newGID then -- if it is, attempt to set a gametype by the string we were passed on
-        if self:setGametypeCVarByPrettyName(newGametypeID) then -- if it succeeds, stop here
+
+    -- if it is, attempt to set a gametype by the string we were passed on
+    if !newGID and self:setGametypeCVarByPrettyName(newGametypeID) then
             return true
-        end
     end
-    
+
     if newGID then
         local gameTypeData = self.Gametypes[newGID]
-        
-        if not gameTypeData then -- non-existant gametype, can't switch
+
+        if !gameTypeData then -- non-existant gametype, can't switch
             game.ConsoleCommand("gc_gametype " .. self.DefaultGametypeID .. "\n")
             return
         end
-        
+
         local text = "NEXT MAP GAMETYPE: " .. gameTypeData.prettyName
         print("[GROUND CONTROL] " .. text)
 
@@ -117,20 +117,20 @@ function GM:initializeGameTypeEntities(gameType)
             local objEnt = ents.Create(data.objectiveClass)
             objEnt:SetPos(data.pos)
             objEnt:Spawn()
-            
+
             GAMEMODE.entityInitializer:initEntity(objEnt, gameType, data)
-            
+
             table.insert(gameType.objectiveEnts, objEnt)
         end
     end
 end
 
-function GM:addObjectivePositionToGametype(gametypeName, map, pos, objectiveClass, additionalData) 
+function GM:addObjectivePositionToGametype(gametypeName, map, pos, objectiveClass, additionalData)
     local gametypeData = self.GametypesByName[gametypeName]
     if gametypeData then
         gametypeData.objectives = gametypeData.objectives or {}
         gametypeData.objectives[map] = gametypeData.objectives[map] or {}
-        
+
         table.insert(gametypeData.objectives[map], {pos = pos, objectiveClass = objectiveClass, data = additionalData})
     end
 end
@@ -155,15 +155,15 @@ if SERVER then
     function tdm:postPlayerDeath(ply) -- check for round over possibility
         GAMEMODE:checkRoundOverPossibility(ply:Team())
     end
-    
+
     function tdm:playerDisconnected(ply)
         local hisTeam = ply:Team()
-        
+
         timer.Simple(0, function() -- nothing fancy, just skip 1 frame and call postPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
             GAMEMODE:checkRoundOverPossibility(hisTeam, true)
         end)
     end
-    
+
     function tdm:playerJoinTeam(ply, teamId)
         GAMEMODE:checkRoundOverPossibility(nil, true)
     end
@@ -200,13 +200,13 @@ end
 
 function oneSideRush:arePointsFree()
     local curTime = CurTime()
-    
+
     for key, obj in ipairs(self.objectiveEnts) do
         if obj.winDelay > curTime then
             return false
         end
     end
-    
+
     return true
 end
 
@@ -218,30 +218,26 @@ end
 
 function oneSideRush:roundStart()
     if SERVER then
-        if not self.swappedTeams then
-            if GAMEMODE.RoundsPlayed >= GAMEMODE.RoundsPerMap * 0.5 then
-            -- if GAMEMODE.RoundsPlayed >= GetConVar("gc_rounds_per_map"):GetInt() * 0.5 then
-                GAMEMODE:swapTeams(self.attackerTeam, self.defenderTeam, oneSideRush.teamSwapCallback, oneSideRush.teamSwapCallback)
-                self.swappedTeams = true
-            end
+        -- if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GAMEMODE.RoundsPerMap * 0.5 then
+        if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GetConVar("gc_default_rounds_per_map"):GetInt() * 0.5 then
+            GAMEMODE:swapTeams(self.attackerTeam, self.defenderTeam, oneSideRush.teamSwapCallback, oneSideRush.teamSwapCallback)
+            self.swappedTeams = true
         end
-        
+
         GAMEMODE:setTimeLimit(self.timeLimit)
-        
+
         self.realAttackerTeam = self.attackerTeam
         self.realDefenderTeam = self.defenderTeam
         table.Empty(self.objectiveEnts)
         self.stopCountdown = false
-        
+
         GAMEMODE:initializeGameTypeEntities(self)
     end
 end
 
 function oneSideRush:think()
-    if not self.stopCountdown then
-        if GAMEMODE:hasTimeRunOut() and self:arePointsFree() then
+    if !self.stopCountdown and GAMEMODE:hasTimeRunOut() and self:arePointsFree() then
             GAMEMODE:endRound(self.realDefenderTeam)
-        end
     end
 end
 
@@ -261,17 +257,15 @@ end
 
 function oneSideRush:playerDisconnected(ply)
     local hisTeam = ply:Team()
-    
+
     timer.Simple(0, function() -- nothing fancy, just skip 1 frame and call postPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
         GAMEMODE:checkRoundOverPossibility(hisTeam, true)
     end)
 end
 -- dunno why this wasn't defined initially...
 function oneSideRush:playerInitialSpawn(ply)
-    if GAMEMODE.RoundsPlayed == 0 then
-        if #player.GetAll() >= 2 then
-            GAMEMODE:endRound(nil)
-        end
+    if GAMEMODE.RoundsPlayed == 0 and #player.GetAll() >= 2 then
+        GAMEMODE:endRound(nil)
     end
 end
 
@@ -402,13 +396,13 @@ GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-10
 
 -- function assault:arePointsFree()
 --     local curTime = CurTime()
-    
+
 --     for key, obj in ipairs(self.objectiveEnts) do
 --         if obj.winDelay and obj.winDelay > curTime then
 --             return false
 --         end
 --     end
-    
+
 --     return true
 -- end
 
@@ -419,7 +413,7 @@ GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-10
 -- end
 
 -- function assault:think()
---     if not self.stopCountdown then
+--     if !self.stopCountdown then
 --         if GAMEMODE:hasTimeRunOut() and self:arePointsFree() then
 --             GAMEMODE:endRound(self.defenderTeam)
 --         end
@@ -440,7 +434,7 @@ GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-10
 
 -- function assault:playerDisconnected(ply)
 --     local hisTeam = ply:Team()
-    
+
 --     timer.Simple(0, function() -- nothing fancy, just skip 1 frame and call postPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
 --         GAMEMODE:checkRoundOverPossibility(hisTeam, true)
 --     end)
@@ -455,15 +449,15 @@ GM:addObjectivePositionToGametype("contendedpoint", "rp_outercanals", Vector(-10
 -- function assault:roundStart()
 --     if SERVER then
 --         GAMEMODE:swapTeams(self.attackerTeam, self.defenderTeam, assault.teamSwapCallback, assault.teamSwapCallback) -- swap teams on every round start
-        
+
 --         GAMEMODE:setTimeLimit(self.timeLimit)
-        
+
 --         self.realAttackerTeam = self.attackerTeam
 --         self.realDefenderTeam = self.defenderTeam
-        
+
 --         table.Empty(self.objectiveEnts)
 --         self.stopCountdown = false
-        
+
 --         GAMEMODE:initializeGameTypeEntities(self)
 --     end
 -- end
@@ -534,21 +528,21 @@ end
 function urbanwarfare:assignPointID(point)
     self.objectiveCounter = self.objectiveCounter + 1
     point.dt.PointID = self.objectiveCounter
-end 
+end
 
 function urbanwarfare:endWave(capturer, noTicketDrainForWinners)
     self.waveEnded = true
-    
+
     timer.Simple(0, function()
         for key, ent in ipairs(ents.FindByClass("cw_dropped_weapon")) do
             SafeRemoveEntity(ent)
         end
-        
+
         GAMEMODE:balanceTeams(true)
-        
-        if capturer then    
+
+        if capturer then
             local opposingTeam = GAMEMODE.OpposingTeam[capturer]
-            
+
             if self.capturePoint:getTeamTickets(opposingTeam) == 0 then
                 GAMEMODE:endRound(capturer)
             end
@@ -556,11 +550,11 @@ function urbanwarfare:endWave(capturer, noTicketDrainForWinners)
             self:checkEndWaveTickets(TEAM_RED)
             self:checkEndWaveTickets(TEAM_BLUE)
         end
-        
-        self:spawnPlayersNewWave(capturer, TEAM_RED, (capturer and (noTicketDrainForWinners and TEAM_RED == capturer)))
-        self:spawnPlayersNewWave(capturer, TEAM_BLUE, (capturer and (noTicketDrainForWinners and TEAM_BLUE == capturer)))
+
+        self:spawnPlayersNewWave(capturer, TEAM_RED, capturer and (noTicketDrainForWinners and TEAM_RED == capturer))
+        self:spawnPlayersNewWave(capturer, TEAM_BLUE, capturer and (noTicketDrainForWinners and TEAM_BLUE == capturer))
         self.waveEnded = false
-        
+
         GAMEMODE:resetAllKillcountData()
         GAMEMODE:sendAlivePlayerCount()
     end)
@@ -575,37 +569,37 @@ end
 function urbanwarfare:spawnPlayersNewWave(capturer, teamID, isFree)
     local bypass = false
     local players = team.GetPlayers(teamID)
-    
-    if capturer and capturer ~= teamID then
+
+    if capturer and capturer != teamID then
         local alive = 0
-        
+
         for key, ply in ipairs(players) do
             if ply:Alive() then
                 alive = alive + 1
             end
         end
-        
+
         -- if the enemy team captured the point and noone died on the loser team, then that teams will lose tickets equivalent to the amount of players in their team
         bypass = alive == #players
     end
-    
+
     local lostTickets = 0
-    
+
     for key, ply in ipairs(players) do
-        if not isFree or bypass then
+        if !isFree or bypass then
             self.capturePoint:drainTicket(teamID)
             lostTickets = lostTickets + 1
         end
-            
-        if not ply:Alive() then
+
+        if !ply:Alive() then
             ply:Spawn()
         end
-        
+
         if capturer == teamID then
             ply:addCurrency(self.waveWinReward.cash, self.waveWinReward.exp, "WAVE_WON")
         end
     end
-    
+
     for key, ply in ipairs(players) do
         net.Start("GC_NEW_WAVE")
         net.WriteInt(lostTickets, 16)
@@ -619,17 +613,17 @@ end
 
 function urbanwarfare:playerDisconnected(ply)
     local hisTeam = ply:Team()
-    
+
     timer.Simple(0, function() -- nothing fancy, just skip 1 frame and call postPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
         self:checkTickets(hisTeam)
     end)
 end
 
 function urbanwarfare:checkTickets(teamID)
-    if not IsValid(self.capturePoint) then
+    if !IsValid(self.capturePoint) then
         return
     end
-    
+
     if self.capturePoint:getTeamTickets(teamID) == 0 then
         GAMEMODE:checkRoundOverPossibility(teamID)
     else
@@ -639,7 +633,7 @@ end
 
 function urbanwarfare:checkWaveOverPossibility(teamID)
     local players = team.GetAlivePlayers(teamID)
-    
+
     if players == 0 then
         self.capturePoint:endWave(GAMEMODE.OpposingTeam[teamID], true)
     end
@@ -649,7 +643,7 @@ function urbanwarfare:prepare()
     if CLIENT then
         RunConsoleCommand("gc_team_selection")
     else
-        GAMEMODE.RoundsPerMap = 4
+        GAMEMODE.RoundsPerMap = GetConVar("gc_urban_warfare_rounds_per_map"):GetInt()
     end
 end
 
@@ -664,11 +658,9 @@ function urbanwarfare:playerJoinTeam(ply, teamId)
 end
 
 function urbanwarfare:playerInitialSpawn(ply)
-    if GAMEMODE.RoundsPlayed == 0 then
-        if #player.GetAll() >= 2 then
-            GAMEMODE:endRound(nil)
-            GAMEMODE.RoundsPlayed = 1
-        end
+    if GAMEMODE.RoundsPlayed == 0 and #player.GetAll() >= 2 then
+        GAMEMODE:endRound(nil)
+        GAMEMODE.RoundsPlayed = 1
     end
 end
 
@@ -784,14 +776,14 @@ end
 
 function ghettoDrugBust:pickupDrugs(drugEnt, ply)
     local team = ply:Team()
-    
+
     if team == self.swatTeam then
-        if not ply.hasDrugs then
+        if !ply.hasDrugs then
             self:giveDrugs(ply)
             return true
         end
     elseif team == self.gangTeam then
-        if drugEnt.dt.Dropped and not ply.hasDrugs then
+        if drugEnt.dt.Dropped and !ply.hasDrugs then
             self:giveDrugs(ply)
             GAMEMODE:startAnnouncement("ghetto", "return_drugs", CurTime(), nil, ply)
             return true
@@ -801,17 +793,17 @@ end
 
 function ghettoDrugBust:playerDeath(ply, attacker, dmginfo)
     if ply.hasDrugs then
-        if IsValid(attacker) and ply ~= attacker and attacker:IsPlayer() then
+        if IsValid(attacker) and ply != attacker and attacker:IsPlayer() then
             local plyTeam = ply:Team()
             local attackerTeam = attacker:Team()
-            
-            if plyTeam ~= attackerTeam then -- we grant the killer a cash and exp bonus if they kill the drug carrier of the opposite team
+
+            if plyTeam != attackerTeam then -- we grant the killer a cash and exp bonus if they kill the drug carrier of the opposite team
                 attacker:addCurrency(self.cashPerDrugCarrierKill, self.expPerDrugCarrierKill, "KILLED_DRUG_CARRIER")
             end
         end
-        
+
         GAMEMODE:startAnnouncement("ghetto", "retrieve_drugs", CurTime(), self.gangTeam)
-    
+
         ghettoDrugBust:dropDrugs(ply)
     end
 end
@@ -820,22 +812,24 @@ function ghettoDrugBust:giveDrugs(ply)
     if ply:Team() == self.swatTeam then
         GAMEMODE:startAnnouncement("ghetto", "drugs_stolen", CurTime(), self.gangTeam)
     end
-    
+
     ply.hasDrugs = true
-    SendUserMessage("GC_GOT_DRUGS", ply)
+    net.start("GC_GOT_DRUGS", ply)
+    net.Send(ply)
+    -- SendUserMessage("GC_GOT_DRUGS", ply)
 end
 
 function ghettoDrugBust:dropDrugs(ply)
     local pos = ply:GetPos()
     pos.z = pos.z + 20
-    
+
     local ent = ents.Create("gc_drug_package")
     ent:SetPos(pos)
     ent:SetAngles(AngleRand())
     ent:Spawn()
     ent:wakePhysics()
     ent.dt.Dropped = true
-    
+
     ply.hasDrugs = false
 end
 
@@ -849,15 +843,15 @@ function ghettoDrugBust:removeDrugs(ply)
     ply.hasDrugs = false
     net.Start("GC_DRUGS_REMOVED")
     net.Send(ply)
-    SendUserMessage("GC_DRUGS_REMOVED", ply)
+    -- SendUserMessage("GC_DRUGS_REMOVED", ply)
 end
 
 function ghettoDrugBust:attemptReturnDrugs(player, host)
     local team = player:Team()
-    
-    if team == ghettoDrugBust.gangTeam and player.hasDrugs and not host.dt.HasDrugs then
+
+    if team == ghettoDrugBust.gangTeam and player.hasDrugs and !host.dt.HasDrugs then
         ghettoDrugBust:removeDrugs(player)
-        
+
         host:createDrugPackageObject()
         player:addCurrency(self.cashPerDrugReturn, self.expPerDrugReturn, "RETURNED_DRUGS")
         GAMEMODE:startAnnouncement("ghetto", "drugs_retrieved", CurTime(), nil, player)
@@ -866,10 +860,10 @@ end
 
 function ghettoDrugBust:attemptCaptureDrugs(player, host)
     local team = player:Team()
-    
+
     if team == ghettoDrugBust.swatTeam and player.hasDrugs then
         ghettoDrugBust:removeDrugs(player)
-        
+
         player:addCurrency(self.cashPerDrugCapture, self.expPerDrugCapture, "SECURED_DRUGS")
         GAMEMODE:startAnnouncement("ghetto", "drugs_secured", CurTime(), self.gangTeam)
         return true
@@ -880,9 +874,9 @@ function ghettoDrugBust:playerDisconnected(ply)
     if ply.hasDrugs then
         self:dropDrugs(ply)
     end
-    
+
     local hisTeam = ply:Team()
-    
+
     timer.Simple(0, function() -- nothing fancy, just skip 1 frame and call postPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
         GAMEMODE:checkRoundOverPossibility(hisTeam, true)
     end)
@@ -890,8 +884,8 @@ end
 
 function ghettoDrugBust:playerSpawn(ply)
     ply.hasDrugs = false
-    
-    if ply:Team() ~= self.swatTeam then
+
+    if ply:Team() != self.swatTeam then
         CustomizableWeaponry:removeAllAttachments(ply)
         ply:StripWeapons()
         ply:RemoveAllAmmo()
@@ -902,25 +896,23 @@ function ghettoDrugBust:playerSpawn(ply)
         ply:resetHelmetData()
         ply:sendArmor()
         ply:sendHelmet()
-    
+
         local pickedWeapon = nil
-        
+
         for key, weaponData in ipairs(self.redTeamWeapons) do
             if math.random(1, 100) <= weaponData.chance then
                 pickedWeapon = weaponData
                 break
             end
         end
-        
+
         -- if for some reason the chance roll failed and no weapon was chosen, we pick one at random
         pickedWeapon = pickedWeapon or self.redTeamWeapons[math.random(1, #self.redTeamWeapons)]
-        
-        local randIndex = self.redTeamWeapons[math.random(1, #self.redTeamWeapons)]
         local givenWeapon = ply:Give(pickedWeapon.weapon)
-        
+
         ply:GiveAmmo(pickedWeapon.mags * givenWeapon.Primary.ClipSize_Orig, givenWeapon.Primary.Ammo)
         givenWeapon:maxOutWeaponAmmo(givenWeapon.Primary.ClipSize_Orig)
-        
+
         if math.random(1, 100) <= ghettoDrugBust.grenadeChance then
             ply:GiveAmmo(1, "Frag Grenades")
         end
@@ -928,28 +920,23 @@ function ghettoDrugBust:playerSpawn(ply)
 end
 
 function ghettoDrugBust:getDesiredBandageCount(ply)
-    if ply:Team() ~= self.swatTeam then
+    if ply:Team() != self.swatTeam then
         return self.bandagesToGive
     end
-    
+
     return nil
 end
 
 function ghettoDrugBust:think()
-    if not self.stopCountdown then
-        if GAMEMODE:hasTimeRunOut() then
-            GAMEMODE:endRound(self.gangTeam)
-        end
-        
-        local curTime = CurTime()
+    if !self.stopCountdown and GAMEMODE:hasTimeRunOut() then
+        GAMEMODE:endRound(self.gangTeam)
+        -- local curTime = CurTime()
     end
 end
 
 function ghettoDrugBust:playerInitialSpawn(ply)
-    if GAMEMODE.RoundsPlayed == 0 then
-        if #player.GetAll() >= 2 then
-            GAMEMODE:endRound(nil)
-        end
+    if GAMEMODE.RoundsPlayed == 0 and #player.GetAll() >= 2 then
+        GAMEMODE:endRound(nil)
     end
 end
 
@@ -963,22 +950,22 @@ function ghettoDrugBust:roundStart()
         local gearGuys = math.max(math.floor(#players / self.blueGuyPer), 1) -- aka the dudes who get the cool gear
         GAMEMODE:setTimeLimit(self.timeLimit)
         self.stopCountdown = false
-        
+
         for i = 1, gearGuys do
             local randomIndex = math.random(1, #players)
             local dude = players[randomIndex]
-            
+
             if dude then
                 dude:SetTeam(self.swatTeam)
-            
+
                 table.remove(players, randomIndex)
             end
         end
-        
+
         for key, ply in ipairs(players) do
             ply:SetTeam(self.gangTeam)
         end
-        
+
         GAMEMODE:initializeGameTypeEntities(self)
     end
 end
@@ -999,7 +986,7 @@ function ghettoDrugBust:adjustSpawnpoint(ply, plyTeam)
     if self.invertedSpawnpoints[GAMEMODE.CurMap] then
         return GAMEMODE.OpposingTeam[plyTeam]
     end
-    
+
     return nil
 end
 

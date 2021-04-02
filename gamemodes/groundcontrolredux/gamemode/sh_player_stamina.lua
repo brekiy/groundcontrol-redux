@@ -20,11 +20,9 @@ function PLAYER:setStamina(amount, dontSend)
     else
         self.stamina = amount
     end
-    
-    if SERVER then
-        if not dontSend then
-            self:sendStamina()
-        end
+
+    if SERVER and !dontSend then
+        self:sendStamina()
     end
 end
 
@@ -44,7 +42,7 @@ end
 function PLAYER:getStaminaRunSpeedModifier()
     local difference = GAMEMODE.RunSpeedImpactStaminaLevel - self.stamina
     local runSpeedImpact = math.max(difference, 0)
-    
+
     return runSpeedImpact * GAMEMODE.RunSpeedPerStaminaPoint
 end
 

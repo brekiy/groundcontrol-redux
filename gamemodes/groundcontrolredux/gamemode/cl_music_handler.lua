@@ -30,11 +30,11 @@ end
 
 function GM:createMusicObject(pathToSound, outputTable)
     local soundObject = CreateSound(LocalPlayer(), pathToSound, CHAN_STATIC)
-    
+
     if outputTable then
         outputTable[#outputTable + 1] = soundObject
     end
-    
+
     return soundObject
 end
 
@@ -46,15 +46,15 @@ function GM:playMusic(object, shouldFadePrevious, volume)
             self.currentMusicObject:Stop()
         end
     end
-    
+
     self.currentMusicObject = object
     self:replayMusic(object, volume)
 end
 
-function GM:replayMusic(object, volume)    
+function GM:replayMusic(object, volume)
     object = object or self.currentMusicObject
     volume = volume or 1
-    
+
     object:Stop()
     object:PlayEx(volume, 100)
 end

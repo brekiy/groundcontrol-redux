@@ -4,4 +4,64 @@
 	"title"		"Ground Control Redux"
 	"maps"		"^gc_"
 	"menusystem"	"1"
+	"category"	"other"
+
+	"settings"
+	{
+		1
+		{
+			"name"		"gc_min_weight_speed_decrease"
+			"text"		"Weight (kg) to start reducing run speed"
+			"type"		"Numeric"
+			"default"	"7.5"
+		}
+
+		2
+		{
+			"name"		"gc_run_speed_penalty_per_weight"
+			"text"		"Run speed penalty per kg"
+			"type"		"Numeric"
+			"default"	"0.65"
+		}
+
+		3
+		{
+			"name"		"gc_bleed_time"
+			"text"		"Time (s) between bleed ticks"
+			"type"		"Numeric"
+			"default"	"5"
+		}
+
+		4
+		{
+			"name"		"gc_bleed_hp_lost_per_tick"
+			"text"		"Health lost per bleed tick"
+			"type"		"Numeric"
+			"default"	"1"
+		}
+
+		5
+		{
+			"name"		"gc_health_regen_time"
+			"text"		"Time between each regen tick"
+			"type"		"Numeric"
+			"default"	"1.5"
+		}
+
+		5
+		{
+			"name"		"gc_damage_multiplier"
+			"text"		"Damage multiplier"
+			"type"		"Numeric"
+			"default"	"1.55"
+		}
+
+		5
+		{
+			"name"		"gc_base_run_speed"
+			"text"		"Run speed"
+			"type"		"Numeric"
+			"default"	"280"
+		}
+	}
 }

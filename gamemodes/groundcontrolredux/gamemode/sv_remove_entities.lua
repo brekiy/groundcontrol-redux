@@ -16,7 +16,7 @@ GM.RemoveEntities = {
     grenade_helicopter = true,
     item_ammo_pistol = true,
     item_rpg_round = true,
-    
+
     weapon_357 = true,
     weapon_ar2 = true,
     weapon_bugbait = true,
@@ -39,12 +39,12 @@ GM.RemoveEntities = {
     info_player_defender = true,
     info_player_attacker = true
 }
-    
+
 GM.RemoveEntitiesByIndex = {
     cs_siege_2010 = {
         {id = 231, oneTime = true} -- if oneTime is true, it'll remove that entity only once, upon map start
     },
-    
+
     ph_skyscraper_construct = {
         373,
         447,
@@ -63,30 +63,30 @@ end
 
 function GM:autoRemoveEntities()
     local maxPlayers = game.MaxPlayers()
-    
+
     if self.RemoveEntitiesByIndex[self.CurrentMap] then
         for key, index in ipairs(self.RemoveEntitiesByIndex[self.CurrentMap]) do
             local id = nil
-            
+
             if type(index) == "number" then
                 id = index
             else
-                if index.oneTime and not index.removed then
+                if index.oneTime and !index.removed then
                     id = index.id
                     index.removed = true
                 end
             end
-        
+
             if id then
                 local entity = ents.GetByIndex(id + maxPlayers)
-                
+
                 if IsValid(entity) then
                     entity:Remove()
                 end
             end
         end
     end
-    
+
     for class, state in pairs(self.RemoveEntities) do
         for key, obj in ipairs(ents.GetAll()) do
             if self.RemoveEntities[obj:GetClass()] then

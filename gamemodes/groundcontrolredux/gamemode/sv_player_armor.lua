@@ -7,7 +7,7 @@ local PLAYER = FindMetaTable("Player")
     degredation and health damage that the player takes.
 ]]--
 function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBleeding)
-    if not penetrationValue then
+    if !penetrationValue then
         return
     end
 
@@ -20,43 +20,42 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
         local armorData = GAMEMODE:getArmorData(armorPiece.id, armorPiece.category)
         local removeArmor = false
         if armorData.protectionAreas[hitGroup] then
-            local protectionDelta = armorData.protection - penetrationValue
-            local penetratesArmor = protectionDelta < 0
+            local penetrationDelta = armorData.protection - penetrationValue
+            local penetratesArmor = penetrationDelta < 0
             local damageNegation = nil
-            if not penetratesArmor then
+            if !penetratesArmor then
                 shouldBleed = false
                 if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
-                damageNegation = armorData.damageDecrease + protectionDelta * armorData.protectionDeltaToDamageDecrease
+                damageNegation = armorData.damageDecrease + penetrationDelta * armorData.protectionDelta
                 local regenAmount = math.floor(dmgInfo:GetDamage() * damageNegation)
                 self:addHealthRegen(regenAmount)
                 self:delayHealthRegen()
             else
-                --[[ 
+                --[[
                     New penetration dmg formula:
-                    armorData.damageDecreasePenetration + protectionDelta * 0.01
+                    armorData.damageDecreasePenetrated + penetrationDelta * 0.01
                     with this formula, the higher the round's penetrative power, the less the vest will reduce damage after being penetrated.
                 ]]--
-                damageNegation = armorData.damageDecreasePenetration + protectionDelta * 0.01
-                -- damageNegation = armorData.damageDecreasePenetration
+                damageNegation = armorData.damageDecreasePenetrated + penetrationDelta * 0.01
+                -- damageNegation = armorData.damageDecreasePenetrated
                 -- if our armor gets penetrated, it doesn't matter how much health we had in our regen pool, we still start bleeding
                 self:resetHealthRegenData()
             end
 
-            -- Clamp ballistic damage reduction between 0-100%, so mega powerful bullets dont end up doing more than 100 dmg
-            -- and super weak bullets vs super strong armor dont end up with a negative result for ScaleDamage()
+            -- Clamp ballistic damage reduction between 0-100%
             damageNegation = math.clamp(damageNegation, 0, 1)
             dmgInfo:ScaleDamage(1 - damageNegation)
             -- Use the scaled damage in calculating armor degradation, so bb pellets will never destroy hard plates
             self:takeArmorDamage(armorPiece, dmgInfo)
-            
+
             local health = armorPiece.health
-            
+
             if armorPiece.health > 0 then
                 removeIndex = removeIndex + 1
             else
                 removeArmor = true
             end
-            
+
             self:sendArmorPiece(i, health, armorData.category)
             if removeArmor then
                 table.remove(combinedArmor, removeIndex)
@@ -65,7 +64,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
         end
         removeIndex = removeIndex + 1
     end
-    
+
     if allowBleeding and shouldBleed then
         self:startBleeding(dmgInfo:GetAttacker())
     end
@@ -74,7 +73,7 @@ end
 function PLAYER:giveArmor()
     self:resetArmorData()
     local desiredVest = self:getDesiredVest()
-    if desiredVest ~= 0 then
+    if desiredVest != 0 then
         self:addArmorPart(desiredVest, "vest")
     end
     self:sendArmor()
@@ -83,7 +82,7 @@ end
 function PLAYER:giveHelmet()
     self:resetHelmetData()
     local desiredHelmet = self:getDesiredHelmet()
-    if desiredHelmet ~= 0 then
+    if desiredHelmet != 0 then
         self:addArmorPart(desiredHelmet, "helmet")
     end
     self:sendHelmet()

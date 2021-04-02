@@ -8,7 +8,7 @@ GM.AutoUpdateConVars = {}
 
 function GM:registerAutoUpdateConVar(cvarName, onChangedCallback)
     self.AutoUpdateConVars[cvarName] = onChangedCallback
-    
+
     cvars.AddChangeCallback(cvarName, onChangedCallback)
 end
 
@@ -16,7 +16,7 @@ function GM:performOnChangedCvarCallbacks()
     for cvarName, callback in pairs(self.AutoUpdateConVars) do
         local curValue = GetConVar(cvarName)
         local finalValue = curValue:GetInt() or curValue:GetFloat() or curValue:GetString() -- we don't know whether the callback wants a string or a number, so if we can get a valid number from it, we will use that if we can't, we will use a string value
-        
+
         callback(cvarName, finalValue, finalValue)
     end
 end
@@ -29,7 +29,7 @@ include("sv_player_stamina.lua")
 include("sv_player_health_regen.lua")
 include("sv_general.lua")
 
-include('shared.lua')
+include("shared.lua")
 include("sv_player.lua")
 include("sv_loop.lua")
 include("sh_keybind.lua")
@@ -64,7 +64,6 @@ include("sv_map_start_callbacks.lua")
 include("sh_tip_controller.lua")
 include("sh_entity_initializer.lua")
 include("sh_announcer.lua")
-include("sh_climbing.lua")
 include("sh_footsteps.lua")
 include("sh_status_display.lua")
 include("sh_mvp_tracking.lua")
@@ -104,53 +103,53 @@ function GM:InitPostEntity()
     self:setGametype(self:getGametypeFromConVar())
     self:autoRemoveEntities()
     self:runMapStartCallback()
-    
+
     timer.Simple(1, function()
         self:resetStartingPoints()
     end)
-    
+
     self:verifyAutoDownloadMap()
-    
+
     self:performOnChangedCvarCallbacks()
 end
 
 function GM:EntityTakeDamage(target, dmgInfo)
     dmgInfo:SetDamageForce(dmgInfo:GetDamageForce() * 0.5)
-        
+
     if target:IsPlayer() then
         local attacker = dmgInfo:GetAttacker()
-        
+
         if IsValid(attacker) then
-            if not attacker:IsPlayer() then
+            if !attacker:IsPlayer() then
                 local owner = attacker:GetOwner() -- check whether they were hurt by an entity the owner of which is a player
-                
+
                 if IsValid(owner) and owner:IsPlayer() then
                     attacker = owner -- use the 'owner' as the attacker
                 end
             end
-            
-            if self.noTeamDamage and attacker:IsPlayer() and attacker:Team() == target:Team() and (attacker ~= target or self.RoundOver) then
+
+            if self.noTeamDamage and attacker:IsPlayer() and attacker:Team() == target:Team() and (attacker != target or self.RoundOver) then
                 dmgInfo:ScaleDamage(0)
                 return
             end
         end
-                
+
         if attacker:IsPlayer() and attacker:Team() == target:Team() and self.AutoPunishEnabled then
             self:updateTeamDamageCount(attacker, math.min(target:Health(), dmgInfo:GetDamage()))
         end
-        
+
         if target.currentTraits then
             local traits = GAMEMODE.Traits
-            
+
             for key, traitConfig in ipairs(target.currentTraits) do
                 local traitData = traits[traitConfig[1]][traitConfig[2]]
-                
+
                 if traitData.onTakeDamage then
                     traitData:onTakeDamage(target, dmgInfo)
                 end
             end
         end
-        if not dmgInfo:IsFallDamage() then 
+        if !dmgInfo:IsFallDamage() then
             AddDamageLogEntry(attacker, target, dmgInfo, false)
         end
     end
@@ -165,7 +164,7 @@ end
 function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
     local entryText = nil
     local targetNick = target:Nick()
-    local inflictor = dmgInfo:GetInflictor()
+    -- local inflictor = dmgInfo:GetInflictor()
     local attackerWep = nil
     local attackerNick = nil
     if attacker and attacker:IsPlayer() then
@@ -173,7 +172,7 @@ function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
         attackerWep = attacker:GetActiveWeapon():GetClass()
     end
     if targetDied then
-        if attacker and attacker:IsPlayer() and attacker ~= target then
+        if attacker and attacker:IsPlayer() and attacker != target then
             if attacker:Team() == target:Team() then
                 entryText = Format("KILL: %s teamkilled %s with %s", attackerNick, targetNick, attackerWep)
             else
@@ -184,11 +183,11 @@ function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
         end
     elseif attacker and attacker:IsPlayer() then
         entryText = Format("HIT: %s shot %s for %f damage with %s", attackerNick, targetNick, dmgInfo:GetDamage(), attackerWep)
-    else end
+    end
     table.insert(GAMEMODE.DamageLog, entryText)
 end
 
--- CSS fall damage approximation thans to gmod wiki
+-- CSS fall damage approximation thanks to gmod wiki
 function GM:GetFallDamage( ply, speed )
-	return math.max( 0, math.ceil( 0.2418*speed - 141.75 ) )
+    return math.max(0, math.ceil(0.2418 * speed - 141.75))
 end

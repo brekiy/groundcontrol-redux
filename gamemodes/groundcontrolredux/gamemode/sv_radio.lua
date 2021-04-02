@@ -11,9 +11,9 @@ end
 function GM:SendRadioCommand(ply, category, radioId, command)
     local radioDelay = self.RadioDelay
     radioDelay = command and command.radioWait or radioDelay
-    
+
     ply.radioWait = CurTime() + radioDelay
-    
+
     if command and command.send then
         command:send(ply, radioId, category)
     else
@@ -32,7 +32,7 @@ function GM:attemptSetMemeRadio(ply)
         self:setVoiceVariant(ply, "bandlet")
         return true
     end
-    
+
     return false
 end
 
@@ -76,23 +76,23 @@ end
 concommand.Add("gc_radio_command", function(ply, com, args)
     local category = args[1]
     local radioId = args[2]
-    
-    if not category or not radioId then
+
+    if !category or !radioId then
         return
     end
-    
-    if not ply:Alive() or CurTime() < ply.radioWait then
+
+    if !ply:Alive() or CurTime() < ply.radioWait then
         return
     end
-    
+
     category = tonumber(category)
     radioId = tonumber(radioId)
-    
+
     local desiredCategory = GAMEMODE.RadioCommands[category]
-    
+
     if desiredCategory then
         local command = desiredCategory.commands[radioId]
-        
+
         if command then
             GAMEMODE:SendRadioCommand(ply, category, radioId, command)
         end

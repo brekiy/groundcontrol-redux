@@ -21,12 +21,11 @@ GM.ArmorById = {}
 function GM:registerArmor(data)
     self.Armor[data.category] = self.Armor[data.category] or {}
     table.insert(self.Armor[data.category], data)
-    
+
     self.ArmorById[data.category] = self.ArmorById[data.category] or {}
     self.ArmorById[data.category][data.id] = data
-    
+
     if CLIENT then
-        local string = data.icon
         data.icon = surface.GetTextureID(data.icon)
     end
 end
@@ -37,18 +36,14 @@ end
 
 function GM:prepareArmorPiece(ply, armorId, category)
     local armorPiece = self.Armor[category]
-    
-    if not armorPiece then
+
+    if !armorPiece or !armorPiece[armorId] then
         return
     end
-    
+
     armorPiece = armorPiece[armorId]
-    
-    if not armorPiece then
-        return
-    end
-    
-    local armorObject = {health = 100, id = armorId, category = category}
+
+    local armorObject = {health = armorPiece.durability, id = armorId, category = category}
     if (category == "vest") then
         table.insert(ply.armor, armorObject)
     elseif (category == "helmet") then
@@ -69,12 +64,14 @@ end
 -- weight: Armor weight in KG.
 -- protection: Arbitrary value. Weapons with a penetration value less than this do reduced damage and don't cause bleeding.
 -- protectionAreas: protected hitgroup table.
--- protectionDeltaToDamageDecrease: in the event of no penetration, damage is scaled by an additional amount determined by
---      (protection - penetration) * protectionDeltaToDamageDecrease
---      e.g. if a weapon's penetration value is 6 shoots a guy wearing the dyneema vest, 
---      an additional 6% ((10 - 6) * 0.015) damage reduction will be added to the final calculation.
+-- protectionDelta: in the event of no penetration, damage is scaled by an additional amount determined by
+--      (protection - penetration) * protectionDelta
+--      e.g. if a weapon's penetration value is 6 and shoots someone wearing a 10 protection vest with 0.015 protectionDelta,
+--      an additional ((10 - 6) * 0.015) damage reduction will be added to the final calculation.
 -- damageDecrease: Percent damage reduction in case of no penetration. Represents blunt trauma suffered.
--- damageDecreasePenetration: Percent damage reduction in case of penetration. original suggestion is to not raise this above 20%.
+-- damageDecreasePenetrated: Percent damage reduction in case of penetration. original suggestion is to not raise this above 20%.
+-- durability: Amount of health points.
+-- pointCost: Cost to add this to loadout.
 -- icon: Path to the icon in the GUI.
 -- description: Description displayed in the GUI.
 -- =======================
@@ -82,130 +79,145 @@ end
 -- Vests
 -- =======================
 
-local dyneemaVest = {
+local vestPaca = {
     category = "vest",
-    id = "dyneema_vest",
-    displayName = "Dyneema Vest",
+    id = "vest_paca",
+    displayName = "PACA Low Visibility Carrier",
     weight = 1.7,
     protection = 8,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    protectionDeltaToDamageDecrease = 0.0175,
-    damageDecrease = 0.325,
-    damageDecreasePenetration = 0.15,
-    icon = "ground_control/hud/armor/aa_dyneema_vest",
-    description = "Thin soft vest. Provides type II protection against projectiles."
+    protectionDelta = 0.01,
+    damageDecrease = 0.75,
+    damageDecreasePenetrated = 0.15,
+    durability = 40,
+    pointCost = 4,
+    icon = "ground_control/hud/armor/aa_vest_dyneema",
+    description = "Minimalist carrier with level II soft panels."
 }
-GM:registerArmor(dyneemaVest)
+GM:registerArmor(vestPaca)
 
-local kevlarVest = {
+local vestIba = {
     category = "vest",
-    id = "kevlar_vest",
-    displayName = "Kevlar Vest",
-    weight = 3.3,
-    protection = 12,
+    id = "vest_iba",
+    displayName = "Interceptor Body Armor",
+    weight = 10,
+    protection = 16,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    damageDecrease = 0.325,
-    protectionDeltaToDamageDecrease = 0.0175,
-    damageDecreasePenetration = 0.15,
-    icon = "ground_control/hud/armor/aa_kevlar_vest",
-    description = "Soft vest. Provides type IIIA protection against projectiles."
+    damageDecrease = 0.9,
+    protectionDelta = 0.011,
+    damageDecreasePenetrated = 0.15,
+    durability = 120,
+    pointCost = 10,
+    icon = "ground_control/hud/armor/aa_vest_spectra",
+    description = "Surplus soft armor with level III rifle plates."
 }
-GM:registerArmor(kevlarVest)
+GM:registerArmor(vestIba)
 
-local spectraVest = {
+local vestPc = {
     category = "vest",
-    id = "spectra_vest",
-    displayName = "SPECTRA Vest",
+    id = "vest_pc",
+    displayName = "Plate Carrier",
     weight = 8.5,
     protection = 20,
-    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    damageDecrease = 0.425,
-    protectionDeltaToDamageDecrease = 0.0185,
-    damageDecreasePenetration = 0.15,
-    icon = "ground_control/hud/armor/aa_spectra_vest",
-    description = "Vest with rifle plates. Provides type IV protection against projectiles."
+    protectionAreas = {[HITGROUP_CHEST] = true},
+    damageDecrease = 0.9,
+    protectionDelta = 0.011,
+    damageDecreasePenetrated = 0.15,
+    durability = 80,
+    pointCost = 16,
+    icon = "ground_control/hud/armor/aa_vest_lbx",
+    description = "High-speed plate carrier with level IV rifle plates."
 }
-GM:registerArmor(spectraVest)
+GM:registerArmor(vestPc)
 
-local ratnikVest = {
+local vestRatnik = {
     category = "vest",
-    id = "ratnik_vest",
-    displayName = "Ratnik Vest",
+    id = "vest_ratnik",
+    displayName = "6B43 Body Armor",
     weight = 15,
     protection = 20,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true},
-    damageDecrease = 0.425,
-    protectionDeltaToDamageDecrease = 0.0185,
-    damageDecreasePenetration = 0.15,
-    icon = "ground_control/hud/armor/aa_ratnik_vest",
-    description = "Heavy body armor. Provides type IV protection against projectiles."
+    damageDecrease = 0.9,
+    protectionDelta = 0.011,
+    damageDecreasePenetrated = 0.15,
+    durability = 160,
+    pointCost = 24,
+    icon = "ground_control/hud/armor/aa_vest_ratnik",
+    description = "Body armor with level IV rifle plates and additional soft protection."
 }
-GM:registerArmor(ratnikVest)
+GM:registerArmor(vestRatnik)
 
--- maybe a little too broken
--- local lbxVest = {
---     category = "vest",
---     id = "lbx_vest",
---     displayName = "LBX Vest",
---     weight = 10,
---     protection = 25,
---     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
---     damageDecrease = 0.5,
---     protectionDeltaToDamageDecrease = 0.0135,
---     damageDecreasePenetration = 0.15,
---     icon = "ground_control/hud/armor/aa_lbx_vest",
---     description = "Advanced plate carrier. Provides type VI protection against projectiles."
--- }
--- GM:registerArmor(lbxVest)
 
 -- Helmets
 -- =======================
 
-local steelHelmet = {
+local helmetPasgt = {
     category = "helmet",
-    id = "steel_helmet",
-    displayName = "Steel Helmet",
-    weight = 1.25,
-    protection = 8,
-    protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.5,
-    protectionDeltaToDamageDecrease = 0.0145,
-    damageDecreasePenetration = 0.15,
-    icon = "ground_control/hud/armor/aa_steel_helmet",
-    description = "Old milsurp helmet. Provides type II protection against projectiles."
-}
-GM:registerArmor(steelHelmet)
-
-local spectraHelmet = {
-    category = "helmet",
-    id = "spectra_helmet",
-    displayName = "SPECTRA Helmet",
-    weight = 2.5,
+    id = "helmet_pasgt",
+    displayName = "PASGT Helmet",
+    weight = 1.1,
     protection = 12,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.5,
-    protectionDeltaToDamageDecrease = 0.0145,
-    damageDecreasePenetration = 0.15,
-    icon = "ground_control/hud/armor/aa_spectra_helmet",
-    description = "Modern ballistic helmet. Provides type IIIA protection against projectiles."
+    damageDecrease = 0.9,
+    protectionDelta = 0.01,
+    damageDecreasePenetrated = 0.15,
+    durability = 30,
+    pointCost = 6,
+    icon = "ground_control/hud/armor/aa_helmet_spectra",
+    description = "Surplus kevlar helmet. Provides level IIIA protection."
 }
-GM:registerArmor(spectraHelmet)
+GM:registerArmor(helmetPasgt)
 
-local altynHelmet = {
+local helmetAltyn = {
     category = "helmet",
-    id = "altyn_helmet",
-    displayName = "Altyn Helmet",
-    weight = 5,
+    id = "helmet_altyn",
+    displayName = "Altyn",
+    weight = 4,
+    protection = 12,
+    protectionAreas = {[HITGROUP_HEAD] = true},
+    damageDecrease = 0.9,
+    protectionDelta = 0.011,
+    damageDecreasePenetrated = 0.15,
+    durability = 60,
+    pointCost = 10,
+    icon = "ground_control/hud/armor/aa_helmet_altyn",
+    description = "Heavy titanium helmet. Provides level IIIA protection."
+}
+GM:registerArmor(helmetAltyn)
+
+local helmetOperator = {
+    category = "helmet",
+    id = "helmet_operator",
+    displayName = "Operator High Cut",
+    weight = 0.9,
     protection = 16,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.5,
-    protectionDeltaToDamageDecrease = 0.0145,
-    damageDecreasePenetration = 0.15,
-    icon = "ground_control/hud/armor/aa_altyn_helmet",
-    description = "Heavy titanium helmet. Provides type III protection against projectiles."
+    damageDecrease = 0.9,
+    protectionDelta = 0.011,
+    damageDecreasePenetrated = 0.15,
+    durability = 40,
+    pointCost = 12,
+    icon = "ground_control/hud/armor/aa_helmet_operator",
+    description = "Modern lightweight ballistic helmet. Provides level III protection."
 }
-GM:registerArmor(altynHelmet)
+GM:registerArmor(helmetOperator)
 
+local helmetVulkan = {
+    category = "helmet",
+    id = "helmet_vulkan",
+    displayName = "Vulkan-5",
+    weight = 4.5,
+    protection = 20,
+    protectionAreas = {[HITGROUP_HEAD] = true},
+    damageDecrease = 0.9,
+    protectionDelta = 0.011,
+    damageDecreasePenetrated = 0.15,
+    durability = 50,
+    pointCost = 18,
+    icon = "ground_control/hud/armor/aa_helmet_vulkan",
+    description = "Heavy composite helmet. Provides level IV protection."
+}
+GM:registerArmor(helmetVulkan)
 
 local PLAYER = FindMetaTable("Player")
 
@@ -237,7 +249,7 @@ end
 function PLAYER:resetHelmetData()
     self.helmet = self.helmet or {}
     table.Empty(self.helmet)
-end    
+end
 
 function PLAYER:getDesiredVest()
     return tonumber(self:GetInfoNum("gc_armor_vest", 1))

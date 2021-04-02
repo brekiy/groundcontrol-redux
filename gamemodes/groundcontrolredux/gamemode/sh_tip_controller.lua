@@ -4,8 +4,8 @@ GM.tipController = {}
 GM.tipController.shownEvents = {}
 GM.tipController.events = { -- key is event name
     BEGIN_BLEEDING = {times = 3, text = "Being shot in an unprotected area will cause bleeding. Press Q_MENU_KEY to bandage yourself.", formatFunc = function(text) return string.gsub(text, "Q_MENU_KEY", GAMEMODE:getKeyBind("+menu")) end},
-    STOPPED_BLEEDING = {times = 3, text = "Applying a bandage will not restore health, be careful around gunfire."},
-    PICKUP_WEAPON = {times = 3, text = "Picking up weapons will not transmit the owner's ammo, and you can not carry more than 2 weapons at a time."},
+    STOPPED_BLEEDING = {times = 3, text = "Applying a bandage won't restore health, be careful around gunfire."},
+    PICKUP_WEAPON = {times = 3, text = "Picking up weapons won't transmit the owner's ammo, and you can !carry more than 2 weapons at a time."},
     DROPPED_WEAPON = {times = 3, text = "Taking too much damage to the arms will make you drop your primary and be unable to use them."}, -- for when we lose a lot of health via hits to the arm(s) and we lose our primary
     RADIO_USED = {times = 3, text = "Radios can be used for quick communication and marking enemy positions. Press C_MENU_KEY to open the radio menu.", formatFunc = function(text) return string.gsub(text, "C_MENU_KEY", GAMEMODE:getKeyBind("+menu_context")) end},
     KILLED_ENEMY = {times = 3, text = "Make sure to report enemy deaths using the radio, it marks the death area and gives you a cash and experience bonus."},
@@ -41,7 +41,7 @@ GM.tipController.genericTips = {
 
 if SERVER then
     local PLAYER = FindMetaTable("Player")
-    
+
     function PLAYER:sendTip(tipId)
         net.Start("GC_TIP_EVENT")
         net.WriteString(tipId)
@@ -51,68 +51,66 @@ end
 
 if CLIENT then
     file.verifyDataFolder("ground_control")
-    
+
     function GM.tipController:handleEvent(event)
         if CurTime() < self.nextTip then
-            return false -- not ready to show next tip yet
+            return false -- !ready to show next tip yet
         end
-        
-        local eventData = self.events[event] 
-                
-        if eventData then
-            if not self.shownEvents[event] or self.shownEvents[event] < eventData.times then
+
+        local eventData = self.events[event]
+
+        if eventData and !self.shownEvents[event] or self.shownEvents[event] < eventData.times then
                 self:displayEvent(event)
                 self:saveShownEvents()
                 return true -- tip was shown
-            end
         end
-        
+
         return nil -- no tip was shown
     end
-    
+
     local questionMark = surface.GetTextureID("ground_control/hud/help")
-    
+
     function GM.tipController:displayEvent(event)
         self.shownEvents[event] = (self.shownEvents[event] or 0) + 1
         local eventData = self.events[event]
         local text = eventData.text
-        
+
         if eventData.formatFunc then
             text = eventData.formatFunc(text)
         end
-        
+
         self.nextTip = CurTime() + self.delayBetweenTips
         self.displayText = text
         self.flashTime = CurTime() + 2
         self.displayTime = CurTime() + (math.Clamp(2 + #text * 0.05, 2, 8)) + 2
-        
+
         surface.SetFont(self.displayFont)
         local width, height = surface.GetTextSize(text)
         self.displayWidth = width
         self.displayHeight = height
     end
-    
+
     function GM.tipController:draw(w, h)
         if CurTime() < self.displayTime then
             self.alpha = math.Approach(self.alpha, 1, FrameTime() * 3)
         else
             self.alpha = math.Approach(self.alpha, 0, FrameTime() * 5)
         end
-        
+
         if self.alpha > 0 then
             if CurTime() < self.flashTime then
                 self.alpha = self.alpha * (0.6 + 0.4 * math.flash(CurTime(), 2))
             end
-        
+
             surface.SetDrawColor(0, 0, 0, 100 * self.alpha)
             surface.DrawRect(w * 0.5 - self.displayWidth * 0.5 - 4, h * 0.5 + 80 - self.displayHeight * 0.5 - 2, self.displayWidth + 28, self.displayHeight + 4)
-        
+
             surface.SetDrawColor(255, 255, 255, 255 * self.alpha)
             surface.SetTexture(questionMark)
             surface.DrawTexturedRect(w * 0.5 - self.displayWidth * 0.5, h * 0.5 + 72, 16, 16)
-            
+
             local hudColors = GAMEMODE.HUDColors
-            
+
             hudColors.white.a = 255 * self.alpha
             hudColors.black.a = 255 * self.alpha
                 draw.ShadowText(self.displayText, self.displayFont, w * 0.5 + 20, h * 0.5 + 80, hudColors.white, hudColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -120,25 +118,25 @@ if CLIENT then
             hudColors.black.a = 255
         end
     end
-    
+
     function GM.tipController:saveShownEvents()
         local data = util.TableToJSON(self.shownEvents)
-        
+
         file.Write(self.SAVE_DIRECTORY, data)
     end
-    
+
     function GM.tipController:loadShownEvents()
         local readData = file.Read(self.SAVE_DIRECTORY, "DATA")
-        
+
         if readData then
             local data = util.JSONToTable(readData)
-            
+
             if data then
                 self.shownEvents = data
             end
         end
     end
-    
+
     local function GC_TIP_EVENT(um)
         GAMEMODE.tipController:handleEvent(um)
     end

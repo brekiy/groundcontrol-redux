@@ -14,7 +14,7 @@ ENT.roundOverOnCapture = true
 function ENT:Initialize()
     self:SetModel("models/error.mdl")
     self:SetNoDraw(true)
-    
+
     self.captureDelay = 0
     self.deCaptureDelay = 0
     self.dt.CurCaptureTeam = 0
@@ -44,52 +44,50 @@ function ENT:setRoundOverOnCapture(roundOver)
     self.roundOverOnCapture = roundOver
 end
 
-local plys, CT
+-- local plys, CT
 
 function ENT:Think()
     if GAMEMODE.RoundOver then
         return
     end
-    
-    if self.roundOverOnCapture then
-        if self.dt.CaptureProgress == 100 then
-            GAMEMODE:endRound(self.dt.CurCaptureTeam)
-            return
-        end
+
+    if self.roundOverOnCapture and self.dt.CaptureProgress == 100 then
+        GAMEMODE:endRound(self.dt.CurCaptureTeam)
+        return
     end
-    
+
     local curTime = CurTime()
     local redMembers = 0
     local blueMembers = 0
     local ownPos = self:GetPos()
-    
+
     for key, ply in ipairs(team.GetPlayers(TEAM_RED)) do
         if ply:Alive() then
             local dist = ply:GetPos():Distance(ownPos)
-            
+
             if dist <= self.captureDistance then
                 redMembers = redMembers + 1
             end
         end
     end
-    
+
     for key, ply in ipairs(team.GetPlayers(TEAM_BLUE)) do
         if ply:Alive() then
             local dist = ply:GetPos():Distance(ownPos)
-            
+
             if dist <= self.captureDistance then
                 blueMembers = blueMembers + 1
             end
         end
     end
-    
+
     if redMembers > 0 and blueMembers > 0 then -- if both parties are available, nothing happens
         return
     end
-    
+
     local desiredTeam = nil
     local capturingMembers = nil
-    
+
     if redMembers > 0 then
         desiredTeam = TEAM_RED
         capturingMembers = redMembers
@@ -97,18 +95,18 @@ function ENT:Think()
         desiredTeam = TEAM_BLUE
         capturingMembers = blueMembers
     end
-    
+
     if desiredTeam then
         if curTime < self.captureDelay then
             return
         end
-        
+
         local canCapture = desiredTeam == self.dt.CurCaptureTeam
         local multiplier = math.max(1 - (capturingMembers - 1) * self.captureSpeedIncrease, self.maxSpeedIncrease)
-        
+
         self.captureDelay = curTime + self.captureTime * multiplier
         self.deCaptureDelay = curTime + self.deCaptureTime
-        
+
         if canCapture then -- if we can capture, we do so
             if self.dt.CurCaptureTeam == 0 then
                 self.dt.CurCaptureTeam = desiredTeam
@@ -117,7 +115,7 @@ function ENT:Think()
             self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 100, self.captureAmount)
         else -- if we don't, we first push the capture progress back
             self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 0, self.captureAmount)
-            
+
             if self.dt.CaptureProgress == 0 then
                 self.dt.CurCaptureTeam = desiredTeam
             end
@@ -126,7 +124,7 @@ function ENT:Think()
         if curTime < self.deCaptureDelay then
             return
         end
-        
+
         self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 0, 1)
         self.deCaptureDelay = curTime + self.deCaptureTime
     end

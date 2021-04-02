@@ -21,24 +21,24 @@ GM.VisibleVoiceVariantsById = {}
 
 if SERVER then
     GM.MarkedSpots = {}
-    
+
     function GM:markSpot(pos, marker, radioData)
         local markTeam = marker:Team()
-        
+
         self.MarkedSpots[markTeam] = self.MarkedSpots[markTeam] or {}
         self:sanitiseMarkedSpots(markTeam)
-        
+
         table.insert(self.MarkedSpots[markTeam], {position = pos, marker = marker, displayTime = CurTime() + radioData.displayTime, radioData = radioData})
     end
-    
+
     function GM:sanitiseMarkedSpots(desiredTeam)
         local data = self.MarkedSpots[desiredTeam]
         local removeIndex = 1
-        
+
         for i = 1, #data do
             local current = data[removeIndex]
-            
-            if CurTime() > current.displayTime or not IsValid(current.marker) then
+
+            if CurTime() > current.displayTime or !IsValid(current.marker) then
                 table.remove(data, removeIndex)
             else
                 removeIndex = removeIndex + 1
@@ -56,15 +56,15 @@ function GM:registerRadioVoiceVariant(voiceID, display, texture, redPlayerModel,
     voiceData.bluePlayerModel = bluePlayerModel
     voiceData.invisible = invisible
     voiceData.requiresSubtitles = requiresSubtitles
-    
+
     if CLIENT and voiceData.texture then
         voiceData.texture = surface.GetTextureID(texture)
     end
-    
+
     self.VoiceVariants[#self.VoiceVariants + 1] = voiceData
     self.VoiceVariantsById[voiceID] = voiceData
-    
-    if not invisible then
+
+    if !invisible then
         self.VisibleVoiceVariants[#self.VisibleVoiceVariants + 1] = voiceData
         self.VisibleVoiceVariantsById[voiceID] = voiceData
     end
@@ -74,17 +74,17 @@ function GM:getVoiceModel(ply)
     local voiceData = self.VoiceVariants[ply.voiceVariant]
     local teamID = ply:Team()
     local model = nil
-    
+
     if teamID == TEAM_RED then
         model = voiceData.redPlayerModel
     else
         model = voiceData.bluePlayerModel
     end
-    
+
     if type(model) == "table" then
         model = model[math.random(1, #model)]
     end
-    
+
     return model
 end
 
@@ -92,11 +92,11 @@ GM:registerRadioVoiceVariant("us", "US", nil, "models/player/swat.mdl", "models/
 GM:registerRadioVoiceVariant("aus", "AUS", nil, "models/player/urban.mdl", "models/player/guerilla.mdl")
 GM:registerRadioVoiceVariant("rus", "RUS", nil, "models/player/riot.mdl", "models/player/phoenix.mdl", false, true)
 GM:registerRadioVoiceVariant("bandlet", "Cheeki", nil, "models/player/bandit_backpack.mdl", "models/custom/stalker_bandit_veteran.mdl", false, true)
--- GM:registerRadioVoiceVariant("combine", "Combine", nil, 
+-- GM:registerRadioVoiceVariant("combine", "Combine", nil,
 --     {"models/player/group01/male_03.mdl", "models/player/group01/male_01.mdl"}, {"models/player/group01/male_03.mdl", "models/player/group01/male_01.mdl"}, true)
-GM:registerRadioVoiceVariant("franklin", "Franklin", nil, 
+GM:registerRadioVoiceVariant("franklin", "Franklin", nil,
     {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, true, true)
-GM:registerRadioVoiceVariant("trevor", "Trevor", nil, 
+GM:registerRadioVoiceVariant("trevor", "Trevor", nil,
     {"models/player/Group02/Male_04.mdl", "models/player/Group02/male_02.mdl", "models/player/Group01/male_07.mdl"}, {"models/player/Group02/Male_04.mdl", "models/player/Group02/male_02.mdl", "models/player/Group01/male_07.mdl"}, true, true)
 
 function GM:registerRadioCommand(data)
@@ -114,8 +114,8 @@ function GM:registerRadioCommandCategory(category, display, invisible)
     local structure = {commands = {}, display = display, invisible = invisible}
     self.RadioCommands[category] = structure
     self.RadioCategories[display] = category
-    
-    if not invisible then
+
+    if !invisible then
         self.VisibleRadioCommands[category] = structure
     end
 end
@@ -131,19 +131,19 @@ GM:registerRadioCommandCategory(9, "special", true)
 local command = {}
 command.id = "enemy_spotted"
 command.tipId = "MARK_ENEMIES"
-command.variations = {us = {{sound = "ground_control/radio/us/contact.mp3", text = "Contact!"}, 
-    {sound = "ground_control/radio/us/contacts.mp3", text = "Contacts!"}, 
-    {sound = "ground_control/radio/us/enemyinfantryspotted.mp3", text = "Enemy infantry spotted!"}, 
-    {sound = "ground_control/radio/us/enemymovementspotted.mp3", text = "Enemy movement spotted!"}, 
-    {sound = "ground_control/radio/us/enemymovementspotted2.mp3", text = "Enemy movement spotted!"}, 
-    {sound = "ground_control/radio/us/enemyoverthere.mp3", text = "Enemy over there!"}, 
-    {sound = "ground_control/radio/us/enemyrightthere.mp3", text = "Enemy right there!"}, 
-    {sound = "ground_control/radio/us/enemyspotted.mp3", text = "Enemy spotted!"}, 
-    {sound = "ground_control/radio/us/enemyspotted2.mp3", text = "Enemy spotted!"}, 
-    {sound = "ground_control/radio/us/tangospotted.mp3", text = "Tango spotted!"}, 
-    {sound = "ground_control/radio/us/tangospotted2.mp3", text = "Tango spotted!"}, 
+command.variations = {us = {{sound = "ground_control/radio/us/contact.mp3", text = "Contact!"},
+    {sound = "ground_control/radio/us/contacts.mp3", text = "Contacts!"},
+    {sound = "ground_control/radio/us/enemyinfantryspotted.mp3", text = "Enemy infantry spotted!"},
+    {sound = "ground_control/radio/us/enemymovementspotted.mp3", text = "Enemy movement spotted!"},
+    {sound = "ground_control/radio/us/enemymovementspotted2.mp3", text = "Enemy movement spotted!"},
+    {sound = "ground_control/radio/us/enemyoverthere.mp3", text = "Enemy over there!"},
+    {sound = "ground_control/radio/us/enemyrightthere.mp3", text = "Enemy right there!"},
+    {sound = "ground_control/radio/us/enemyspotted.mp3", text = "Enemy spotted!"},
+    {sound = "ground_control/radio/us/enemyspotted2.mp3", text = "Enemy spotted!"},
+    {sound = "ground_control/radio/us/tangospotted.mp3", text = "Tango spotted!"},
+    {sound = "ground_control/radio/us/tangospotted2.mp3", text = "Tango spotted!"},
     {sound = "ground_control/radio/us/ihaveeyesonenemytroops.mp3", text = "I have eyes on enemy troops!"}},
-    
+
     aus = {{sound = "ground_control/radio/aus/contact.mp3", text = "Contact!"},
         {sound = "ground_control/radio/aus/enemymovement.mp3", text = "Enemy movement spotted!"},
         {sound = "ground_control/radio/aus/enemysighted.mp3", text = "Oi, enemy sighted!"},
@@ -153,7 +153,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/contact.mp3", text
         {sound = "ground_control/radio/aus/theresenemiesoverthere.mp3", text = "There's enemies over there!"},
         {sound = "ground_control/radio/aus/watchoutmate.mp3", text = "Watch out, mate, enemies spotted!"},
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/atanda.mp3", text = "Атанда!"},
         {sound = "ground_control/radio/bandlet/gondurasi.mp3", text = "Гондурасы!"},
@@ -161,7 +161,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/contact.mp3", text
         {sound = "ground_control/radio/bandlet/stvoly_dostavaite_pocani.mp3", text = "Стволы доставайте, пацаны!"},
         {sound = "ground_control/radio/bandlet/volyni_k_boju.mp3", text = "Волыны к бою!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/enemyspotted1.mp3", text = "Враг."},
         {sound = "ground_control/radio/rus/enemyspotted2.mp3", text = "Враг!"},
@@ -193,7 +193,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/contact.mp3", text
         {sound = "ground_control/radio/trevor/enemy_spotted3.ogg", text = "How are you allowed to walk the streets, moron?"}
     }
 }
-    
+
 command.onScreenText = "Enemy spotted"
 command.onScreenColor = GM.HUDColors.lightRed
 command.menuText = "Enemy spotted"
@@ -201,7 +201,7 @@ command.displayTime = 5
 command.category = GM.RadioCategories.Combat
 command.killRangeReward = 256 -- how close enemies have to be to the marked spot for the marker to receive points for marking the spot
 command.cashReward = 10
-command.expReward = 20    
+command.expReward = 20
 
 local traceData = {}
 traceData.mask = bit.bor(CONTENTS_SOLID, CONTENTS_MOVEABLE, CONTENTS_DEBRIS, CONTENTS_MONSTER, CONTENTS_HITBOX, CONTENTS_WATER)
@@ -211,29 +211,27 @@ function command:onPlayerDeath(victim, attacker, data)
     local attackerTeam = attacker:Team()
     local marker = data.marker
     local markerTeam = marker:Team()
-    
-    if markerTeam == attackerTeam then
-        if victimTeam ~= markerTeam and attacker ~= marker then
-            local dist = victim:GetPos():Distance(data.position)
-            
-            if dist <= self.killRangeReward then
-                marker:addCurrency(self.cashReward, self.expReward, "SPOT_KILL")
-                GAMEMODE:trackRoundMVP(marker, "spotting", 1)
-            end
+
+    if markerTeam == attackerTeam and victimTeam != markerTeam and attacker != marker then
+        local dist = victim:GetPos():Distance(data.position)
+
+        if dist <= self.killRangeReward then
+            marker:addCurrency(self.cashReward, self.expReward, "SPOT_KILL")
+            GAMEMODE:trackRoundMVP(marker, "spotting", 1)
         end
     end
 end
-    
+
 function command:send(ply, commandId, category)
     traceData.start = ply:GetShootPos()
     traceData.endpos = traceData.start + ply:GetAimVector() * 4096
     traceData.filter = ply
-    
+
     local trace = util.TraceLine(traceData)
-    
-    if not trace.HitSky then
+
+    if !trace.HitSky then
         GAMEMODE:markSpot(trace.HitPos, ply, self)
-        
+
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
             GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, trace.HitPos)
         end
@@ -251,23 +249,23 @@ local command = {}
 command.id = "enemy_down"
 command.variations = {
     us = {
-        {sound = "ground_control/radio/us/enemydown.mp3", text = "Enemy down."}, 
-        {sound = "ground_control/radio/us/tangodown.mp3", text = "Tango down."},  
+        {sound = "ground_control/radio/us/enemydown.mp3", text = "Enemy down."},
+        {sound = "ground_control/radio/us/tangodown.mp3", text = "Tango down."},
         {sound = "ground_control/radio/us/killconfirmed.mp3", text = "Kill confirmed."}
     },
-    
+
     aus = {
         {sound = "ground_control/radio/aus/contactdown.mp3", text = "Contact down!"},
         {sound = "ground_control/radio/aus/contactsdead.mp3", text = "Contact's dead!"},
         {sound = "ground_control/radio/aus/enemydown.mp3", text = "Enemy down."}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/na_havaj_suka.mp3", text = "На, хавай, сука!"},
         {sound = "ground_control/radio/bandlet/na_tebe.mp3", text = "На тебе!"},
         {sound = "ground_control/radio/bandlet/poluchi_suka.mp3", text = "Получи, сука!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/enemydown1.mp3", text = "Враг убит."},
         {sound = "ground_control/radio/rus/enemydown2.mp3", text = "Враг уничтожен."},
@@ -310,18 +308,18 @@ function command:send(ply, commandId, category)
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
             GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ply.lastKillData.position)
         end
-        
-        if team.GetAlivePlayers(ply:Team()) > 1 and not GAMEMODE.RoundOver then -- only give the reward if there's at least one player alive or the round hasn't ended yet
+
+        if team.GetAlivePlayers(ply:Team()) > 1 and !GAMEMODE.RoundOver then -- only give the reward if there's at least one player alive or the round hasn't ended yet
             ply:addCurrency(self.cashReward, self.expReward, "REPORT_ENEMY_DEATH")
         end
-        
+
         ply:resetLastKillData()
     else
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
             GAMEMODE:sendRadio(ply, obj, category, commandId)
         end
     end
-    
+
     ply:sendKillConfirmations()
 end
 
@@ -329,8 +327,8 @@ local worldSpawn = Vector(0, 0, 0)
 
 function command:receive(sender, commandId, category, data)
     local markPos = net.ReadVector()
-    
-    if markPos ~= worldSpawn then
+
+    if markPos != worldSpawn then
         GAMEMODE:AddMarker(markPos, self.onScreenText, self.onScreenColor, self.displayTime)
     end
 end
@@ -341,11 +339,11 @@ local command = {}
 command.id = "affirmative"
 command.variations = {
     us = {
-        {sound = "ground_control/radio/us/affirmative.mp3", text = "Affirmative."}, 
-        {sound = "ground_control/radio/us/copythat.mp3", text = "Copy that."}, 
+        {sound = "ground_control/radio/us/affirmative.mp3", text = "Affirmative."},
+        {sound = "ground_control/radio/us/copythat.mp3", text = "Copy that."},
         {sound = "ground_control/radio/us/icopy.mp3", text = "I copy."}
     },
-    
+
     aus = {
         {sound = "ground_control/radio/aus/affirmative.mp3", text = "Affirmative."},
         {sound = "ground_control/radio/aus/copythat.mp3", text = "Copy that."},
@@ -353,12 +351,12 @@ command.variations = {
         {sound = "ground_control/radio/aus/soundsgood.mp3", text = "Sounds good."},
         {sound = "ground_control/radio/aus/gotcha.mp3", text = "Gotcha."}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/a_nu_chiki_briki_i_v_damki.mp3", text = "А ну чики-брики, и в дамки!"},
         {sound = "ground_control/radio/bandlet/a_nu_davaj_davaj.mp3", text = "А ну давай, давай!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/affirmative1.mp3", text = "Понял."},
         {sound = "ground_control/radio/rus/affirmative2.mp3", text = "Принято."},
@@ -387,25 +385,25 @@ GM:registerRadioCommand(command)
 
 local command = {}
 command.id = "negative"
-command.variations = {us = {{sound = "ground_control/radio/us/nocando.mp3", text = "No can do."}, 
-    {sound = "ground_control/radio/us/negative.mp3", text = "Negative."}, 
-    {sound = "ground_control/radio/us/negative2.mp3", text = "Negative."}, 
+command.variations = {us = {{sound = "ground_control/radio/us/nocando.mp3", text = "No can do."},
+    {sound = "ground_control/radio/us/negative.mp3", text = "Negative."},
+    {sound = "ground_control/radio/us/negative2.mp3", text = "Negative."},
     {sound = "ground_control/radio/us/nope.mp3", text = "Nope."}},
-    
+
     aus = {
         {sound = "ground_control/radio/aus/nah.mp3", text = "Nah."},
         {sound = "ground_control/radio/aus/nahmate.mp3", text = "Nah, mate."},
         {sound = "ground_control/radio/aus/no.mp3", text = "No."},
         {sound = "ground_control/radio/aus/nocando.mp3", text = "No can do."}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/ty_che_baklan.mp3", text = "Ты чё, баклан?"},
         {sound = "ground_control/radio/bandlet/ne_nu_ja_ne_ponial_mlia.mp3", text = "Не ну, я не понял, мля!"},
         {sound = "ground_control/radio/bandlet/sovsem_ohirel.mp3", text = "Совсем охерел?"},
         {sound = "ground_control/radio/bandlet/suka.mp3", text = "Сука!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/negative1.mp3", text = "Нет."},
         {sound = "ground_control/radio/rus/negative2.mp3", text = "Никак нет."},
@@ -434,12 +432,12 @@ GM:registerRadioCommand(command)
 local command = {}
 command.variations = {
     us = {
-        {sound = "ground_control/radio/us/muchappreciated.mp3", text = "Much appreciated."}, 
+        {sound = "ground_control/radio/us/muchappreciated.mp3", text = "Much appreciated."},
         {sound = "ground_control/radio/us/thanks.mp3", text = "Thanks."},
         {sound = "ground_control/radio/us/thankyou.mp3", text = "Thank you."},
         {sound = "ground_control/radio/us/appreciated.mp3", text = "Appreciated."}
     },
-    
+
     aus = {
         {sound = "ground_control/radio/aus/cheersmate.mp3", text = "Cheers, mate."},
         {sound = "ground_control/radio/aus/cheersmatey.mp3", text = "Cheers, matey."},
@@ -447,11 +445,11 @@ command.variations = {
         {sound = "ground_control/radio/aus/thanksmate.mp3", text = "Thanks, mate."},
         {sound = "ground_control/radio/aus/thankyou.mp3", text = "Thank you."}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/a_nu_chiki_briki_i_v_damki.mp3", text = "А ну чики-брики, и в дамки!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/thanks1.mp3", text = "Спасибо."},
         {sound = "ground_control/radio/rus/thanks2.mp3", text = "Спасибо."},
@@ -481,24 +479,24 @@ GM:registerRadioCommand(command)
 
 local command = {}
 command.variations = {us = {
-        {sound = "ground_control/radio/us/waitforme.mp3", text = "Wait for me!"}, 
+        {sound = "ground_control/radio/us/waitforme.mp3", text = "Wait for me!"},
         {sound = "ground_control/radio/us/holdup.mp3", text = "Hold up!"},
         {sound = "ground_control/radio/us/holdit.mp3", text = "Hold it!"},
         {sound = "ground_control/radio/us/heywaitforme.mp3", text = "Hey, wait for me!"},
     },
-    
+
     aus = {
         {sound = "ground_control/radio/aus/oiholdup.mp3", text = "Oi, hold up!"},
         {sound = "ground_control/radio/aus/wait.mp3", text = "Wait!"},
         {sound = "ground_control/radio/aus/waitforme.mp3", text = "Wait for me, mate!"},
         {sound = "ground_control/radio/aus/waitup.mp3", text = "Wait up!"}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/aa_suki.mp3", text = "Аа, суки!"},
         {sound = "ground_control/radio/bandlet/tvoju_matj.mp3", text = "Твою мать!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/wait1.mp3", text = "Э, погоди!"},
         {sound = "ground_control/radio/rus/wait2.mp3", text = "Постой!"},
@@ -527,22 +525,22 @@ GM:registerRadioCommand(command)
 local command = {}
 command.variations = {
     us = {
-        {sound = "ground_control/radio/us/moving.mp3", text = "Moving!"}, 
+        {sound = "ground_control/radio/us/moving.mp3", text = "Moving!"},
         {sound = "ground_control/radio/us/onmyway.mp3", text = "On my way!"},
         {sound = "ground_control/radio/us/onmyway2.mp3", text = "On my way!"}
     },
-    
+
     aus = {
         {sound = "ground_control/radio/aus/immoving.mp3", text = "I'm moving."},
         {sound = "ground_control/radio/aus/imonmyway.mp3", text = "I'm on my way."},
         {sound = "ground_control/radio/aus/onmyway.mp3", text = "On my way."}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/ne_tremsia_kodla_ne_tremsia.mp3", text = "Не трёмся кодла, не трёмся!"},
         {sound = "ground_control/radio/bandlet/nu_podorvali_pocani.mp3", text = "Ну, подорвали, пацаны!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/moving1.mp3", text = "Иду."},
         {sound = "ground_control/radio/rus/moving2.mp3", text = "В пути."},
@@ -572,19 +570,19 @@ command.category = GM.RadioCategories.Reply
 GM:registerRadioCommand(command)
 
 local command = {}
-command.variations = {us = {{sound = "ground_control/radio/us/suppressthisposition.mp3", text = "Suppress this position!"}, 
+command.variations = {us = {{sound = "ground_control/radio/us/suppressthisposition.mp3", text = "Suppress this position!"},
     {sound = "ground_control/radio/us/weneedtosuppressthisposition.mp3", text = "We need to suppress this position!"}},
-    
+
     aus = {
         {sound = "ground_control/radio/aus/ineedfireonthatposition.mp3", text = "I need fire on that position!"},
         {sound = "ground_control/radio/aus/suppressthatposition.mp3", text = "Suppress that position!"},
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/nachinaem_heriachitj_kogda_sam_skazhu.mp3", text = "Начинаем херячить когда сам скажу!"},
         {sound = "ground_control/radio/bandlet/kak_majaknu_valim_kozlov_nafig_vse_vsosali.mp3", text = "Как маякну валим козлов нафиг, все всосали?"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/suppress1.mp3", text = "Дави, дави уродов!"},
         {sound = "ground_control/radio/rus/suppress2.mp3", text = "Подавить огневую точку!"},
@@ -602,22 +600,22 @@ command.variations = {us = {{sound = "ground_control/radio/us/suppressthispositi
         {sound = "ground_control/radio/trevor/suppress3.ogg", text = "You're gone, pal, gone!"}
     }
 }
-    
+
 command.onScreenText = "Suppress"
 command.id = "suppress"
 command.onScreenColor = GM.HUDColors.blue
 command.menuText = "Suppress this position"
 command.displayTime = 5
 command.category = GM.RadioCategories.Orders
-    
+
 function command:send(ply, commandId, category)
     traceData.start = ply:GetShootPos()
     traceData.endpos = traceData.start + ply:GetAimVector() * 4096
     traceData.filter = ply
-    
+
     local trace = util.TraceLine(traceData)
-    
-    if not trace.HitSky then
+
+    if !trace.HitSky then
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
             GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, trace.HitPos)
         end
@@ -633,7 +631,7 @@ GM:registerRadioCommand(command)
 
 local command = {}
 command.id = "defend"
-command.variations = {us = {{sound = "ground_control/radio/us/defendthisposition.mp3", text = "Defend this position."}, 
+command.variations = {us = {{sound = "ground_control/radio/us/defendthisposition.mp3", text = "Defend this position."},
     {sound = "ground_control/radio/us/weneedtodefendthisposition.mp3", text = "We need to defend this position."}},
 
     aus = {
@@ -643,7 +641,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/defendthisposition
         {sound = "ground_control/radio/aus/weneedtodefendthisposition.mp3", text = "We need to defend this position."},
         {sound = "ground_control/radio/aus/weneedtoprotectthispoint.mp3", text = "We need to protect this point."}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/burkalo_na_temechko_zyrytj_v_oba_scha_nabegut.mp3", text = "Буркало на темечко, зырить в обя - ща набегут!"},
         {sound = "ground_control/radio/bandlet/vse_na_streme_i_neher_lybu_davitj_rano.mp3", text = "Все на стремё, и нехер лыбу давить - рано!"}
@@ -667,21 +665,21 @@ command.variations = {us = {{sound = "ground_control/radio/us/defendthisposition
         {sound = "ground_control/radio/trevor/defend3.ogg", text = "Stay down!"}
     }
 }
-    
+
 command.onScreenText = "Defend"
 command.onScreenColor = GM.HUDColors.blue
 command.menuText = "Defend this position"
 command.displayTime = 5
 command.category = GM.RadioCategories.Orders
-    
+
 function command:send(ply, commandId, category)
     traceData.start = ply:GetShootPos()
     traceData.endpos = traceData.start + ply:GetAimVector() * 4096
     traceData.filter = ply
-    
+
     local trace = util.TraceLine(traceData)
-    
-    if not trace.HitSky then
+
+    if !trace.HitSky then
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
             GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, trace.HitPos)
         end
@@ -705,12 +703,12 @@ command.variations = {us = {{sound = "ground_control/radio/us/followme.mp3", tex
         {sound = "ground_control/radio/aus/matefollowme.mp3", text = "Mate, follow me."},
         {sound = "ground_control/radio/aus/oicomewithme.mp3", text = "Oi, come with me."}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/podorvalis_i_za_mnoi.mp3", text = "Подорвались, и за мной!"},
         {sound = "ground_control/radio/bandlet/kandehaem_veselee.mp3", text = "Кандёхаем веселее!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/follow1.mp3", text = "За мной."},
         {sound = "ground_control/radio/rus/follow2.mp3", text = "Пошли за мной."},
@@ -730,7 +728,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/followme.mp3", tex
         {sound = "ground_control/radio/trevor/followme3.ogg", text = "Come on, people!"}
     }
 }
-    
+
 command.menuText = "Follow me"
 command.category = GM.RadioCategories.Orders
 
@@ -751,12 +749,12 @@ command.variations = {
         {sound = "ground_control/radio/aus/medic.mp3", text = "Medic!"},
         {sound = "ground_control/radio/aus/medicoverhere.mp3", text = "Medic, over here!"}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/a_eb.mp3", text = "А, ёб!"},
         {sound = "ground_control/radio/bandlet/tvoju_matj.mp3", text = "Твою мать!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/medic1.mp3", text = "Врач, мне нужен врач!"},
         {sound = "ground_control/radio/rus/medic2.mp3", text = "Врача сюда!"},
@@ -785,7 +783,7 @@ command.displayTime = 5
 function command:send(ply, commandId, category)
     local ourPos = ply:GetPos()
     ourPos.z = ourPos.z + 32
-    
+
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
         GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
@@ -801,21 +799,21 @@ GM:registerRadioCommand(command)
 local command = {}
 command.id = "needammo"
 command.tipId = "RESUPPLY_TEAMMATES"
-command.variations = {us = {{sound = "ground_control/radio/us/ineedammo.mp3", text = "I need ammo!"}, 
+command.variations = {us = {{sound = "ground_control/radio/us/ineedammo.mp3", text = "I need ammo!"},
         {sound = "ground_control/radio/us/ineedsomeammo.mp3", text = "I need some ammo!"},
         {sound = "ground_control/radio/us/imrunninglowonammo.mp3", text = "I'm running low on ammo!"}
     },
-    
+
     aus = {
         {sound = "ground_control/radio/aus/doesanyonehaveanyammo.mp3", text = "Does anyone have any ammo?"},
         {sound = "ground_control/radio/aus/ineedammo.mp3", text = "I need ammo!"},
         {sound = "ground_control/radio/aus/runningdry.mp3", text = "I'm running dry, oi, chuck me a mag!"}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/mlia_nu_on_voobsce_pustoj.mp3", text = "Мля, ну он вообще пустой!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/ammo1.mp3", text = "Мне нужны патроны!"},
         {sound = "ground_control/radio/rus/ammo2.mp3", text = "Патроны кончились!"},
@@ -845,7 +843,7 @@ command.displayTime = 5
 function command:send(ply, commandId, category)
     local ourPos = ply:GetPos()
     ourPos.z = ourPos.z + 32
-    
+
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
         GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
@@ -870,12 +868,12 @@ command.variations = {us = {{sound = "ground_control/radio/us/ineedsomehelphere.
         {sound = "ground_control/radio/aus/helpmemate.mp3", text = "Help me, mate!"},
         {sound = "ground_control/radio/aus/oihelpme.mp3", text = "Oi, help me!"}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/gde_ty_voobsce_uviaz_nas_tut_schas_konchiat.mp3", text = "Где ты вообще увяз?! Нас тут сейчас кончат!"},
         {sound = "ground_control/radio/bandlet/my_schas_zagnemsa_bratan_cheshi_k_nam.mp3", text = "Мы сейчас загнёмся, братан, чеши к нам!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/help1.mp3", text = "Нужна помощь!"},
         {sound = "ground_control/radio/rus/help2.mp3", text = "Нужна подмога."},
@@ -904,7 +902,7 @@ command.displayTime = 5
 function command:send(ply, commandId, category)
     local ourPos = ply:GetPos()
     ourPos.z = ourPos.z + 32
-    
+
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
         GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
@@ -928,12 +926,12 @@ command.variations = {us = {{sound = "ground_control/radio/us/impinneddown.mp3",
         {sound = "ground_control/radio/aus/theyreshootingatme.mp3", text = "They're shooting at me!"},
         {sound = "ground_control/radio/aus/iampinneddown.mp3", text = "I am pinned down, fuck me!"}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/gde_ty_voobsce_uviaz_nas_tut_schas_konchiat.mp3", text = "Где ты вообще увяз?! Нас тут сейчас кончат!"},
         {sound = "ground_control/radio/bandlet/my_schas_zagnemsa_bratan_cheshi_k_nam.mp3", text = "Мы сейчас загнёмся, братан, чеши к нам!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/pinned1.mp3", text = "Зажали суки, где помощь?!"},
         {sound = "ground_control/radio/rus/pinned2.mp3", text = "Мне нужна подмога, бля!"},
@@ -942,7 +940,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/impinneddown.mp3",
 
     franklin = {
         {sound = "ground_control/radio/franklin/pinned1.ogg", text = "I need some backup!"},
-        {sound = "ground_control/radio/franklin/pinned2.ogg", text = "Man, this is really not relaxing!"},
+        {sound = "ground_control/radio/franklin/pinned2.ogg", text = "Man, this is really !relaxing!"},
         {sound = "ground_control/radio/franklin/pinned3.ogg", text = "Oh, fuck! Maybe this ain't so easy!"},
         {sound = "ground_control/radio/franklin/pinned4.ogg", text = "(Distressed noises)"},
     },
@@ -963,7 +961,7 @@ command.displayTime = 5
 function command:send(ply, commandId, category)
     local ourPos = ply:GetPos()
     ourPos.z = ourPos.z + 32
-    
+
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
         GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
@@ -981,19 +979,19 @@ command.id = "approachingenemy"
 command.variations = {us = {{sound = "ground_control/radio/us/approachingenemyposition.mp3", text = "Approaching enemy position!"},
         {sound = "ground_control/radio/us/closinginonenemyposition.mp3", text = "Closing in on enemy position!"}
     },
-    
+
     aus = {
         {sound = "ground_control/radio/aus/watchthisgonnagetthedroponthem.mp3", text = "Watch this, I'm gonna get the drop on them."},
         {sound = "ground_control/radio/aus/theyllneverknowwhathitem.mp3", text = "They'll never know what hit 'em."},
         {sound = "ground_control/radio/aus/imapproachingthecontacts.mp3", text = "I'm approaching the contacts!"},
         {sound = "ground_control/radio/aus/gonnamakeamove.mp3", text = "I'm gonna make a move on them!"},
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/scha_vseh_poreshu.mp3", text = "Сейчас всех порешу!"},
         {sound = "ground_control/radio/bandlet/ne_tremsia_kodla_ne_tremsia.mp3", text = "Не трёмся кодла, не трёмся!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/approaching1.mp3", text = "Подхожу к врагу."},
         {sound = "ground_control/radio/rus/approaching2.mp3", text = "Двигаюсь к врагу."},
@@ -1026,7 +1024,7 @@ command.radioWait = 2.5
 function command:send(ply, commandId, category)
     local ourPos = ply:GetPos()
     ourPos.z = ourPos.z + 32
-    
+
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
         GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
@@ -1047,20 +1045,20 @@ command.variations = {
         {sound = "ground_control/radio/us/throwingagrenade.mp3", text = "Throwing a grenade!"},
         {sound = "ground_control/radio/us/grenade.mp3", text = "Grenade!"}
     },
-    
+
     aus = {
         {sound = "ground_control/radio/aus/fragout.mp3", text = "Frag out!"},
         {sound = "ground_control/radio/aus/grenade.mp3", text = "Grenade!"},
         {sound = "ground_control/radio/aus/throwingafrag.mp3", text = "Throwing a frag!"},
         {sound = "ground_control/radio/aus/throwinggrenade.mp3", text = "Throwing grenade!"}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/kushaj_jablochko_suka.mp3", text = "Кушай яблочко, сука!"},
         {sound = "ground_control/radio/bandlet/limonchik_tebe_pindosina.mp3", text = "Лимончик тебе, пиндосина!"},
         {sound = "ground_control/radio/bandlet/na_suka_jablochko.mp3", text = "На, сука, яблочко!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/fragout1.mp3", text = "Граната пошла."},
         {sound = "ground_control/radio/rus/fragout2.mp3", text = "Лимонка."},
@@ -1096,7 +1094,7 @@ command.variations = {
         {sound = "ground_control/radio/us/clear.mp3", text = "Clear."},
         {sound = "ground_control/radio/us/sectorclear.mp3", text = "Sector clear."}
     },
-    
+
     aus = {
         {sound = "ground_control/radio/aus/clear.mp3", text = "Clear."},
         {sound = "ground_control/radio/aus/sectorclear.mp3", text = "Sector clear."},
@@ -1104,14 +1102,14 @@ command.variations = {
         {sound = "ground_control/radio/aus/wereclear.mp3", text = "We're clear."},
         {sound = "ground_control/radio/aus/wereclearmate.mp3", text = "We're clear, mate."}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/naidem_na_meha_porezhem.mp3", text = "Найдем - на меха порежем!"},
         {sound = "ground_control/radio/bandlet/nu_gde_ty_zanikalsa.mp3", text = "Ну где ты заныкался?"},
         {sound = "ground_control/radio/bandlet/vyhodi_po_horoshemu.mp3", text = "Выходи по-хорошему!"},
         {sound = "ground_control/radio/bandlet/vyhodi_poliubomu_naidem.mp3", text = "Выходи, по-любому найдём!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/clear1.mp3", text = "Чисто."},
         {sound = "ground_control/radio/rus/clear2.mp3", text = "Все чисто."}
@@ -1137,7 +1135,7 @@ command.displayTime = 5
 function command:send(ply, commandId, category)
     local ourPos = ply:GetPos()
     ourPos.z = ourPos.z + 32
-    
+
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
         GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
@@ -1157,18 +1155,18 @@ command.variations = {
         {sound = "ground_control/radio/us/getemfrombehind.mp3", text = "Get 'em from behind!"},
         {sound = "ground_control/radio/us/flankthem.mp3", text = "Flank them!"}
     },
-    
+
     aus = {
         {sound = "ground_control/radio/aus/getbehindthem.mp3", text = "Get behind them!"},
         {sound = "ground_control/radio/aus/getbehindthemmate.mp3", text = "Hey, get behind them, mate!"},
         {sound = "ground_control/radio/aus/oiflankem.mp3", text = "Oi, flank 'em!"}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/bystro_obhodi_obhodi_etu_sheluponj.mp3", text = "Быстро - обходи, обходи эту шелупонь!"},
         {sound = "ground_control/radio/bandlet/ne_mandrazhuj_pocani_obhodim.mp3", text = "Не мандражуй, пацаны, обходим!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/flank1.mp3", text = "Обходи, обходи!"},
         {sound = "ground_control/radio/rus/flank2.mp3", text = "Давай заходи с боку, сбоку!"},
@@ -1200,7 +1198,7 @@ command.variations = {
         {sound = "ground_control/radio/us/gogogo.mp3", text = "Go, go, go!"},
         {sound = "ground_control/radio/us/move.mp3", text = "Move!"}
     },
-    
+
     aus = {
         {sound = "ground_control/radio/aus/fuckingmove.mp3", text = "Fucking move!"},
         {sound = "ground_control/radio/aus/go.mp3", text = "Go!"},
@@ -1208,12 +1206,12 @@ command.variations = {
         {sound = "ground_control/radio/aus/move.mp3", text = "Move!"},
         {sound = "ground_control/radio/aus/moveit.mp3", text = "Move it!"}
     },
-    
+
     bandlet = {
         {sound = "ground_control/radio/bandlet/a_nu_davaj_davaj.mp3", text = "А ну давай, давай!"},
         {sound = "ground_control/radio/bandlet/nu_podorvali_pocani.mp3", text = "Ну, подорвали, пацаны!"}
     },
-    
+
     rus = {
         {sound = "ground_control/radio/rus/move1.mp3", text = "Пошли."},
         {sound = "ground_control/radio/rus/move2.mp3", text = "Вперед, вперед!"},

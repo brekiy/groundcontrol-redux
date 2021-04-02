@@ -26,44 +26,44 @@ end
 
 function ENT:drawHUD()
     local ply = LocalPlayer()
-    
+
     if ply:Team() == GAMEMODE.curGametype.swatTeam then
         return
     end
-    
+
     local pos = nil
-    
-    if not self.ownPos then -- we know that this entity's position isn't going to be changed (it's a static ent) so just get it's position once instead of spamming tables per each draw call
+
+    if !self.ownPos then -- we know that this entity's position isn't going to be changed (it's a static ent) so just get it's position once instead of spamming tables per each draw call
         self.ownPos = self:GetPos()
         self.ownPos.z = self.ownPos.z + 32
     end
-    
+
     pos = self.ownPos
     local alpha = 1
-    
+
     local text = nil
-    
-    if ply.hasDrugs and not self.dt.HasDrugs then
+
+    if ply.hasDrugs and !self.dt.HasDrugs then
         text = self.DeliverText
         alpha = alpha * (0.2 + 0.8 * math.flash(CurTime(), 2))
     end
-    
+
     white.a = 255 * alpha
     black.a = 255 * alpha
-    
+
     if text then
         local screen = pos:ToScreen()
-        
+
         screen.x = math.Clamp(screen.x, horizontalBoundary, ScrW() - horizontalBoundary)
         screen.y = math.Clamp(screen.y, verticalBoundary, ScrH() - verticalBoundary)
-    
+
         surface.SetTexture(point)
         surface.SetDrawColor(255, 255, 255, 255 * alpha)
         surface.DrawTexturedRect(screen.x - 8, screen.y - 8 - 16, 16, 16)
-            
+
         draw.ShadowText(text, "CW_HUD20", screen.x, screen.y, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end
 
 function ENT:Think()
-end 
+end
