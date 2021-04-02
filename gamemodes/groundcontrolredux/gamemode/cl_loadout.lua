@@ -347,7 +347,7 @@ function GM:saveWeaponLoadout(weaponObject, isPrimary, cvar)
         targetWeaponTable = self.SecondaryWeapons
     end
 
-    local weaponData = targetWeaponTable[GetConVarNumber(cvar)]
+    local weaponData = targetWeaponTable[GetConVar(cvar):GetInt()]
 
     if weaponData then
         table.Empty(self.LoadoutToSave)

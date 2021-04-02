@@ -21,14 +21,14 @@ function GM:registerWepsKhris()
         penetration = 15
     }
     self:registerPrimaryWeapon(aek971)
-   
+
     local ak103 = {
         weaponClass = "khr_ak103",
         weight = 3.4,
         penetration = 16
     }
     self:registerPrimaryWeapon(ak103)
-   
+
     local cz858 = {
         weaponClass = "khr_cz858",
         weight = 2.91,
@@ -42,7 +42,7 @@ function GM:registerWepsKhris()
         penetration = 16
     }
     self:registerPrimaryWeapon(simsks)
-   
+
     local sks = {
         weaponClass = "khr_sks",
         weight = 3.8,
@@ -56,21 +56,21 @@ function GM:registerWepsKhris()
         penetration = 7
     }
     self:registerPrimaryWeapon(fmg9)
-   
+
     local p90 = {
         weaponClass = "khr_p90",
         weight = 2.6,
         penetration = 11
     }
     self:registerPrimaryWeapon(p90)
-   
+
     local vector = {
         weaponClass = "khr_vector",
         weight = 2.7,
         penetration = 7
     }
     self:registerPrimaryWeapon(vector)
-   
+
     local mp40 = {
         weaponClass = "khr_mp40",
         weight = 3.97,
@@ -84,7 +84,7 @@ function GM:registerWepsKhris()
         penetration = 7
     }
     self:registerPrimaryWeapon(veresk)
-   
+
     local l2a3 = {
         weaponClass = "khr_l2a3",
         weight = 2.7,
@@ -121,28 +121,28 @@ function GM:registerWepsKhris()
         penetration = 4
     }
     self:registerPrimaryWeapon(mp153)
-   
+
     local ns2000 = {
         weaponClass = "khr_ns2000",
         weight = 3.9,
         penetration = 4
     }
     self:registerPrimaryWeapon(ns2000)
-   
+
     local m620 = {
         weaponClass = "khr_m620",
         weight = 3.6,
         penetration = 4
     }
     self:registerPrimaryWeapon(m620)
-   
+
     local toz194 = {
         weaponClass = "khr_toz194",
         weight = 2.9,
         penetration = 4
     }
     self:registerPrimaryWeapon(toz194)
-   
+
     local khr_cb4 = {
         weaponClass = "khr_cb4",
         weight = 3.27,
@@ -156,42 +156,42 @@ function GM:registerWepsKhris()
         penetration = 20
     }
     self:registerPrimaryWeapon(m98b)
-   
+
     local hcar = {
         weaponClass = "khr_hcar",
         weight = 4.75,
         penetration = 19
     }
     self:registerPrimaryWeapon(hcar)
-   
+
     local m82a3 = {
         weaponClass = "khr_m82a3",
         weight = 13.5,
         penetration = 30
-    }   
+    }
     self:registerPrimaryWeapon(m82a3)
-   
+
     local m95 = {
         weaponClass = "khr_m95",
         weight = 10.3,
         penetration = 30
     }
     self:registerPrimaryWeapon(m95)
-   
+
     local mosin = {
         weaponClass = "khr_mosin",
         weight = 4,
         penetration = 18
     }
     self:registerPrimaryWeapon(mosin)
-   
+
     local t5000 = {
         weaponClass = "khr_t5000",
         weight = 6.5,
         penetration = 20
     }
     self:registerPrimaryWeapon(t5000)
-   
+
     local sr338 = {
         weaponClass = "khr_sr338",
         weight = 6.75,
@@ -226,112 +226,112 @@ function GM:registerWepsKhris()
         penetration = 9
     }
     self:registerSecondaryWeapon(cz52)
-   
+
     local cz75 = {
         weaponClass = "khr_cz75",
         weight = 1.12,
         penetration = 7
     }
     self:registerSecondaryWeapon(cz75)
-   
+
     local gsh18 = {
         weaponClass = "khr_gsh18",
         weight = 0.59,
         penetration = 7
     }
     self:registerSecondaryWeapon(gsh18)
-   
+
     local m92fs = {
         weaponClass = "khr_m92fs",
         weight = 0.97,
         penetration = 7
     }
     self:registerSecondaryWeapon(m92fs)
-   
+
     local mp443 = {
         weaponClass = "khr_mp443",
         weight = 0.95,
         penetration = 7
     }
     self:registerSecondaryWeapon(mp443)
-   
+
     local ots33 = {
         weaponClass = "khr_ots33",
         weight = 1.15,
         penetration = 6
     }
     self:registerSecondaryWeapon(ots33)
-   
+
     -- local ruby = {
     --     weaponClass = "khr_ruby",
     --     weight = 0.85,
     --     penetration = 4
     -- }
     -- self:registerSecondaryWeapon(ruby)
-   
+
     -- local rugermk3 = {
     --     weaponClass = "khr_rugermk3",
     --     weight = 0.88,
     --     penetration = 3
     -- }
     -- self:registerSecondaryWeapon(rugermk3)
-   
+
     local p345 = {
         weaponClass = "khr_p345",
         weight = 0.91,
         penetration = 7
     }
     self:registerSecondaryWeapon(p345)
-   
+
     local p226 = {
         weaponClass = "khr_p226",
         weight = 0.964,
         penetration = 9
     }
     self:registerSecondaryWeapon(p226)
-   
+
     local sr1m = {
         weaponClass = "khr_sr1m",
         weight = 0.95,
         penetration = 10
     }
     self:registerSecondaryWeapon(sr1m)
-   
+
     local tokarev = {
         weaponClass = "khr_tokarev",
         weight = 0.854,
         penetration = 9
     }
     self:registerSecondaryWeapon(tokarev)
-   
+
     local model29 = {
         weaponClass = "khr_model29",
         weight = 1.28,
         penetration = 12
     }
     self:registerSecondaryWeapon(model29)
-   
+
     local model642 = {
         weaponClass = "khr_38snub",
         weight = 0.56,
         penetration = 6
     }
     self:registerSecondaryWeapon(model642)
-   
+
     local swr8 = {
         weaponClass = "khr_swr8",
         weight = 1.02,
         penetration = 8
     }
     self:registerSecondaryWeapon(swr8)
-   
+
     local publicDefender = {
         weaponClass = "khr_410jury",
         weight = 0.765,
         penetration = 4
     }
     self:registerSecondaryWeapon(publicDefender)
-   
+
     local ragingbull = {
         weaponClass = "khr_ragingbull",
         weight = 1.5,

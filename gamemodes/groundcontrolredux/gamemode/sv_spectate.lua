@@ -25,7 +25,7 @@ function PLAYER:spectateNext(goBack)
         teamPlayers = team.GetPlayers(self:Team())
     end
 
-    local teamPlayerCount = #teamPlayers
+    -- local teamPlayerCount = #teamPlayers
     -- PrintTable(self.spectatedPlayers)
     for key, ply in ipairs(teamPlayers) do
         if ply:Alive() then

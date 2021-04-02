@@ -4,19 +4,19 @@ CreateConVar("gc_randomly_pick_gametype_and_map", 0, {FCVAR_ARCHIVE, FCVAR_NOTIF
 
 function GM:randomlyPickGametypeAndMap()
     local validGametypes = {}
-    
+
     for key, gametypeData in ipairs(self.Gametypes) do
         local validMaps = self:filterExistingMaps(gametypeData.mapRotation)
-        
+
         if #validMaps > 0 then
             validGametypes[gametypeData] = validMaps
         end
     end
-    
+
     local randomMaps, randomGametype = table.Random(validGametypes)
 
     game.ConsoleCommand("gc_gametype " .. randomGametype.name .. "\n")
-    
+
     timer.Simple(0, function()
         game.ConsoleCommand("changelevel " .. randomMaps[math.random(1, #randomMaps)] .. "\n")
     end)

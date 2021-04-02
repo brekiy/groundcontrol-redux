@@ -294,7 +294,7 @@ function GM:PlayerCanHearPlayersVoice(listener, talker)
         return true
     end
 
-    if self.RoundOver or GetConVarNumber("sv_alltalk") > 0 then
+    if self.RoundOver or GetConVar("sv_alltalk"):GetBool() then
         return true
     end
 
@@ -385,11 +385,10 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
         differentTeam = attacker:Team() != ply:Team()
     end
 
-    if attacker != ply and attacker:IsPlayer() then
-        if CurTime() < ply.invincibilityPeriod then -- player is still invincible after spawning, remove any damage done and don't do anything
-            dmgInfo:ScaleDamage(0)
-            return
-        end
+    if attacker != ply and attacker:IsPlayer() and CurTime() < ply.invincibilityPeriod then
+        -- player is still invincible after spawning, remove any damage done and don't do anything
+        dmgInfo:ScaleDamage(0)
+        return
     end
 
     if !differentTeam and ((self.noTeamDamage and attacker != ply) or self.RoundOver) then -- disable all team damage if the server is configged that way
@@ -432,7 +431,7 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
     end
 
     if self.DropPrimaryHitgroup[hitGroup] then
-        local prevDamage = ply.sustainedArmDamage
+        -- local prevDamage = ply.sustainedArmDamage
         ply.sustainedArmDamage = ply.sustainedArmDamage + dmgInfo:GetDamage()
 
         if ply.sustainedArmDamage >= self.DropPrimarySustainedDamage then -- if we sustain enough damage, we force-drop the weapon, but only if it's primary
