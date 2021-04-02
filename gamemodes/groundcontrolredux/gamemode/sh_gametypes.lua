@@ -814,9 +814,8 @@ function ghettoDrugBust:giveDrugs(ply)
     end
 
     ply.hasDrugs = true
-    net.start("GC_GOT_DRUGS", ply)
+    net.Start("GC_GOT_DRUGS", ply)
     net.Send(ply)
-    -- SendUserMessage("GC_GOT_DRUGS", ply)
 end
 
 function ghettoDrugBust:dropDrugs(ply)
@@ -843,7 +842,6 @@ function ghettoDrugBust:removeDrugs(ply)
     ply.hasDrugs = false
     net.Start("GC_DRUGS_REMOVED")
     net.Send(ply)
-    -- SendUserMessage("GC_DRUGS_REMOVED", ply)
 end
 
 function ghettoDrugBust:attemptReturnDrugs(player, host)

@@ -192,12 +192,6 @@ net.Receive("GC_STATUS_EFFECT", function()
     end
 end)
 
--- local function GC_ResetStatusEffects(data)
---     GAMEMODE:removeAllStatusEffects()
--- end
-
--- usermessage.Hook("GC_RESET_STATUS_EFFECTS", GC_ResetStatusEffects)
-
 net.Receive("GC_RESET_STATUS_EFFECTS", function(a, b)
     GAMEMODE:removeAllStatusEffects()
 end)
