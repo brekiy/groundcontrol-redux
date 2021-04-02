@@ -149,7 +149,7 @@ function GM:PlayerSpawn(ply)
     ply:SetHullDuck(self.DuckHullMin, self.DuckHullMax)
     ply:SetViewOffsetDucked(self.ViewOffsetDucked)
     ply:resetStatusEffects()
-    ply:abortClimb()
+    -- ply:abortClimb()
     ply:resetKillcountData()
 
     local desiredVoice = nil
@@ -204,7 +204,7 @@ end
 
 function GM:DoPlayerDeath(ply, attacker, dmgInfo)
     ply:dropWeaponNicely(nil, VectorRand() * 20, VectorRand() * 200)
-    ply:abortClimb()
+    -- ply:abortClimb()
     ply:EmitSound("GC_DEATH_SOUND")
 
     if IsValid(attacker) and attacker:IsPlayer() then
@@ -360,7 +360,7 @@ function GM:PostPlayerDeath(ply)
     ply:delaySpectate(self.DeadPeriodTime)
 end
 
-GM.HitgroupDamageModifiers = {[HITGROUP_HEAD] = 3,
+GM.HitgroupDamageModifiers = {[HITGROUP_HEAD] = 2.5,
     [HITGROUP_CHEST] = 1,
     [HITGROUP_STOMACH] = 0.75,
     [HITGROUP_LEFTARM] = 0.5,

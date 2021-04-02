@@ -630,8 +630,8 @@ function curWeaponPanel:OnRemove()
     self:RemoveDescBox()
 end
 
-function curWeaponPanel:OnCursorEntered(w, h)
-    -- local w, h = self:GetSize()
+function curWeaponPanel:OnCursorEntered()
+    local w, h = self:GetSize()
 
     if !self.descBox and #self.availableAttachments > 0 then
         local x, y = self:LocalToScreen(0, 0)
@@ -2161,14 +2161,13 @@ function gcTraitPanel:GetBackgroundColor()
     return 150, 150, 150, 255
 end
 
-function gcTraitPanel:OnCursorEntered(w, h)
-    -- local w, h = self:GetSize()
+function gcTraitPanel:OnCursorEntered()
+    local w, h = self:GetSize()
     local x, y = self:LocalToScreen(0, 0)
 
     if !IsValid(self.descBox) then
         local ply = LocalPlayer()
 
-        -- local w, h = self:GetSize()
         self.descBox = vgui.Create("GCGenericDescbox")
         self.descBox:SetSize(250, 170)
         self.descBox:SetPos(x + w, y + h)
@@ -2206,7 +2205,7 @@ function gcTraitPanel:OnCursorEntered(w, h)
     end
 end
 
-function gcTraitPanel:OnCursorExited(w, h)
+function gcTraitPanel:OnCursorExited()
     if self.descBox then
         self.descBox:Remove()
         self.descBox = nil
