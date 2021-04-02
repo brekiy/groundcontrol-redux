@@ -77,7 +77,7 @@ function CustomizableWeaponry.quickGrenade:createThrownGrenade(player)
     local pos = player:GetShootPos()
     local offset = CustomizableWeaponry.quickGrenade:getThrowOffset(player)
     local eyeAng = player:EyeAngles()
-    local forward = eyeAng:Forward()
+    -- local forward = eyeAng:Forward()
 
     local nade = ents.Create("gc_cw_grenade_thrown")
     nade:SetPos(pos + offset)
@@ -421,7 +421,6 @@ function GM:Move(ply, moveData)
     -- for some reason the value returned by GetMaxSpeed is equivalent to player's run speed - 30
     local adrenalineModifier = 1 + ply:getRunSpeedAdrenalineModifier()
     local runSpeed = (GetConVar("gc_base_run_speed"):GetInt() - ply:getStaminaRunSpeedModifier() - ply:getWeightRunSpeedModifier()) * adrenalineModifier * ply:GetDTFloat(0)
-    -- runSpeed = math.Max(runSpeed, GetConVar("gc_base_run_speed"):GetInt() * 0.) -- don't slow down players too much, keeps stuff like lmgs viable - min movespeed is 150 same as negev in csgo
     ply:SetRunSpeed(runSpeed)
 
     if ply:KeyDown(IN_SPEED) and !ply:Crouching() then

@@ -218,10 +218,10 @@ end
 
 function oneSideRush:roundStart()
     if SERVER then
-        if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GAMEMODE.RoundsPerMap * 0.5 then
-            -- if GAMEMODE.RoundsPlayed >= GetConVar("gc_rounds_per_map"):GetInt() * 0.5 then
-                GAMEMODE:swapTeams(self.attackerTeam, self.defenderTeam, oneSideRush.teamSwapCallback, oneSideRush.teamSwapCallback)
-                self.swappedTeams = true
+        -- if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GAMEMODE.RoundsPerMap * 0.5 then
+        if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GetConVar("gc_rounds_per_map"):GetInt() * 0.5 then
+            GAMEMODE:swapTeams(self.attackerTeam, self.defenderTeam, oneSideRush.teamSwapCallback, oneSideRush.teamSwapCallback)
+            self.swappedTeams = true
         end
 
         GAMEMODE:setTimeLimit(self.timeLimit)
