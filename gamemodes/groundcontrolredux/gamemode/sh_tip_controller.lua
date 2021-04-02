@@ -59,7 +59,7 @@ if CLIENT then
 
         local eventData = self.events[event]
 
-        if eventData and !self.shownEvents[event] or self.shownEvents[event] < eventData.times then
+        if eventData and (!self.shownEvents[event] or self.shownEvents[event] < eventData.times) then
                 self:displayEvent(event)
                 self:saveShownEvents()
                 return true -- tip was shown
