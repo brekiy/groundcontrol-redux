@@ -219,7 +219,7 @@ end
 function oneSideRush:roundStart()
     if SERVER then
         -- if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GAMEMODE.RoundsPerMap * 0.5 then
-        if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GetConVar("gc_rounds_per_map"):GetInt() * 0.5 then
+        if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GetConVar("gc_default_rounds_per_map"):GetInt() * 0.5 then
             GAMEMODE:swapTeams(self.attackerTeam, self.defenderTeam, oneSideRush.teamSwapCallback, oneSideRush.teamSwapCallback)
             self.swappedTeams = true
         end
@@ -643,7 +643,7 @@ function urbanwarfare:prepare()
     if CLIENT then
         RunConsoleCommand("gc_team_selection")
     else
-        GAMEMODE.RoundsPerMap = 4
+        GAMEMODE.RoundsPerMap = GetConVar("gc_urban_warfare_rounds_per_map"):GetInt()
     end
 end
 

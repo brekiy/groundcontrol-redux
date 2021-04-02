@@ -1,7 +1,7 @@
 GM.RoundWonCash = 200
 GM.RoundWonExp = 150
 
-GM.RoundsPerMap = GetConVar("gc_rounds_per_map"):GetInt()
+GM.RoundsPerMap = GetConVar("gc_default_rounds_per_map"):GetInt()
 GM.RoundsPlayed = 0
 GM.MaxMapsPerPick = 9
 GM.MaxGameTypesPerPick = 9
