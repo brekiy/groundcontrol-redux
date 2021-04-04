@@ -363,11 +363,11 @@ end
 GM.HitgroupDamageModifiers = {
     [HITGROUP_HEAD] = 2.5,
     [HITGROUP_CHEST] = 1,
-    [HITGROUP_STOMACH] = 0.85,
+    [HITGROUP_STOMACH] = 0.8,
     [HITGROUP_LEFTARM] = 0.5,
     [HITGROUP_RIGHTARM] = 0.5,
-    [HITGROUP_LEFTLEG] = 0.65,
-    [HITGROUP_RIGHTLEG] = 0.65
+    [HITGROUP_LEFTLEG] = 0.5,
+    [HITGROUP_RIGHTLEG] = 0.5
 }
 
 GM.DropPrimaryHitgroup = { -- clear hitbox indexes in this table if you don't want players to drop their primary weapons when they get hit in their arms
