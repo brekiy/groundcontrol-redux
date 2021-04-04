@@ -30,7 +30,6 @@ function GM:registerSound(name, snd, volume, soundLevel, channel, pitchStart, pi
     sound.Add(self.soundTable)
 
     -- precache the registered sounds
-
     if type(self.soundTable.sound) == "table" then
         for k, v in pairs(self.soundTable.sound) do
             util.PrecacheSound(v)

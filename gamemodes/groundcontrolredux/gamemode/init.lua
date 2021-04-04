@@ -79,7 +79,7 @@ AddCSLuaFile("cl_player.lua")
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_loop.lua")
 AddCSLuaFile("cl_view.lua")
-AddCSLuaFile("cl_umsgs.lua")
+AddCSLuaFile("cl_net_msgs.lua")
 AddCSLuaFile("cl_gui.lua")
 AddCSLuaFile("cl_screen.lua")
 AddCSLuaFile("cl_scoreboard.lua")
@@ -179,10 +179,10 @@ function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
                 entryText = Format("KILL: %s killed %s with %s", attackerNick, targetNick, attackerWep)
             end
         else
-            entryText = Format("DEATH: %s died due to blood loss", targetNick)
+            entryText = Format("DEATH: %s bled out", targetNick)
         end
     elseif attacker and attacker:IsPlayer() then
-        entryText = Format("HIT: %s shot %s for %f damage with %s", attackerNick, targetNick, dmgInfo:GetDamage(), attackerWep)
+        entryText = Format("HIT: %s shot %s with %s (%f dmg)", attackerNick, targetNick, attackerWep, dmgInfo:GetDamage())
     end
     table.insert(GAMEMODE.DamageLog, entryText)
 end

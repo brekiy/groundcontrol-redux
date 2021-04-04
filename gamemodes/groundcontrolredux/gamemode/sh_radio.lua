@@ -245,7 +245,7 @@ end
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "enemy_down"
 command.variations = {
     us = {
@@ -335,7 +335,7 @@ end
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "affirmative"
 command.variations = {
     us = {
@@ -383,7 +383,7 @@ command.category = GM.RadioCategories.Reply
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "negative"
 command.variations = {us = {{sound = "ground_control/radio/us/nocando.mp3", text = "No can do."},
     {sound = "ground_control/radio/us/negative.mp3", text = "Negative."},
@@ -429,7 +429,7 @@ command.category = GM.RadioCategories.Reply
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.variations = {
     us = {
         {sound = "ground_control/radio/us/muchappreciated.mp3", text = "Much appreciated."},
@@ -477,7 +477,7 @@ command.category = GM.RadioCategories.Reply
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.variations = {us = {
         {sound = "ground_control/radio/us/waitforme.mp3", text = "Wait for me!"},
         {sound = "ground_control/radio/us/holdup.mp3", text = "Hold up!"},
@@ -522,7 +522,7 @@ command.category = GM.RadioCategories.Reply
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.variations = {
     us = {
         {sound = "ground_control/radio/us/moving.mp3", text = "Moving!"},
@@ -569,7 +569,7 @@ command.category = GM.RadioCategories.Reply
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.variations = {us = {{sound = "ground_control/radio/us/suppressthisposition.mp3", text = "Suppress this position!"},
     {sound = "ground_control/radio/us/weneedtosuppressthisposition.mp3", text = "We need to suppress this position!"}},
 
@@ -629,7 +629,7 @@ end
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "defend"
 command.variations = {us = {{sound = "ground_control/radio/us/defendthisposition.mp3", text = "Defend this position."},
     {sound = "ground_control/radio/us/weneedtodefendthisposition.mp3", text = "We need to defend this position."}},
@@ -693,7 +693,7 @@ end
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "followme"
 command.variations = {us = {{sound = "ground_control/radio/us/followme.mp3", text = "Follow me."},
     {sound = "ground_control/radio/us/onme.mp3", text = "On me."}},
@@ -734,7 +734,7 @@ command.category = GM.RadioCategories.Orders
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "needmedic"
 command.tipId = "HEAL_TEAMMATES"
 command.variations = {
@@ -796,7 +796,7 @@ end
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "needammo"
 command.tipId = "RESUPPLY_TEAMMATES"
 command.variations = {us = {{sound = "ground_control/radio/us/ineedammo.mp3", text = "I need ammo!"},
@@ -856,7 +856,7 @@ end
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "needhelp"
 command.tipId = "HELP_TEAMMATES"
 command.variations = {us = {{sound = "ground_control/radio/us/ineedsomehelphere.mp3", text = "I need some help here!"},
@@ -915,7 +915,7 @@ end
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "pinneddown"
 command.variations = {us = {{sound = "ground_control/radio/us/impinneddown.mp3", text = "I'm pinned down!"},
         {sound = "ground_control/radio/us/impinneddown2.mp3", text = "I'm pinned down!"}
@@ -974,7 +974,7 @@ end
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "approachingenemy"
 command.variations = {us = {{sound = "ground_control/radio/us/approachingenemyposition.mp3", text = "Approaching enemy position!"},
         {sound = "ground_control/radio/us/closinginonenemyposition.mp3", text = "Closing in on enemy position!"}
@@ -1037,7 +1037,7 @@ end
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "fragout"
 command.variations = {
     us = {{sound = "ground_control/radio/us/fragout.mp3", text = "Frag out!"},
@@ -1087,7 +1087,7 @@ command.tipId = "THROW_FRAGS"
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "clear"
 command.variations = {
     us = {
@@ -1148,7 +1148,7 @@ end
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "flank"
 command.variations = {
     us = {
@@ -1190,7 +1190,7 @@ command.category = GM.RadioCategories.Orders
 
 GM:registerRadioCommand(command)
 
-local command = {}
+command = {}
 command.id = "move"
 command.variations = {
     us = {

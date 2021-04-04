@@ -28,7 +28,7 @@ function GM:setVoiceVariant(ply, stringID)
 end
 
 function GM:attemptSetMemeRadio(ply)
-    if self.MemeRadio and math.random(1, 1000) <= GetConVarNumber("gc_meme_radio_chance") then
+    if self.MemeRadio and math.random(1, 1000) <= GetConVar("gc_meme_radio_chance"):GetInt() then
         self:setVoiceVariant(ply, "bandlet")
         return true
     end
@@ -37,14 +37,6 @@ function GM:attemptSetMemeRadio(ply)
 end
 
 function GM:sendRadio(ply, target, category, radioId)
-    -- umsg.Start("GC_RADIO", target)
-    --     umsg.Float(CurTime())
-    --     umsg.Char(category)
-    --     umsg.Char(radioId)
-    --     umsg.Char(ply.voiceVariant)
-    --     umsg.Entity(ply)
-    -- umsg.End()
-
     net.Start("GC_RADIO")
     net.WriteFloat(CurTime())
     net.WriteUInt(category, 8)
@@ -55,14 +47,6 @@ function GM:sendRadio(ply, target, category, radioId)
 end
 
 function GM:sendMarkedSpot(category, commandId, sender, receiver, pos)
-    -- umsg.Start("GC_RADIO_MARKED", receiver)
-    --     umsg.Float(CurTime())
-    --     umsg.Char(category)
-    --     umsg.Char(commandId)
-    --     umsg.Char(sender.voiceVariant)
-    --     umsg.Entity(sender)
-    --     umsg.Vector(pos)
-    -- umsg.End()
     net.Start("GC_RADIO_MARKED")
     net.WriteFloat(CurTime())
     net.WriteUInt(category, 8)

@@ -1,5 +1,6 @@
--- The file is named umsgs, but that library sucks. Only net allowed in this house. -brekiy 2020-03-26
-
+--[[
+    Contains definitions for handlers on receiving networked game state updates
+--]]
 net.Receive("GC_BLEEDSTATE", function(a, b)
     local isBleeding = net.ReadBool()
 

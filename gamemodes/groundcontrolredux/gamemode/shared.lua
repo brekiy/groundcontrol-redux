@@ -136,13 +136,11 @@ end)
 CustomizableWeaponry.callbacks:addNew("forceFreeAim", "GroundControl_forceFreeAim", function(self)
     -- return GAMEMODE.FORCE_FREE_AIM
     return GetConVar("gc_force_free_aim"):GetBool()
-    -- return GetConVarNumber("gc_force_free_aim") > 0
 end)
 
 CustomizableWeaponry.callbacks:addNew("forceComplexTelescopics", "GroundControl_forceComplexTelescopics", function(self)
     -- return GAMEMODE.FORCE_COMPLEX_TELESCOPICS
     return GetConVar("gc_force_pip_scopes"):GetBool()
-    -- return GetConVarNumber("gc_force_pip_scopes") > 0
 end)
 
 CustomizableWeaponry.callbacks:addNew("preventAttachment", "GroundControl_preventAttachment", function(self, attachmentList, currentAttachmentIndex, currentAttachmentCategory, currentAttachment)

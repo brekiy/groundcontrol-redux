@@ -29,10 +29,10 @@ function GM:sendAlivePlayerCount(teamID)
         local playerCount = self.AlivePlayers[self.OpposingTeam[teamID]]
 
         if playerCount then
-            for key, player in ipairs(team.GetPlayers(teamID)) do
+            for key, ply in ipairs(team.GetPlayers(teamID)) do
                 net.Start("GC_ALIVE_PLAYER_COUNT")
-                    net.WriteInt(teamID, 8)
-                    net.WriteInt(playerCount, 8)
+                net.WriteInt(teamID, 8)
+                net.WriteInt(playerCount, 8)
                 net.Send(player)
             end
         end
@@ -40,15 +40,15 @@ function GM:sendAlivePlayerCount(teamID)
         return
     end
 
-    for teamID, enemyTeamID in pairs(self.OpposingTeam) do
-        self:sendAlivePlayerCount(teamID)
+    for key, enemyTeamID in pairs(self.OpposingTeam) do
+        self:sendAlivePlayerCount(key)
     end
 end
 
 function GM:wasPlayerReportedDead(playerObject)
-    local team = playerObject:Team()
+    local plyTeam = playerObject:Team()
 
-    for key, otherPlayer in ipairs(self.ReportedDeadEnemies[team]) do
+    for key, otherPlayer in ipairs(self.ReportedDeadEnemies[plyTeam]) do
         if otherPlayer == playerObject then
             return key
         end
@@ -71,10 +71,10 @@ function GM:removePlayerObjectFromReportedDeadList(playerObject, key)
         return
     end
 
-    local key = self:wasPlayerReportedDead(playerObject)
+    local newKey = self:wasPlayerReportedDead(playerObject)
 
-    if key then
-        self:removePlayerObjectFromReportedDeadList(playerObject, key)
+    if newKey then
+        self:removePlayerObjectFromReportedDeadList(playerObject, newKey)
     else
         self.AlivePlayers[theirTeam] = self.AlivePlayers[theirTeam] - 1
         self:sendAlivePlayerCount(self.OpposingTeam[theirTeam])
@@ -82,10 +82,10 @@ function GM:removePlayerObjectFromReportedDeadList(playerObject, key)
 end
 
 function GM:addReportedDeadEnemy(playerObject)
-    local team = playerObject:Team()
+    local plyTeam = playerObject:Team()
 
-    table.insert(self.ReportedDeadEnemies[team], playerObject)
-    self.AlivePlayers[team] = self.AlivePlayers[team] - 1
+    table.insert(self.ReportedDeadEnemies[plyTeam], playerObject)
+    self.AlivePlayers[plyTeam] = self.AlivePlayers[plyTeam] - 1
 end
 
 local PLAYER = FindMetaTable("Player")

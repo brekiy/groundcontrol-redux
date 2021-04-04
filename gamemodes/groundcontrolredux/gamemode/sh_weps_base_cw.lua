@@ -42,7 +42,7 @@ function GM:registerWepsBaseCW()
         pointCost = 25
     }
     GAMEMODE:registerPrimaryWeapon(ar15)
-    
+
     local g36c = {
         weaponClass = "cw_g36c",
         weight = 2.82,
@@ -50,15 +50,15 @@ function GM:registerWepsBaseCW()
         pointCost = 22
     }
     GAMEMODE:registerPrimaryWeapon(g36c)
-    
-    local g36c = {
+
+    local l85 = {
         weaponClass = "cw_l85a2",
         weight = 3.82,
         penetration = 15,
         pointCost = 22
     }
-    GAMEMODE:registerPrimaryWeapon(g36c)
-    
+    GAMEMODE:registerPrimaryWeapon(l85)
+
     local vss = {
         weaponClass = "cw_vss",
         weight = 2.6,
@@ -75,7 +75,7 @@ function GM:registerWepsBaseCW()
         pointCost = 15
     }
     GAMEMODE:registerPrimaryWeapon(mp5)
-    
+
     local mac11 = {
         weaponClass = "cw_mac11",
         weight = 1.59,
@@ -83,13 +83,13 @@ function GM:registerWepsBaseCW()
         pointCost = 12
     }
     GAMEMODE:registerPrimaryWeapon(mac11)
-    
+
     local ump45 = {
         weaponClass = "cw_ump45",
         weight = 2.5,
         penetration = 7,
         pointCost = 13
-    }    
+    }
     GAMEMODE:registerPrimaryWeapon(ump45)
 
     -- heavy weapons
@@ -110,7 +110,7 @@ function GM:registerWepsBaseCW()
         pointCost = 14
     }
     GAMEMODE:registerPrimaryWeapon(m3super90)
-    
+
     local serbushorty = {
         weaponClass = "cw_shorty",
         weight = 1.8,
@@ -136,7 +136,7 @@ function GM:registerWepsBaseCW()
         pointCost = 10
     }
     GAMEMODE:registerSecondaryWeapon(deagle)
-    
+
     local mr96 = {
         weaponClass = "cw_mr96",
         weight = 1.22,
@@ -144,7 +144,7 @@ function GM:registerWepsBaseCW()
         pointCost = 8
     }
     GAMEMODE:registerSecondaryWeapon(mr96)
-    
+
     local m1911 = {
         weaponClass = "cw_m1911",
         weight = 1.105,
@@ -152,7 +152,7 @@ function GM:registerWepsBaseCW()
         pointCost = 7
     }
     GAMEMODE:registerSecondaryWeapon(m1911)
-    
+
     local fiveseven = {
         weaponClass = "cw_fiveseven",
         weight = 0.61,
@@ -160,7 +160,7 @@ function GM:registerWepsBaseCW()
         pointCost = 9
     }
     GAMEMODE:registerSecondaryWeapon(fiveseven)
-    
+
     local p99 = {
         weaponClass = "cw_p99",
         weight = 0.63,
@@ -168,7 +168,7 @@ function GM:registerWepsBaseCW()
         pointCost = 8
     }
     GAMEMODE:registerSecondaryWeapon(p99)
-    
+
     local makarov = {
         weaponClass = "cw_makarov",
         weight = 0.73,

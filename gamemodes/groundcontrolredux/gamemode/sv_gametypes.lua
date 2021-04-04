@@ -42,8 +42,8 @@ end)
 concommand.Add("gc_gametype_maplist", function(ply, com, args)
     local text = "\n[GROUND CONTROL] Supported map list for gametypes:\n"
 
-    for key, data in ipairs(GAMEMODE.Gametypes) do
-        text = text .. GAMEMODE:getGametypeNameData(key) .. "\n"
+    for gamemodeKey, data in ipairs(GAMEMODE.Gametypes) do
+        text = text .. GAMEMODE:getGametypeNameData(gamemodeKey) .. "\n"
         for key, map in pairs(data.mapRotation) do
             if key != nil and map != nil then
                 if GAMEMODE:hasMap(map) then

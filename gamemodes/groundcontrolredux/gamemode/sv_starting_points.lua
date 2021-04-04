@@ -90,7 +90,7 @@ function GM:setupStartingPoints(targetTeam, entityClass, positionList)
     end
 
     if entityClass then -- if we don't, we use the fallback starting points
-        local targetTable = self.ValidStartingPoints[targetTeam]
+        -- local targetTable = self.ValidStartingPoints[targetTeam]
 
         for key, obj in ipairs(ents.FindByClass(entityClass)) do
             table.insert(self.ValidStartingPoints[targetTeam], self:prepareSpawnPointData(obj:GetPos(), obj:GetAngles()))

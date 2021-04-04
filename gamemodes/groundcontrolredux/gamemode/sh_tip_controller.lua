@@ -143,5 +143,4 @@ if CLIENT then
     net.Receive("GC_TIP_EVENT", function (a, b)
         GC_TIP_EVENT(net.ReadString())
     end)
-    -- usermessage.Hook("GC_TIP_EVENT", GC_TIP_EVENT)
 end

@@ -176,11 +176,11 @@ end
 
 function GM:startVoteMap()
     if self:canStartVote() then
-        local id, data = self:getGametypeFromConVar()
+        local _, data = self:getGametypeFromConVar()
         local mapList = self:filterExistingMaps(data.mapRotation)
 
         self:setupCurrentVote("Vote for the next map", mapList, player.GetAll(), self.MaxMapsPerPick, true, nil, function()
-            local highestOption, highestKey = self:getHighestVote()
+            local highestOption, _ = self:getHighestVote()
 
             game.ConsoleCommand("changelevel " .. highestOption.option .. "\n")
         end, self.VoteMapVoteID)
@@ -235,7 +235,7 @@ function GM:startGameTypeVote()
     end
 
     self:setupCurrentVote("Vote for next game type", possibilities, player.GetAll(), self.MaxGameTypesPerPick, false, nil, function()
-        local highestOption, highestKey = self:getHighestVote()
+        local highestOption, _ = self:getHighestVote()
 
         self:setGametypeCVarByPrettyName(highestOption.option)
     end, self.VoteGametypeVoteID)
