@@ -123,8 +123,8 @@ function PLAYER:giveLoadout(forceGive)
     end)
 
     self:giveGadgets()
-    self:giveArmor()
-    self:giveHelmet()
+    self:giveArmor("vest")
+    self:giveArmor("helmet")
     self:Give(GAMEMODE.KnifeWeaponClass)
 end
 

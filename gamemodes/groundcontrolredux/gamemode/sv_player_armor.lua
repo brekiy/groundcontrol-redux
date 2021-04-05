@@ -27,7 +27,8 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 shouldBleed = false
                 if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
                 damageNegation = armorData.damageDecrease + penetrationDelta * armorData.protectionDelta
-                local regenAmount = math.floor(dmgInfo:GetDamage() * damageNegation)
+                -- Cap health regen at 80% of stopped damage
+                local regenAmount = math.floor(dmgInfo:GetDamage() * (1 - damageNegation) * 0.8)
                 self:addHealthRegen(regenAmount)
                 self:delayHealthRegen()
             else
@@ -42,10 +43,10 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 self:resetHealthRegenData()
             end
 
-            -- Clamp ballistic damage reduction between 0-100%
-            damageNegation = math.clamp(damageNegation, 0, 1)
+            -- Clamp ballistic damage reduction between 0-90%
+            damageNegation = math.Clamp(damageNegation, 0, 0.9)
             dmgInfo:ScaleDamage(1 - damageNegation)
-            -- Use the scaled damage in calculating armor degradation, so bb pellets will never destroy hard plates
+            -- Use the scaled damage in calculating armor degradation
             self:takeArmorDamage(armorPiece, dmgInfo)
 
             local health = armorPiece.health
@@ -56,7 +57,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 removeArmor = true
             end
 
-            self:sendArmorPiece(i, health, armorData.category)
+            self:sendArmorPiece(removeIndex, health, armorData.category)
             if removeArmor then
                 table.remove(combinedArmor, removeIndex)
                 self:calculateWeight()
@@ -70,48 +71,40 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
     end
 end
 
-function PLAYER:giveArmor()
-    self:resetArmorData()
-    local desiredVest = self:getDesiredVest()
-    if desiredVest != 0 then
-        self:addArmorPart(desiredVest, "vest")
+-- Get a player's desired armor piece for a given category, add it to the player armor attribute, and send it to the client
+function PLAYER:giveArmor(category)
+    self:resetArmorData(category)
+    local caseSwitch = {
+        ["vest"] = self:getDesiredVest(),
+        ["helmet"] = self:getDesiredHelmet()
+    }
+    local desiredArmor = caseSwitch[category]
+    if desiredArmor != 0 then
+        self:addArmorPart(desiredArmor, category)
     end
-    self:sendArmor()
-end
-
-function PLAYER:giveHelmet()
-    self:resetHelmetData()
-    local desiredHelmet = self:getDesiredHelmet()
-    if desiredHelmet != 0 then
-        self:addArmorPart(desiredHelmet, "helmet")
-    end
-    self:sendHelmet()
+    self:sendArmor(category)
 end
 
 function PLAYER:takeArmorDamage(armorData, dmgInfo)
-    armorData.health = math.ceil(armorData.health - dmgInfo:GetDamage())
+    armorData.health = armorData.health - math.ceil(dmgInfo:GetDamage())
 end
 
 function PLAYER:addArmorPart(id, category)
     GAMEMODE:prepareArmorPiece(self, id, category)
 end
 
-function PLAYER:sendArmor()
+-- Tell the client to replace a piece of armor with something else
+function PLAYER:sendArmor(category)
     net.Start("GC_ARMOR")
-    net.WriteTable(self.armor)
-    net.Send(self)
-end
-
-function PLAYER:sendHelmet()
-    net.Start("GC_HELMET")
-    net.WriteTable(self.helmet)
-    net.Send(self)
-end
-
-function PLAYER:sendArmorPiece(index, health, category)
-    net.Start("GC_ARMOR_PIECE")
-    net.WriteInt(index, 32)
-    net.WriteFloat(health)
+    net.WriteTable(self.armor[category])
     net.WriteString(category)
+    net.Send(self)
+end
+
+-- Tell the client to set a piece of armor to a new health value
+function PLAYER:sendArmorHealthUpdate(index, health, category)
+    net.Start("GC_ARMOR_HEALTH_UPDATE")
+    net.WriteString(category)
+    net.WriteFloat(health)
     net.Send(self)
 end

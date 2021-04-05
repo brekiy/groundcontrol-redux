@@ -512,12 +512,11 @@ urbanwarfare.name = "urbanwarfare"
 urbanwarfare.prettyName = "Urban Warfare"
 urbanwarfare.timeLimit = 315
 urbanwarfare.waveTimeLimit = 135
-urbanwarfare.attackersPerDefenders = 3
 urbanwarfare.objectiveCounter = 0
 urbanwarfare.spawnDuringPreparation = true
 urbanwarfare.objectiveEnts = {}
 urbanwarfare.startingTickets = 100 -- the amount of tickets that a team starts with
-urbanwarfare.ticketsPerPlayer = 2.5 -- amount of tickets to increase per each player on server
+urbanwarfare.ticketsPerPlayer = 5 -- amount of tickets to increase per each player on server
 urbanwarfare.capturePoint = nil -- the entity responsible for a bulk of the gametype logic, the reference to it is assigned when it is initialized
 urbanwarfare.waveWinReward = {cash = 50, exp = 50}
 
@@ -890,10 +889,9 @@ function ghettoDrugBust:playerSpawn(ply)
         ply:resetGadgetData()
         ply:applyTraits()
 
-        ply:resetArmorData()
-        ply:resetHelmetData()
-        ply:sendArmor()
-        ply:sendHelmet()
+        ply:resetAllArmor()
+        ply:sendArmor("vest")
+        ply:sendArmor("helmet")
 
         local pickedWeapon = nil
 

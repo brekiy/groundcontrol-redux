@@ -43,12 +43,10 @@ function GM:prepareArmorPiece(ply, armorId, category)
 
     armorPiece = armorPiece[armorId]
 
-    local armorObject = {health = armorPiece.durability, id = armorId, category = category}
-    if (category == "vest") then
-        table.insert(ply.armor, armorObject)
-    elseif (category == "helmet") then
-        table.insert(ply.helmet, armorObject)
-    end
+    local armorObject = {health = armorPiece.durability, id = armorId}
+    ply.armor[category] = armorObject
+    print("gm:preparearmorpiece, player armor after preparing:")
+    PrintTable(ply.armor)
 end
 
 function GM:getArmorWeight(category, id)
@@ -221,35 +219,29 @@ GM:registerArmor(helmetVulkan)
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:setArmor(armorData)
+function PLAYER:setArmorPiece(armorData, category)
     if CLIENT then
-        self:resetArmorData()
-        for key, data in ipairs(armorData) do
-            self:setupArmorPiece(data)
-            self.armor = armorData
-        end
+        -- self:resetArmorData(armorData.category)
+        self:setupArmorPiece(armorData, category)
+        print("player:setarmorpiece armor data after setup")
+        PrintTable(armorData)
+        PrintTable(self.armor)
+        self.armor[category] = armorData
     end
 end
 
-function PLAYER:setHelmet(armorData)
-    if CLIENT then
-        self:resetHelmetData()
-        for key, data in ipairs(armorData) do
-            self:setupArmorPiece(data)
-            self.helmet = armorData
-        end
+-- Clear the armor attribute for a given category
+function PLAYER:resetArmorData(category)
+    if self.armor and self.armor[category] then
+        table.Empty(self.armor[category])
     end
 end
 
-function PLAYER:resetArmorData()
-    self.armor = self.armor or {}
+-- Clear all of the player's tracked armor
+function PLAYER:resetAllArmor()
     table.Empty(self.armor)
 end
 
-function PLAYER:resetHelmetData()
-    self.helmet = self.helmet or {}
-    table.Empty(self.helmet)
-end
 
 function PLAYER:getDesiredVest()
     return tonumber(self:GetInfoNum("gc_armor_vest", 1))
@@ -263,11 +255,6 @@ function PLAYER:getTotalArmorPieces()
     local combinedArmor = {}
     if self.armor then
         for k,v in ipairs(self.armor) do
-            table.insert(combinedArmor, v)
-        end
-    end
-    if self.helmet then
-        for k,v in ipairs(self.helmet) do
             table.insert(combinedArmor, v)
         end
     end

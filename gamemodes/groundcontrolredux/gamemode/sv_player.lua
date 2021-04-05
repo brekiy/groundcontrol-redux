@@ -118,6 +118,7 @@ function GM:PlayerSpawn(ply)
     end
 
     ply.currentTraits = ply.currentTraits and table.Empty(ply.currentTraits) or {}
+    ply.armor = {}
     ply:UnSpectate()
     ply:sendAttachments()
     ply:SetHealth(100)
@@ -133,7 +134,7 @@ function GM:PlayerSpawn(ply)
     ply:resetWeightData()
     ply:resetRadioData()
     ply:resetRecentVictimData()
-    ply:resetArmorData()
+    ply:resetAllArmor()
     ply:resetHealthRegenData()
     ply:setBandages(ply:getDesiredBandageCount())
     ply:SetCanZoom(false)
@@ -149,7 +150,6 @@ function GM:PlayerSpawn(ply)
     ply:SetHullDuck(self.DuckHullMin, self.DuckHullMax)
     ply:SetViewOffsetDucked(self.ViewOffsetDucked)
     ply:resetStatusEffects()
-    -- ply:abortClimb()
     ply:resetKillcountData()
 
     local desiredVoice = nil
@@ -204,7 +204,6 @@ end
 
 function GM:DoPlayerDeath(ply, attacker, dmgInfo)
     ply:dropWeaponNicely(nil, VectorRand() * 20, VectorRand() * 200)
-    -- ply:abortClimb()
     ply:EmitSound("GC_DEATH_SOUND")
 
     if IsValid(attacker) and attacker:IsPlayer() then
@@ -433,7 +432,6 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
     end
 
     if self.DropPrimaryHitgroup[hitGroup] then
-        -- local prevDamage = ply.sustainedArmDamage
         ply.sustainedArmDamage = ply.sustainedArmDamage + dmgInfo:GetDamage()
 
         if ply.sustainedArmDamage >= self.DropPrimarySustainedDamage then -- if we sustain enough damage, we force-drop the weapon, but only if it's primary
@@ -681,7 +679,7 @@ concommand.Add("gc_request_data", function(ply, com, args)
     ply.lastDataRequest = CurTime() + 1
 end)
 
-concommand.Add("assignbotstoteam", function(ply)
+concommand.Add("gc_assignbotstoteam", function(ply)
     for key, value in pairs(player.GetBots()) do
         value:SetTeam(math.random(TEAM_RED, TEAM_BLUE))
         value:Spawn()
