@@ -80,7 +80,7 @@ local PLAYER = FindMetaTable("Player")
 
 function PLAYER:spawn()
     local ply = LocalPlayer()
-    ply:updateLoadoutPoints()
+    ply:resetLoadoutPoints()
     ply:resetBleedData()
     ply:resetAdrenalineData()
     ply:resetStaminaData()

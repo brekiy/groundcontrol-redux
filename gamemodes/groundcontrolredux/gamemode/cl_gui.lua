@@ -1227,7 +1227,7 @@ function attachmentSelection:OnMousePressed(bind)
 
                 timer.Simple(0, function()
                     GAMEMODE:BuildImaginaryAttachments(self.isPrimary)
-                    GAMEMODE:saveWeaponLoadout(nil, isPrimary, (isPrimary and "gc_primary_weapon") or "gc_secondary_weapon")
+                    GAMEMODE:saveWeaponLoadout(nil, isPrimary, isPrimary and "gc_primary_weapon" or "gc_secondary_weapon")
                     self:RemoveDescBox()
                 end)
             end
@@ -1447,7 +1447,7 @@ function attachmentAssignment:OnMousePressed(bind)
 
             timer.Simple(0, function()
                 GAMEMODE:BuildImaginaryAttachments(isPrimary)
-                GAMEMODE:saveWeaponLoadout(nil, isPrimary, (isPrimary and "gc_primary_weapon") or "gc_secondary_weapon")
+                GAMEMODE:saveWeaponLoadout(nil, isPrimary, isPrimary and "gc_primary_weapon" or "gc_secondary_weapon")
             end)
         end
     else
@@ -1459,7 +1459,7 @@ function attachmentAssignment:OnMousePressed(bind)
 
         timer.Simple(0, function()
             GAMEMODE:BuildImaginaryAttachments(isPrimary)
-            GAMEMODE:saveWeaponLoadout(nil, isPrimary, (isPrimary and "gc_primary_weapon") or "gc_secondary_weapon")
+            GAMEMODE:saveWeaponLoadout(nil, isPrimary, isPrimary and "gc_primary_weapon" or "gc_secondary_weapon")
         end)
     end
 end

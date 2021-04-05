@@ -181,6 +181,7 @@ function GM:postInitEntity()
     wepObj.weight = 0
     wepObj.dropsDisabled = true
     wepObj.isKnife = true
+    wepObj.pointCost = 0
 
     self:registerCaliberWeight("7.62x54mmR", 25.6)
     self:registerCaliberWeight("7.62x54MMR", 25.6) -- lol

@@ -101,13 +101,13 @@ local vestIba = {
     category = "vest",
     id = "vest_iba",
     displayName = "Interceptor Body Armor",
-    weight = 10,
+    weight = 11,
     protection = 16,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
     damageDecrease = 0.775,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
-    durability = 70,
+    durability = 65,
     pointCost = 10,
     icon = "ground_control/hud/armor/aa_vest_spectra",
     description = "Surplus soft armor with level III rifle plates."
@@ -117,7 +117,7 @@ GM:registerArmor(vestIba)
 local vestPc = {
     category = "vest",
     id = "vest_pc",
-    displayName = "Plate Carrier",
+    displayName = "LBX Armatus II",
     weight = 8.5,
     protection = 20,
     protectionAreas = {[HITGROUP_CHEST] = true},
@@ -127,21 +127,21 @@ local vestPc = {
     durability = 45,
     pointCost = 16,
     icon = "ground_control/hud/armor/aa_vest_lbx",
-    description = "High-speed plate carrier with level IV rifle plates."
+    description = "Modern, lightweight plate carrier with level IV rifle plates."
 }
 GM:registerArmor(vestPc)
 
 local vestRatnik = {
     category = "vest",
     id = "vest_ratnik",
-    displayName = "6B43 Body Armor",
+    displayName = "6B45 Body Armor",
     weight = 15,
     protection = 20,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true},
     damageDecrease = 0.775,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
-    durability = 100,
+    durability = 75,
     pointCost = 24,
     icon = "ground_control/hud/armor/aa_vest_ratnik",
     description = "Body armor with level IV rifle plates and additional soft protection."
@@ -189,7 +189,7 @@ GM:registerArmor(helmetAltyn)
 local helmetOperator = {
     category = "helmet",
     id = "helmet_operator",
-    displayName = "Operator High Cut",
+    displayName = "N49 ULW Helmet",
     weight = 0.9,
     protection = 16,
     protectionAreas = {[HITGROUP_HEAD] = true},
@@ -199,7 +199,7 @@ local helmetOperator = {
     durability = 10,
     pointCost = 12,
     icon = "ground_control/hud/armor/aa_helmet_operator",
-    description = "Modern lightweight ballistic helmet. Provides level III protection."
+    description = "Modern lightweight ballistic helmet with additional armor. Provides level III protection."
 }
 GM:registerArmor(helmetOperator)
 
