@@ -52,6 +52,11 @@ function GM:getArmorWeight(category, id)
     return data and data.weight or 0
 end
 
+function GM:getArmorCost(category, id)
+    local data = self.Armor[category][id]
+    return data and data.pointCost or 1
+end
+
 -- Armor properties
 -- =======================
 -- category: Denotes what this armor piece is grouped with, e.g. vest, helmet.

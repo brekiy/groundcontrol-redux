@@ -13,4 +13,6 @@ CreateConVar("gc_force_free_aim", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICA
 CreateConVar("gc_damage_multiplier", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "bullet damage multiplier")
 CreateConVar("gc_base_run_speed", 300, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base run speed", 100)
 CreateConVar("gc_base_walk_speed", 150, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base walk speed", 100)
-CreateConVar("gc_loadout_points", 100, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "points to spend on loadout", 10)
+CreateConVar("gc_base_loadout_points", 60, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "points to spend on loadout", 10)
+CreateConVar("gc_loadout_points_per_score", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "loadout points awarded per score", 0)
+CreateConVar("gc_max_loadout_points", 100, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "max loadout points")

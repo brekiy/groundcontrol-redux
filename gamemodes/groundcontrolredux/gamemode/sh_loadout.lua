@@ -88,6 +88,7 @@ function GM:applyWeaponDataToWeaponClass(weaponData, primaryWeapon, slot)
     wepClass.isPrimaryWeapon = primaryWeapon
     wepClass.Slot = slot
     wepClass.penetrationValue = weaponData.penetration
+    wepClass.pointCost = weaponData.pointCost
 
     weaponData.weaponObject = wepClass
     weaponData.processedWeaponObject = weapons.Get(weaponData.weaponClass)

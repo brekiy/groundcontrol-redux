@@ -6,6 +6,8 @@ end)
 CreateConVar("gc_bot_nav_debug", 0, 1, "set to 1 to enable displaying of paths from bot navigators.")
 function createGCBot()
     local bot = player.CreateNextBot(getBotName())
+    bot.armor = {}
+    bot:resetAllArmor()
 end
 local Meta = FindMetaTable("Player")
 local nav = navmesh.GetAllNavAreas()
@@ -52,7 +54,7 @@ end)
 --     end
 -- end)
 
-hook.Add( "StartCommand", "StartCommandExample", function( ply, cmd )
+hook.Add("StartCommand", "StartCommandExample", function( ply, cmd )
     if ( !ply:IsBot() or !ply:Alive() ) then return end
 
     if ply.nav:IsValid() == false then

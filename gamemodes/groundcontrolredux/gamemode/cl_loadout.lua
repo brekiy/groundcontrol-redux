@@ -149,6 +149,10 @@ function GM:toggleLoadoutMenu()
     ammoWang:SetConVar("gc_spare_ammo")
     ammoWang:SetNumeric(true)
 
+    local loadoutCost = vgui.Create("GCLoadoutCost", panel)
+    loadoutCost:SetPos(520, 100)
+    loadoutCost:SetSize(200, 50)
+
     local mainPanel = vgui.Create("Panel", panel)
     mainPanel:SetPos(5, 200)
     mainPanel:SetSize(690, 435)

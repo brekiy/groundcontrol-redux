@@ -88,6 +88,7 @@ function GM:PlayerInitialSpawn(ply)
     ply.lastDataRequest = 0
     ply.invincibilityPeriod = 0
     ply:SetNWInt("GC_SCORE", 0)
+    ply:resetLoadoutPoints()
     ply:SetDTFloat(0, 1) -- movement speed multiplier
     ply:SetDTFloat(1, 0) -- delay for movement speed multiplier reset
     ply.attackedBy = {}

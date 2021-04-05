@@ -1225,7 +1225,7 @@ function attachmentSelection:OnMousePressed(bind)
 
                 timer.Simple(0, function()
                     GAMEMODE:BuildImaginaryAttachments(self.isPrimary)
-                    GAMEMODE:saveWeaponLoadout(nil, isPrimary, (isPrimary and "gc_primary_weapon" or "gc_secondary_weapon"))
+                    GAMEMODE:saveWeaponLoadout(nil, isPrimary, (isPrimary and "gc_primary_weapon") or "gc_secondary_weapon")
                     self:RemoveDescBox()
                 end)
             end
@@ -1445,7 +1445,7 @@ function attachmentAssignment:OnMousePressed(bind)
 
             timer.Simple(0, function()
                 GAMEMODE:BuildImaginaryAttachments(isPrimary)
-                GAMEMODE:saveWeaponLoadout(nil, isPrimary, (isPrimary and "gc_primary_weapon" or "gc_secondary_weapon"))
+                GAMEMODE:saveWeaponLoadout(nil, isPrimary, (isPrimary and "gc_primary_weapon") or "gc_secondary_weapon")
             end)
         end
     else
@@ -1457,7 +1457,7 @@ function attachmentAssignment:OnMousePressed(bind)
 
         timer.Simple(0, function()
             GAMEMODE:BuildImaginaryAttachments(isPrimary)
-            GAMEMODE:saveWeaponLoadout(nil, isPrimary, (isPrimary and "gc_primary_weapon" or "gc_secondary_weapon"))
+            GAMEMODE:saveWeaponLoadout(nil, isPrimary, (isPrimary and "gc_primary_weapon") or "gc_secondary_weapon")
         end)
     end
 end
@@ -1560,6 +1560,56 @@ function attachmentAssignment:Paint()
 end
 
 vgui.Register("GCAttachmentAssignment", attachmentAssignment, "GCAttachmentSelection")
+
+local loadoutPoints = {}
+
+function loadoutPoints:Init()
+end
+
+function loadoutPoints:Paint()
+    local w, h = self:GetSize()
+
+    local ply = LocalPlayer()
+    local curCost = GAMEMODE:calculateCurrentLoadoutCost(ply)
+
+    surface.SetDrawColor(100, 213, 100, 255)
+
+    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+
+    draw.ShadowText("Loadout cost: " .. curCost .. "/" .. ply:getCurrentLoadoutPoints(), "CW_HUD20", 10, h * 0.5 - 5, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+end
+
+function loadoutPoints:OnCursorEntered()
+    if !IsValid(self.descBox) then
+        local _, h = self:GetSize()
+        local x, y = self:LocalToScreen(0, 0)
+        self.descBox = vgui.Create("GCGenericDescbox")
+        self.descBox:InsertText("The cost of your current loadout.", "CW_HUD28", 0)
+        self.descBox:InsertText("Your weapons and gear are not free.", "CW_HUD20", 0)
+        self.descBox:InsertText("The better you perform, the more freedom you have in what you can bring in your kit.", "CW_HUD20", 0)
+
+        self.descBox:SetPos(x, y + h + 5)
+        self.descBox:SetZPos(10000)
+        self.descBox:SetDrawOnTop(true)
+    end
+end
+
+function loadoutPoints:OnCursorExited(w, h)
+    self:RemoveDescBox()
+end
+
+function loadoutPoints:RemoveDescBox()
+    if self.descBox then
+        self.descBox:Remove()
+        self.descBox = nil
+    end
+end
+
+function loadoutPoints:OnRemove()
+    self:RemoveDescBox()
+end
+
+vgui.Register("GCLoadoutCost", loadoutPoints, "DPanel")
 
 local genericDescbox = {}
 genericDescbox.font = "CW_HUD20"
@@ -2315,7 +2365,11 @@ function gcKillerDisplay:SetKillData(killer, inflictorData)
         local lply = LocalPlayer()
 
         if killer == lply then
-            self.killerText = "Suicide!"
+            if self.bleedInflictor then
+                self.killerText = "Bled out!"
+            else
+                self.killerText = "Suicide!"
+            end
         else
             self.teamKill = killer:Team() == lply:Team()
 
