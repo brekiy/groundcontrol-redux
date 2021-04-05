@@ -13,10 +13,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
 
     local shouldBleed = true
     local removeIndex = 1
-    local combinedArmor = self:getTotalArmorPieces()
-    for i = 1, #combinedArmor do
-        if removeIndex > #combinedArmor then return end
-        local armorPiece = combinedArmor[removeIndex]
+    for category, armorPiece in pairs(self.armor) do
         local armorData = GAMEMODE:getArmorData(armorPiece.id, armorPiece.category)
         local removeArmor = false
         if armorData.protectionAreas[hitGroup] then
@@ -57,9 +54,9 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 removeArmor = true
             end
 
-            self:sendArmorPiece(removeIndex, health, armorData.category)
+            self:sendArmorHealthUpdate(health, armorData.category)
             if removeArmor then
-                table.remove(combinedArmor, removeIndex)
+                -- table.remove(combinedArmor, removeIndex)
                 self:calculateWeight()
             end
         end
@@ -81,8 +78,8 @@ function PLAYER:giveArmor(category)
     local desiredArmor = caseSwitch[category]
     if desiredArmor != 0 then
         self:addArmorPart(desiredArmor, category)
+        self:sendArmor(category)
     end
-    self:sendArmor(category)
 end
 
 function PLAYER:takeArmorDamage(armorData, dmgInfo)
@@ -102,7 +99,7 @@ function PLAYER:sendArmor(category)
 end
 
 -- Tell the client to set a piece of armor to a new health value
-function PLAYER:sendArmorHealthUpdate(index, health, category)
+function PLAYER:sendArmorHealthUpdate(health, category)
     net.Start("GC_ARMOR_HEALTH_UPDATE")
     net.WriteString(category)
     net.WriteFloat(health)

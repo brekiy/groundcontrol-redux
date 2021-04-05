@@ -683,6 +683,7 @@ end)
 concommand.Add("gc_assignbotstoteam", function(ply)
     for key, value in pairs(player.GetBots()) do
         value:SetTeam(math.random(TEAM_RED, TEAM_BLUE))
+        value:resetAllArmor()
         value:Spawn()
     end
 end)

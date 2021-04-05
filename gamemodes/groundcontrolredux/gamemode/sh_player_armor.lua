@@ -87,8 +87,8 @@ local vestPaca = {
     weight = 1.7,
     protection = 8,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    protectionDelta = 0.005,
     damageDecrease = 0.75,
+    protectionDelta = 0.0075,
     damageDecreasePenetrated = 0.15,
     durability = 30,
     pointCost = 4,
@@ -104,8 +104,8 @@ local vestIba = {
     weight = 10,
     protection = 16,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    damageDecrease = 0.9,
-    protectionDelta = 0.005,
+    damageDecrease = 0.775,
+    protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
     durability = 70,
     pointCost = 10,
@@ -121,8 +121,8 @@ local vestPc = {
     weight = 8.5,
     protection = 20,
     protectionAreas = {[HITGROUP_CHEST] = true},
-    damageDecrease = 0.9,
-    protectionDelta = 0.005,
+    damageDecrease = 0.775,
+    protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
     durability = 45,
     pointCost = 16,
@@ -138,8 +138,8 @@ local vestRatnik = {
     weight = 15,
     protection = 20,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true},
-    damageDecrease = 0.9,
-    protectionDelta = 0.005,
+    damageDecrease = 0.775,
+    protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
     durability = 100,
     pointCost = 24,
@@ -162,7 +162,7 @@ local helmetPasgt = {
     damageDecrease = 0.8,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
-    durability = 20,
+    durability = 15,
     pointCost = 6,
     icon = "ground_control/hud/armor/aa_helmet_spectra",
     description = "Surplus kevlar helmet. Provides level IIIA protection."
@@ -179,7 +179,7 @@ local helmetAltyn = {
     damageDecrease = 0.8,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
-    durability = 30,
+    durability = 25,
     pointCost = 10,
     icon = "ground_control/hud/armor/aa_helmet_altyn",
     description = "Heavy titanium helmet. Provides level IIIA protection."
@@ -196,7 +196,7 @@ local helmetOperator = {
     damageDecrease = 0.8,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
-    durability = 15,
+    durability = 10,
     pointCost = 12,
     icon = "ground_control/hud/armor/aa_helmet_operator",
     description = "Modern lightweight ballistic helmet. Provides level III protection."
@@ -213,7 +213,7 @@ local helmetVulkan = {
     damageDecrease = 0.8,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
-    durability = 25,
+    durability = 20,
     pointCost = 18,
     icon = "ground_control/hud/armor/aa_helmet_vulkan",
     description = "Heavy composite helmet. Provides level IV protection."
@@ -256,7 +256,7 @@ end
 function PLAYER:getTotalArmorPieces()
     local combinedArmor = {}
     if self.armor then
-        for k,v in ipairs(self.armor) do
+        for k,v in pairs(self.armor) do
             table.insert(combinedArmor, v)
         end
     end

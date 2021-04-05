@@ -85,6 +85,9 @@ function PLAYER:updateArmorPiece(category, newHealth)
     if newHealth < oldHealth then
         self:flashArmorPiece(armorData)
     end
+    if newHealth <= 0 then
+        self:resetArmorData(category)
+    end
 end
 
 function PLAYER:flashArmorPiece(armorData)

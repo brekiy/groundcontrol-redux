@@ -134,6 +134,7 @@ function PLAYER:attemptGiveLoadout()
     end
 end
 
+
 concommand.Add("gc_ask_for_loadout", function(ply)
     if !ply:Alive() then
         return

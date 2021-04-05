@@ -6,8 +6,6 @@ end)
 CreateConVar("gc_bot_nav_debug", 0, 1, "set to 1 to enable displaying of paths from bot navigators.")
 function createGCBot()
     local bot = player.CreateNextBot(getBotName())
-    bot.armor = {}
-    bot:resetAllArmor()
 end
 local Meta = FindMetaTable("Player")
 local nav = navmesh.GetAllNavAreas()
