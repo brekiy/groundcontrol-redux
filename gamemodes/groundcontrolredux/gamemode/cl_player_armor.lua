@@ -2,7 +2,7 @@ net.Receive("GC_ARMOR", function(a, b)
     local newArmor = net.ReadTable()
     local category = net.ReadString()
 
-    LocalPlayer():resetArmorData(category)
+    -- LocalPlayer():resetArmorData(category)
     LocalPlayer():setArmorPiece(newArmor, category)
     -- attachArmorPM(LocalPlayer())
 end)
@@ -36,13 +36,10 @@ function GM:drawArmor(ply, baseX, baseY)
     local offset = 0
     local spacing = 60
     if ply.armor and !table.IsEmpty(ply.armor) then
-        print("drawing player armor")
         local curTime = CurTime()
         local frameTime = FrameTime()
         local white, black = self.HUDColors.white, self.HUDColors.black
-        PrintTable(ply.armor)
-        for key, armorPiece in ipairs(ply.armor) do
-            PrintTable(armorPiece)
+        for key, armorPiece in SortedPairs(ply.armor) do
             local curPos = baseX + offset
             local colorFade = curTime > armorPiece.colorHold
 

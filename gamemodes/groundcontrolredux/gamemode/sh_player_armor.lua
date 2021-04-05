@@ -45,8 +45,6 @@ function GM:prepareArmorPiece(ply, armorId, category)
 
     local armorObject = {health = armorPiece.durability, id = armorId}
     ply.armor[category] = armorObject
-    print("gm:preparearmorpiece, player armor after preparing:")
-    PrintTable(ply.armor)
 end
 
 function GM:getArmorWeight(category, id)
@@ -221,24 +219,23 @@ local PLAYER = FindMetaTable("Player")
 
 function PLAYER:setArmorPiece(armorData, category)
     if CLIENT then
-        -- self:resetArmorData(armorData.category)
+        self:resetArmorData(armorData.category)
         self:setupArmorPiece(armorData, category)
-        print("player:setarmorpiece armor data after setup")
-        PrintTable(armorData)
-        PrintTable(self.armor)
         self.armor[category] = armorData
     end
 end
 
 -- Clear the armor attribute for a given category
 function PLAYER:resetArmorData(category)
-    if self.armor and self.armor[category] then
+    self.armor = self.armor or {}
+    if self.armor[category] then
         table.Empty(self.armor[category])
     end
 end
 
 -- Clear all of the player's tracked armor
 function PLAYER:resetAllArmor()
+    self.armor = self.armor or {}
     table.Empty(self.armor)
 end
 

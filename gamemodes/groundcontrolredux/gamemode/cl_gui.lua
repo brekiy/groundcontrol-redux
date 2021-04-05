@@ -1942,7 +1942,7 @@ function gcArmorDisplay:OnCursorEntered()
             if self.category == "vest" then
                 self.descBox:InsertText("No armor vest equipped.", "CW_HUD20", 0)
                 self.descBox:InsertText("Bleeding will occur from any shot.", "CW_HUD20", 0)
-            else
+            elseif self.category == "helmet" then
                 self.descBox:InsertText("No helmet equipped.", "CW_HUD20", 0)
                 self.descBox:InsertText("Headshots are almost certainly fatal.", "CW_HUD20", 0)
             end

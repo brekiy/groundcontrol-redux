@@ -175,44 +175,6 @@ function GM:postInitEntity()
     GAMEMODE:registerWepsKhris()
     GAMEMODE:registerWepsMisc()
 
-    local flash = {}
-    flash.weaponClass = "gc_cw_flash_grenade"
-    flash.weight = 0.5
-    flash.startAmmo = 2
-    flash.hideMagIcon = true -- whether the mag icon and text should be hidden in the UI for this weapon
-    flash.description = {{t = "Flashbang", font = "CW_HUD24", c = Color(255, 255, 255, 255)},
-        {t = "Blinds nearby enemies facing the grenade upon detonation.", font = "CW_HUD20", c = Color(255, 255, 255, 255)},
-        {t = "2x grenades.", font = "CW_HUD20", c = Color(255, 255, 255, 255)}
-    }
-    self:registerTertiaryWeapon(flash)
-
-    local smoke = {}
-    smoke.weaponClass = "gc_cw_smoke_grenade"
-    smoke.weight = 0.5
-    smoke.startAmmo = 2
-    smoke.hideMagIcon = true
-    smoke.description = {{t = "Smoke grenade", font = "CW_HUD24", c = Color(255, 255, 255, 255)},
-        {t = "Provides a smoke screen to deter enemies from advancing or pushing through.", font = "CW_HUD20", c = Color(255, 255, 255, 255)},
-        {t = "2x grenades.", font = "CW_HUD20", c = Color(255, 255, 255, 255)}
-    }
-    self:registerTertiaryWeapon(smoke)
-
-    local spareGrenade = {}
-    spareGrenade.weaponClass = "gc_cw_frag_grenade"
-    spareGrenade.weight = 0.5
-    spareGrenade.amountToGive = 1
-    spareGrenade.skipWeaponGive = true
-    spareGrenade.hideMagIcon = true
-    spareGrenade.description = {{t = "Spare frag grenade", font = "CW_HUD24", c = Color(255, 255, 255, 255)},
-        {t = "Allows for a second frag grenade to be thrown.", font = "CW_HUD20", c = Color(255, 255, 255, 255)}
-    }
-
-    function spareGrenade:postGive(ply)
-        ply:GiveAmmo(self.amountToGive, "Frag Grenades")
-    end
-
-    self:registerTertiaryWeapon(spareGrenade)
-
     -- KNIFE, give it 0 weight and make it undroppable (can't shoot out of hand, can't drop when dying)
     local wepObj = weapons.GetStored(self.KnifeWeaponClass)
     wepObj.weight = 0

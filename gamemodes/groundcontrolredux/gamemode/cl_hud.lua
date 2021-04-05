@@ -103,15 +103,15 @@ function GM:HUDPaint()
         local bandageText = "BANDAGES: x" .. (ply.bandages or 0)
         local bandageX = surface.GetTextSize(bandageText)
 
-        -- local staminaText = "STAMINA: " .. (math.Round(ply.stamina, 0)) .. "%"
-        -- local staminaX = surface.GetTextSize(staminaText)
+        local staminaText = "STAMINA: " .. (math.Round(ply.stamina, 0)) .. "%"
+        local staminaX = surface.GetTextSize(staminaText)
 
-        xSize = math.max(bandageX, xSize) -- get the biggest text size for the semi-transparent rectangle
+        xSize = math.max(bandageX, xSize, staminaX) -- get the biggest text size for the semi-transparent rectangle
 
-        local overallTextHeight = ySize - 7 + 32
-        -- local overallTextHeight = ySize - 7 + 64
+        -- local overallTextHeight = ySize - 7 + 32
+        local overallTextHeight = ySize - 7 + 64
         surface.SetDrawColor(0, 0, 0, 150)
-        surface.DrawRect(50, scrH - 100 - overallTextHeight, xSize + 10, ySize - 7 + 32) -- original 32
+        surface.DrawRect(50, scrH - 100 - overallTextHeight, xSize + 10, ySize - 7 + 64) -- original 32
 
         draw.ShadowText(healthText, self.HealthDisplayFont, 55, scrH - 82 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         draw.ShadowText(bandageText, self.BandageDisplayFont, 55, scrH - 82 + 32 - overallTextHeight, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
