@@ -38,11 +38,11 @@ include("sh_weps_misc.lua")
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:getDesiredPrimaryMags()
-    return math.Clamp(self:GetInfoNum("gc_primary_mags", GAMEMODE.DefaultPrimaryIndex), 1, GAMEMODE.MaxPrimaryMags)
+    return math.Clamp(self:GetInfoNum("gc_primary_mags", GAMEMODE.DefaultPrimaryMagCount), 1, GAMEMODE.MaxPrimaryMags)
 end
 
 function PLAYER:getDesiredSecondaryMags()
-    return math.Clamp(self:GetInfoNum("gc_secondary_mags", GAMEMODE.DefaultPrimaryIndex), 1, GAMEMODE.MaxSecondaryMags)
+    return math.Clamp(self:GetInfoNum("gc_secondary_mags", GAMEMODE.DefaultSecondaryMagCount), 1, GAMEMODE.MaxSecondaryMags)
 end
 
 function PLAYER:getDesiredPrimaryWeapon()

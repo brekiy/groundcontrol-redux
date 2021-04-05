@@ -4,5 +4,6 @@ include("sh_player_loadout_points.lua")
 
 -- durrr
 hook.Add("gc_event_update_loadout_cost", function(ply)
+    print("wowee hook firing on loadout cost time")
     ply:updateLoadoutPoints()
 end)

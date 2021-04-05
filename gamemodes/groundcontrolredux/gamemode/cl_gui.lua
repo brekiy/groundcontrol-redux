@@ -413,7 +413,9 @@ function gcWeaponPanel:SetDescboxType(type)
 end
 
 function gcWeaponPanel:OnMousePressed(bind)
-    if bind == MOUSE_LEFT then
+    local ply = LocalPlayer()
+    local canSelect = GAMEMODE:calculateCurrentLoadoutCost(ply, self.weaponData.weaponObject.pointCost, self.isPrimary, !self.isPrimary, false) <= ply:getCurrentLoadoutPoints()
+    if bind == MOUSE_LEFT and canSelect then
         GAMEMODE:saveWeaponLoadout(nil, self.isPrimary, self.ConVar)
         GAMEMODE:setCurrentWeaponLoadout(self.weaponData.weaponObject)
         GAMEMODE:loadWeaponLoadout(self.weaponData.weaponObject)
@@ -1570,7 +1572,7 @@ function loadoutPoints:Paint()
     local w, h = self:GetSize()
 
     local ply = LocalPlayer()
-    local curCost = GAMEMODE:calculateCurrentLoadoutCost(ply)
+    local curCost = GAMEMODE:getImaginaryLoadoutCost(ply)
 
     surface.SetDrawColor(100, 213, 100, 255)
 
@@ -1915,7 +1917,16 @@ end
 function gcArmorDisplay:UpdateArmor(direction)
     direction = direction or 0
     self.pos = math.Clamp(self.pos + direction, self.min, self.max)
-    RunConsoleCommand(self.cvar, self.pos)
+    -- print("going to set the player armor? " .. self.cvar)
+    local canSelect = nil
+    if self.category == "vest" then
+        canSelect = GAMEMODE:getImaginaryLoadoutCost(LocalPlayer(), nil, nil, nil, GAMEMODE:getArmorCost("vest", self.pos)) <= ply:getCurrentLoadoutPoints()
+    elseif self.category == "helmet" then
+        canSelect = GAMEMODE:getImaginaryLoadoutCost(LocalPlayer(), nil, nil, nil, nil, GAMEMODE:getArmorCost("helmet", self.pos)) <= ply:getCurrentLoadoutPoints()
+    end
+    if canSelect then
+        RunConsoleCommand(self.cvar, self.pos)
+    end
     self:SetArmor(GAMEMODE.Armor[self.category][self.pos])
 end
 

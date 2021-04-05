@@ -149,10 +149,9 @@ function GM:toggleLoadoutMenu()
     ammoWang:SetConVar("gc_spare_ammo")
     ammoWang:SetNumeric(true)
 
-    -- currently non-functional
-    -- local loadoutCost = vgui.Create("GCLoadoutCost", panel)
-    -- loadoutCost:SetPos(520, 100)
-    -- loadoutCost:SetSize(200, 50)
+    local loadoutCost = vgui.Create("GCLoadoutCost", panel)
+    loadoutCost:SetPos(520, 100)
+    loadoutCost:SetSize(200, 50)
 
     local mainPanel = vgui.Create("Panel", panel)
     mainPanel:SetPos(5, 200)
@@ -301,7 +300,7 @@ end
 
 function GM:loadWeaponLoadout(weaponObject)
     local data = file.Read(self.LoadoutSaveDirectory .. weaponObject.ClassName .. ".txt", "DATA")
-
+    local targetTable = nil
     if data then -- if we've loaded existing data, we set our current attachment cvars to them
         data = util.JSONToTable(data)
 
@@ -317,7 +316,6 @@ function GM:loadWeaponLoadout(weaponObject)
             RunConsoleCommand(cvarName, value)
         end
     else -- if we haven't, we just set them to nothing
-        local targetTable = nil
 
         if weaponObject.isPrimaryWeapon then
             targetTable = self.PrimaryAttachmentStrings
