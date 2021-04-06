@@ -17,7 +17,6 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
         local armorData = GAMEMODE:getArmorData(armorPiece.id, category)
         local removeArmor = false
         -- if for some reason we still have health don't do any calcs
-        PrintTable(armorPiece)
         if armorData.protectionAreas[hitGroup] and armorPiece.health > 0 then
             local penetrationDelta = armorData.protection - penetrationValue
             local penetratesArmor = penetrationDelta < 0
@@ -42,11 +41,10 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 self:resetHealthRegenData()
             end
 
+            self:takeArmorDamage(armorPiece, dmgInfo:GetDamage())
             -- Clamp ballistic damage reduction between 0-90%
             damageNegation = math.Clamp(damageNegation, 0, 0.9)
             dmgInfo:ScaleDamage(1 - damageNegation)
-            -- Use the scaled damage in calculating armor degradation
-            self:takeArmorDamage(armorPiece, dmgInfo)
 
             local health = armorPiece.health
 
@@ -82,8 +80,8 @@ function PLAYER:giveArmor(category)
     end
 end
 
-function PLAYER:takeArmorDamage(armorData, dmgInfo)
-    armorData.health = armorData.health - math.ceil(dmgInfo:GetDamage())
+function PLAYER:takeArmorDamage(armorData, dmg)
+    armorData.health = armorData.health - math.ceil(dmg * GetConVar("gc_armor_damage_factor"):GetFloat())
 end
 
 function PLAYER:addArmorPart(id, category)

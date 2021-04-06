@@ -7,7 +7,7 @@ function PLAYER:drainStamina()
         local drainAmount = GAMEMODE.StaminaDrainPerTick * self:getStaminaDrainAdrenalineModifier() * self:getStaminaDrainWeightModifier() * self.staminaDrainMultiplier
 
         self:setStamina(math.max(self.stamina - drainAmount, GAMEMODE.MinStaminaFromSprinting), true)
-        self.staminaDrainTime = CurTime() + GAMEMODE.StaminaDrainTickTime
+        self.staminaDrainTime = CurTime() + GetConVar("gc_stamina_drain_time"):GetFloat()
         self:sendStamina()
     end
 
@@ -18,7 +18,7 @@ function PLAYER:regenStamina()
     local regenAmount = GAMEMODE.StaminaDrainPerTick * self:getStaminaRegenAdrenalineModifier()
 
     self:setStamina(self.stamina + regenAmount)
-    self.staminaRegenTime = CurTime() + GAMEMODE.StaminaRegenTickTime
+    self.staminaRegenTime = CurTime() + GetConVar("gc_stamina_regen_time"):GetFloat()
 end
 
 function PLAYER:delayStaminaRegen(time)

@@ -2,8 +2,6 @@ AddCSLuaFile()
 
 -- weight is in kilograms
 GM.MaxWeight = 40
--- our stamina will drain this much faster when our weight is at max
-GM.SprintStaminaDrainWeightIncrease = 0.7
 -- ???
 GM.MaxSpeedDecrease = 0.05
 -- ???
@@ -93,7 +91,7 @@ end
 
 function PLAYER:getStaminaDrainWeightModifier(weight)
     weight = weight or self.weight
-    return 1 + (weight / GAMEMODE.MaxWeight) * GAMEMODE.SprintStaminaDrainWeightIncrease
+    return 1 + (weight / GAMEMODE.MaxWeight) * GetConVar("gc_weight_stamina_drain"):GetFloat()
 end
 
 function PLAYER:setWeight(weight)
