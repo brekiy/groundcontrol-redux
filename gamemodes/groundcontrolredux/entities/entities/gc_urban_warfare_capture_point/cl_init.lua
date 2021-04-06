@@ -143,16 +143,17 @@ function ENT:drawHUD()
 
     local maxTickets = self:GetMaxTickets()
 
-    local length = math.ceil((barLength - 2) * ourTickets / maxTickets)
+    local ourPerc = math.ceil((barLength - 2) * ourTickets / maxTickets)
+    local enemyPerc = math.ceil((barLength - 2) * enemyTickets / maxTickets)
 
     surface.SetDrawColor(124, 185, 255, 255)
-    surface.DrawRect(midX - length - 57, baseY + 2, length, 16)
+    surface.DrawRect(midX - ourPerc - 57, baseY + 2, length, 16)
 
     surface.SetDrawColor(0, 0, 0, 150)
     surface.DrawRect(midX + 57, baseY, barLength + 2, 20)
 
     surface.SetDrawColor(255, 117, 99, 255)
-    surface.DrawRect(midX + 59, baseY + 2, length, 16)
+    surface.DrawRect(midX + 59, baseY + 2, enemyPerc, 16)
 
     draw.ShadowText("US: " .. ourTickets, "CW_HUD20", midX - 60, 25, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     draw.ShadowText("ENEMY: " .. enemyTickets, "CW_HUD20", midX + 62, 25, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
