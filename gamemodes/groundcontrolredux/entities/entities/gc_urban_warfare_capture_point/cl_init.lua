@@ -147,7 +147,7 @@ function ENT:drawHUD()
     local enemyPerc = math.ceil((barLength - 2) * enemyTickets / maxTickets)
 
     surface.SetDrawColor(124, 185, 255, 255)
-    surface.DrawRect(midX - ourPerc - 57, baseY + 2, length, 16)
+    surface.DrawRect(midX - ourPerc - 57, baseY + 2, ourPerc, 16)
 
     surface.SetDrawColor(0, 0, 0, 150)
     surface.DrawRect(midX + 57, baseY, barLength + 2, 20)

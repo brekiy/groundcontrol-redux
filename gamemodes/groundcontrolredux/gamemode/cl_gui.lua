@@ -1,5 +1,7 @@
 GM.AllFrames = {}
-
+local GUI_BRASS = Color(181, 166, 66, 255)
+local GUI_ECRU = Color(194, 178, 128, 255)
+local GUI_BITTERSWEET = Color(255, 100, 100, 100) -- a crayola orange hue apparently
 function GM:addFrame(frame)
     table.insert(self.AllFrames, frame)
 end
@@ -119,7 +121,7 @@ vgui.Register("GCPanel", gcPanel, "DPanel")
 local gcBaseButton = {}
 gcBaseButton.font = "CW_HUD16"
 gcBaseButton.text = ""
-gcBaseButton.hoverR, gcBaseButton.hoverG, gcBaseButton.hoverB, gcBaseButton.hoverA = 150, 255, 150, 255
+gcBaseButton.hoverR, gcBaseButton.hoverG, gcBaseButton.hoverB, gcBaseButton.hoverA = GUI_BRASS:Unpack()
 gcBaseButton.idleR, gcBaseButton.idleG, gcBaseButton.idleB, gcBaseButton.idleA = 75, 75, 75, 255
 gcBaseButton.textColor = Color(255, 255, 255, 255)
 
@@ -450,10 +452,10 @@ end
 
 function gcWeaponPanel:GetBackgroundColor()
     if GetConVar(self.ConVar):GetInt() == self.weaponID then
-        return 200, 255, 150, 255
+        return GUI_ECRU:Unpack()
     else
         if self:IsHovered() then
-            return 150, 255, 150, 255
+            return GUI_BRASS:Unpack()
         end
     end
 
@@ -617,7 +619,7 @@ end
 
 function curWeaponPanel:GetBackgroundColor()
     if self:IsHovered() then
-        return 150, 255, 150, 255
+        return GUI_BRASS:Unpack()
     end
 
     if #self.availableAttachments > 0 and !self.acknowledged then
@@ -1084,12 +1086,12 @@ function attachmentSelection:GetBackgroundColor()
         local attValue = GetConVar(cvarString):GetString()
 
         if attValue == self.attachmentName then
-            return 200, 255, 150, 255
+            return GUI_ECRU:Unpack()
         end
     end
 
     if self:IsHovered() then
-        return 150, 255, 150, 255
+        return GUI_BRASS:Unpack()
     end
 
     return 0, 0, 0, 200
@@ -1472,11 +1474,11 @@ end
 
 function attachmentAssignment:GetBackgroundColor()
     if !self:IsSlotUnlocked() then
-        return 255, 100, 100, 255
+        return GUI_BITTERSWEET:Unpack()
     end
 
     if self:IsHovered() then
-        return 150, 255, 150, 255
+        return GUI_BRASS:Unpack()
     end
 
     return 0, 0, 0, 200
@@ -1505,7 +1507,7 @@ function attachmentAssignment:Paint()
                 surface.SetDrawColor(50, 50, 50, 255)
             else
                 if self.validCategory then
-                    surface.SetDrawColor(150, 255, 150, 255)
+                    surface.SetDrawColor(GUI_BRASS:Unpack())
                 else
                     surface.SetDrawColor(255, 255, 255, 255)
                 end
@@ -2025,7 +2027,7 @@ function gcArmorDisplay:Paint()
     surface.DrawRect(0, 0, w, h)
 
     if self:IsHovered() then
-        surface.SetDrawColor(180, 255, 180, 255)
+        surface.SetDrawColor(GUI_ECRU:Unpack())
     else
         surface.SetDrawColor(45, 45, 45, 255)
     end
@@ -2068,7 +2070,7 @@ function gcArmorSelection:Paint()
     surface.DrawRect(0, 0, w, h)
 
     if self:IsHovered() then
-        surface.SetDrawColor(180, 255, 180, 255)
+        surface.SetDrawColor(194, 178, 128, 255)
     else
         surface.SetDrawColor(45, 45, 45, 255)
     end
@@ -2215,10 +2217,10 @@ function gcTraitPanel:GetBackgroundColor()
     end
 
     if self:IsTraitActive() then
-        return 200, 255, 150, 255
+        return GUI_ECRU:Unpack()
     else
         if self:IsHovered() then
-            return 150, 255, 150, 255
+            return GUI_BRASS:Unpack()
         end
     end
 

@@ -235,7 +235,7 @@ end
 function PLAYER:resetArmorData(category)
     self.armor = self.armor or {}
     if self.armor[category] then
-        table.Empty(self.armor[category])
+        self.armor[category] = nil
     end
 end
 

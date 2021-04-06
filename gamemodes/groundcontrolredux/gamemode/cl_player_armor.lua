@@ -40,31 +40,33 @@ function GM:drawArmor(ply, baseX, baseY)
         local frameTime = FrameTime()
         local white, black = self.HUDColors.white, self.HUDColors.black
         for key, armorPiece in SortedPairs(ply.armor) do
-            local curPos = baseX + offset
-            local colorFade = curTime > armorPiece.colorHold
+            if !table.IsEmpty(armorPiece) then
+                local curPos = baseX + offset
+                local colorFade = curTime > armorPiece.colorHold
 
-            if armorPiece.red > 0 and colorFade then
-                armorPiece.red = math.Approach(armorPiece.red, 0, frameTime * 1000)
-            end
-
-            if armorPiece.health <= 0 then
-                armorPiece.alpha = math.Approach(armorPiece.alpha, 0, frameTime)
-                if armorPiece.alpha == 0 then
-                    offset = offset - spacing
+                if armorPiece.red > 0 and colorFade then
+                    armorPiece.red = math.Approach(armorPiece.red, 0, frameTime * 1000)
                 end
+
+                if armorPiece.health <= 0 then
+                    armorPiece.alpha = math.Approach(armorPiece.alpha, 0, frameTime)
+                    if armorPiece.alpha == 0 then
+                        offset = offset - spacing
+                    end
+                end
+
+                if armorPiece.alpha > 0 then
+                    white.a, black.a = white.a * armorPiece.alpha, black.a * armorPiece.alpha
+
+                    surface.SetDrawColor(255, 255 - armorPiece.red, 255 - armorPiece.red, 255 * armorPiece.alpha)
+                    surface.SetTexture(armorPiece.armorData.icon)
+                    surface.DrawTexturedRect(curPos, baseY - 45, 40, 40)
+
+                    draw.ShadowText(math.max(armorPiece.health, 0), "CW_HUD14", curPos + spacing * 0.5 - 10, baseY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                end
+
+                offset = offset + spacing
             end
-
-            if armorPiece.alpha > 0 then
-                white.a, black.a = white.a * armorPiece.alpha, black.a * armorPiece.alpha
-
-                surface.SetDrawColor(255, 255 - armorPiece.red, 255 - armorPiece.red, 255 * armorPiece.alpha)
-                surface.SetTexture(armorPiece.armorData.icon)
-                surface.DrawTexturedRect(curPos, baseY - 45, 40, 40)
-
-                draw.ShadowText(math.max(armorPiece.health, 0), "CW_HUD14", curPos + spacing * 0.5 - 10, baseY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            end
-
-            offset = offset + spacing
         end
 
         white.a, black.a = 255, 255
@@ -78,6 +80,7 @@ PLAYER._armorFlashTime = 0.3
 PLAYER._armorFlashRedAmount = 255
 
 function PLAYER:updateArmorPiece(category, newHealth)
+    if !self.armor or !self.armor[category] then return end
     local armorData = self.armor[category]
     local oldHealth = armorData.health
     armorData.health = newHealth

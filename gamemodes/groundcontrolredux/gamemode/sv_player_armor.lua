@@ -12,11 +12,13 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
     end
 
     local shouldBleed = true
-    local removeIndex = 1
+    -- local removeIndex = 1
     for category, armorPiece in pairs(self.armor) do
-        local armorData = GAMEMODE:getArmorData(armorPiece.id, armorPiece.category)
+        local armorData = GAMEMODE:getArmorData(armorPiece.id, category)
         local removeArmor = false
-        if armorData.protectionAreas[hitGroup] then
+        -- if for some reason we still have health don't do any calcs
+        PrintTable(armorPiece)
+        if armorData.protectionAreas[hitGroup] and armorPiece.health > 0 then
             local penetrationDelta = armorData.protection - penetrationValue
             local penetratesArmor = penetrationDelta < 0
             local damageNegation = nil
@@ -48,19 +50,17 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
 
             local health = armorPiece.health
 
-            if armorPiece.health > 0 then
-                removeIndex = removeIndex + 1
-            else
+            if armorPiece.health <= 0 then
                 removeArmor = true
             end
 
             self:sendArmorHealthUpdate(health, armorData.category)
             if removeArmor then
-                -- table.remove(combinedArmor, removeIndex)
+                self:resetArmorData()
                 self:calculateWeight()
             end
         end
-        removeIndex = removeIndex + 1
+        -- removeIndex = removeIndex + 1
     end
 
     if allowBleeding and shouldBleed then
