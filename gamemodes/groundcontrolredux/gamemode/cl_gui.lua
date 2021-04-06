@@ -414,12 +414,19 @@ end
 
 function gcWeaponPanel:OnMousePressed(bind)
     local ply = LocalPlayer()
-    local canSelect = GAMEMODE:calculateCurrentLoadoutCost(ply, self.weaponData.weaponObject.pointCost, self.isPrimary, !self.isPrimary, false) <= ply:getCurrentLoadoutPoints()
+    local imaginaryCost = nil
+    if self.isPrimary then
+        imaginaryCost = GAMEMODE:getImaginaryLoadoutCost(ply, self.weaponData.weaponObject.pointCost)
+    elseif self.isPrimary != nil and !self.isPrimary then
+        imaginaryCost = GAMEMODE:getImaginaryLoadoutCost(ply, nil, self.weaponData.weaponObject.pointCost)
+    else
+        imaginaryCost = GAMEMODE:getImaginaryLoadoutCost(ply, nil, nil, self.weaponData.weaponObject.pointCost)
+    end
+    local canSelect = imaginaryCost <= ply:getCurrentLoadoutPoints()
     if bind == MOUSE_LEFT and canSelect then
         GAMEMODE:saveWeaponLoadout(nil, self.isPrimary, self.ConVar)
         GAMEMODE:setCurrentWeaponLoadout(self.weaponData.weaponObject)
         GAMEMODE:loadWeaponLoadout(self.weaponData.weaponObject)
-
         RunConsoleCommand(self.ConVar, self.weaponID)
 
         if self.isPrimary then
@@ -435,6 +442,9 @@ function gcWeaponPanel:OnMousePressed(bind)
         elseif self.isPrimary == false then
             GAMEMODE.SecondaryWeaponDisplay:RemoveWeapon()
         end
+    end
+    if !canSelect then
+        hook.Run("gc_loadout_cost_tip", ply)
     end
 end
 
@@ -497,14 +507,13 @@ function gcWeaponPanel:PaintOver()
 
     local wepData = self.weaponData
     local wepObject = nil
+    if !wepData then return end
 
-    if wepData then
-        wepObject = wepData.weaponObject
-    end
+    wepObject = wepData.weaponObject
 
     cam.IgnoreZ(true)
 
-    if wepData and !wepData.hideMagIcon then
+    if !wepData.hideMagIcon then
         surface.SetTexture(self.magIcon)
         surface.SetDrawColor(0, 0, 0, 255)
         surface.DrawTexturedRect(w - 16, h - 17, 16, 16)
@@ -517,14 +526,15 @@ function gcWeaponPanel:PaintOver()
 
     local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
 
-    local name, ammo, magSize = "", "", ""
-    name = wepObject and wepObject.PrintName or "None selected"
-    ammo = wepObject and wepObject.Primary.Ammo or "None selected"
-    magSize = wepObject and ("x" .. wepObject.Primary.ClipSize) or ""
+    local name = wepObject and wepObject.PrintName or "None selected"
+    local ammo = wepObject and wepObject.Primary.Ammo or "None selected"
+    local magSize = wepObject and ("x" .. wepObject.Primary.ClipSize) or ""
+    local pointCost = wepObject and wepObject.pointCost .. "pts" or ""
 
     draw.ShadowText(name, "CW_HUD16", 5, 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.ShadowText(pointCost, "CW_HUD16", w - 5, 10, White, Black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
-    if wepData and !wepData.hideMagIcon then
+    if !wepData.hideMagIcon then
         draw.ShadowText(ammo, "CW_HUD16", 5, h - 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         draw.ShadowText(magSize, "CW_HUD16", w - 16, h - 10, White, Black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     end
@@ -1062,14 +1072,6 @@ end
 function attachmentSelection:GetBackgroundColor()
     if self.isLocked then
         return 255, 104, 104, 255
-    end
-
-    local targetTable = nil
-
-    if self.isPrimary then
-        targetTable = GAMEMODE.ImaginaryPrimaryAttachments
-    else
-        targetTable = GAMEMODE.ImaginarySecondaryAttachments
     end
 
     if !self:CanAttachSpecificAttachmnent() then
@@ -1899,7 +1901,7 @@ function gcArmorDisplay:Init()
     self.pos = 1
 end
 
-function gcArmorDisplay:SetArmor(armorData)
+function gcArmorDisplay:SetArmorDisplayed(armorData)
     self.armorData = armorData
 end
 
@@ -1917,7 +1919,6 @@ end
 function gcArmorDisplay:UpdateArmor(direction)
     direction = direction or 0
     self.pos = math.Clamp(self.pos + direction, self.min, self.max)
-    -- print("going to set the player armor? " .. self.cvar)
     local canSelect = nil
     if self.category == "vest" then
         canSelect = GAMEMODE:getImaginaryLoadoutCost(LocalPlayer(), nil, nil, nil, GAMEMODE:getArmorCost("vest", self.pos)) <= ply:getCurrentLoadoutPoints()
@@ -1927,7 +1928,7 @@ function gcArmorDisplay:UpdateArmor(direction)
     if canSelect then
         RunConsoleCommand(self.cvar, self.pos)
     end
-    self:SetArmor(GAMEMODE.Armor[self.category][self.pos])
+    self:SetArmorDisplayed(GAMEMODE.Armor[self.category][self.pos])
 end
 
 function gcArmorDisplay:SetMin(min)
@@ -2035,6 +2036,8 @@ function gcArmorDisplay:Paint()
         surface.SetTexture(self.armorData.icon)
         surface.SetDrawColor(255, 255, 255, 255)
         surface.DrawTexturedRect(1, 1, w - 2, h - 2)
+        local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+        draw.ShadowText(self.armorData.pointCost .. "pts" or "", "CW_HUD16", w - 5, 10, White, Black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     end
 end
 

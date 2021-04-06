@@ -2,7 +2,7 @@ net.Receive("GC_ARMOR", function(a, b)
     local newArmor = net.ReadTable()
     local category = net.ReadString()
 
-    -- LocalPlayer():resetArmorData(category)
+    LocalPlayer():resetArmorData(category)
     LocalPlayer():setArmorPiece(newArmor, category)
     -- attachArmorPM(LocalPlayer())
 end)

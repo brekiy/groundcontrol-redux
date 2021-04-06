@@ -33,18 +33,18 @@ function GM:startAnnouncement(announcer, id, seed, targetTeam, player)
     if SERVER then
         if player then
             net.Start("GC_ANNOUNCEMENT")
-                net.WriteString(announcer)
-                net.WriteString(id)
-                net.WriteFloat(seed)
+            net.WriteString(announcer)
+            net.WriteString(id)
+            net.WriteFloat(seed)
             net.Send(player)
         else
             local players = team.GetPlayers(targetTeam)
 
             for key, ply in ipairs(players) do
                 net.Start("GC_ANNOUNCEMENT")
-                    net.WriteString(announcer)
-                    net.WriteString(id)
-                    net.WriteFloat(seed)
+                net.WriteString(announcer)
+                net.WriteString(id)
+                net.WriteFloat(seed)
                 net.Send(ply)
             end
         end

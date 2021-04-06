@@ -7,3 +7,7 @@ hook.Add("gc_event_update_loadout_cost", function(ply)
     print("wowee hook firing on loadout cost time")
     ply:updateLoadoutPoints()
 end)
+
+hook.Add("gc_loadout_cost_tip", function(ply)
+    ply:sendTip("LOADOUT_LIMIT")
+end)

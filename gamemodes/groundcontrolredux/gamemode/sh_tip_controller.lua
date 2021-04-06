@@ -22,7 +22,8 @@ GM.tipController.events = { -- key is event name
     BACKUP_SIGHTS = {times = 3, text = "The sight you have attached has back-up sights. Double-tap USE_KEY while aiming to switch to them and back.", formatFunc = function(text) return string.gsub(text, "USE_KEY", GAMEMODE:getKeyBind("+use")) end},
     THROW_FRAGS = {times = 3, text = "Hold USE_KEY and press PRIMARY_ATTACK_KEY to throw frag grenades.", formatFunc = function(text) return string.easyformatbykeys(text, "USE_KEY", GAMEMODE:getKeyBind("+use"), "PRIMARY_ATTACK_KEY", GAMEMODE:getKeyBind("+attack")) end},
     LOUD_LANDING = {times = 3, text = "The higher your loadout weight, the lesser the distance required to make a noisy landing."},
-    WEAPON_CUSTOMIZATION = {times = 4, text = "Press C_MENU_KEY to open the weapon interaction menu at the start of a round.", formatFunc = function(text) return string.gsub(text, "C_MENU_KEY", GAMEMODE:getKeyBind("+menu_context")) end}
+    WEAPON_CUSTOMIZATION = {times = 4, text = "Press C_MENU_KEY to open the weapon interaction menu at the start of a round.", formatFunc = function(text) return string.gsub(text, "C_MENU_KEY", GAMEMODE:getKeyBind("+menu_context")) end},
+    LOADOUT_LIMIT = {times = -1, text = "Your loadout would exceed your max cost! It won't save."}
 }
 
 GM.tipController.nextTip = 0
@@ -59,7 +60,7 @@ if CLIENT then
 
         local eventData = self.events[event]
 
-        if eventData and (!self.shownEvents[event] or self.shownEvents[event] < eventData.times) then
+        if eventData and (!self.shownEvents[event] or self.shownEvents[event] < eventData.times or eventData.times == -1) then
                 self:displayEvent(event)
                 self:saveShownEvents()
                 return true -- tip was shown
@@ -71,7 +72,7 @@ if CLIENT then
     local questionMark = surface.GetTextureID("ground_control/hud/help")
 
     function GM.tipController:displayEvent(event)
-        self.shownEvents[event] = (self.shownEvents[event] or 0) + 1
+        self.shownEvents[event] = math.min((self.shownEvents[event] or 0) + 1, 20)
         local eventData = self.events[event]
         local text = eventData.text
 

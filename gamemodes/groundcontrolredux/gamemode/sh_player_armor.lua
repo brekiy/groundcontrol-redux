@@ -222,6 +222,7 @@ GM:registerArmor(helmetVulkan)
 
 local PLAYER = FindMetaTable("Player")
 
+-- Set the armor on the client side. Why? idk
 function PLAYER:setArmorPiece(armorData, category)
     if CLIENT then
         self:resetArmorData(armorData.category)
