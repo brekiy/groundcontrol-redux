@@ -1,6 +1,6 @@
 include("sv_gametype_shuffling.lua")
 include("sh_gametypes.lua")
-AddCSLuaFile("cl_gametypes.lua")
+-- AddCSLuaFile("cl_gametypes.lua")
 
 CreateConVar("gc_gametype", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 CreateConVar("gc_allow_gametype_votes", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})

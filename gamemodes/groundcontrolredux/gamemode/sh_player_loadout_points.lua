@@ -3,7 +3,7 @@ AddCSLuaFile()
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:resetLoadoutPoints()
-    self.loadoutPoints = GetConVar("gc_base_loadout_points"):GetInt()
+    self.loadoutPoints = 0
 end
 
 function PLAYER:getCurrentLoadoutPoints()
@@ -12,9 +12,11 @@ end
 
 function PLAYER:updateLoadoutPoints()
     -- print("wowee updating the loadout points!")
+    -- print("before updating " .. self.loadoutPoints)
     self.loadoutPoints = math.min(
         GetConVar("gc_max_loadout_points"):GetInt(),
         GetConVar("gc_base_loadout_points"):GetInt() + math.floor(self:GetNWInt("GC_SCORE") * GetConVar("gc_loadout_points_per_score"):GetFloat()))
+    -- print("after updateing " .. self.loadoutPoints)
 end
 
 

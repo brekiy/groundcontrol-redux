@@ -137,7 +137,7 @@ function GM:PlayerSpawn(ply)
     ply:resetRecentVictimData()
     ply:resetAllArmor()
     ply:resetHealthRegenData()
-    ply:resetLoadoutPoints()
+    ply:updateLoadoutPoints()
     ply:setBandages(ply:getDesiredBandageCount())
     ply:SetCanZoom(false)
     ply:resetLastKillData()
@@ -362,7 +362,7 @@ function GM:PostPlayerDeath(ply)
 end
 
 GM.HitgroupDamageModifiers = {
-    [HITGROUP_HEAD] = 2.5,
+    [HITGROUP_HEAD] = 3,
     [HITGROUP_CHEST] = 1,
     [HITGROUP_STOMACH] = 0.75,
     [HITGROUP_LEFTARM] = 0.45,

@@ -148,7 +148,7 @@ net.Receive("GC_NEW_WAVE", function(a, b)
     GAMEMODE.teamSwitchPopup = popup
 end)
 
-local function GC_GOT_DRUGS(um)
+net.Receive("GC_GOT_DRUGS", function(a, b)
     if GAMEMODE.teamSwitchPopup then
         GAMEMODE.teamSwitchPopup:Remove()
         GAMEMODE.teamSwitchPopup = nil
@@ -169,9 +169,7 @@ local function GC_GOT_DRUGS(um)
     GAMEMODE.teamSwitchPopup = popup
 
     LocalPlayer().hasDrugs = true
-end
-
-usermessage.Hook("GC_GOT_DRUGS", GC_GOT_DRUGS)
+end)
 
 net.Receive("GC_DRUGS_REMOVED", function(a, b)
     LocalPlayer().hasDrugs = false
@@ -210,4 +208,8 @@ net.Receive("GC_KILLED_BY", function(a, b)
     if IsValid(killerPlayer) and killerEntClass then
         GAMEMODE:createKilledByDisplay(killerPlayer, killerEntClass)
     end
+end)
+
+net.Receive("GC_UPDATE_LOADOUT_LIMIT", function(a, b)
+    LocalPlayer():updateLoadoutPoints()
 end)

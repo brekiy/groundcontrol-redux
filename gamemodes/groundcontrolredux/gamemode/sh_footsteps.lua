@@ -195,7 +195,7 @@ function GM:playFootstepSound(ply, loudnessID, materialID)
     end
 end
 
--- use usermessages to network the footsteps
+-- network the footsteps
 if CLIENT then
     net.Receive("GC_FOOTSTEP", function(a, b)
         local object = net.ReadEntity()
