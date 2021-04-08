@@ -921,34 +921,11 @@ function weaponStats:Paint()
         self:DrawStatBar("Mobility", math.Round(100 - wepClass.VelocitySensitivity / 3 * 100) .. "%", targetTable.velocitySensitivity, wepClass.VelocitySensitivity, 85, w)
         self:DrawStatBar("Spread per shot", math.Round(wepClass.SpreadPerShot * 1000, 1) .. "%", wepClass.SpreadPerShot, targetTable.spreadPerShot, 100, w)
         self:DrawStatBar("Max spread", math.Round(wepClass.MaxSpreadInc * 1000, 1) .. "%", wepClass.MaxSpreadInc, targetTable.maxSpreadInc, 115, w)
-        self:DrawStatBar("Movement speed", GAMEMODE.BaseRunSpeed - wepClass.SpeedDec, targetTable.speedDec, wepClass.SpeedDec, 130, w)
+        self:DrawStatBar("Movement speed", GetConVar("gc_base_run_speed"):GetInt() - wepClass.SpeedDec, targetTable.speedDec, wepClass.SpeedDec, 130, w)
         self:DrawStatBar("Weapon weight", math.Round(wepClass.weight, 2) .. "KG", wepClass.weight, targetTable.weight, 145, w)
         self:DrawStatBar("Mag weight", math.Round(wepClass.magWeight, 2) .. "KG", wepClass.magWeight, targetTable.magWeight, 160, w)
         self:DrawStatBar("Penetration", wepClass.penetrationValue, wepClass.penetrationValue, targetTable.penetrationValue, 175, w)
     end
-
-    --[[
-    if self.thoroughDescription then
-        self:DrawBaseBar(barPos, 64, barSize, 12, targetTable.hipSpread, wepClass.HipSpread)
-        self:DrawBaseBar(barPos, 79, barSize, 12, targetTable.velocitySensitivity, wepClass.VelocitySensitivity)
-        self:DrawBaseBar(barPos, 94, barSize, 12, wepClass.SpreadPerShot, targetTable.spreadPerShot)
-        self:DrawBaseBar(barPos, 109, barSize, 12, wepClass.MaxSpreadInc, targetTable.maxSpreadInc)
-        self:DrawBaseBar(barPos, 124, barSize, 12, targetTable.speedDec, wepClass.SpeedDec)
-    end
-
-    local textPos = barPos + barSize + 5
-    draw.ShadowText(math.Round(wepClass.Damage * GAMEMODE.DamageMultiplier) .. "x" .. wepClass.Shots, "CW_HUD16", textPos, 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.ShadowText("x" .. math.Round(wepClass.Recoil, 1), "CW_HUD16", textPos, 25, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.ShadowText(math.Round((100 - wepClass.AimSpread * 1000)) .. "%", "CW_HUD16", textPos, 40, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.ShadowText(math.Round(60 / wepClass.FireDelay), "CW_HUD16", textPos, 55, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-
-    if self.thoroughDescription then
-        draw.ShadowText(100 - math.Round(wepClass.HipSpread * 1000) .. "%", "CW_HUD16", textPos, 70, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(math.Round(100 - wepClass.VelocitySensitivity / 3 * 100) .. "%", "CW_HUD16", textPos, 85, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(math.Round(wepClass.SpreadPerShot * 1000, 1) .. "%", "CW_HUD16", textPos, 100, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(math.Round(wepClass.MaxSpreadInc * 1000, 1) .. "%", "CW_HUD16", textPos, 115, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(GAMEMODE.BaseRunSpeed - wepClass.SpeedDec, "CW_HUD16", textPos, 130, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    end]]--
 end
 
 function weaponStats:DrawStatBar(baseText, postBarText, barVar1, barVar2, y, w)

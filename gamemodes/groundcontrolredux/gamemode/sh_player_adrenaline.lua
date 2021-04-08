@@ -47,15 +47,18 @@ function PLAYER:resetAdrenalineData()
 end
 
 function PLAYER:getRunSpeedAdrenalineModifier()
-    return self.adrenaline * GAMEMODE.MaxSpeedIncreaseFromAdrenaline
+    -- return self.adrenaline * GAMEMODE.MaxSpeedIncreaseFromAdrenaline
+    return self.adrenaline * GetConVar("gc_adrenaline_maxspeed_increase"):GetFloat()
 end
 
 function PLAYER:getStaminaDrainAdrenalineModifier()
-    return 1 - self.adrenaline * GAMEMODE.AdrenalineStaminaDrainModifier
+    -- return 1 - self.adrenaline * GAMEMODE.AdrenalineStaminaDrainModifier
+    return 1 - self.adrenaline * GetConVar("gc_adrenaline_stamina_drain_modifier"):GetFloat()
 end
 
 function PLAYER:getStaminaRegenAdrenalineModifier()
-    return 1 + self.adrenaline * GAMEMODE.AdrenalineStaminaRegenModifier
+    -- return 1 + self.adrenaline * GAMEMODE.AdrenalineStaminaRegenModifier
+    return 1 + self.adrenaline * GetConVar("gc_adrenaline_stamina_regen_modifier"):GetFloat()
 end
 
 function PLAYER:getAdrenalineAccuracyModifiers()

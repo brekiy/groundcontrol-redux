@@ -100,7 +100,7 @@ table.sort(GM.FOOTSTEP_LOUNDLESS_LEVEL_ORDER, function(a, b)
 end)
 
 GM.BASE_NOISE_LEVEL = 30
-GM.LOUDNESS_PER_VELOCITY = 30 / GM.BaseRunSpeed -- add 20 loudness when we reach full run speed
+GM.LOUDNESS_PER_VELOCITY = 30 / GetConVar("gc_base_run_speed"):GetInt() -- add 30 loudness when we reach full run speed
 GM.CROUCH_LOUDNESS_VELOCITY_AFFECTOR = 0.5 -- multiply loudness increase from velocity by this much when crouch-walking
 GM.CROUCH_LOUDNESS_OVERALL_AFFECTOR = 0.5 -- overall multiplier for loudness when crouch-walking
 GM.SNEAKWALK_LOUDNESS_VELOCITY_AFFECTOR = 0.7 -- multiply loudness increase from velocity by this much when walking (+walk)

@@ -70,7 +70,7 @@ function GM:CreateMove(cmd)
             ply.selectWeaponTarget = nil
         end
 
-        if ply.adrenaline > 0 then
+        if ply.adrenaline > 0 or ply.stamina <= GetConVar("gc_stamina_run_impact_level"):GetInt() then
             local wep = ply:GetActiveWeapon()
 
             if IsValid(wep) and wep.CW20Weapon and wep.dt.State == CW_AIMING then
@@ -86,12 +86,12 @@ function GM:CreateMove(cmd)
                 end
 
                 shakeData.curAngle = Lerp(FrameTime() * 10, shakeData.curAngle, shakeData.targetAngle)
-                local dirX, dirY = math.sin(shakeData.curAngle), math.cos(shakeData.curAngle)
+                local newDirX, newDirY = math.sin(shakeData.curAngle), math.cos(shakeData.curAngle)
 
                 local ang = cmd:GetViewAngles()
 
-                ang.p = ang.p + dirY * self.ShakeIntensity * ply.adrenaline
-                ang.y = ang.y + dirX * self.ShakeIntensity * ply.adrenaline
+                ang.p = ang.p + newDirY * self.ShakeIntensity * (ply.adrenaline + (GetConVar("gc_stamina_run_impact_level"):GetInt() - ply.stamina) * 0.01)
+                ang.y = ang.y + newDirX * self.ShakeIntensity * (ply.adrenaline + (GetConVar("gc_stamina_run_impact_level"):GetInt() - ply.stamina) * 0.01)
 
                 cmd:SetViewAngles(ang)
             end

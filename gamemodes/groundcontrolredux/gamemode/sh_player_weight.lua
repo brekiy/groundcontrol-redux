@@ -2,9 +2,9 @@ AddCSLuaFile()
 
 -- weight is in kilograms
 GM.MaxWeight = 40
--- ???
+-- factor to reduce runspeed by
 GM.MaxSpeedDecrease = 0.05
--- ???
+-- Difference between "max weight" (since there's no limit to how much your dude can carry right now) and min runspeed impact threshold
 GM.MaxSpeedDecreaseWeightDelta = GM.MaxWeight - GetConVar("gc_weight_min_level_speed_decrease"):GetFloat()
 
 local PLAYER = FindMetaTable("Player")

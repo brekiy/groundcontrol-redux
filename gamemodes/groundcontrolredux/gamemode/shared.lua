@@ -10,8 +10,8 @@ GM.Website     = "N/A"
 
 GM.MainDataDirectory = "ground_control" -- I'd like to change this but this would wipe server progress
 
-GM.BaseRunSpeed = GetConVar("gc_base_run_speed"):GetInt()
-GM.BaseWalkSpeed = GetConVar("gc_base_walk_speed"):GetInt()
+-- GM.BaseRunSpeed = GetConVar("gc_base_run_speed"):GetInt()
+-- GM.BaseWalkSpeed = GetConVar("gc_base_walk_speed"):GetInt()
 GM.CrouchedWalkSpeed = 0.6
 GM.CurrentMap = game.GetMap()
 GM.RoundRestartTime = 10 -- how much time to restart a round after it has ended
@@ -134,12 +134,10 @@ CustomizableWeaponry.callbacks:addNew("preFire", "GroundControl_preFire", functi
 end)
 
 CustomizableWeaponry.callbacks:addNew("forceFreeAim", "GroundControl_forceFreeAim", function(self)
-    -- return GAMEMODE.FORCE_FREE_AIM
     return GetConVar("gc_force_free_aim"):GetBool()
 end)
 
 CustomizableWeaponry.callbacks:addNew("forceComplexTelescopics", "GroundControl_forceComplexTelescopics", function(self)
-    -- return GAMEMODE.FORCE_COMPLEX_TELESCOPICS
     return GetConVar("gc_force_pip_scopes"):GetBool()
 end)
 
@@ -436,7 +434,7 @@ function GM:Move(ply, moveData)
             finalMult = finalMult - self.BackwardsSprintSpeedAffector
         end
 
-        local finalRunSpeed = math.max(math.min(moveData:GetMaxSpeed(), runSpeed) * finalMult, self.BaseWalkSpeed)
+        local finalRunSpeed = math.max(math.min(moveData:GetMaxSpeed(), runSpeed) * finalMult, GetConVar("gc_base_walk_speed"):GetInt())
 
         moveData:SetMaxSpeed(finalRunSpeed)
         moveData:SetMaxClientSpeed(finalRunSpeed)

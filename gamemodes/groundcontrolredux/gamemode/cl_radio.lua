@@ -194,18 +194,12 @@ net.Receive("GC_RADIO_MARKED", function(a, b)
     GAMEMODE:ReceiveRadioCommand(nil)
 end)
 
--- local function GC_FragOut(data)
+-- net.Receive("GC_FRAGOUT", function()
+--     local variant = net.ReadUInt(8)
+--     local emitter = net.ReadEntity()
 
--- end
-
--- usermessage.Hook("GC_FRAGOUT", GC_FragOut)
-
-net.Receive("GC_FRAGOUT", function()
-    local variant = net.ReadUInt(8)
-    local emitter = net.ReadEntity()
-
-    GAMEMODE:PlayRadioCommand(9, 1, variant, emitter)
-end)
+--     GAMEMODE:PlayRadioCommand(9, 1, variant, emitter)
+-- end)
 
 concommand.Add("gc_radio_menu", function(ply, com, args)
     GAMEMODE:toggleRadio()

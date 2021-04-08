@@ -34,7 +34,7 @@ function GM:Think()
             self.tipController:handleEvent("HIGH_ADRENALINE")
         end
 
-        if ply.stamina <= 60 then
+        if ply.stamina <= GetConVar("gc_stamina_run_impact_level"):GetInt() then
             local staminaData = self.StaminaData
 
             if curTime > staminaData.soundTime then
@@ -53,7 +53,7 @@ function GM:Think()
                     self.breatheSoundIntensity = math.Approach(self.breatheSoundIntensity, self.lowestBreatheSoundIntensity, self.breatheSoundChangeDown)
                 end
 
-                local difference = (60 - ply.stamina) / 60
+                local difference = (GetConVar("gc_stamina_run_impact_level"):GetInt() - ply.stamina) / GetConVar("gc_stamina_run_impact_level"):GetInt()
                 local volume = Lerp(difference, staminaData.minVolume, staminaData.maxVolume)
                 local delay = Lerp(difference, staminaData.maxSoundTime, staminaData.minSoundTime)
 

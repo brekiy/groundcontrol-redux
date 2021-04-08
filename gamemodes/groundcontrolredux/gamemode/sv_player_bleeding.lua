@@ -1,7 +1,5 @@
 include("sh_player_bleeding.lua")
 
-GM.BleedTime = 5 -- we will lose BleedHealthLose health points this amount of seconds
-GM.BleedHealthLose = 1 -- how much health should we lose per bleed tick
 GM.BandageTime = 2.3
 
 
@@ -12,7 +10,6 @@ function PLAYER:shouldBleed()
 end
 
 function PLAYER:bleed(silentBleed)
-    -- self:SetHealth(self:Health() - GAMEMODE.BleedHealthLose)
     self:SetHealth(self:Health() - GetConVar("gc_bleed_hp_lost_per_tick"):GetFloat())
     self:delayBleed()
     self:postBleed()

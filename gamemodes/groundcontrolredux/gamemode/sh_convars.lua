@@ -15,6 +15,7 @@ CreateConVar("gc_base_walk_speed", 150, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base wal
 -- Adrenaline cvars
 CreateConVar("gc_adrenaline_maxspeed_increase", 0.1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 CreateConVar("gc_adrenaline_stamina_drain_modifier", 0.5, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
+CreateConVar("gc_adrenaline_stamina_regen_modifier", 0.1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 
 -- Health/bleed cvars
 CreateConVar("gc_bleed_time", 5, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Time in seconds between each bleed tick", 0.5)

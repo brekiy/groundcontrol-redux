@@ -42,8 +42,8 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
             end
 
             self:takeArmorDamage(armorPiece, dmgInfo:GetDamage())
-            -- Clamp ballistic damage reduction between 0-90%
-            damageNegation = math.Clamp(damageNegation, 0, 0.9)
+            -- Clamp ballistic damage reduction between 0-95%
+            damageNegation = math.Clamp(damageNegation, 0, 0.95)
             dmgInfo:ScaleDamage(1 - damageNegation)
 
             local health = armorPiece.health
@@ -81,7 +81,7 @@ function PLAYER:giveArmor(category)
 end
 
 function PLAYER:takeArmorDamage(armorData, dmg)
-    armorData.health = armorData.health - math.ceil(dmg * GetConVar("gc_armor_damage_factor"):GetFloat())
+    armorData.health = armorData.health - math.floor(dmg * GetConVar("gc_armor_damage_factor"):GetFloat())
 end
 
 function PLAYER:addArmorPart(id, category)

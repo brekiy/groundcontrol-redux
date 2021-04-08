@@ -1,7 +1,5 @@
 local PLAYER = FindMetaTable("Player")
 
-GM.HealthRegenTickDelay = 5 -- time in seconds between regenerating a single point of health
-
 function PLAYER:resetHealthRegenData()
     self.regenPool = 0
     self.regenDelay = 0
