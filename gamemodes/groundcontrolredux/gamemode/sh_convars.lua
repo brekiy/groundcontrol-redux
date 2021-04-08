@@ -7,6 +7,7 @@ CreateConVar("gc_stamina_drain_time", 0.25, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_
 CreateConVar("gc_stamina_regen_time", 0.35, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Time in seconds between each stamina tick", 0.1)
 CreateConVar("gc_stamina_run_impact_level", 80, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "% stamina where sprint speed starts to drop", 0.1)
 CreateConVar("gc_stamina_run_impact", 1.3, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "% stamina where sprint speed starts to drop", 0.1)
+CreateConVar("gc_stamina_aim_shake_factor", 0.025, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "aim shake factor when tired, set to 0 if you dont like it", 0)
 
 -- Movement cvars
 CreateConVar("gc_base_run_speed", 300, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base run speed", 100)
