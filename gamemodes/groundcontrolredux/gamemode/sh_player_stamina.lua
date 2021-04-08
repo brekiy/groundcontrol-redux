@@ -43,7 +43,7 @@ function PLAYER:getStaminaRunSpeedModifier()
     local difference = GetConVar("gc_stamina_run_impact_level"):GetInt() - self.stamina
     local runSpeedImpact = math.max(difference, 0)
 
-    return runSpeedImpact * GAMEMODE.RunSpeedPerStaminaPoint
+    return runSpeedImpact * GetConVar("gc_stamina_run_impact"):GetFloat()
 end
 
 function PLAYER:getMaxStaminaDecreaseFromHealth()

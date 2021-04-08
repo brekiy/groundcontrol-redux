@@ -91,9 +91,11 @@ function GM:CreateMove(cmd)
                 local ang = cmd:GetViewAngles()
 
                 -- ang.p = ang.p - math.cos(CT * 1.25) * 0.003 * wep.AimBreathingIntensity * wep.CurBreatheIntensity
-                local stamBreathing = math.cos(CurTime() * 1.25) * (0.001 + (GetConVar("gc_stamina_run_impact_level"):GetInt() - ply.stamina) * GetConVar("gc_stamina_aim_shake_factor"):GetFloat())
-                ang.p = ang.p + newDirY * self.ShakeIntensity * (ply.adrenaline + stamBreathing)
-                ang.y = ang.y + newDirX * self.ShakeIntensity * ply.adrenaline
+                local stamShakeFactor = (GetConVar("gc_stamina_run_impact_level"):GetInt() - ply.stamina) * GetConVar("gc_stamina_aim_shake_factor"):GetFloat()
+                local stamBreathingCos = math.cos(CurTime() * 1.25) * 0.001 * stamShakeFactor
+                local stamBreathingSin = math.sin(CurTime() * 1.25) * 0.001 * stamShakeFactor
+                ang.p = ang.p - (stamBreathingCos * 0.25) + newDirY * self.ShakeIntensity * ply.adrenaline
+                ang.y = ang.y + newDirX * self.ShakeIntensity * (ply.adrenaline + stamShakeFactor * 0.025)
 
                 cmd:SetViewAngles(ang)
             end

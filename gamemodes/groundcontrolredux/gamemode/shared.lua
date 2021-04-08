@@ -416,7 +416,10 @@ function GM:Move(ply, moveData)
     ws, rs = ply:GetWalkSpeed(), ply:GetRunSpeed()
     -- for some reason the value returned by GetMaxSpeed is equivalent to player's run speed - 30
     local adrenalineModifier = 1 + ply:getRunSpeedAdrenalineModifier()
+    -- not sure what this dtfloat is but we'll copy it to walkspeed to be safe
     local runSpeed = (GetConVar("gc_base_run_speed"):GetInt() - ply:getStaminaRunSpeedModifier() - ply:getWeightRunSpeedModifier()) * adrenalineModifier * ply:GetDTFloat(0)
+    local walkSpeed = (GetConVar("gc_base_walk_speed"):GetInt() - ply:getWeightRunSpeedModifier() * 0.1) * adrenalineModifier * ply:GetDTFloat(0)
+    ply:SetWalkSpeed(walkSpeed)
     ply:SetRunSpeed(runSpeed)
 
     if ply:KeyDown(IN_SPEED) and !ply:Crouching() then
@@ -434,7 +437,7 @@ function GM:Move(ply, moveData)
             finalMult = finalMult - self.BackwardsSprintSpeedAffector
         end
 
-        local finalRunSpeed = math.max(math.min(moveData:GetMaxSpeed(), runSpeed) * finalMult, GetConVar("gc_base_walk_speed"):GetInt())
+        local finalRunSpeed = math.max(math.min(moveData:GetMaxSpeed(), runSpeed) * finalMult, walkSpeed)
 
         moveData:SetMaxSpeed(finalRunSpeed)
         moveData:SetMaxClientSpeed(finalRunSpeed)
