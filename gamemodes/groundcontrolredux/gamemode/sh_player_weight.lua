@@ -5,7 +5,7 @@ GM.MaxWeight = 40
 -- ???
 GM.MaxSpeedDecrease = 0.05
 -- ???
-GM.MaxSpeedDecreaseWeightDelta = GM.MaxWeight - GetConVar("gc_min_weight_speed_decrease"):GetFloat()
+GM.MaxSpeedDecreaseWeightDelta = GM.MaxWeight - GetConVar("gc_weight_min_level_speed_decrease"):GetFloat()
 
 local PLAYER = FindMetaTable("Player")
 
@@ -84,7 +84,7 @@ function PLAYER:getJumpStaminaDrain(weight)
 end
 
 function PLAYER:getMovementSpeedWeightAffector(weight)
-    local delta = math.max(weight - GetConVar("gc_min_weight_speed_decrease"):GetFloat(), 0) / GAMEMODE.MaxSpeedDecreaseWeightDelta * GAMEMODE.MaxSpeedDecrease
+    local delta = math.max(weight - GetConVar("gc_weight_min_level_speed_decrease"):GetFloat(), 0) / GAMEMODE.MaxSpeedDecreaseWeightDelta * GAMEMODE.MaxSpeedDecrease
 
     return delta
 end
@@ -103,7 +103,7 @@ function PLAYER:canCarryWeight(desiredWeight)
 end
 
 function PLAYER:getWeightRunSpeedModifier()
-    local difference = self.weight - GetConVar("gc_min_weight_speed_decrease"):GetFloat()
+    local difference = self.weight - GetConVar("gc_weight_min_level_speed_decrease"):GetFloat()
     local runSpeedImpact = math.max(difference, 0)
-    return runSpeedImpact * GetConVar("gc_run_speed_penalty_per_weight"):GetFloat()
+    return runSpeedImpact * GetConVar("gc_weight_sprint_penalty"):GetFloat()
 end

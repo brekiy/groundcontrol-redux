@@ -195,6 +195,29 @@ function GM:setLoadoutAvailabilityInfo(position, maxDuration)
     self.loadoutDuration = maxDuration
 end
 
+function GM:handlePlayerRadioPress(ply, bind, pressed)
+    if bind == "+attack2" then
+        if self.RadioSelection.selectedCategory == 0 then
+            self:toggleRadio()
+        else
+            self.RadioSelection.selectedCategory = 0
+        end
+        return true
+    end
+
+    if bind:find("slot") then
+        local selection = tonumber(bind:Right(1))
+
+        if self.RadioSelection.selectedCategory == 0 and self.VisibleRadioCommands[selection] then
+            self.RadioSelection.selectedCategory = selection
+        elseif self.VisibleRadioCommands[self.RadioSelection.selectedCategory].commands[selection] then
+            self:SelectRadioCommand(selection)
+        end
+        return true
+    end
+    return false
+end
+
 function GM:PlayerBindPress(ply, bind, pressed)
     if pressed then
         if self.DeadState == 3 then
@@ -216,61 +239,34 @@ function GM:PlayerBindPress(ply, bind, pressed)
                 RunConsoleCommand("gc_loadout_menu")
             elseif bind == self.RadioMenuKey then
                 RunConsoleCommand("gc_voice_menu")
-            -- elseif bind == "undo" then
-                --RunConsoleCommand("use", self.KnifeWeaponClass)
+            elseif bind == "undo" then
+                RunConsoleCommand("use", self.KnifeWeaponClass)
             end
             -- if bind:find("slot") then print(self:isVoteActive(), self:didPlyVote(ply)) end
             -- if !self:isVoteActive() or (self:isVoteActive() and self:didPlyVote(ply)) then
             if !self:isVoteActive() then
                 if self.RadioSelection.active then
-                    if bind == "+attack2" then
-                        if self.RadioSelection.selectedCategory == 0 then
-                            self:toggleRadio()
-                            return true
-                        else
-                            self.RadioSelection.selectedCategory = 0
-                            return true
-                        end
-                    end
+                    return self:handlePlayerRadioPress(ply, bind, pressed)
+                elseif bind:find("slot") then
+                    local selection = tonumber(bind:Right(1))
 
-                    if bind:find("slot") then
-                        local selection = tonumber(bind:Right(1))
-
-                        if self.RadioSelection.selectedCategory == 0 then
-                            if self.VisibleRadioCommands[selection] then
-                                self.RadioSelection.selectedCategory = selection
-                            end
-
-                            return true
-                        else
-                            if self.VisibleRadioCommands[self.RadioSelection.selectedCategory].commands[selection] then
-                                self:SelectRadioCommand(selection)
-                                return true
-                            end
-                        end
+                    if self:showWeaponSelection(selection) then
+                        ply:selectWeaponNicely(self.desiredWeaponToDraw)
+                        return true
+                    else
+                        self:hideWeaponSelection()
                     end
                 else
-                    if bind:find("slot") then
-                        local selection = tonumber(bind:Right(1))
-
-                        if self:showWeaponSelection(selection) then
+                    if bind == "invprev" then
+                        self:cycleWeaponSelection(-1)
+                    elseif bind == "invnext" then
+                        self:cycleWeaponSelection(1)
+                    elseif self:canSelectDesiredWeapon() then
+                        if bind == "+attack" then
                             ply:selectWeaponNicely(self.desiredWeaponToDraw)
                             return true
-                        else
+                        elseif bind == "+attack2" then
                             self:hideWeaponSelection()
-                        end
-                    else
-                        if bind == "invprev" then
-                            self:cycleWeaponSelection(-1)
-                        elseif bind == "invnext" then
-                            self:cycleWeaponSelection(1)
-                        elseif self:canSelectDesiredWeapon() then
-                            if bind == "+attack" then
-                                ply:selectWeaponNicely(self.desiredWeaponToDraw)
-                                return true
-                            elseif bind == "+attack2" then
-                                self:hideWeaponSelection()
-                            end
                         end
                     end
                 end

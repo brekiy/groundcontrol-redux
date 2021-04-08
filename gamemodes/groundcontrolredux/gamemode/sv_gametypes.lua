@@ -2,8 +2,6 @@ include("sv_gametype_shuffling.lua")
 include("sh_gametypes.lua")
 -- AddCSLuaFile("cl_gametypes.lua")
 
-CreateConVar("gc_gametype", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
-CreateConVar("gc_allow_gametype_votes", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 --[[
     if this is set to true, then the gametype which was played previously will not be present during the vote for the next gametype
     in other words if you set it to true, people won't be able to play the same gametype 2 times in a row

@@ -11,16 +11,16 @@
 	{
 		1
 		{
-			"name"		"gc_min_weight_speed_decrease"
-			"text"		"Run speed reduction threshold"
+			"name"		"gc_weight_min_level_speed_decrease"
+			"text"		"Sprint speed reduction threshold"
 			"type"		"Numeric"
 			"default"	"7.5"
 		}
 
 		2
 		{
-			"name"		"gc_run_speed_penalty_per_weight"
-			"text"		"Run speed penalty per kg"
+			"name"		"gc_weight_sprint_penalty"
+			"text"		"Sprint speed weight penalty"
 			"type"		"Numeric"
 			"default"	"0.65"
 		}

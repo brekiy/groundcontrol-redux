@@ -1,8 +1,5 @@
 -- autopunish module, automatically starts a punish vote against people that TK way too frequently
 
--- how much damage we will tolerate to teammates until an automatic votekick begins
-CreateConVar("gc_autopunish_teamdamage", 300, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "maximum team damage allowed before autovotekick", 1)
-
 GM.AutoPunishEnabled = true
 GM.LowerPunishLevelTime = 86400 * 7 -- 7 weeks to lower punish level
 

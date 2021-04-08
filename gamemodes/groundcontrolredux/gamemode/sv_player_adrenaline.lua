@@ -9,9 +9,6 @@ GM.StartingSuppressionRange = 80
 GM.MaximumSuppressionRange = 220
 GM.MaximumSuppressionDuration = 3 -- how long suppression can hold on it's own
 
-CreateConVar("gc_maxspeed_increase_from_adrenaline", 0.1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
-CreateConVar("gc_adrenaline_stamina_drain_modifier", 0.5, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
-
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:suppress(duration, speedChange)

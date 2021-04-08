@@ -11,7 +11,6 @@ function PLAYER:getCurrentLoadoutPoints()
 end
 
 function PLAYER:updateLoadoutPoints()
-    -- print("wowee updating the loadout points!")
     -- print("before updating " .. self.loadoutPoints)
     self.loadoutPoints = math.min(
         GetConVar("gc_max_loadout_points"):GetInt(),
