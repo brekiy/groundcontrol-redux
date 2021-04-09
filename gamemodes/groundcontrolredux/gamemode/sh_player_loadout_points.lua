@@ -11,11 +11,9 @@ function PLAYER:getCurrentLoadoutPoints()
 end
 
 function PLAYER:updateLoadoutPoints()
-    -- print("before updating " .. self.loadoutPoints)
     self.loadoutPoints = math.min(
         GetConVar("gc_max_loadout_points"):GetInt(),
         GetConVar("gc_base_loadout_points"):GetInt() + math.floor(self:GetNWInt("GC_SCORE") * GetConVar("gc_loadout_points_per_score"):GetFloat()))
-    -- print("after updateing " .. self.loadoutPoints)
 end
 
 
@@ -26,7 +24,6 @@ function GM:getImaginaryLoadoutCost(ply, primaryCost, secondaryCost, tertiaryCos
     local vest = vestCost or GAMEMODE:getArmorCost("vest", ply:getDesiredVest())
     local helmet = helmetCost or GAMEMODE:getArmorCost("helmet", ply:getDesiredHelmet())
 
-    -- totalCost = primary + secondary + tertiary + vest + helmet
     return primary + secondary + tertiary + vest + helmet
 end
 

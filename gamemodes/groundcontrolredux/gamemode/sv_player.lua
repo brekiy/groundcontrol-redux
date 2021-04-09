@@ -412,7 +412,7 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
             local wep = attacker:GetActiveWeapon()
 
             if wep then
-                penValue = GM:GetAmmoPen(wep.Primary.Ammo)
+                penValue = GAMEMODE:getAmmoPen(wep.Primary.Ammo)
             end
         end
 

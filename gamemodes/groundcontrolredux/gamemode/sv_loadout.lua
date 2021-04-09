@@ -39,7 +39,7 @@ function PLAYER:giveLoadout(forceGive)
     self:RemoveAllAmmo()
     self:resetGadgetData()
     self:applyTraits()
-
+    GAMEMODE:cheapOut(self)
     -- get the weapons we want to spawn with
     local primaryData = self:getDesiredPrimaryWeapon()
     local secondaryData = self:getDesiredSecondaryWeapon()
