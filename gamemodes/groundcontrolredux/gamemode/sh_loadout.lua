@@ -63,31 +63,6 @@ function PLAYER:getDesiredTertiaryWeapon()
     return GAMEMODE.TertiaryWeapons[tertiary], tertiary
 end
 
---[[
-    Used when the game detects that your loadout costs way too much.
-    Happens if you were wearing some gucci kit and the game swaps to a new map, and your loadout suddenly costs way too much.
-]]--
-function GM:cheapOut(ply)
-    local limit = ply:getCurrentLoadoutPoints()
-    if self:calculateCurrentLoadoutCost(ply) <= limit then return end
-    print("time to cheap out BRO")
-    if self:GetInfoNum("gc_tertiary_weapon", GAMEMODE.DefaultTertiaryIndex) > 0 then
-        RunConsoleCommand("gc_tertiary_weapon", 0)
-        print("removed tertiary wep")
-    end
-    if self:calculateCurrentLoadoutCost(ply) <= limit then return end
-    while self:calculateCurrentLoadoutCost(ply) > limit and self:GetInfoNum("gc_armor_helmet", 1) > 0 do
-        RunConsoleCommand("gc_armor_helmet", self:GetInfoNum("gc_armor_helmet", 1) - 1)
-        print("docking a helmet...")
-    end
-    if self:calculateCurrentLoadoutCost(ply) <= limit then return end
-    while self:calculateCurrentLoadoutCost(ply) > limit and self:GetInfoNum("gc_armor_vest", 1) > 0 do
-        RunConsoleCommand("gc_armor_vest", self:GetInfoNum("gc_armor_vest", 1) - 1)
-        print("docking a vest...")
-    end
-    if self:calculateCurrentLoadoutCost(ply) <= limit then return end
-end
-
 function PLAYER:adjustMagCount(weaponData, desiredMags)
     if !weaponData then
         return 0
@@ -208,8 +183,8 @@ end
 
 function GM:getAmmoPen(caliber, penMod)
     caliber = string.lower(caliber)
-    penMod = penMod or 0
-    return self.Calibers[caliber] and self.Calibers[caliber].penetration + penMod or 0
+    penMod = penMod or 1
+    return self.Calibers[caliber] and math.Round(self.Calibers[caliber].penetration * penMod) or 0
 end
 
 -- this function gets called in InitPostEntity for both the client and server, this is where we register a bunch of stuff

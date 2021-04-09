@@ -35,11 +35,17 @@ function PLAYER:giveLoadout(forceGive)
         return
     end
 
+    -- WIP
+    -- GAMEMODE:cheapOut(self)
+
     self:StripWeapons()
+    ply:resetAllArmor()
+    ply:sendArmor("vest")
+    ply:sendArmor("helmet")
     self:RemoveAllAmmo()
     self:resetGadgetData()
     self:applyTraits()
-    GAMEMODE:cheapOut(self)
+
     -- get the weapons we want to spawn with
     local primaryData = self:getDesiredPrimaryWeapon()
     local secondaryData = self:getDesiredSecondaryWeapon()
@@ -123,9 +129,33 @@ function PLAYER:giveLoadout(forceGive)
     end)
 
     self:giveGadgets()
+    print(self:getDesiredVest() .. "," .. self:getDesiredHelmet())
     self:giveArmor("vest")
     self:giveArmor("helmet")
     self:Give(GAMEMODE.KnifeWeaponClass)
+end
+
+--[[
+    Used when the game detects that your loadout costs way too much.
+    Happens if you were wearing some gucci kit and the game swaps to a new map, and your loadout suddenly costs way too much.
+]]--
+function GM:cheapOut(ply)
+    local limit = ply:getCurrentLoadoutPoints()
+    while self:getImaginaryLoadoutCost(ply) > limit and ply:GetInfoNum("gc_tertiary_weapon", GAMEMODE.DefaultTertiaryIndex) > 0 do
+        ply:ConCommand("gc_tertiary_weapon " .. 0)
+    end
+    local curHelmet = ply:GetInfoNum("gc_armor_helmet", 0)
+    while self:getImaginaryLoadoutCost(ply) > limit and curHelmet > 0 do
+        ply:ConCommand("gc_armor_helmet " .. curHelmet - 1)
+        curHelmet = curHelmet - 1
+        print("docked a helmet, curHelmet is now " .. curHelmet)
+    end
+    local curArmor = ply:GetInfoNum("gc_armor_vest", 0)
+    while self:getImaginaryLoadoutCost(ply) > limit and curArmor > 0 do
+        ply:ConCommand("gc_armor_vest " .. curArmor - 1)
+        curArmor = curArmor - 1
+        print("docked a vest, curvest is now " .. curArmor)
+    end
 end
 
 function PLAYER:attemptGiveLoadout()

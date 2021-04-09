@@ -23,18 +23,25 @@ function GM:getImaginaryLoadoutCost(ply, primaryCost, secondaryCost, tertiaryCos
     local tertiary = tertiaryCost or (ply:getDesiredTertiaryWeapon() != nil and ply:getDesiredTertiaryWeapon().pointCost or 0)
     local vest = vestCost or GAMEMODE:getArmorCost("vest", ply:getDesiredVest())
     local helmet = helmetCost or GAMEMODE:getArmorCost("helmet", ply:getDesiredHelmet())
-
+    -- print("total cost: " .. primary + secondary + tertiary + vest + helmet)
     return primary + secondary + tertiary + vest + helmet
 end
 
 function GM:calculateCurrentLoadoutCost(ply, withCost, filterPrimary, filterSecondary, filterTertiary)
     withCost = withCost or 0
+    filterPrimary = filterPrimary or false
+    filterSecondary = filterSecondary or false
+    filterTertiary = filterTertiary or false
     local totalCost = 0 + withCost
     -- print("starting totalcost " .. totalCost .. "filter primary/secondary/tertiary? " .. tostring(filterPrimary) .. "," .. tostring(filterSecondary) .. "," .. tostring(filterTertiary))
     totalCost = totalCost + GAMEMODE:getArmorCost("vest", ply:getDesiredVest())
     totalCost = totalCost + GAMEMODE:getArmorCost("helmet", ply:getDesiredHelmet())
 
     for key, weapon in pairs(ply:GetWeapons()) do
+        -- print(weapon:GetPrintName() .. " checking for filter...")
+        -- print((filterPrimary and weapon.isPrimaryWeapon) .. ", " ..
+        -- (filterSecondary and !weapon.isPrimaryWeapon and !weapon.isTertiaryWeapon and !weapon.isKnife) .. ", " ..
+        -- (filterTertiary and weapon.isTertiaryWeapon))
         if !((filterPrimary and weapon.isPrimaryWeapon) or
             (filterSecondary and !weapon.isPrimaryWeapon and !weapon.isTertiaryWeapon and !weapon.isKnife) or
             (filterTertiary and weapon.isTertiaryWeapon)) then

@@ -1,8 +1,8 @@
 GM.AllFrames = {}
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:complainAboutLoadout()
-    chat.AddText(GAMEMODE.HUDColors.limeYellow, "Not enough points for that!\nGet good and increase your requisition allowance.")
+function PLAYER:complainAboutLoadout(objName)
+    chat.AddText(GAMEMODE.HUDColors.limeYellow, "Not enough points for " .. objName .. "!\nGet good and increase your requisition allowance.")
     surface.PlaySound("buttons/combine_button7.wav")
 end
 
@@ -450,7 +450,7 @@ function gcWeaponPanel:OnMousePressed(bind)
         end
     end
     if !canSelect then
-        ply:complainAboutLoadout()
+        ply:complainAboutLoadout(self.weapoNData.weaponObject.PrintName)
     end
 end
 
@@ -1911,7 +1911,7 @@ function gcArmorDisplay:UpdateArmor(direction)
     if canSelect then
         RunConsoleCommand(self.cvar, self.pos)
     else
-        LocalPlayer():complainAboutLoadout()
+        LocalPlayer():complainAboutLoadout(GAMEMODE.Armor[self.category][self.pos].displayName)
     end
     self:SetArmorDisplayed(GAMEMODE.Armor[self.category][self.pos])
 end
