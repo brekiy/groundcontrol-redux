@@ -1,7 +1,11 @@
 GM.AllFrames = {}
-local GUI_BRASS = Color(181, 166, 66, 255)
-local GUI_ECRU = Color(194, 178, 128, 255)
-local GUI_BITTERSWEET = Color(255, 100, 100, 100) -- a crayola orange hue apparently
+local PLAYER = FindMetaTable("Player")
+
+function PLAYER:complainAboutLoadout()
+    chat.AddText(GAMEMODE.HUDColors.limeYellow, "Not enough points for that!\nGet good and increase your requisition allowance.")
+    surface.PlaySound("buttons/combine_button7.wav")
+end
+
 function GM:addFrame(frame)
     table.insert(self.AllFrames, frame)
 end
@@ -121,7 +125,7 @@ vgui.Register("GCPanel", gcPanel, "DPanel")
 local gcBaseButton = {}
 gcBaseButton.font = "CW_HUD16"
 gcBaseButton.text = ""
-gcBaseButton.hoverR, gcBaseButton.hoverG, gcBaseButton.hoverB, gcBaseButton.hoverA = GUI_BRASS:Unpack()
+gcBaseButton.hoverR, gcBaseButton.hoverG, gcBaseButton.hoverB, gcBaseButton.hoverA = GM.HUDColors.brass:Unpack()
 gcBaseButton.idleR, gcBaseButton.idleG, gcBaseButton.idleB, gcBaseButton.idleA = 75, 75, 75, 255
 gcBaseButton.textColor = Color(255, 255, 255, 255)
 
@@ -446,16 +450,16 @@ function gcWeaponPanel:OnMousePressed(bind)
         end
     end
     if !canSelect then
-        hook.Run("gc_loadout_cost_tip", ply)
+        ply:complainAboutLoadout()
     end
 end
 
 function gcWeaponPanel:GetBackgroundColor()
     if GetConVar(self.ConVar):GetInt() == self.weaponID then
-        return GUI_ECRU:Unpack()
+        return GAMEMODE.HUDColors.ecru:Unpack()
     else
         if self:IsHovered() then
-            return GUI_BRASS:Unpack()
+            return GAMEMODE.HUDColors.brass:Unpack()
         end
     end
 
@@ -619,7 +623,7 @@ end
 
 function curWeaponPanel:GetBackgroundColor()
     if self:IsHovered() then
-        return GUI_BRASS:Unpack()
+        return GAMEMODE.HUDColors.brass:Unpack()
     end
 
     if #self.availableAttachments > 0 and !self.acknowledged then
@@ -924,7 +928,7 @@ function weaponStats:Paint()
         self:DrawStatBar("Movement speed", GetConVar("gc_base_run_speed"):GetInt() - wepClass.SpeedDec, targetTable.speedDec, wepClass.SpeedDec, 130, w)
         self:DrawStatBar("Weapon weight", math.Round(wepClass.weight, 2) .. "KG", wepClass.weight, targetTable.weight, 145, w)
         self:DrawStatBar("Mag weight", math.Round(wepClass.magWeight, 2) .. "KG", wepClass.magWeight, targetTable.magWeight, 160, w)
-        self:DrawStatBar("Penetration", wepClass.penetrationValue, wepClass.penetrationValue, targetTable.penetrationValue, 175, w)
+        self:DrawStatBar("Penetration", GAMEMODE:getAmmoPen(wepClass.Primary.Ammo), GAMEMODE:getAmmoPen(wepClass.Primary.Ammo), targetTable.penetrationValue, 175, w)
     end
 end
 
@@ -1063,12 +1067,12 @@ function attachmentSelection:GetBackgroundColor()
         local attValue = GetConVar(cvarString):GetString()
 
         if attValue == self.attachmentName then
-            return GUI_ECRU:Unpack()
+            return GAMEMODE.HUDColors.ecru:Unpack()
         end
     end
 
     if self:IsHovered() then
-        return GUI_BRASS:Unpack()
+        return GAMEMODE.HUDColors.brass:Unpack()
     end
 
     return 0, 0, 0, 200
@@ -1451,11 +1455,11 @@ end
 
 function attachmentAssignment:GetBackgroundColor()
     if !self:IsSlotUnlocked() then
-        return GUI_BITTERSWEET:Unpack()
+        return GAMEMODE.HUDColors.bittersweet:Unpack()
     end
 
     if self:IsHovered() then
-        return GUI_BRASS:Unpack()
+        return GAMEMODE.HUDColors.brass:Unpack()
     end
 
     return 0, 0, 0, 200
@@ -1484,7 +1488,7 @@ function attachmentAssignment:Paint()
                 surface.SetDrawColor(50, 50, 50, 255)
             else
                 if self.validCategory then
-                    surface.SetDrawColor(GUI_BRASS:Unpack())
+                    surface.SetDrawColor(GAMEMODE.HUDColors.brass:Unpack())
                 else
                     surface.SetDrawColor(255, 255, 255, 255)
                 end
@@ -1906,6 +1910,8 @@ function gcArmorDisplay:UpdateArmor(direction)
     end
     if canSelect then
         RunConsoleCommand(self.cvar, self.pos)
+    else
+        LocalPlayer():complainAboutLoadout()
     end
     self:SetArmorDisplayed(GAMEMODE.Armor[self.category][self.pos])
 end
@@ -1976,7 +1982,7 @@ function gcArmorDisplay:OnCursorEntered()
             self.descBox:InsertText("Weight: " .. self.armorData.weight .. "KG", "CW_HUD16", 0)
             self.descBox:InsertText("Max penetration value: " .. self.armorData.protection, "CW_HUD16", 0)
             self.descBox:InsertText("Blunt trauma reduction: " .. math.Round(self.armorData.damageDecrease * 100, 1) .. "%", "CW_HUD16", 0)
-            self.descBox:InsertText("Penetration damage reduction: " .. math.Round(self.armorData.damageDecreasePenetrated * 100, 1) .. "%", "CW_HUD16", 0)
+            self.descBox:InsertText("Penetrated damage reduction: " .. math.Round(self.armorData.damageDecreasePenetrated * 100, 1) .. "%", "CW_HUD16", 0)
             self.descBox:InsertText("Protected areas: " .. protectZones, "CW_HUD16", 0)
             self.descBox:InsertText("Durability: " .. self.armorData.durability, "CW_HUD16", 0)
         else
@@ -2004,7 +2010,7 @@ function gcArmorDisplay:Paint()
     surface.DrawRect(0, 0, w, h)
 
     if self:IsHovered() then
-        surface.SetDrawColor(GUI_ECRU:Unpack())
+        surface.SetDrawColor(GAMEMODE.HUDColors.ecru:Unpack())
     else
         surface.SetDrawColor(45, 45, 45, 255)
     end
@@ -2194,10 +2200,10 @@ function gcTraitPanel:GetBackgroundColor()
     end
 
     if self:IsTraitActive() then
-        return GUI_ECRU:Unpack()
+        return GAMEMODE.HUDColors.ecru:Unpack()
     else
         if self:IsHovered() then
-            return GUI_BRASS:Unpack()
+            return GAMEMODE.HUDColors.brass:Unpack()
         end
     end
 

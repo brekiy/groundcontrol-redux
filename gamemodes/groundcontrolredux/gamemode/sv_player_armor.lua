@@ -19,8 +19,9 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
         -- if for some reason we still have health don't do any calcs
         if armorData.protectionAreas[hitGroup] and armorPiece.health > 0 then
             local penetrationDelta = armorData.protection - penetrationValue
-            local penetratesArmor = penetrationDelta < 0
+            local penetratesArmor = penetrationDelta <= 0
             local damageNegation = nil
+
             if !penetratesArmor then
                 shouldBleed = false
                 if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
@@ -34,17 +35,24 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                     New penetration dmg formula:
                     armorData.damageDecreasePenetrated + penetrationDelta * 0.01
                     with this formula, the higher the round's penetrative power, the less the vest will reduce damage after being penetrated.
+                    Doesn't matter as much at high dmg mults, since you're going to die fast anyway, but makes a difference on lower ones
                 ]]--
                 damageNegation = armorData.damageDecreasePenetrated + penetrationDelta * 0.01
                 -- damageNegation = armorData.damageDecreasePenetrated
                 -- if our armor gets penetrated, it doesn't matter how much health we had in our regen pool, we still start bleeding
                 self:resetHealthRegenData()
             end
-
-            self:takeArmorDamage(armorPiece, dmgInfo:GetDamage())
             -- Clamp ballistic damage reduction between 0-95%
             damageNegation = math.Clamp(damageNegation, 0, 0.95)
             dmgInfo:ScaleDamage(1 - damageNegation)
+            --[[
+                Armor damage formula: dmg * (1 + (armor - bulletPen) / armor)
+                The more a bullet defeats armor, the less damage it does to the material.
+                The less a bullet defeats armor, the more damage it does to the material.
+                Clamp the factor between 0.75-1.1 and then further scale it by our armor damage factor.
+            ]]--
+            local armorDamage = dmgInfo:GetDamage() * math.Clamp(1 + (penetrationDelta / armorData.protection), 0.75, 1.1) * GetConVar("gc_armor_damage_factor"):GetFloat()
+            self:takeArmorDamage(armorPiece, armorDamage)
 
             local health = armorPiece.health
 
@@ -81,7 +89,7 @@ function PLAYER:giveArmor(category)
 end
 
 function PLAYER:takeArmorDamage(armorData, dmg)
-    armorData.health = armorData.health - math.floor(dmg * GetConVar("gc_armor_damage_factor"):GetFloat())
+    armorData.health = armorData.health - math.floor(dmg)
 end
 
 function PLAYER:addArmorPart(id, category)

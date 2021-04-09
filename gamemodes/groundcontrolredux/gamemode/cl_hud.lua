@@ -28,13 +28,17 @@ GM.ActionDisplayFont = "CW_HUD24"
 GM.GadgetDisplayFont = "CW_HUD14"
 GM.AttachmentSlotDisplayFont = "CW_HUD20"
 
-GM.HUDColors = {white = Color(255, 255, 255, 255),
+GM.HUDColors = {
+    white = Color(255, 255, 255, 255),
     black = Color(0, 0, 0, 255),
     blue = Color(122, 168, 255, 255),
     lightRed = Color(255, 137, 119, 255),
     red = Color(255, 100, 86, 255),
     green = Color(190, 255, 190, 255),
-    limeYellow = Color(220, 255, 165, 255)
+    limeYellow = Color(220, 255, 165, 255),
+    brass = Color(181, 166, 66, 255),
+    ecru = Color(194, 178, 128, 255),
+    bittersweet = Color(255, 100, 100, 100) -- a crayola orange hue apparently
 }
 
 GM.Vignette = surface.GetTextureID("ground_control/hud/vignette")

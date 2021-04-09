@@ -25,7 +25,7 @@ GM.RegisteredWeaponData = {}
 GM.PrimaryWeapons = GM.PrimaryWeapons or {}
 GM.SecondaryWeapons = GM.SecondaryWeapons or {}
 GM.TertiaryWeapons = GM.TertiaryWeapons or {}
-GM.CaliberWeights = GM.CaliberWeights or {}
+GM.Calibers = GM.Calibers or {}
 
 BestPrimaryWeapons = BestPrimaryWeapons or {damage = -math.huge, recoil = -math.huge, aimSpread = math.huge, firerate = math.huge, hipSpread = math.huge, spreadPerShot = -math.huge, velocitySensitivity = math.huge, maxSpreadInc = -math.huge, speedDec = math.huge, weight = -math.huge, magWeight = -math.huge, penetrationValue = -math.huge}
 BestSecondaryWeapons = BestSecondaryWeapons or {damage = -math.huge, recoil = -math.huge, aimSpread = math.huge, firerate = math.huge, hipSpread = math.huge, spreadPerShot = -math.huge, velocitySensitivity = math.huge, maxSpreadInc = -math.huge, speedDec = math.huge, weight = -math.huge, magWeight = -math.huge, penetrationValue = -math.huge}
@@ -34,6 +34,9 @@ BestSecondaryWeapons = BestSecondaryWeapons or {damage = -math.huge, recoil = -m
 include("sh_weps_base_cw.lua")
 include("sh_weps_khris.lua")
 include("sh_weps_misc.lua")
+
+-- Ammo definitions
+include ("sh_weps_calibers.lua")
 
 local PLAYER = FindMetaTable("Player")
 
@@ -134,9 +137,18 @@ function GM:registerTertiaryWeapon(weaponData)
     end
 end
 
--- 1 grain = 0.06479891 gram
-function GM:registerCaliberWeight(caliberName, grams) -- when registering a caliber's weight, the caliberName value should be the ammo type that the weapon uses
-    self.CaliberWeights[caliberName] = grams / 1000 -- convert grams to kilograms in advance
+--[[
+    Sets up an ammo type for the gamemode, assigning a weight and penetration value to it
+]]--
+function GM:registerCaliber(caliberName, grams, penetration)
+    -- 1 grain = 0.06479891 gram
+    -- convert grams to kilograms in advance
+    local caliberObj = {
+        weight = grams / 1000,
+        penetration = penetration
+    }
+    -- kill all attempts at unique capitalization
+    self.Calibers[string.lower(caliberName)] = caliberObj
 end
 
 function GM:findBestWeapons(lookInto, output)
@@ -155,7 +167,7 @@ function GM:findBestWeapons(lookInto, output)
         output.maxSpreadInc = math.max(output.maxSpreadInc, wepObj.MaxSpreadInc)
         output.speedDec = math.min(output.speedDec, wepObj.SpeedDec)
         output.weight = math.max(output.weight, wepObj.weight)
-        output.penetrationValue = math.max(output.penetrationValue, wepObj.penetrationValue)
+        output.penetrationValue = math.max(output.penetrationValue, self:getAmmoPen(wepObj.Primary.Ammo, wepObj.penMod))
 
         local magWeight = self:getAmmoWeight(wepObj.Primary.Ammo, wepObj.Primary.ClipSize)
         wepObj.magWeight = magWeight
@@ -166,7 +178,13 @@ end
 
 function GM:getAmmoWeight(caliber, roundCount)
     roundCount = roundCount or 1
-    return self.CaliberWeights[caliber] and self.CaliberWeights[caliber] * roundCount or 0
+    return self.Calibers[caliber] and self.Calibers[caliber].weight * roundCount or 0
+end
+
+function GM:getAmmoPen(caliber, penMod)
+    caliber = string.lower(caliber)
+    penMod = penMod or 0
+    return self.Calibers[caliber] and self.Calibers[caliber].penetration + penMod or 0
 end
 
 -- this function gets called in InitPostEntity for both the client and server, this is where we register a bunch of stuff
@@ -183,37 +201,7 @@ function GM:postInitEntity()
     wepObj.isKnife = true
     wepObj.pointCost = 0
 
-    self:registerCaliberWeight("7.62x54mmR", 25.6)
-    self:registerCaliberWeight("7.62x54MMR", 25.6) -- lol
-    self:registerCaliberWeight("7.92x57MM Mauser", 26.0)
-    self:registerCaliberWeight("7.62x51MM", 25.4)
-    self:registerCaliberWeight("7.62x39MM", 16.3)
-    self:registerCaliberWeight("5.45x39MM", 10.7)
-    self:registerCaliberWeight("5.56x45MM", 11.5)
-    self:registerCaliberWeight("9x19MM", 8.03)
-    self:registerCaliberWeight(".50 AE", 22.67)
-    self:registerCaliberWeight(".44 Magnum", 16)
-    self:registerCaliberWeight(".45 ACP", 15)
-    self:registerCaliberWeight("12 Gauge", 50)
-    self:registerCaliberWeight(".338 Lapua", 46.2)
-    self:registerCaliberWeight("9x39MM", 24.2)
-    self:registerCaliberWeight("9x17MM", 7.5)
-    self:registerCaliberWeight("5.7x28MM", 6.15)
-    self:registerCaliberWeight("9x18MM", 8)
-    self:registerCaliberWeight("9x21MM", 8.1)
-    self:registerCaliberWeight(".50 BMG", 75) -- real weight is like 100g+
-    self:registerCaliberWeight(".410 Bore", 20)
-    self:registerCaliberWeight(".357 Magnum", 14)
-    self:registerCaliberWeight(".38 Special", 12.5)
-    self:registerCaliberWeight("7.62x25MM", 7.5)
-    self:registerCaliberWeight(".357 SIG", 8.1)
-    self:registerCaliberWeight(".30 Carbine", 12)
-    self:registerCaliberWeight("40MM", 230)
-    self:registerCaliberWeight("7.65x17MM", 7.2)
-    self:registerCaliberWeight(".380 ACP", 7.5)
-    self:registerCaliberWeight(".32 ACP", 6.8)
-    self:registerCaliberWeight(".22LR", 4.5)
-
+    GAMEMODE:registerCalibers()
     hook.Call("GroundControlPostInitEntity", nil)
 
     self:findBestWeapons(self.PrimaryWeapons, BestPrimaryWeapons)

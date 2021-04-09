@@ -127,7 +127,7 @@ local vestPc = {
     durability = 45,
     pointCost = 16,
     icon = "ground_control/hud/armor/aa_vest_lbx",
-    description = "Modern, lightweight plate carrier with level IV rifle plates."
+    description = "Modern lightweight plate carrier with level IV rifle plates."
 }
 GM:registerArmor(vestPc)
 
@@ -142,7 +142,7 @@ local vestRatnik = {
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
     durability = 75,
-    pointCost = 24,
+    pointCost = 30,
     icon = "ground_control/hud/armor/aa_vest_ratnik",
     description = "Body armor with level IV rifle plates and additional soft protection."
 }
@@ -197,7 +197,7 @@ local helmetOperator = {
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
     durability = 10,
-    pointCost = 12,
+    pointCost = 14,
     icon = "ground_control/hud/armor/aa_helmet_operator",
     description = "Modern lightweight ballistic helmet with additional armor. Provides level III protection."
 }
@@ -214,7 +214,7 @@ local helmetVulkan = {
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.15,
     durability = 20,
-    pointCost = 18,
+    pointCost = 20,
     icon = "ground_control/hud/armor/aa_helmet_vulkan",
     description = "Heavy composite helmet. Provides level IV protection."
 }
