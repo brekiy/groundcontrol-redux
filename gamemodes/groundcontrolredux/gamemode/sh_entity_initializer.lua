@@ -3,7 +3,7 @@ GM.entityInitializer.entClassCallbacks = {}
 
 function GM.entityInitializer:initEntity(ent, curGameType, data)
     local class = ent:GetClass()
-    
+
     if self.entClassCallbacks[class] then
         self.entClassCallbacks[class](ent, curGameType, data)
     end
@@ -26,7 +26,7 @@ GM.entityInitializer:registerEntityInitializeCallback("gc_capture_point", functi
             entity:setCapturerTeam(curGameType.attackerTeam)
             curGameType.realAttackerTeam = curGameType.attackerTeam
         end
-        
+
         if data.data.defenderTeam then
             entity:setDefenderTeam(data.data.defenderTeam)
             curGameType.realDefenderTeam = data.data.defenderTeam
@@ -45,11 +45,11 @@ GM.entityInitializer:registerEntityInitializeCallback("gc_offlimits_area", funct
         if data.data.inverseFunctioning then
             entity.dt.inverseFunctioning = true
         end
-        
+
         if data.data.targetTeam then
             entity.dt.targetTeam = data.data.targetTeam
         end
-        
+
         if data.data.distance then
             entity.dt.distance = data.data.distance
         end
@@ -61,32 +61,30 @@ GM.entityInitializer:registerEntityInitializeCallback("gc_offlimits_area_aabb", 
         if data.data.inverseFunctioning then
             entity.dt.inverseFunctioning = true
         end
-        
+
         if data.data.targetTeam then
             entity.dt.targetTeam = data.data.targetTeam
         end
-        
+
         entity:setAABB(data.data.min, data.data.max)
     end
 end)
 
 GM.entityInitializer:registerEntityInitializeCallback("gc_urban_warfare_capture_point", function(entity, curGameType, data)
-    if data.data then
-        if data.data.capMin then
+    if data.data and data.data.capMin then
             entity:setCaptureAABB(data.data.capMin, data.data.capMax)
-        end
     end
-    
+
     curGameType.capturePoint = entity
-    
+
     local ticketAmount = nil
-    
+
     if curGameType.ticketsPerPlayer then
         ticketAmount = math.Round(#player.GetAll() * curGameType.ticketsPerPlayer)
     else
         ticketAmount = curGameType.startingTickets
     end
-    
+
     entity:initTickets(ticketAmount)
 end)
 

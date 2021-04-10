@@ -8,7 +8,7 @@ GM.ActiveStatusEffects = {}
 
 function GM:registerStatusEffect(data)
     self.StatusEffects[data.id] = data
-    
+
     if CLIENT then
         data.texture = surface.GetTextureID(data.icon)
     end
@@ -35,40 +35,39 @@ GM:registerStatusEffect({
 
 local PLAYER = FindMetaTable("Player")
 
--- set status effects for display on other players (not yourself), to see what's going on with your friends
+-- set status effects for display on other players (!yourself), to see what's going on with your friends
 function PLAYER:setStatusEffect(statusEffect, state) -- on other players
     -- numeric for rendering (clientside), map for quick checks
     self.statusEffects = self.statusEffects or {numeric = {}, map = {}}
-    
-    if not state then
+
+    if !state then
         for key, otherStatusEffect in ipairs(self.statusEffects.numeric) do
             if otherStatusEffect == statusEffect then
                 table.remove(self.statusEffects.numeric, key)
                 break
             end
         end
-        
+
         self.statusEffects.map[statusEffect] = nil
     else
-        local present = false
-        
-        -- make sure this effect is not present yet
-        if not self.statusEffects.map[statusEffect] then
+
+        -- make sure this effect isn't present yet
+        if !self.statusEffects.map[statusEffect] then
             table.insert(self.statusEffects.numeric, statusEffect)
             self.statusEffects.map[statusEffect] = true
         end
     end
-    
+
     if SERVER then
         self:sendStatusEffect(statusEffect, state)
     end
 end
 
 function PLAYER:resetStatusEffects() -- on other players
-    if not self.statusEffects then
+    if !self.statusEffects then
         return
     end
-    
+
     table.Empty(self.statusEffects.numeric)
     table.Empty(self.statusEffects.map)
 end

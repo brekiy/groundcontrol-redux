@@ -9,13 +9,13 @@ function ENT:SetupDataTables()
     self:DTVar("Int", 1, "CapturerTeam")
     self:DTVar("Int", 2, "PointID")
     self:DTVar("Int", 3, "CaptureDistance")
-    
+
     self:DTVar("Int", 4, "RedTicketCount")
     self:DTVar("Int", 5, "BlueTicketCount")
-    
+
     self:DTVar("Float", 2, "CaptureSpeed")
     self:DTVar("Float", 3, "Cooldown")
-    
+
     self:NetworkVar("Vector", 0, "CaptureMin")
     self:NetworkVar("Vector", 1, "CaptureMax")
     self:NetworkVar("Int", 0, "MaxTickets")
@@ -27,7 +27,7 @@ function ENT:isWithinCaptureAABB(pos)
     if pos.x > min.x and pos.y > min.y and pos.z > min.z and pos.x < max.x and pos.y < max.y and pos.z < max.z then
         return true
     end
-    
+
     return false
 end
 

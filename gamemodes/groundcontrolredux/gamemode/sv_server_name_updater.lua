@@ -10,26 +10,26 @@ GM.BaseGameInfoString = "GAMETYPE R[CURRENT_ROUND/MAX_ROUND]"
 GM.DefaultServerName = "Ground Control"
 
 function GM:updateServerName()
-    if GetConVarNumber("gc_auto_adjust_server_name") > 0 then
+    if GetConVar("gc_auto_adjust_server_name"):GetBool() then
         local baseServerName = GetConVar("gc_base_server_name"):GetString()
-        baseServerName = baseServerName == "" and self.DefaultServerName or baseServerName -- if the base server name was not defined, we will default to 'Ground Control'
-        
+        baseServerName = baseServerName == "" and self.DefaultServerName or baseServerName -- if the base server name was !defined, we will default to 'Ground Control'
+
         local appendable = string.easyformatbykeys(self.BaseGameInfoString, "GAMETYPE", self.curGametype.prettyName, "CURRENT_ROUND", self.RoundsPlayed, "MAX_ROUND", self.RoundsPerMap)
         local finalString = nil
-        
-        if GetConVarNumber("gc_insert_to_front") >= 1 then
+
+        if GetConVar("gc_insert_to_front"):GetBool() then
             finalString = baseServerName .. " - " .. appendable
         else
             finalString = appendable .. " - " .. baseServerName
         end
-        
+
         finalString = "hostname " .. finalString .. "\n"
-        
+
         game.ConsoleCommand(finalString)
     end
 end
 
-GM:registerAutoUpdateConVar("gc_auto_adjust_server_name", function(cvarName, oldValue, newValue)    
+GM:registerAutoUpdateConVar("gc_auto_adjust_server_name", function(cvarName, oldValue, newValue)
     if tonumber(newValue) and tonumber(newValue) > 0 then
         GAMEMODE:updateServerName()
     end

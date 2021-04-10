@@ -1,3 +1,3 @@
 function GM:createScrambleTeamsVote()
-    
+
 end

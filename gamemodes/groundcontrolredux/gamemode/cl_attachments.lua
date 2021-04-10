@@ -1,13 +1,13 @@
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:unlockAttachment(attachmentName)
-    if not self.ownedAttachments then
+    if !self.ownedAttachments then
         RunConsoleCommand("gc_request_data")
         return
     end
-    
+
     self.ownedAttachments[attachmentName] = true
-    
+
     if IsValid(GAMEMODE.activeAttachmentSelectionHover) then
         GAMEMODE.activeAttachmentSelectionHover:recreateInfoBox()
     end

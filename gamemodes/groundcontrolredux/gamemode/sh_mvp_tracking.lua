@@ -11,7 +11,7 @@ function mvpTracker.new()
     local new = {}
     setmetatable(new, mvpTracker.mtindex)
     new:init()
-    
+
     return new
 end
 
@@ -46,11 +46,11 @@ if CLIENT then
     GM.MVPPanelBaseHeight = 26
     GM.MVPEntryBaseYPos = 26
     GM.MVPPanelBottomSpacing = 50
-    
+
     function GM:setMVPPanel(panel)
         self.mvpPanel = panel
     end
-    
+
     function GM:destroyMVPPanel()
         if self.mvpPanel and self.mvpPanel:IsValid() then -- remove any previous MVP panels
             self.mvpPanel:Remove()
@@ -60,22 +60,22 @@ if CLIENT then
 
     function mvpTracker:createMVPDisplayFromList(list)
         GAMEMODE:destroyMVPPanel()
-                
+
         local panelHeight = GAMEMODE.MVPPanelBaseHeight + (GAMEMODE.SizePerMVPEntry + GAMEMODE.SpacingBetweenMVPEntries) * #list
-        
+
         local panel = vgui.Create("GCPanel")
         panel:SetFont("CW_HUD20")
         panel:SetText("Most Valuable Players")
         panel:SetSize(GAMEMODE.MVPPanelWidth, panelHeight)
         panel:CenterHorizontal()
-        
-        local x, y = panel:GetPos()
+
+        local x, _ = panel:GetPos()
         panel:SetPos(x, ScrH() - panelHeight - GAMEMODE.MVPPanelBottomSpacing)
-        
+
         GAMEMODE:setMVPPanel(panel)
-        
+
         local yPos = GAMEMODE.MVPEntryBaseYPos
-        
+
         for key, data in ipairs(list) do
             if IsValid(data.player) then
                 local mvp = vgui.Create("GCMVPDisplay", panel)
@@ -84,7 +84,7 @@ if CLIENT then
                 mvp:SetPlayer(data.player)
                 mvp:SetMVPID(data.id)
                 mvp:SetScore(data.score)
-                
+
                 yPos = yPos + GAMEMODE.SpacingBetweenMVPEntries + GAMEMODE.SizePerMVPEntry
             end
         end
@@ -93,7 +93,7 @@ end
 
 function mvpTracker:sendMVPList()
     local list = self:buildMVPList()
-    
+
     if #list > 0 then
         net.Start("GC_MVP")
             net.WriteTable(list)
@@ -103,7 +103,7 @@ end
 
 function mvpTracker:removeInvalidPlayers()
     for player, data in pairs(self.trackedIDs) do
-        if not IsValid(player) then
+        if !IsValid(player) then
             self.trackedIDs[player] = nil
         end
     end
@@ -111,26 +111,26 @@ end
 
 function mvpTracker:buildMVPList()
     self:removeInvalidPlayers() -- clean up from players that left the server/etc. while the round was still going and they were MVP
-    
+
     local list = {}
-    
+
     for key, data in ipairs(mvpTracker.registeredData) do
         local score, playerObject = self:getMostEntriesForID(data.id)
-        
-        if score ~= -math.huge then
+
+        if score != -math.huge then
             table.insert(list, {id = data.id, score = math.ceil(score), player = playerObject})
         end
     end
-    
+
     -- sort em by highest score
     currentTrackerObject = self
     table.sort(list, sortByWeight)
-        
+
     -- remove any redundant ones
     for i = GAMEMODE.MVPsToShow + 1, #list do
         list[i] = nil
     end
-    
+
     return list
 end
 
@@ -139,20 +139,16 @@ function mvpTracker:getMostEntriesForID(id)
     local highest = -math.huge
     local mvp = nil
     local data = mvpTracker.registeredDataByID[id]
-    
+
     for player, subList in pairs(self.trackedIDs) do
         local entries = subList[id]
-        
-        if entries then
-            if not data.minimum or (data.minimum and entries >= data.minimum) then
-                if entries > highest then
-                    highest = entries
-                    mvp = player
-                end
-            end
+
+        if entries and (!data.minimum or (data.minimum and entries >= data.minimum)) and (entries > highest) then
+            highest = entries
+            mvp = player
         end
     end
-    
+
     return highest, mvp
 end
 
@@ -160,7 +156,7 @@ function mvpTracker:getIDEntries(player, id)
     if self.trackedIDs[player] then
         return self.trackedIDs[player][id] or 0
     end
-    
+
     return 0
 end
 
@@ -176,7 +172,7 @@ mvpTracker.registerData({
         if amount == 1 then
             return "1 kill"
         end
-        
+
         return amount .. " kills"
     end,
     weight = 100 -- weight is on a per entry basis (multiply entry count by weight)
@@ -190,7 +186,7 @@ mvpTracker.registerData({
         if amount == 1 then
             return "1 headshot"
         end
-        
+
         return amount .. " headshots"
     end,
     weight = 30
@@ -242,6 +238,6 @@ mvpTracker.registerData({
 
 net.Receive("GC_MVP", function(a, b)
     local data = net.ReadTable()
-    
+
     mvpTracker:createMVPDisplayFromList(data)
 end)

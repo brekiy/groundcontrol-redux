@@ -1,7 +1,7 @@
 include("sh_player_weight.lua")
 
-local PLAYER = FindMetaTable("Player")
+-- local PLAYER = FindMetaTable("Player")
 
 CustomizableWeaponry.callbacks:addNew("postFire", "GroundControl_postFire", function(wep)
-    wep.Owner:setWeight(wep.Owner:calculateWeight())
+    wep:GetOwner():setWeight(wep:GetOwner():calculateWeight())
 end)
