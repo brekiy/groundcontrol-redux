@@ -1517,9 +1517,8 @@ function attachmentAssignment:Paint()
             local x, y = self:LocalToScreen(0, 0)
             self.descBox = vgui.Create("GCGenericDescbox")
             self.descBox:SetDrawOnTop(true)
-            
-            if not self:IsSlotUnlocked() then
-                self.descBox:InsertText("Slot not unlocked, can not assign to it.", "CW_HUD28", 0)
+            if !self:IsSlotUnlocked() then
+                self.descBox:InsertText("Slot locked, can't assign to it.", "CW_HUD28", 0)
             else
                 if self.attachmentData then
                     self.descBox:InsertText(self.attachmentData.displayName, "CW_HUD28", 0)
@@ -1568,6 +1567,56 @@ function attachmentAssignment:Paint()
 end
 
 vgui.Register("GCAttachmentAssignment", attachmentAssignment, "GCAttachmentSelection")
+
+local loadoutPoints = {}
+
+function loadoutPoints:Init()
+end
+
+function loadoutPoints:Paint()
+    local w, h = self:GetSize()
+
+    local ply = LocalPlayer()
+    local curCost = GAMEMODE:getImaginaryLoadoutCost(ply)
+
+    surface.SetDrawColor(100, 213, 100, 255)
+
+    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+
+    draw.ShadowText("Loadout cost: " .. curCost .. "/" .. ply:getCurrentLoadoutPoints(), "CW_HUD20", 10, h * 0.5 - 5, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+end
+
+function loadoutPoints:OnCursorEntered()
+    if !IsValid(self.descBox) then
+        local _, h = self:GetSize()
+        local x, y = self:LocalToScreen(0, 0)
+        self.descBox = vgui.Create("GCGenericDescbox")
+        self.descBox:InsertText("The cost of your current loadout.", "CW_HUD28", 0)
+        self.descBox:InsertText("Your weapons and gear are not free.", "CW_HUD20", 0)
+        self.descBox:InsertText("The better you perform, the more your kit can cost.", "CW_HUD20", 0)
+
+        self.descBox:SetPos(x, y + h + 5)
+        self.descBox:SetZPos(10000)
+        self.descBox:SetDrawOnTop(true)
+    end
+end
+
+function loadoutPoints:OnCursorExited(w, h)
+    self:RemoveDescBox()
+end
+
+function loadoutPoints:RemoveDescBox()
+    if self.descBox then
+        self.descBox:Remove()
+        self.descBox = nil
+    end
+end
+
+function loadoutPoints:OnRemove()
+    self:RemoveDescBox()
+end
+
+vgui.Register("GCLoadoutCost", loadoutPoints, "DPanel")
 
 local genericDescbox = {}
 genericDescbox.font = "CW_HUD20"
@@ -2181,7 +2230,7 @@ function gcTraitPanel:OnCursorEntered(w, h)
         
         if traitLevel > 0 and not active then
             self.descBox:InsertText(self.traitData.display .. " (Inactive)", "CW_HUD28", 0)
-            self.descBox:InsertText("This trait is not active, left-click to activate it.", "CW_HUD20", 0)
+            self.descBox:InsertText("This trait is inactive, left-click to activate it.", "CW_HUD20", 0)
         else
             self.descBox:InsertText(self.traitData.display, "CW_HUD28", 0)
         end
