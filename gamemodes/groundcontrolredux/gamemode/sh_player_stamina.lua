@@ -8,6 +8,7 @@ GM.StaminaRegenAmount = 1 -- how much stamina we regen when we're in idle state
 GM.MinStaminaFromSprinting = 20 -- how far our stamina will drop from sprinting
 GM.StaminaDecreasePerHealthPoint = 70 -- we lose this much max stamina by the time our health reaches 0
 
+
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:setStamina(amount, dontSend)
@@ -16,9 +17,11 @@ function PLAYER:setStamina(amount, dontSend)
     else
         self.stamina = amount
     end
-
-    if SERVER and !dontSend then
-        self:sendStamina()
+    
+    if SERVER then
+        if not dontSend then
+            self:sendStamina()
+        end
     end
 end
 
@@ -36,10 +39,10 @@ function PLAYER:sendStamina()
 end
 
 function PLAYER:getStaminaRunSpeedModifier()
-    local difference = GetConVar("gc_stamina_run_impact_level"):GetInt() - self.stamina
+    local difference = GAMEMODE.RunSpeedImpactStaminaLevel - self.stamina
     local runSpeedImpact = math.max(difference, 0)
-
-    return runSpeedImpact * GetConVar("gc_stamina_run_impact"):GetFloat()
+    
+    return runSpeedImpact * GAMEMODE.RunSpeedPerStaminaPoint
 end
 
 function PLAYER:getMaxStaminaDecreaseFromHealth()

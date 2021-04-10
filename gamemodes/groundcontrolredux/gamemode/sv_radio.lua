@@ -11,9 +11,9 @@ end
 function GM:SendRadioCommand(ply, category, radioId, command)
     local radioDelay = self.RadioDelay
     radioDelay = command and command.radioWait or radioDelay
-
+    
     ply.radioWait = CurTime() + radioDelay
-
+    
     if command and command.send then
         command:send(ply, radioId, category)
     else
@@ -28,15 +28,23 @@ function GM:setVoiceVariant(ply, stringID)
 end
 
 function GM:attemptSetMemeRadio(ply)
-    if self.MemeRadio and math.random(1, 1000) <= GetConVar("gc_meme_radio_chance"):GetInt() then
+    if self.MemeRadio and math.random(1, 1000) <= GetConVarNumber("gc_meme_radio_chance") then
         self:setVoiceVariant(ply, "bandlet")
         return true
     end
-
+    
     return false
 end
 
 function GM:sendRadio(ply, target, category, radioId)
+    -- umsg.Start("GC_RADIO", target)
+    --     umsg.Float(CurTime())
+    --     umsg.Char(category)
+    --     umsg.Char(radioId)
+    --     umsg.Char(ply.voiceVariant)
+    --     umsg.Entity(ply)
+    -- umsg.End()
+
     net.Start("GC_RADIO")
     net.WriteFloat(CurTime())
     net.WriteUInt(category, 8)
@@ -47,6 +55,14 @@ function GM:sendRadio(ply, target, category, radioId)
 end
 
 function GM:sendMarkedSpot(category, commandId, sender, receiver, pos)
+    -- umsg.Start("GC_RADIO_MARKED", receiver)
+    --     umsg.Float(CurTime())
+    --     umsg.Char(category)
+    --     umsg.Char(commandId)
+    --     umsg.Char(sender.voiceVariant)
+    --     umsg.Entity(sender)
+    --     umsg.Vector(pos)
+    -- umsg.End()
     net.Start("GC_RADIO_MARKED")
     net.WriteFloat(CurTime())
     net.WriteUInt(category, 8)
@@ -60,23 +76,23 @@ end
 concommand.Add("gc_radio_command", function(ply, com, args)
     local category = args[1]
     local radioId = args[2]
-
-    if !category or !radioId then
+    
+    if not category or not radioId then
         return
     end
-
-    if !ply:Alive() or CurTime() < ply.radioWait then
+    
+    if not ply:Alive() or CurTime() < ply.radioWait then
         return
     end
-
+    
     category = tonumber(category)
     radioId = tonumber(radioId)
-
+    
     local desiredCategory = GAMEMODE.RadioCommands[category]
-
+    
     if desiredCategory then
         local command = desiredCategory.commands[radioId]
-
+        
         if command then
             GAMEMODE:SendRadioCommand(ply, category, radioId, command)
         end

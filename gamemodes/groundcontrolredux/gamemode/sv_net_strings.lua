@@ -1,8 +1,8 @@
 util.AddNetworkString("GC_ADRENALINE")
 util.AddNetworkString("GC_ALIVE_PLAYER_COUNT")
 util.AddNetworkString("GC_ANNOUNCEMENT")
-util.AddNetworkString("GC_ARMOR_HEALTH_UPDATE") -- Used to pass info about any armor damage
-util.AddNetworkString("GC_ARMOR") -- Send selected armor data
+util.AddNetworkString("GC_ARMOR_PIECE") -- Used to pass info about armor AND helmet damage
+util.AddNetworkString("GC_ARMOR") -- Send selected vest data
 util.AddNetworkString("GC_ATTACHMENTS")
 util.AddNetworkString("GC_BANDAGES")
 util.AddNetworkString("GC_BLEEDSTATE")
@@ -12,6 +12,7 @@ util.AddNetworkString("GC_EVENT")
 util.AddNetworkString("GC_EXPERIENCE")
 util.AddNetworkString("GC_GADGETS")
 util.AddNetworkString("GC_GAME_BEGIN")
+util.AddNetworkString("GC_HELMET") -- Send selected helmet data
 util.AddNetworkString("GC_KILLED_BY")
 util.AddNetworkString("GC_LAST_MAN_STANDING")
 util.AddNetworkString("GC_MVP")
@@ -42,8 +43,3 @@ util.AddNetworkString("GC_TIMELIMIT")
 util.AddNetworkString("GC_VOTE_UPDATE")
 util.AddNetworkString("GC_RADIO")
 util.AddNetworkString("GC_RADIO_MARKED")
-util.AddNetworkString("GC_DRUGS_REMOVED")
-util.AddNetworkString("GC_GOT_DRUGS")
-util.AddNetworkString("GC_UPDATE_LOADOUT_LIMIT")
--- util.AddNetworkString("GC_NOT_ENOUGH_POINTS")
--- util.AddNetworkString("GC_FRAGOUT")

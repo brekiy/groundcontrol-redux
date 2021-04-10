@@ -20,21 +20,23 @@ function ENT:canPenalizePlayer(ply, ownPos)
     if GAMEMODE.RoundOver then
         return false
     end
-
-    if !ply:Alive() then
+    
+    if not ply:Alive() then
         return false
     end
-
-    if self.dt.targetTeam != 0 and self.dt.targetTeam != ply:Team() then
+    
+    if self.dt.targetTeam ~= 0 then
+        if self.dt.targetTeam ~= ply:Team() then
             return false
+        end
     end
-
+    
     ownPos = ownPos or self:GetPos()
-
+    
     if self.dt.inverseFunctioning then
-        return !self:isInRange(ply, ownPos)
+        return not self:isInRange(ply, ownPos)
     end
-
+    
     return self:isInRange(ply, ownPos)
 end
 

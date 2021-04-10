@@ -5,14 +5,14 @@ GM.TeamModels = {}
 
 concommand.Add("gc_attempt_join_team", function(ply, com, data)
     local team = data[1]
-
-    if !team then
+    
+    if not team then
         return
     end
-
+    
     team = tonumber(team)
     local join = GAMEMODE:canJoinTeam(ply, team)
-
+    
     if join == true then
         GAMEMODE:attemptJoinTeam(ply, team)
 
@@ -53,15 +53,15 @@ local PLAYER = FindMetaTable("Player")
 
 function PLAYER:joinTeam(teamId)
     self:SetTeam(teamId) -- welp
-
+    
     if GAMEMODE.curGametype.playerJoinTeam then
         GAMEMODE.curGametype:playerJoinTeam(self, teamId)
     end
-
+    
     if GAMEMODE.curGametype.spawnDuringPreparation and GAMEMODE:isPreparationPeriod() then
         self:Spawn()
     end
-
+    
     GAMEMODE:resetKillcountData()
 end
 

@@ -1,10 +1,10 @@
 include("shared.lua")
 
 function ENT:Initialize()
-    self.Emitter = ParticleEmitter(self:GetPos())
-    self.ParticleDelay = 0
+	self.Entity.Emitter = ParticleEmitter(self.Entity:GetPos())
+	self.Entity.ParticleDelay = 0
 end
 
 function ENT:Draw()
-    self:DrawModel()
+	self.Entity:DrawModel()
 end

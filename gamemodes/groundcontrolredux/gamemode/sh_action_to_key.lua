@@ -15,28 +15,28 @@ if CLIENT then
 
     function GM:performAction(bind)
         local actionData = self.KeysToAction[bind]
-
+        
         if actionData then
             RunConsoleCommand(actionData.conCommand)
-
+            
             if callback then
                 callback(ply)
                 return true
             end
         end
-
-        -- local ply = LocalPlayer()
-
+        
+        local ply = LocalPlayer()
+        
         for key, data in ipairs(ply.gadgets) do
             if data.useKey == bind then
                 RunConsoleCommand("gc_use_gadget", key)
                 return true
             end
         end
-
+        
         return false
     end
-
+    
     GM:assignActionToBind("+menu", "bandage", "gc_bandage")
     GM:assignActionToBind("+menu_context", "radio_menu", "gc_radio_menu")
 end

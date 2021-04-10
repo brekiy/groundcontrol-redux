@@ -1,5 +1,8 @@
 -- autopunish module, automatically starts a punish vote against people that TK way too frequently
 
+-- how much damage we will tolerate to teammates until an automatic votekick begins
+CreateConVar("gc_autopunish_teamdamage", 300, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "maximum team damage allowed before autovotekick", 1)
+
 GM.AutoPunishEnabled = true
 GM.LowerPunishLevelTime = 86400 * 7 -- 7 weeks to lower punish level
 
@@ -23,68 +26,68 @@ function GM:startPunishVote(target)
     if target.inPunishVote then -- target already being vote-punished
         return
     end
-
+    
     target.inPunishVote = true
-
+    
     local targetTeam = target:Team()
     local targetSteamID = target:SteamID()
     local text = nil
-
+    
     local banDuration = target:GetPData(self.BanDurationString)
-
+    
     if banDuration then -- check if this player was banned before
         local delta = banDuration - os.time() -- if he was, figure out how many punishment levels have gone by then
         local levels = math.floor(delta / self.LowerPunishLevelTime)
-
+        
         if levels > 0 then -- if there is at least one, decrease it to a minimum of 1 (kick)
             target:setPunishLevel(math.max(target:getPunishLevel() - levels, 1))
         end
     end
-
+    
     local punishData = self.PunishLevels[target:getPunishLevel()]
-
-    if !punishData then -- refer to the harshest possible punishment if the player has gone overboard
+    
+    if not punishData then -- refer to the harshest possible punishment if the player has gone overboard
         punishData = self.PunishLevels[#self.PunishLevels]
     end
-
+        
     if punishData.ban then
         text = "Ban " .. target:Nick() .. " for " .. punishData.ban .. " minute(s)? (excessive team damage)"
     else
         text = "Kick " .. target:Nick() .. " for excessive team damage?"
     end
-
+    
     local votePlayers = table.Exclude(team.GetPlayers(targetTeam), target) -- get the team members of the person we're votekicking, but exclude him from there
-
+    
     self:setupCurrentVote(text, self.PunishVoteOptions, votePlayers, 2, false, nil, function()
         local highestOption, highestKey = self:getHighestVote()
         local affectedPlayer = player.GetBySteamID(targetSteamID)
         local playerValid = IsValid(affectedPlayer)
-
+        
         if highestOption.option == "Yes" and highestOption.votes > 0 then -- if the majority thinks he should be banned
             if punishData.ban then
                 util.SetPData(targetSteamID, self.BanDurationString, os.time() + punishData.ban * 60) -- ban the player
             end
-
+            
             util.SetPData(self.PunishLevelString, (util.GetPData(targetSteamID, self.PunishLevelString) or 1) + 1) -- increase the punish level
-
+            
             if playerValid then
                 self:verifyPunishment(affectedPlayer, true)
             end
         end
-
+        
         if playerValid then
             affectedPlayer.inPunishVote = false
         end
-
+        
         util.SetPData(targetSteamID, self.TDCounterString, 0) -- either way we reset the target's team kill counter
     end)
 end
 
 function GM:updateTeamDamageCount(target, damage)
-    if !self.RoundOver then
+    if not self.RoundOver then
         target:increaseTeamDamageCounter(damage)
-
-        if target:getTeamDamageCounter() >= GetConVar("gc_autopunish_teamdamage"):GetInt() then
+        
+        if target:getTeamDamageCounter() >= GetConVarNumber("gc_autopunish_teamdamage") then
             self:startPunishVote(target)
         end
     end
@@ -93,7 +96,7 @@ end
 function GM:verifyPunishment(target, freshBan)
     local banDuration = target:GetPData(self.BanDurationString)
     local curTime = os.time()
-
+        
     if banDuration and curTime < banDuration then
         local baseText = freshBan and "You've been banned for excessive team damage. Ban duration: " or "You're still banned for team damage. Ban time left: "
         target:Kick(baseText .. math.ceil((banDuration - curTime) / 60) .. " hour(s)")
@@ -107,11 +110,11 @@ end
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:getTeamDamageCounter()
-    return tonumber(self:GetPData(GAMEMODE.TDCounterString) or 0)
+    return tonumber((self:GetPData(GAMEMODE.TDCounterString) or 0))
 end
 
 function PLAYER:getPunishLevel()
-    return tonumber(self:GetPData(GAMEMODE.PunishLevelString) or 1)
+    return tonumber((self:GetPData(GAMEMODE.PunishLevelString) or 1))
 end
 
 function PLAYER:increasePunishLevel()

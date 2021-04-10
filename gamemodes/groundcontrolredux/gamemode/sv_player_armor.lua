@@ -7,112 +7,112 @@ local PLAYER = FindMetaTable("Player")
     degredation and health damage that the player takes.
 ]]--
 function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBleeding)
-    if !penetrationValue then
+    if not penetrationValue then
         return
     end
 
     local shouldBleed = true
-    -- local removeIndex = 1
-    for category, armorPiece in pairs(self.armor) do
-        local armorData = GAMEMODE:getArmorData(armorPiece.id, category)
+    local removeIndex = 1
+    local combinedArmor = self:getTotalArmorPieces()
+    for i = 1, #combinedArmor do
+        if removeIndex > #combinedArmor then return end
+        local armorPiece = combinedArmor[removeIndex]
+        local armorData = GAMEMODE:getArmorData(armorPiece.id, armorPiece.category)
         local removeArmor = false
-        -- if for some reason we still have health don't do any calcs
-        if armorData.protectionAreas[hitGroup] and armorPiece.health > 0 then
-            local penetrationDelta = armorData.protection - penetrationValue
-            local penetratesArmor = penetrationDelta <= 0
+        if armorData.protectionAreas[hitGroup] then
+            local protectionDelta = armorData.protection - penetrationValue
+            local penetratesArmor = protectionDelta < 0
             local damageNegation = nil
-
-            if !penetratesArmor then
+            if not penetratesArmor then
                 shouldBleed = false
                 if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
-                damageNegation = armorData.damageDecrease + penetrationDelta * armorData.protectionDelta
-                -- Cap health regen at 80% of stopped damage
-                local regenAmount = math.floor(dmgInfo:GetDamage() * (1 - damageNegation) * 0.8)
+                damageNegation = armorData.damageDecrease + protectionDelta * armorData.protectionDeltaToDamageDecrease
+                local regenAmount = math.floor(dmgInfo:GetDamage() * damageNegation)
                 self:addHealthRegen(regenAmount)
                 self:delayHealthRegen()
             else
-                --[[
+                --[[ 
                     New penetration dmg formula:
-                    armorData.damageDecreasePenetrated + penetrationDelta * 0.01
+                    armorData.damageDecreasePenetration + protectionDelta * 0.01
                     with this formula, the higher the round's penetrative power, the less the vest will reduce damage after being penetrated.
-                    Doesn't matter as much at high dmg mults, since you're going to die fast anyway, but makes a difference on lower ones
                 ]]--
-                damageNegation = armorData.damageDecreasePenetrated + penetrationDelta * 0.01
-                -- damageNegation = armorData.damageDecreasePenetrated
+                damageNegation = armorData.damageDecreasePenetration + protectionDelta * 0.01
+                -- damageNegation = armorData.damageDecreasePenetration
                 -- if our armor gets penetrated, it doesn't matter how much health we had in our regen pool, we still start bleeding
                 self:resetHealthRegenData()
             end
-            -- Clamp ballistic damage reduction between 0-95%
-            damageNegation = math.Clamp(damageNegation, 0, 0.95)
+
+            -- Clamp ballistic damage reduction between 0-100%, so mega powerful bullets dont end up doing more than 100 dmg
+            -- and super weak bullets vs super strong armor dont end up with a negative result for ScaleDamage()
+            damageNegation = math.clamp(damageNegation, 0, 1)
             dmgInfo:ScaleDamage(1 - damageNegation)
-            --[[
-                Armor damage formula: dmg * (1 + (armor - bulletPen) / armor)
-                The more a bullet defeats armor, the less damage it does to the material.
-                The less a bullet defeats armor, the more damage it does to the material.
-                Clamp the factor between 0.75-1.1 and then further scale it by our armor damage factor.
-            ]]--
-            local armorDamage = dmgInfo:GetDamage() * math.Clamp(1 + (penetrationDelta / armorData.protection), 0.75, 1.1) * GetConVar("gc_armor_damage_factor"):GetFloat()
-            self:takeArmorDamage(armorPiece, armorDamage)
-
+            -- Use the scaled damage in calculating armor degradation, so bb pellets will never destroy hard plates
+            self:takeArmorDamage(armorPiece, dmgInfo)
+            
             local health = armorPiece.health
-
-            if armorPiece.health <= 0 then
+            
+            if armorPiece.health > 0 then
+                removeIndex = removeIndex + 1
+            else
                 removeArmor = true
             end
-
-            self:sendArmorHealthUpdate(health, armorData.category)
+            
+            self:sendArmorPiece(i, health, armorData.category)
             if removeArmor then
-                self:resetArmorData()
+                table.remove(combinedArmor, removeIndex)
                 self:calculateWeight()
             end
         end
-        -- removeIndex = removeIndex + 1
+        removeIndex = removeIndex + 1
     end
-
+    
     if allowBleeding and shouldBleed then
         self:startBleeding(dmgInfo:GetAttacker())
     end
 end
 
--- Get a player's desired armor piece for a given category, add it to the player armor attribute, and send it to the client
-function PLAYER:giveArmor(category, forceArmor)
-    self:resetArmorData(category)
-    local desiredArmor = nil
-    local caseSwitch = {
-        ["vest"] = self:getDesiredVest(),
-        ["helmet"] = self:getDesiredHelmet()
-    }
-    if forceArmor then
-        desiredArmor = forceArmor
-    else
-        desiredArmor = caseSwitch[category]
+function PLAYER:giveArmor()
+    self:resetArmorData()
+    local desiredVest = self:getDesiredVest()
+    if desiredVest ~= 0 then
+        self:addArmorPart(desiredVest, "vest")
     end
-    if desiredArmor != 0 then
-        self:addArmorPart(desiredArmor, category)
-        self:sendArmor(category)
-    end
+    self:sendArmor()
 end
 
-function PLAYER:takeArmorDamage(armorData, dmg)
-    armorData.health = armorData.health - math.floor(dmg)
+function PLAYER:giveHelmet()
+    self:resetHelmetData()
+    local desiredHelmet = self:getDesiredHelmet()
+    if desiredHelmet ~= 0 then
+        self:addArmorPart(desiredHelmet, "helmet")
+    end
+    self:sendHelmet()
+end
+
+function PLAYER:takeArmorDamage(armorData, dmgInfo)
+    armorData.health = math.ceil(armorData.health - dmgInfo:GetDamage())
 end
 
 function PLAYER:addArmorPart(id, category)
     GAMEMODE:prepareArmorPiece(self, id, category)
 end
 
--- Tell the client to replace a piece of armor with something else
-function PLAYER:sendArmor(category)
+function PLAYER:sendArmor()
     net.Start("GC_ARMOR")
-    net.WriteTable(self.armor[category])
-    net.WriteString(category)
+    net.WriteTable(self.armor)
     net.Send(self)
 end
 
--- Tell the client to set a piece of armor to a new health value
-function PLAYER:sendArmorHealthUpdate(health, category)
-    net.Start("GC_ARMOR_HEALTH_UPDATE")
-    net.WriteString(category)
+function PLAYER:sendHelmet()
+    net.Start("GC_HELMET")
+    net.WriteTable(self.helmet)
+    net.Send(self)
+end
+
+function PLAYER:sendArmorPiece(index, health, category)
+    net.Start("GC_ARMOR_PIECE")
+    net.WriteInt(index, 32)
     net.WriteFloat(health)
+    net.WriteString(category)
     net.Send(self)
 end

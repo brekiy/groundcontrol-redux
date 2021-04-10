@@ -1,6 +1,6 @@
 "UnlitGeneric"
 {
-	"$basetexture" "ground_control/hud/armor/aa_vest_spectra"
+	"$basetexture" "ground_control/hud/armor/aa_altyn_helmet"
 	"$translucent" 1
 	"$vertexalpha" 1
 	"$vertexcolor" 1

@@ -1,6 +1,6 @@
 "UnlitGeneric"
 {
-	"$basetexture" "ground_control/hud/armor/aa_helmet_operator"
+	"$basetexture" "ground_control/hud/armor/aa_ratnik_vest"
 	"$translucent" 1
 	"$vertexalpha" 1
 	"$vertexcolor" 1

@@ -12,7 +12,7 @@ GM.EmptyTable = {}
 function GM:registerEvent(eventName, display, tipId)
     local eventId = #self.EventsByID + 1
     local data = {eventName = eventName, eventId = eventId, display = display, tipId = tipId}
-
+    
     self.EventsByName[eventName] = data
     self.EventsByID[eventId] = data
 end

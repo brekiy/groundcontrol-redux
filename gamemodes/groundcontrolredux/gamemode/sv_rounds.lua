@@ -1,7 +1,7 @@
 GM.RoundWonCash = 200
 GM.RoundWonExp = 150
 
-GM.RoundsPerMap = GetConVar("gc_default_rounds_per_map"):GetInt()
+GM.RoundsPerMap = 16
 GM.RoundsPlayed = 0
 GM.MaxMapsPerPick = 9
 GM.MaxGameTypesPerPick = 9
@@ -34,7 +34,7 @@ end
 function GM:removeTrashProps(entList)
     for k, v in pairs(entList) do
         local phys = v:GetPhysicsObject()
-
+        
         if IsValid(phys) and phys:GetMass() <= self.TrashPropMaxWeight then
             SafeRemoveEntity(v)
         end
@@ -44,7 +44,7 @@ end
 function GM:makeDebrisMovetypeForTrash(entList)
     for k, v in pairs(entList) do
         local phys = v:GetPhysicsObject()
-
+        
         if IsValid(phys) and phys:GetMass() <= self.TrashPropMaxWeight then
             v:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
         end
@@ -53,9 +53,9 @@ end
 
 -- this is the default round over check, for gametypes with no player respawns
 function GM:checkRoundOverPossibility(teamId, ignoreDisplay)
-    if !self.RoundOver then
+    if not self.RoundOver then
         local allPlayers = player.GetAll()
-
+        
         if #allPlayers < 2 then -- don't do anything if we only have 2 players
             if allPlayers == 0 then -- if everyone disconnected, reset rounds played
                 self.RoundsPlayed = 0
@@ -68,18 +68,18 @@ function GM:checkRoundOverPossibility(teamId, ignoreDisplay)
         if #redMembers == 0 or #blueMembers == 0 then -- if neither team has AT LEAST ONE member, we don't restart rounds at all
             return
         end
-
+        
         if self.RoundsPlayed > 0 then
             local winner = nil
-
+            
             if self:countLivingPlayers(TEAM_RED) == 0 then
                 winner = TEAM_BLUE
             end
-
+            
             if self:countLivingPlayers(TEAM_BLUE) == 0 then
                 winner = TEAM_RED
             end
-
+            
             if winner then
                 self:endRound(winner)
             end
@@ -87,17 +87,19 @@ function GM:checkRoundOverPossibility(teamId, ignoreDisplay)
             self:endRound(nil)
         end
     end
-
-    if teamId and !ignoreDisplay then
-        self:createLastManStandingDisplay(teamId)
+    
+    if teamId then
+        if not ignoreDisplay then
+            self:createLastManStandingDisplay(teamId)
+        end
     end
 end
 
 function GM:canRestartRound()
-    if GetConVar("gc_randomly_pick_gametype_and_map"):GetBool() then
+    if GetConVarNumber("gc_randomly_pick_gametype_and_map") >= 1 then
         return self.RoundsPlayed < self.RoundsPerMap - 1
     end
-
+    
     return true
 end
 
@@ -105,42 +107,42 @@ function GM:endRound(winningTeam)
     if self.RoundOver then -- we're already restarting a round wtf
         return
     end
-
+    
     hook.Call("GroundControlPreRoundEnded", nil, winningTeam)
-
+    
     print("[GROUND CONTROL] ROUND HAS ENDED, WINNING TEAM ID: ", winningTeam)
     local lastRound = self.RoundsPlayed >= self.RoundsPerMap
     local canRestart = self:canRestartRound()
-    local randomMapAndGametype = GetConVar("gc_randomly_pick_gametype_and_map"):GetBool()
-    local canPickRandomMapAndGametype = !canRestart and randomMapAndGametype
+    local randomMapAndGametype = GetConVarNumber("gc_randomly_pick_gametype_and_map") >= 1
+    local canPickRandomMapAndGametype = not canRestart and randomMapAndGametype
     local actionToSend = nil
-
+    
     if canPickRandomMapAndGametype then
         actionToSend = self.RoundOverAction.RANDOM_MAP_AND_GAMETYPE
     else
         actionToSend = self.RoundOverAction.NEW_ROUND
     end
-
-    if !winningTeam then
+    
+    if not winningTeam then
         net.Start("GC_GAME_BEGIN")
         net.Broadcast()
     else
         for key, obj in ipairs(team.GetPlayers(winningTeam)) do
             obj:addCurrency(self.RoundWonCash, self.RoundWonExp, "WON_ROUND")
         end
-
+        
         net.Start("GC_ROUND_OVER")
         net.WriteInt(winningTeam, 8)
         net.WriteInt(actionToSend, 8)
         net.Send(player.GetAll())
     end
-
+    
     self.MVPTracker:sendMVPList()
-
+    
     if self.curGametype.onRoundEnded then
         self.curGametype:onRoundEnded(winningTeam)
     end
-
+    
     if canRestart then
         timer.Simple(self.RoundRestartTime, function()
             self:restartRound()
@@ -152,39 +154,39 @@ function GM:endRound(winningTeam)
             end)
         end
     end
-
+    
     self.RoundOver = true
-
+    
     if lastRound then -- start a vote for the next map if possible
-        if !canPickRandomMapAndGametype then
+        if not canPickRandomMapAndGametype then
             self:startVoteMap()
         end
     else
         print("Can pick random map/gametype?", canPickRandomMapAndGametype)
-        if self.RoundsPlayed == self.RoundsPerMap - 1 and self:gametypeVotesEnabled() and !canPickRandomMapAndGametype then -- start a vote for next gametype if we're on the second last round
+        if self.RoundsPlayed == self.RoundsPerMap - 1 and self:gametypeVotesEnabled() and not canPickRandomMapAndGametype then -- start a vote for next gametype if we're on the second last round
             self:startGameTypeVote()
         end
-
+        
         self.RoundsPlayed = self.RoundsPlayed + 1
         self:saveCurrentGametype()
     end
-
+    
     hook.Call("GroundControlPostRoundEnded", nil, winningTeam)
-
+    
     self.MVPTracker:resetAllTrackedIDs()
 end
 
 function GM:startVoteMap()
     if self:canStartVote() then
-        local _, data = self:getGametypeFromConVar()
+        local id, data = self:getGametypeFromConVar()
         local mapList = self:filterExistingMaps(data.mapRotation)
-
+        
         self:setupCurrentVote("Vote for the next map", mapList, player.GetAll(), self.MaxMapsPerPick, true, nil, function()
-            local highestOption, _ = self:getHighestVote()
-
+            local highestOption, highestKey = self:getHighestVote()
+            
             game.ConsoleCommand("changelevel " .. highestOption.option .. "\n")
         end, self.VoteMapVoteID)
-
+        
         hook.Call("GroundControlMapVoteStarted", nil, mapList, self.VoteID)
     end
 end
@@ -194,7 +196,7 @@ GM.PreviousGametypeFile = "previous_gametype.txt"
 -- doesn't actually remove the gametype, it just removes any mention of what the previous gametype from the file was,
 -- in case you switch maps a lot and want to have all gametypes up for voting
 -- bad name for the method though
-function GM:removeCurrentGametype()
+function GM:removeCurrentGametype() 
     file.Write(self.MainDataDirectory .. "/" .. self.PreviousGametypeFile, "")
 end
 
@@ -204,7 +206,7 @@ end
 
 function GM:getPreviousGametype()
     local data = file.Read(self.MainDataDirectory .. "/" .. self.PreviousGametypeFile)
-
+    
     if data then
         return data
     end
@@ -216,60 +218,60 @@ function GM:hasAtLeastOneMapForGametype(gametypeData)
             return true
         end
     end
-
+    
     return false
 end
 
 function GM:startGameTypeVote()
     local possibilities = {}
     local prevGametype = self:getPreviousGametype()
-
+    
     for key, gametype in ipairs(GAMEMODE.Gametypes) do
         if self.RemovePreviousGametype and prevGametype and prevGametype == gametype.name then -- this gametype was already played, so skip it
             continue
         end
-
+        
         if self:hasAtLeastOneMapForGametype(gametype) then -- only insert the gamemode if there is at least 1 map available for it
             table.insert(possibilities, gametype.prettyName)
         end
     end
-
+    
     self:setupCurrentVote("Vote for next game type", possibilities, player.GetAll(), self.MaxGameTypesPerPick, false, nil, function()
-        local highestOption, _ = self:getHighestVote()
-
+        local highestOption, highestKey = self:getHighestVote()
+        
         self:setGametypeCVarByPrettyName(highestOption.option)
     end, self.VoteGametypeVoteID)
-
+    
     hook.Call("GroundControlGametypeVoteStarted", nil, possibilities, self.VoteID)
 end
 
 function GM:restartRound()
-    if !self.curGametype.noTeamBalance then
+    if not self.curGametype.noTeamBalance then
         self:balanceTeams()
     end
-
+    
     self.canSpawn = true
     game.CleanUpMap()
     self:dealWithTrashProps()
     self:autoRemoveEntities()
     self:runMapStartCallback()
-
+    
     if self.curGametype.roundStart then
         self.curGametype:roundStart()
     end
-
+    
     self:setupRoundPreparation()
-
+    
     for key, obj in pairs(player.GetAll()) do
         obj:Spawn()
     end
-
+    
     self.canSpawn = false
     self.RoundOver = false
     self:updateServerName()
     net.Start("GC_NEW_ROUND")
     net.Broadcast()
-
+    
     self:resetKillcountData()
 end
 
@@ -282,7 +284,7 @@ function GM:setupRoundPreparation()
     table.Empty(self.DamageLog)
     self.PreparationTime = CurTime() + self.RoundPreparationTime
     self:setupLoadoutSelectionTime()
-
+    
     timer.Simple(self.RoundPreparationTime, function()
         self:disableCustomizationMenu()
     end)
@@ -294,7 +296,7 @@ end
 
 function GM:countLivingPlayers(teamToCheck)
     local alive = 0
-
+    
     for key, obj in pairs(team.GetPlayers(teamToCheck)) do
         if obj:Alive() then
             alive = alive + 1
