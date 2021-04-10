@@ -190,7 +190,6 @@ function GM:attemptVote(ply, voteOption)
 end
 
 function GM:assignVote(ply, voteOption)
-    -- print("assigning vote")
     local voteData = self.VoteOptions[voteOption]
     voteData.votes = voteData.votes + 1
     self.VotedPlayers[ply:SteamID64()] = true

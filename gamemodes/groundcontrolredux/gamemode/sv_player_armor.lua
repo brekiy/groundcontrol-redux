@@ -12,7 +12,6 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
     end
 
     local shouldBleed = true
-    -- local removeIndex = 1
     for category, armorPiece in pairs(self.armor) do
         local armorData = GAMEMODE:getArmorData(armorPiece.id, category)
         local removeArmor = false
@@ -42,8 +41,8 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 -- if our armor gets penetrated, it doesn't matter how much health we had in our regen pool, we still start bleeding
                 self:resetHealthRegenData()
             end
-            -- Clamp ballistic damage reduction between 0-95%
-            damageNegation = math.Clamp(damageNegation, 0, 0.95)
+            -- Clamp ballistic damage reduction between 0-90%
+            damageNegation = math.Clamp(damageNegation, 0, 0.9)
             dmgInfo:ScaleDamage(1 - damageNegation)
             --[[
                 Armor damage formula: dmg * (1 + (armor - bulletPen) / armor)

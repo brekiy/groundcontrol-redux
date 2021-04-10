@@ -41,10 +41,6 @@ function GM:calculateCurrentLoadoutCost(ply, withCost, filterPrimary, filterSeco
     totalCost = totalCost + GAMEMODE:getArmorCost("helmet", ply:getDesiredHelmet())
 
     for key, weapon in pairs(ply:GetWeapons()) do
-        -- print(weapon:GetPrintName() .. " checking for filter...")
-        -- print((filterPrimary and weapon.isPrimaryWeapon) .. ", " ..
-        -- (filterSecondary and !weapon.isPrimaryWeapon and !weapon.isTertiaryWeapon and !weapon.isKnife) .. ", " ..
-        -- (filterTertiary and weapon.isTertiaryWeapon))
         if !((filterPrimary and weapon.isPrimaryWeapon) or
             (filterSecondary and !weapon.isPrimaryWeapon and !weapon.isTertiaryWeapon and !weapon.isKnife) or
             (filterTertiary and weapon.isTertiaryWeapon)) then

@@ -10,8 +10,6 @@ GM.Website     = "N/A"
 
 GM.MainDataDirectory = "ground_control" -- I'd like to change this but this would wipe server progress
 
--- GM.BaseRunSpeed = GetConVar("gc_base_run_speed"):GetInt()
--- GM.BaseWalkSpeed = GetConVar("gc_base_walk_speed"):GetInt()
 GM.CrouchedWalkSpeed = 0.6
 GM.CurrentMap = game.GetMap()
 GM.RoundRestartTime = 10 -- how much time to restart a round after it has ended

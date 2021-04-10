@@ -71,7 +71,6 @@ function ENT:drawHUD()
     local coords = pos:ToScreen()
 
     if coords.visible then
-        -- local ply = LocalPlayer()
         local baseX, baseY = math.ceil(coords.x - self.barWidth * 0.5), math.ceil(coords.y - 8)
         local alpha = math.Clamp(math.Distance(baseX, baseY, x * 0.5, y * 0.5), 150, 255) / 255
 
@@ -91,8 +90,6 @@ function ENT:drawHUD()
         white.a = 255
         black.a = 255
     end
-
-    -- local ply = LocalPlayer()
 
     if ply:Alive() and self:isWithinCaptureAABB(ply:GetPos()) then
         local midY = y * 0.5 + 150

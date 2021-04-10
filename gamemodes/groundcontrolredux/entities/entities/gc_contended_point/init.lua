@@ -44,8 +44,6 @@ function ENT:setRoundOverOnCapture(roundOver)
     self.roundOverOnCapture = roundOver
 end
 
--- local plys, CT
-
 function ENT:Think()
     if GAMEMODE.RoundOver then
         return

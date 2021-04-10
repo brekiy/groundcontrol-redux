@@ -7,9 +7,3 @@ hook.Add("gc_event_update_loadout_cost", "GCR update_player_loadout_limit", func
     -- print("wowee hook firing on loadout cost time")
     ply:updateLoadoutPoints()
 end)
-
--- hook.Add("gc_loadout_cost_tip", "GCR loadout_cost_tip", function(ply)
---     net.Start("GC_NOT_ENOUGH_CASH")
---     -- net.WriteInt(price, 32)
---     net.Send(ply)
--- end)

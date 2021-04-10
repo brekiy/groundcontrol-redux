@@ -1,12 +1,10 @@
 GM.ShakeData = {lastRoll = 0, lastX = 0, lastY = 0, targetAngle = 0, curAngle = 0}
 GM.ShakeIntensity = 0.075
 
--- local viewData = {}
-
-local zeroVec = Vector(0, 0, 0)
-local fullVec = Vector(1, 1, 1)
 
 function GM:CalcView(ply, eyePos, eyeAng, fov, nearZ, farZ)
+    local zeroVec = Vector(0, 0, 0)
+    local fullVec = Vector(1, 1, 1)
     -- :Alive lags behind a bit, so assuming that health < 0 and ragdoll ent present = dead is a safe enough assumption
     if ply:Health() <= 0 or !ply:Alive() then
         self.deadPeriod = self.deadPeriod or CurTime() + self.DeadPeriodTime

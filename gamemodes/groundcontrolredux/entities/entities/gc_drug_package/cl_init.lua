@@ -28,8 +28,6 @@ local white, black = Color(255, 255, 255, 255), Color(0, 0, 0, 255)
 function ENT:Draw()
     self:DrawModel()
 
-    -- local ply = LocalPlayer()
-
     if !self.inRange then
         return
     end

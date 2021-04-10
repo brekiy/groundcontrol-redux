@@ -20,8 +20,6 @@ function ENT:drawHUD()
     local coords = pos:ToScreen()
 
     if coords.visible then
-        -- local ply = LocalPlayer()
-        -- local ourTeam = ply:Team()
         local baseX, baseY = math.ceil(coords.x - self.barWidth * 0.5), math.ceil(coords.y - 8)
         local alpha = math.Clamp(math.Distance(baseX, baseY, ScrW() * 0.5, ScrH() * 0.5), 150, 255) / 255
 
