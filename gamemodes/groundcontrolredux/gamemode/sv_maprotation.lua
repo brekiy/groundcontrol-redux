@@ -10,22 +10,22 @@ end
 
 function GM:filterExistingMaps(list)
     local newList = {}
-
+    
     for key, mapName in ipairs(list) do
         if self:hasMap(mapName) then
             newList[#newList + 1] = mapName
         end
     end
-
+    
     return newList
 end
 
 function GM:addMapToMapRotationList(mapRotationList, mapName)
-    if !self.MapRotation[mapRotationList] then
+    if not self.MapRotation[mapRotationList] then
         self.MapRotation[mapRotationList] = {}
         print("[GROUND CONTROL] - attempt to add a map to a non-existant map rotation list, creating list")
     end
-
+    
     table.insert(self.MapRotation[mapRotationList], mapName)
 end
 

@@ -8,6 +8,6 @@ function GM:getActivePlayerAmount()
         self.PreviousPlayerRetrieve = CurTime() + 1
         self.ActivePlayerAmount = #player.GetAll()
     end
-
+    
     return self.ActivePlayerAmount
 end

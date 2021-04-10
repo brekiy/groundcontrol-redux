@@ -78,7 +78,7 @@ if SERVER then
                 phys:SetVelocityInstantaneous(ply:GetVelocity())
             end
 
-            if !dir then
+            if not dir then
                 phys:ApplyForceCenter(Vector(0, 0, 1200))
             else
                 phys:ApplyForceCenter(Vector(0, 0, 700) + dir * 500)
@@ -91,28 +91,28 @@ if SERVER then
     end
 
     function ENT:UseOverride(ply)
-
-        if IsValid(ply) and !self:GetBeingWorn() then
+        
+        if IsValid(ply) and not self:GetBeingWorn() then
             if GetRoundState() != ROUND_ACTIVE then
                 SafeRemoveEntity(self)
                 return
-            elseif !CanEquipHat(ply) then
+            elseif not CanEquipHat(ply) then
                 return
             end
-
+    
             sound.Play("weapon.ImpactSoft", self:GetPos(), 75, 100, 1)
-
+    
             self:SetMoveType(MOVETYPE_NONE)
             self:SetSolid(SOLID_NONE)
             self:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-
+    
             self:SetParent(ply)
             self.Wearer = ply
-
-            ply.hat = self
-
+    
+            ply.hat = self.Entity
+    
             self:SetBeingWorn(true)
-
+    
             LANG.Msg(ply, "hat_retrieve")
         end
     end

@@ -12,7 +12,7 @@ function ENT:Think()
     if GAMEMODE.RoundOver then
         return
     end
-
+    
     for key, obj in ipairs(ents.FindInSphere(self:GetPos(), self.CaptureRange)) do
         if obj:IsPlayer() and obj:Alive() and GAMEMODE.curGametype:attemptCaptureDrugs(obj, self) then
             GAMEMODE:endRound(obj:Team())
