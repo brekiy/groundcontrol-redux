@@ -3,13 +3,9 @@ AddCSLuaFile()
 GM.MaxStamina = 100
 GM.InitialStamina = 100
 GM.StaminaDrainPerTick = 1 -- how much stamina we lose every stamina drain tick
--- GM.StaminaDrainTickTime = 0.75 -- how often we lose stamina when sprinting
--- GM.StaminaRegenTickTime = 0.35 -- how often we regenerate stamina when not sprinting
 GM.PostDrainStaminaRegenTickDelay = 1 -- we have to wait this much after our stamina being drained
 GM.StaminaRegenAmount = 1 -- how much stamina we regen when we're in idle state
 GM.MinStaminaFromSprinting = 20 -- how far our stamina will drop from sprinting
-GM.RunSpeedImpactStaminaLevel = 80 -- when our stamina value is lower than this, our run speed becomes impacted
-GM.RunSpeedPerStaminaPoint = 1.25 -- we lose this much run speed per each point of stamina below the stamina impact level
 GM.StaminaDecreasePerHealthPoint = 70 -- we lose this much max stamina by the time our health reaches 0
 
 local PLAYER = FindMetaTable("Player")

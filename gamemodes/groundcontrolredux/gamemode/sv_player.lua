@@ -79,7 +79,7 @@ function GM:PlayerInitialSpawn(ply)
     ply:SetTeam(TEAM_SPECTATOR)
     ply:KillSilent()
     ply:resetSpectateData()
-    -- ply:resetAllArmor()
+
     ply:loadAttachments()
     ply:loadCash()
     ply:loadExperience()

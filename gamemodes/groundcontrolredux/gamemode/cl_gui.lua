@@ -1506,7 +1506,7 @@ function attachmentAssignment:Paint()
             self.descBox:SetDrawOnTop(true)
 
             if !self:IsSlotUnlocked() then
-                self.descBox:InsertText("Slot !unlocked, can !assign to it.", "CW_HUD28", 0)
+                self.descBox:InsertText("Slot locked, can't assign to it.", "CW_HUD28", 0)
             else
                 if self.attachmentData then
                     self.descBox:InsertText(self.attachmentData.displayName, "CW_HUD28", 0)
@@ -1573,7 +1573,7 @@ function loadoutPoints:OnCursorEntered()
         self.descBox = vgui.Create("GCGenericDescbox")
         self.descBox:InsertText("The cost of your current loadout.", "CW_HUD28", 0)
         self.descBox:InsertText("Your weapons and gear are not free.", "CW_HUD20", 0)
-        self.descBox:InsertText("The better you perform, the more freedom you have in what you can bring in your kit.", "CW_HUD20", 0)
+        self.descBox:InsertText("The better you perform, the more your kit can cost.", "CW_HUD20", 0)
 
         self.descBox:SetPos(x, y + h + 5)
         self.descBox:SetZPos(10000)
@@ -2227,7 +2227,7 @@ function gcTraitPanel:OnCursorEntered()
 
         if traitLevel > 0 and !active then
             self.descBox:InsertText(self.traitData.display .. " (Inactive)", "CW_HUD28", 0)
-            self.descBox:InsertText("This trait is !active, left-click to activate it.", "CW_HUD20", 0)
+            self.descBox:InsertText("This trait is inactive, left-click to activate it.", "CW_HUD20", 0)
         else
             self.descBox:InsertText(self.traitData.display, "CW_HUD28", 0)
         end
