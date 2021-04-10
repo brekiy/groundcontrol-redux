@@ -5,6 +5,7 @@ ENT.Type = "nextbot"
 
 -- Credits to wyozi-gmod's gamemode and nextbot base.
 -- https://github.com/wyozi-gmod/budgetday/blob/master/entities/entities/bd_nextbotbase.lua
+-- https://github.com/lepotatur/tttbots
 ENT.HitBoxToHitGroup = {
     [0] = HITGROUP_HEAD,
     [16] = HITGROUP_CHEST,
@@ -20,24 +21,23 @@ function ENT:Initialize()
     self:SetNoDraw(true)
     self:DrawShadow(false)
     self:SetSolid(SOLID_NONE)
-    self.PosGen = nil
 end
 
 function ENT:SetEnemy(ent)
-	self.Enemy = ent
+    self.Enemy = ent
 end
 
 function ENT:GetEnemy()
-	return self.Enemy
+    return self.Enemy
 end
 
 function ENT:RunBehaviour()
-	while (true) do
-		if self.PosGen then
-			self:ChasePos()
-		end
-		coroutine.yield()
-	end
+    while (true) do
+        if self.PosGen then
+            self:ChasePos()
+        end
+        coroutine.yield()
+    end
 end
 
 function ENT:ChasePos()
@@ -51,7 +51,7 @@ function ENT:ChasePos()
     if self.P:GetAge() > 0.2 then
         self.P:Compute(self, self.PosGen)
     end
-    if GetConVar("gc_bot_nav_debug"):GetInt() == 1 then
+    if GetConVar("gc_bot_nav_debug"):GetBool() then
         self.P:Draw()
     end
 end

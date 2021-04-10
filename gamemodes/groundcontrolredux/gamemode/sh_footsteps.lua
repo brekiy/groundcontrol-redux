@@ -100,7 +100,7 @@ table.sort(GM.FOOTSTEP_LOUNDLESS_LEVEL_ORDER, function(a, b)
 end)
 
 GM.BASE_NOISE_LEVEL = 30
-GM.LOUDNESS_PER_VELOCITY = 30 / GM.BaseRunSpeed -- add 20 loudness when we reach full run speed
+GM.LOUDNESS_PER_VELOCITY = 30 / GetConVar("gc_base_run_speed"):GetInt() -- add 30 loudness when we reach full run speed
 GM.CROUCH_LOUDNESS_VELOCITY_AFFECTOR = 0.5 -- multiply loudness increase from velocity by this much when crouch-walking
 GM.CROUCH_LOUDNESS_OVERALL_AFFECTOR = 0.5 -- overall multiplier for loudness when crouch-walking
 GM.SNEAKWALK_LOUDNESS_VELOCITY_AFFECTOR = 0.7 -- multiply loudness increase from velocity by this much when walking (+walk)
@@ -113,7 +113,7 @@ GM.SNEAKWALK_VELOCITY_CUTOFF = 105 -- if the player is walking slower than this,
 GM.SURFACE_FOOTSTEP_SOUNDS = {
 }
 
--- the sounds to play when walking on a surface that does not have a footstep sound registered to it
+-- the sounds to play when walking on a surface that does !have a footstep sound registered to it
 GM.FALLBACK_FOOTSTEP_SOUNDS = {}
 
 GM.FOOTSTEP_PITCH_START = 95
@@ -121,16 +121,16 @@ GM.FOOTSTEP_PITCH_END = 105
 
 function GM:registerWalkSound(materialID, desiredSounds, baseName, channel)
     channel = channel or CHAN_BODY
-    
+
     local targetList = nil
-    
+
     if materialID then
         self.SURFACE_FOOTSTEP_SOUNDS[materialID] = self.SURFACE_FOOTSTEP_SOUNDS[materialID] or {}
         targetList = self.SURFACE_FOOTSTEP_SOUNDS[materialID]
     else
         targetList = self.FALLBACK_FOOTSTEP_SOUNDS
     end
-    
+
     table.insert(targetList, desiredSounds)
 end
 
@@ -147,31 +147,32 @@ GM:registerWalkSound(MAT_WOODPANEL, {"ground_control/footsteps/woodpanel1.wav", 
 
 function GM:getWalkSound(materialID, loudnessLevel)
     local sounds = self.SURFACE_FOOTSTEP_SOUNDS[materialID]
-    
+
     if sounds then
         return sounds[math.random(1, #sounds)]
     end
-        
+
     local targetList = self.FALLBACK_FOOTSTEP_SOUNDS
-        
+
     return targetList[math.random(1, #targetList)]
 end
 
 function GM:PlayerFootstep(ply, position, foot, sound, volume, filter)
-    if not ply:Alive() then
+    if !ply:Alive() then
         return
     end
-    
-    -- don't try to play the sounds clientside if the person running is not the localplayer
-    if CLIENT and ply ~= LocalPlayer() then
+
+    -- don't try to play the sounds clientside if the person running is !the localplayer
+    if CLIENT and ply != LocalPlayer() then
         return true
     end
     local materialID = MAT_CONCRETE
-    if self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound] ~= nil then materialID = self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound]
-    else end
+    if self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound] != nil then
+        materialID = self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound]
+    end
     local loudnessID, noiseLevel = self:getLoudnessLevel(ply)
     self:playFootstepSound(ply, loudnessID, materialID)
-    
+
     -- suppress default sounds
     return true
 end
@@ -180,7 +181,7 @@ function GM:playFootstepSound(ply, loudnessID, materialID)
     if CLIENT then
         local sound = self:getWalkSound(materialID, loudnessID)
         sound = sound[math.random(1, #sound)]
-        
+
         -- for some very strange reason, if I register the sounds via sound.Add, and then play it back via ply:EmitSound I get really weird stutters
         -- I assume that I am not the only one with this issue, so just to be safe, I am going to be playing them using another method
         -- this method, on the other hand, does not cause stutters, so I have no idea wtf is going on
@@ -194,40 +195,40 @@ function GM:playFootstepSound(ply, loudnessID, materialID)
     end
 end
 
--- use usermessages to network the footsteps
+-- network the footsteps
 if CLIENT then
     net.Receive("GC_FOOTSTEP", function(a, b)
         local object = net.ReadEntity()
-        
+
         -- if the footstep sound belongs to us, don't play it, because we've already played it on our own
-        if not IsValid(object) or object == LocalPlayer() then
+        if !IsValid(object) or object == LocalPlayer() then
             return
         end
-        
+
         local loudnessID = net.ReadInt(16)
-        local materialID = net.ReadInt(16)        
-        
+        local materialID = net.ReadInt(16)
+
         GAMEMODE:playFootstepSound(object, loudnessID, materialID)
     end)
 end
 
 function GM:getLoudnessLevel(ply)
     local noiseLevel = self.BASE_NOISE_LEVEL
-    
+
     if CLIENT then -- on the client we will re-calculate the weight, because it's more accurate that way
         noiseLevel = noiseLevel + ply:calculateWeight() * self.NOISE_PER_KILOGRAM
     else -- on the server we will use the pre-calculated weight value, because the server knows more than the client about his weight values
         noiseLevel = noiseLevel + ply.weight * self.NOISE_PER_KILOGRAM
     end
-    
+
     local crouching = ply:Crouching()
     local velLength = ply:GetVelocity():Length()
-    
+
     local sneakWalking = velLength <= self.SNEAKWALK_VELOCITY_CUTOFF
-    
+
     local overallAffector = 1
     local velocityAffector = 1
-    
+
     if crouching then
         overallAffector = self.CROUCH_LOUDNESS_OVERALL_AFFECTOR
         velocityAffector = self.CROUCH_LOUDNESS_VELOCITY_AFFECTOR
@@ -235,18 +236,18 @@ function GM:getLoudnessLevel(ply)
         overallAffector = self.SNEAKWALK_LOUDNESS_OVERALL_AFFTER
         velocityAffector = self.SNEAKWALK_LOUDNESS_VELOCITY_AFFECTOR
     end
-    
+
     noiseLevel = noiseLevel + math.min(velLength * self.LOUDNESS_PER_VELOCITY, self.MAX_LOUDNESS_FROM_VELOCITY) * velocityAffector
     noiseLevel = noiseLevel * overallAffector
-    
+
     local mostValidLoudnessLevel = self.FOOTSTEP_LOUDNESS.ULTRA_LOW
-    
+
     for key, loudnessID in ipairs(self.FOOTSTEP_LOUNDLESS_LEVEL_ORDER) do
         if noiseLevel > self.LOUDNESS_LEVELS[loudnessID] then -- if the loudness value is greater than this one
             mostValidLoudnessLevel = loudnessID
         end
     end
-    
+
     return mostValidLoudnessLevel, noiseLevel
 end
 
@@ -254,6 +255,6 @@ local PLAYER = FindMetaTable("Player")
 
 function PLAYER:getWeightFootstepNoiseAffector(weight)
     weight = weight or self.weight or self:calculateWeight()
-    
+
     return weight * GAMEMODE.NOISE_PER_KILOGRAM
 end

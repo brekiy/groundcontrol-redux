@@ -12,14 +12,14 @@ file.verifyDataFolder(GM.AttachmentDirectory)
 
 function PLAYER:saveAttachments()
     local data = util.TableToJSON(self.ownedAttachments)
-    
+
     file.Write(GAMEMODE.AttachmentDirectory .. self:SteamID64() .. ".txt", data)
 end
 
 function PLAYER:loadAttachments()
     local readData = file.Read(GAMEMODE.AttachmentDirectory .. self:SteamID64() .. ".txt", "DATA")
     readData = readData and util.JSONToTable(readData) or {}
-    
+
     self.ownedAttachmentsNumeric = {}
     self.ownedAttachments = readData
     self:updateNumericAttachmentsTable(readData)
@@ -29,7 +29,7 @@ end
 function PLAYER:checkForAttachmentSlotUnlock()
     local reqExp = self:getNextAttachmentSlotPrice()
     local residue = self.experience - reqExp
-    
+
     if residue > 0 then
         if self:canUnlockMoreSlots() then
             self:unlockAttachmentSlot()
@@ -59,23 +59,22 @@ end
 function PLAYER:unlockAttachment(attachmentName, isFree)
     local attachmentData = CustomizableWeaponry.registeredAttachmentsSKey[attachmentName]
     local price = nil
-    
+
     if isFree then
         price = 0
     else
         price = attachmentData.price
     end
-    
-    if not isFree and (not price or price < 0) or self.ownedAttachments[attachmentName] then -- this attachment is free/already was bought, what are you doing
+
+    if !isFree and (!price or price < 0) or self.ownedAttachments[attachmentName] then -- this attachment is free/already was bought, what are you doing
         return
     end
-    
+
     if self.cash >= price then
         self.ownedAttachments[attachmentName] = true
         self:removeCash(price)
         self:sendUnlockedAttachment(attachmentName)
         self:saveAttachments()
-        
         self:updateNumericAttachmentsTable(attachmentName)
     else
         net.Start("GC_NOT_ENOUGH_CASH")
@@ -102,13 +101,13 @@ end
 
 function PLAYER:setupAttachmentLoadTable(weaponObject)
     table.Empty(GAMEMODE.AttachmentLoadTable)
-    
+
     --local baseConvarName = weaponObject.isPrimaryWeapon and "gc_primary_attachment_" or "gc_secondary_attachment_"
     local targetTable = weaponObject.isPrimaryWeapon and GAMEMODE.PrimaryAttachmentStrings or GAMEMODE.SecondaryAttachmentStrings
-    
+
     for i = 1, self:getAvailableAttachmentSlotCount() do -- get all attachments the player can set up on the client
         local desiredAttachment = self:GetInfo(targetTable[i]) --self:GetInfo(baseConvarName .. i)
-        
+
         if desiredAttachment and self:hasUnlockedAttachment(desiredAttachment) then -- check whether the attachment exists
             for category, data in pairs(weaponObject.Attachments) do -- now we iterate over all weapon attachments, find it in it's category and assign the category to the attachment name
                 for index, attachmentName in ipairs(data.atts) do
@@ -134,7 +133,7 @@ end
 
 function PLAYER:loadUnlockedAttachmentSlots()
     local slots = self:GetPData("GroundControlUnlockedAttachmentSlots") or 0
-    
+
     self.unlockedAttachmentSlots = tonumber(slots)
 end
 
@@ -144,7 +143,7 @@ end
 
 function PLAYER:loadExperience()
     local exp = self:GetPData("GroundControlExperience") or 0
-    
+
     self.experience = tonumber(exp)
 end
 
@@ -160,17 +159,17 @@ end
 
 function PLAYER:addExperience(amount, event)
     self:SetNWInt("GC_SCORE", self:GetNWInt("GC_SCORE") + amount)
-    
-    if not self:canUnlockMoreSlots() then
+
+    if !self:canUnlockMoreSlots() then
         return
     end
-    
+
     self.experience = math.max(self.experience + amount, 0)
     self:checkForAttachmentSlotUnlock()
     self:saveExperience()
-    
+
     self:sendExperience()
-    
+
     if event then
         GAMEMODE.ExpAmount.exp = amount
         GAMEMODE:sendEvent(self, event, GAMEMODE.ExpAmount)
@@ -179,12 +178,12 @@ end
 
 concommand.Add("gc_buy_attachment", function(ply, com, args)
     local attName = args[1]
-    
-    if not attName then
+
+    if !attName then
         return
     end
-    
-    if not ply:hasUnlockedAttachment(attName) then
+
+    if !ply:hasUnlockedAttachment(attName) then
         ply:unlockAttachment(attName)
     end
 end)
