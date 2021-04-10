@@ -14,13 +14,13 @@ GM.VoteQueue = {}
 function GM:pickVoteOptions(allOptions, maxPicks, randomize)
     if randomize then
         maxPicks = maxPicks or 9
-        
+
         for key, option in ipairs(allOptions) do -- clone the table
             self.PossibleVoteOptions[key] = option
         end
-        
+
         local curOptions = self.PossibleVoteOptions
-        
+
         for i = 1, math.Clamp(#curOptions, 1, maxPicks) do -- iterate over the table
             local curChoice = math.random(1, #curOptions) -- get a choice, add it to the vote option table, remove it from the cloned table
             self.VoteOptions[#self.VoteOptions + 1] = {votes = 0, option = curOptions[curChoice]}
@@ -34,7 +34,7 @@ function GM:pickVoteOptions(allOptions, maxPicks, randomize)
 end
 
 function GM:canStartVote()
-    return not self.VoteActive
+    return !self.VoteActive
 end
 
 function GM:popVoteQueue()
@@ -53,44 +53,44 @@ function GM:setupCurrentVote(title, options, targets, picks, randomize, teamTarg
         table.insert(self.VoteQueue, {title = title, options = options, targets = targets, picks = picks, randomize = randomize, teamTargets = teamTargets, finishCallback = finishCallback}) -- queue a vote in case we have one currently
         return false
     end
-    
+
     picks = picks or 9
     self:resetVoteData()
     self:pickVoteOptions(options, picks, randomize)
-    
+
     self.VoteTitle = title
     self.VoteCallback = finishCallback
     self.VoteStartTime = CurTime()
     self.VoteTeamTargets = teamTargets
     self.VoteActive = true
     self.VoteID = voteID
-    
+
     timer.Simple(self.VoteTime, function()
         self:finishCurrentVote()
     end)
-    
+
     hook.Call("GroundControlVoteStarted", nil, self.VoteID)
-    
+
     self:sendVoteToTargets(targets)
     return true
 end
 
 function GM:pickSendTargets(targets)
-    if not targets then
+    if !targets then
         if self.VoteTeamTargets then
             targets = team.GetPlayers(self.VoteTeamTargets)
         else
             targets = player.GetAll()
         end
     end
-    
+
     return targets
 end
 
 function GM:sendVoteToTargets(targets)
     targets = self:pickSendTargets(targets)
     self.CurrentVoteTargets = targets
-    
+
     for key, target in ipairs(targets) do
         if IsValid(target) then -- the target might be invalid in case we had a vote queued and some players left during that time
             self:sendVoteData(target)
@@ -119,7 +119,7 @@ end
 
 function GM:sendVoteDataUpdateToTargets(targets, index)
     targets = self:pickSendTargets(targets)
-    
+
     for key, target in ipairs(targets) do
         if IsValid(target) then
             self:sendVoteDataUpdate(target, index)
@@ -138,9 +138,9 @@ end
 
 function GM:finishCurrentVote()
     hook.Call("GroundControlVoteEnded", nil, self.VoteID)
-    
+
     self.VoteCallback()
-    self:resetVoteData() 
+    self:resetVoteData()
     self:popVoteQueue()
 end
 
@@ -160,37 +160,36 @@ function GM:getHighestVote()
     local cur = 0
     local totalVotes = 0
     local highestData = nil
-    
+
     for key, data in ipairs(self.VoteOptions) do
         if data.votes > cur then
             highestData = data
             cur = data.votes
         end
-        
+
         totalVotes = totalVotes + data.votes
     end
-    
-    if not highestData then -- if we didn't pick anything, pick a random option
+
+    if !highestData then -- if we didn't pick anything, pick a random option
         highestData, cur = table.Random(self.VoteOptions)
     end
-    
+
     return highestData, cur, totalVotes
 end
 
 function GM:attemptVote(ply, voteOption)
-    if not self.VoteOptions[voteOption] then
+    if !self.VoteOptions[voteOption] then
         return
     end
-    
+
     if self.VotedPlayers[ply:SteamID64()] then
         return
     end
-    
+
     self:assignVote(ply, voteOption)
 end
 
 function GM:assignVote(ply, voteOption)
-    -- print("assigning vote")
     local voteData = self.VoteOptions[voteOption]
     voteData.votes = voteData.votes + 1
     self.VotedPlayers[ply:SteamID64()] = true
@@ -199,16 +198,16 @@ function GM:assignVote(ply, voteOption)
 end
 
 concommand.Add("gc_vote", function(ply, com, args)
-    if not GAMEMODE.VoteActive then
+    if !GAMEMODE.VoteActive then
         return
     end
-    
+
     local vote = args[1]
-    
-    if not vote then
+
+    if !vote then
         return
     end
-    
+
     vote = tonumber(vote)
     GAMEMODE:attemptVote(ply, vote)
 end)

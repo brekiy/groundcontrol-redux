@@ -3,6 +3,6 @@ net.Receive("GC_TRAITS", function(len, ply)
         GAMEMODE.traitDescBox:Remove()
         GAMEMODE.traitDescBox = nil
     end
-    
+
     LocalPlayer().traits = net.ReadTable()
 end)

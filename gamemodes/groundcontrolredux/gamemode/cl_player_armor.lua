@@ -1,26 +1,24 @@
 net.Receive("GC_ARMOR", function(a, b)
-    LocalPlayer():resetArmorData()
-    LocalPlayer():setArmor(net.ReadTable())
+    local newArmor = net.ReadTable()
+    local category = net.ReadString()
+
+    LocalPlayer():resetArmorData(category)
+    LocalPlayer():setArmorPiece(newArmor, category)
     -- attachArmorPM(LocalPlayer())
 end)
 
-net.Receive("GC_HELMET", function(a, b)
-    LocalPlayer():resetHelmetData()
-    LocalPlayer():setHelmet(net.ReadTable())
-end)
-
-net.Receive("GC_ARMOR_PIECE", function(a, b)
-    LocalPlayer():updateArmorPiece(net.ReadInt(32), net.ReadFloat(), net.ReadString())
+net.Receive("GC_ARMOR_HEALTH_UPDATE", function(a, b)
+    LocalPlayer():updateArmorPiece(net.ReadString(), net.ReadFloat())
 end)
 
 -- experimental dumb stuff
 -- function attachArmorPM(ply)
 --     if SERVER then
 --         print("starting attach armor")
---         if not IsValid(ply.hat) then
+--         if !IsValid(ply.hat) then
 --             print("spawning attach armor")
 --             local hat = ents.Create("gc_armor_vest")
---             if not IsValid(hat) then return end
+--             if !IsValid(hat) then return end
 
 --             hat:SetPos(ply:GetPos() + Vector(0,0,70))
 --             hat:SetAngles(ply:GetAngles())
@@ -37,54 +35,43 @@ end)
 function GM:drawArmor(ply, baseX, baseY)
     local offset = 0
     local spacing = 60
-
-    if ply.armor or ply.helmet then
+    if ply.armor and !table.IsEmpty(ply.armor) then
         local curTime = CurTime()
         local frameTime = FrameTime()
-        local removeIndex = 1
         local white, black = self.HUDColors.white, self.HUDColors.black
-        local combinedArmor = ply:getTotalArmorPieces()
+        for key, armorPiece in SortedPairs(ply.armor) do
+            if !table.IsEmpty(armorPiece) then
+                local curPos = baseX + offset
+                local colorFade = curTime > armorPiece.colorHold
 
-        for i = 1, #combinedArmor do
-            local curPos = baseX + offset
-            
-            local data = combinedArmor[removeIndex]
-            local colorFade = curTime > data.colorHold
-            if data.red > 0 then
-                if colorFade then
-                    data.red = math.Approach(data.red, 0, frameTime * 1000)
+                if armorPiece.red > 0 and colorFade then
+                    armorPiece.red = math.Approach(armorPiece.red, 0, frameTime * 1000)
                 end
-            end
-        
-            if data.health <= 0 then
-                data.alpha = math.Approach(data.alpha, 0, frameTime)
-            
-                if data.alpha == 0 then
-                    table.remove(ply.armor, removeIndex)
-                    offset = offset - spacing
-                else
-                    removeIndex = removeIndex + 1
+
+                if armorPiece.health <= 0 then
+                    armorPiece.alpha = math.Approach(armorPiece.alpha, 0, frameTime)
+                    if armorPiece.alpha == 0 then
+                        offset = offset - spacing
+                    end
                 end
-            else
-                removeIndex = removeIndex + 1
+
+                if armorPiece.alpha > 0 then
+                    white.a, black.a = white.a * armorPiece.alpha, black.a * armorPiece.alpha
+
+                    surface.SetDrawColor(255, 255 - armorPiece.red, 255 - armorPiece.red, 255 * armorPiece.alpha)
+                    surface.SetTexture(armorPiece.armorData.icon)
+                    surface.DrawTexturedRect(curPos, baseY - 45, 40, 40)
+
+                    draw.ShadowText(math.max(armorPiece.health, 0), "CW_HUD14", curPos + spacing * 0.5 - 10, baseY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                end
+
+                offset = offset + spacing
             end
-            
-            if data.alpha > 0 then
-                white.a, black.a = white.a * data.alpha, black.a * data.alpha
-                
-                surface.SetDrawColor(255, 255 - data.red, 255 - data.red, 255 * data.alpha)
-                surface.SetTexture(data.armorData.icon)
-                surface.DrawTexturedRect(curPos, baseY - 45, 40, 40)
-                
-                draw.ShadowText(math.max(data.health, 0) .. "%", "CW_HUD14", curPos + spacing * 0.5 - 10, baseY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            end
-            
-            offset = offset + spacing
         end
-        
+
         white.a, black.a = 255, 255
     end
-    
+
     return offset
 end
 
@@ -92,31 +79,17 @@ local PLAYER = FindMetaTable("Player")
 PLAYER._armorFlashTime = 0.3
 PLAYER._armorFlashRedAmount = 255
 
-function PLAYER:updateArmorPiece(index, newHealth, category)
-    local combinedArmor = self:getTotalArmorPieces()
-    local armorData = nil
-    -- very hacky lol
-    if category == "vest" then 
-        armorData = self.armor[1]
-    elseif category == "helmet" then
-        armorData = self.helmet[1]
-    else return
-    end
+function PLAYER:updateArmorPiece(category, newHealth)
+    if !self.armor or !self.armor[category] then return end
+    local armorData = self.armor[category]
     local oldHealth = armorData.health
     armorData.health = newHealth
-    
-    if newHealth < oldHealth then
-        self:flashArmorPiece(armorData)
-    end
-end
 
-function PLAYER:updateHelmetPiece(index, newHealth)
-    local armorData = self.helmet[index]
-    local oldHealth = armorData.health
-    armorData.health = newHealth
-    
     if newHealth < oldHealth then
         self:flashArmorPiece(armorData)
+    end
+    if newHealth <= 0 then
+        self:resetArmorData(category)
     end
 end
 
@@ -125,8 +98,8 @@ function PLAYER:flashArmorPiece(armorData)
     armorData.colorHold = CurTime() + self._armorFlashTime
 end
 
-function PLAYER:setupArmorPiece(data)
-    local armorData = GAMEMODE:getArmorData(data.id, data.category)
+function PLAYER:setupArmorPiece(data, category)
+    local armorData = GAMEMODE:getArmorData(data.id, category)
     data.red = 0
     data.colorHold = 0
     data.alpha = 1

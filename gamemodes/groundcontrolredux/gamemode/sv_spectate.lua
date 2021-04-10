@@ -7,7 +7,7 @@ function PLAYER:resetSpectateData()
     self.spectateDelay = 0
     self.currentSpectateEntity = nil
     self.spectatedCamera = self.spectatedCamera or OBS_MODE_CHASE
-    
+
     table.Empty(self.spectatedPlayers)
 end
 
@@ -15,33 +15,33 @@ end
 function PLAYER:spectateNext(goBack)
     local wasFound = false
     local alivePlayers = 0
-    local teamPlayers = nil 
-    
+    local teamPlayers = nil
+
     local myTeam = self:Team()
-    
+
     if myTeam == TEAM_SPECTATOR then
         teamPlayers = player.GetAll()
     else
         teamPlayers = team.GetPlayers(self:Team())
     end
-    
-    local teamPlayerCount = #teamPlayers
+
+    -- local teamPlayerCount = #teamPlayers
     -- PrintTable(self.spectatedPlayers)
     for key, ply in ipairs(teamPlayers) do
         if ply:Alive() then
-            if not self.spectatedPlayers[ply] then
+            if !self.spectatedPlayers[ply] then
                 self.spectatedPlayers[ply] = true
                 self:setSpectateTarget(ply)
                 wasFound = true
-                
+
                 break
             end
-            
+
             alivePlayers = alivePlayers + 1
         end
     end
-    
-    if not wasFound and alivePlayers > 0 then
+
+    if !wasFound and alivePlayers > 0 then
         self:resetSpectateData()
         self:spectateNext(goBack)
     end
@@ -64,7 +64,7 @@ function PLAYER:attemptSpectate(goBack)
     if self:Alive() or CurTime() < self.spectateDelay then
         return
     end
-    
+
     self:spectateNext(goBack)
 end
 

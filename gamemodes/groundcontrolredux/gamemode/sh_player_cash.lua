@@ -5,13 +5,13 @@ local PLAYER = FindMetaTable("Player")
 
 function PLAYER:addCash(amount, event)
     self.cash = self.cash or 0
-    
+
     self.cash = math.max(self.cash + amount, 0)
     self:sendCash()
-    
+
     if SERVER then
         self:saveCash()
-        
+
         if event then
             GAMEMODE.CashAmount.cash = amount
             GAMEMODE:sendEvent(self, event, GAMEMODE.CashAmount)
@@ -22,7 +22,7 @@ end
 function PLAYER:removeCash(amount)
     self.cash = self.cash - amount
     self:sendCash()
-    
+
     if SERVER then
         self:saveCash()
     end
@@ -31,7 +31,7 @@ end
 function PLAYER:setCash(amount)
     self.cash = amount
     self:sendCash()
-    
+
     if SERVER then
         self:saveCash()
     end

@@ -1,9 +1,7 @@
 include("sv_gametype_shuffling.lua")
 include("sh_gametypes.lua")
-AddCSLuaFile("cl_gametypes.lua")
+-- AddCSLuaFile("cl_gametypes.lua")
 
-CreateConVar("gc_gametype", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
-CreateConVar("gc_allow_gametype_votes", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 --[[
     if this is set to true, then the gametype which was played previously will not be present during the vote for the next gametype
     in other words if you set it to true, people won't be able to play the same gametype 2 times in a row
@@ -11,10 +9,10 @@ CreateConVar("gc_allow_gametype_votes", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
     it gets old really fast and you might get pissed if every
     time you log on the server all you see is ghetto drug bust being played over and over again
 ]]
-GM.RemovePreviousGametype = false 
+GM.RemovePreviousGametype = false
 
 function GM:gametypeVotesEnabled()
-    return GetConVarNumber("gc_allow_gametype_votes") >= 1
+    return GetConVar("gc_allow_gametype_votes"):GetBool()
 end
 
 local PLAYER = FindMetaTable("Player")
@@ -31,19 +29,19 @@ end)
 
 concommand.Add("gc_gametypelist", function(ply, com, args)
     local text = "\n[GROUND CONTROL] Gametypes list:\n"
-    
+
     for key, data in ipairs(GAMEMODE.Gametypes) do
         text = text .. GAMEMODE:getGametypeNameData(key) .. "\n"
     end
-    
+
     print(text)
 end)
 
 concommand.Add("gc_gametype_maplist", function(ply, com, args)
     local text = "\n[GROUND CONTROL] Supported map list for gametypes:\n"
-    
-    for key, data in ipairs(GAMEMODE.Gametypes) do
-        text = text .. GAMEMODE:getGametypeNameData(key) .. "\n"
+
+    for gamemodeKey, data in ipairs(GAMEMODE.Gametypes) do
+        text = text .. GAMEMODE:getGametypeNameData(gamemodeKey) .. "\n"
         for key, map in pairs(data.mapRotation) do
             if key != nil and map != nil then
                 if GAMEMODE:hasMap(map) then
@@ -54,7 +52,7 @@ concommand.Add("gc_gametype_maplist", function(ply, com, args)
             end
         end
     end
-    
+
     print(text)
 end)
 

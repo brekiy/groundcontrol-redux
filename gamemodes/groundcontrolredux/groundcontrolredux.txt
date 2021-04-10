@@ -4,4 +4,89 @@
 	"title"		"Ground Control Redux"
 	"maps"		"^gc_"
 	"menusystem"	"1"
+	"category"	"pvp"
+	"workshopid" ""
+
+	"settings"
+	{
+		1
+		{
+			"name"		"gc_weight_min_level_speed_decrease"
+			"text"		"Sprint speed reduction threshold"
+			"type"		"Numeric"
+			"default"	"7.5"
+		}
+
+		2
+		{
+			"name"		"gc_weight_sprint_penalty"
+			"text"		"Sprint speed weight penalty"
+			"type"		"Numeric"
+			"default"	"0.65"
+		}
+
+		3
+		{
+			"name"		"gc_bleed_time"
+			"text"		"Bleed tick time"
+			"type"		"Numeric"
+			"default"	"5"
+		}
+
+		4
+		{
+			"name"		"gc_bleed_hp_lost_per_tick"
+			"text"		"Bleed tick loss"
+			"type"		"Numeric"
+			"default"	"1"
+		}
+
+		5
+		{
+			"name"		"gc_health_regen_time"
+			"text"		"Regen tick time"
+			"type"		"Numeric"
+			"default"	"1.5"
+		}
+
+		6
+		{
+			"name"		"gc_damage_multiplier"
+			"text"		"Damage multiplier"
+			"type"		"Numeric"
+			"default"	"1.55"
+		}
+
+		7
+		{
+			"name"		"gc_base_run_speed"
+			"text"		"Run speed"
+			"type"		"Numeric"
+			"default"	"300"
+		}
+
+		8
+		{
+			"name"		"gc_base_walk_speed"
+			"text"		"Walk speed"
+			"type"		"Numeric"
+			"default"	"150"
+		}
+
+		9
+		{
+			"name"		"gc_default_rounds_per_map"
+			"text"		"Rounds - Default"
+			"type"		"Numeric"
+			"default"	"16"
+		}
+
+		10
+		{
+			"name"		"gc_urban_warfare_rounds_per_map"
+			"text"		"Rounds - Urban Warfare"
+			"type"		"Numeric"
+			"default"	"6"
+		}
+	}
 }

@@ -15,14 +15,14 @@ ENT.roundOverOnCapture = true
 function ENT:Initialize()
     self:SetModel("models/error.mdl")
     self:SetNoDraw(true)
-    
+
     self.captureDelay = 0
     self.deCaptureDelay = 0
     self.defenderTeam = nil
     self.winDelay = 0
-    
+
     self:setCaptureDistance(self.captureDistance)
-    
+
     local gametype = GAMEMODE:getGametype()
     gametype:assignPointID(self)
 end
@@ -61,53 +61,49 @@ function ENT:setRoundOverOnCapture(roundOver)
     self.roundOverOnCapture = roundOver
 end
 
-local plys, CT
-
 function ENT:Think()
     if GAMEMODE.RoundOver then
         return
     end
-    
-    if self.roundOverOnCapture then
-        if self.dt.CaptureProgress == 100 then
-            GAMEMODE:endRound(self.capturerTeam)
-            return
-        end
+
+    if self.roundOverOnCapture and self.dt.CaptureProgress == 100 then
+        GAMEMODE:endRound(self.capturerTeam)
+        return
     end
-    
+
     local curTime = CurTime()
     local defendingPlayers = 0
-    
+
     local ownPos = self:GetPos()
-    
+
     for key, ply in ipairs(team.GetPlayers(self.defenderTeam)) do
         if ply:Alive() then
             local dist = ply:GetPos():Distance(ownPos)
-            
+
             if dist <= self.captureDistance then
                 defendingPlayers = defendingPlayers + 1
             end
         end
     end
-    
+
     local capturingPlayers = 0
-    
+
     if defendingPlayers == 0 then
         for key, ply in ipairs(team.GetPlayers(self.capturerTeam)) do
             if ply:Alive() then
                 local dist = ply:GetPos():Distance(ownPos)
-                
+
                 if dist <= self.captureDistance then
                     capturingPlayers = capturingPlayers + 1
                 end
             end
         end
     end
-    
+
     if capturingPlayers > 0 then
         if curTime > self.captureDelay then
             local multiplier = math.max(1 - (capturingPlayers - 1) * self.captureSpeedIncrease, self.maxSpeedIncrease)
-            
+
             self.dt.CaptureSpeed = self.captureTime * multiplier / self.captureTime
             self.captureDelay = curTime + self.captureTime * multiplier
             self.deCaptureDelay = curTime + self.deCaptureTime
