@@ -45,56 +45,56 @@ GM.currentHurtProgress = 0
 
 GM.minHurtEffectTime = 0.2
 GM.maxHurtEffectTime = 3
-
+    
 function GM:RenderScreenspaceEffects()
     local ply = LocalPlayer()
     local hp = ply:Health()
-
+    
     if hp <= self.MinHealthBlackAndWhiteStart then
         if self.deadPeriod and CurTime() > self.deadPeriod then
             return
         end
-
+        
         local finalDecrease
-
+        
         if ply:Alive() then
             local curDifference = 1 - hp / self.MinHealthBlackAndWhiteStart
             finalDecrease = self.MaxColorDesaturation * curDifference
         else
             finalDecrease = 1
         end
-
+        
         self.ColorCorrectionData["$pp_colour_colour"] = 1 - finalDecrease
-
+        
         DrawColorModify(self.ColorCorrectionData)
     end
-
-    -- local unpredictedCurTime = UnPredictedCurTime()
-
+    
+    local unpredictedCurTime = UnPredictedCurTime()
+    
     if self.currentHurtProgress < self.currentHurtDuration then
         local frameTime = FrameTime()
         local realIntensity = (1 - math.min(1, self.currentHurtProgress / self.currentHurtDuration)) * self.currentHurtIntensity
-
+        
         DrawSharpen(Lerp(realIntensity, self.HurtSharpenContrastMin, self.HurtSharpenContrastMax), Lerp(realIntensity, self.HurtSharpenDistanceMin, self.HurtSharpenDistanceMax))
         DrawMotionBlur(Lerp(realIntensity, self.HurtBlurAddAlphaMin, self.HurtBlurAddAlphaMax), self.HurtBlurDrawAlpha, self.HurtBlurDelay)
-
+        
         self.HurtColorCorrection["$pp_colour_addr"] = Lerp(realIntensity, 0, 100 / 255)
         self.HurtColorCorrection["$pp_colour_colour"] = Lerp(realIntensity, 1, 1.21)
         self.HurtColorCorrection["$pp_colour_contrast"] = Lerp(realIntensity, 1, 1.5)
-
+        
         DrawColorModify(self.HurtColorCorrection)
-
+        
         self.currentHurtProgress = self.currentHurtProgress + frameTime
     end
 end
 
 function GM:playHurtEffect(damageTaken)
     local intensity = math.min(damageTaken / self.HurtIntensityMaxDamage, 1)
-
+    
     local pastProgress = 1 - self.currentHurtProgress / self.currentHurtDuration
     local pastIntensity = self.currentHurtIntensity * pastProgress
-
-    if intensity >= pastIntensity or pastIntensity != pastIntensity then
+        
+    if intensity >= pastIntensity or pastIntensity ~= pastIntensity then
         self.currentHurtIntensity = intensity
         self.currentHurtDuration = Lerp(intensity, self.minHurtEffectTime, self.maxHurtEffectTime)
         self.currentHurtProgress = 0

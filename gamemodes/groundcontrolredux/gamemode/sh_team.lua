@@ -23,16 +23,16 @@ team.SetUp(TEAM_BLUE, "Team Blue", Color(99, 148, 255, 255), true)
 GM.MaxPlayerCountTeamDifference = 1
 
 -- teamBackground is the text displayed in the team selection menu
--- if not defined the text won't be displayed
+-- if not defined the text will not be displayed
 function GM:registerTeamInfo(teamID, teamName, teamColor, isJoinable, teamBackground, teamTexture, selectionColors)
     team.SetUp(teamID, teamName, teamColor, isJoinable)
-
+    
     local textureID = nil
-
+    
     if CLIENT then
         textureID = surface.GetTextureID(teamTexture)
     end
-
+    
     self.RegisteredTeamData[teamID] = {teamName = teamName, color = teamColor, background = teamBackground, texture = teamTexture, textureID = textureID, selectionColors = selectionColors}
 end
 
@@ -43,28 +43,28 @@ function GM:canJoinTeam(ply, targetTeam)
     if self.curGametype.preventManualTeamJoining then
         return false
     end
-
+    
     if ply:Alive() then
         return -1
     end
-
+    
     local playerTeam = ply:Team()
-
+    
     if playerTeam == targetTeam then
         return -1 -- wtf bro
     end
-
+    
     local oppositeTeam = targetTeam == TEAM_RED and TEAM_BLUE or TEAM_RED
     local difference = team.NumPlayers(targetTeam) - team.NumPlayers(oppositeTeam)
-
-    if ply:Team() != TEAM_SPECTATOR and ply:Team() != TEAM_UNASSIGNED then -- if we already belong to a team, then we also must take ourselves into account
+    
+    if ply:Team() ~= TEAM_SPECTATOR and ply:Team() ~= TEAM_UNASSIGNED then -- if we already belong to a team, then we also must take ourselves into account
         difference = difference + 1
     end
-
+    
     if difference > GAMEMODE.MaxPlayerCountTeamDifference then
         return false
     end
-
+    
     return true
 end
 
@@ -79,16 +79,16 @@ end
 
 function GM:getAvailableTeam(ply)
     local redAvailable = self:canJoinTeam(ply, TEAM_RED)
-
+    
     if redAvailable == true then
         return TEAM_RED
     end
-
+    
     local blueAvailable = self:canJoinTeam(ply, TEAM_BLUE)
-
+    
     if blueAvailable == true then
         return TEAM_BLUE
     end
-
+    
     return math.random(TEAM_RED, TEAM_BLUE)
 end

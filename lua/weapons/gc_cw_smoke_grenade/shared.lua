@@ -4,10 +4,10 @@ if CLIENT then
     SWEP.DrawCrosshair = false
     SWEP.PrintName = "Smoke Grenade"
     SWEP.CSMuzzleFlashes = true
-
+    
     SWEP.IconLetter = "Q"
     killicon.AddFont("cw_smoke_grenade", "CW_KillIcons", SWEP.IconLetter, Color(255, 80, 0, 150))
-
+    
     SWEP.ViewModelMovementScale = 0.8
     SWEP.DisableSprintViewSimulation = true
 end
@@ -22,12 +22,12 @@ SWEP.Animations = {throw = {"throw"},
     pullpin = {"pullpin", "pullpin2", "pullpin3", "pullpin4"},
     idle = "idle",
     draw = "deploy"}
-
+    
 SWEP.Sounds = {pullpin = sounds,
     pullpin2 = sounds,
     pullpin3 = sounds,
     pullpin4 = sounds}
-
+    
 SWEP.SpeedDec = 5
 
 SWEP.Slot = 4

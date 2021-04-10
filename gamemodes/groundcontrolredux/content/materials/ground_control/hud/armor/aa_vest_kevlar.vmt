@@ -1,7 +1,0 @@
-"UnlitGeneric"
-{
-	"$basetexture" "ground_control/hud/armor/aa_vest_kevlar"
-	"$translucent" 1
-	"$vertexalpha" 1
-	"$vertexcolor" 1
-}

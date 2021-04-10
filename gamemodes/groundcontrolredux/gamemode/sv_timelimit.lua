@@ -8,7 +8,7 @@ function GM:setTimeLimit(time)
 end
 
 function GM:sendTimeLimit(target)
-    if !self.TimeLimit then
+    if not self.TimeLimit then
         return
     end
 
@@ -19,7 +19,7 @@ function GM:sendTimeLimit(target)
 end
 
 function GM:hasTimeLimit()
-    return self.TimeLimit != nil
+    return self.TimeLimit ~= nil
 end
 
 function GM:hasTimeRunOut()

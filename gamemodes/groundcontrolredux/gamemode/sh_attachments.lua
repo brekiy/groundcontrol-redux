@@ -6,7 +6,7 @@ GM.PrimaryAttachmentString = "gc_primary_attachment_"
 GM.SecondaryAttachmentString = "gc_secondary_attachment_"
 
 GM.LockedAttachmentSlots = 3 -- amount of locked slots
-GM.BaseLockedSlotPrice = 3000 -- base price of any locked slot (in experience, !cash)
+GM.BaseLockedSlotPrice = 3000 -- base price of any locked slot (in experience, not cash)
 GM.PriceIncreasePerSlot = 1000 -- how much it's price increases per slot (ie. at 1000 first slot will cost 4000, second will cost 5000, third 6000)
 
 GM.PrimaryAttachmentStrings = {}
@@ -14,11 +14,11 @@ GM.SecondaryAttachmentStrings = {}
 
 --[[ here's how I decided to price attachments:
 
-    SIGHTS, SHARED ATTACHMENTS and SUPPRESSORS are the least expensive, but their price
+    SIGHTS, SHARED ATTACHMENTS and SUPPRESSORS are the least expensive, but their price 
     depends on the magnification level they provide as well as their downsides (no downsides = more expensive)
     AMMO is in the middle in terms of price
-    WEAPON-SPECIFIC MODS are most expensive, unless their role is !significant (ie. stocks)
-
+    WEAPON-SPECIFIC MODS are most expensive, unless their role is not significant (ie. stocks)
+    
 ]]--
 
 GM.attachmentPrices = {
@@ -30,7 +30,7 @@ GM.attachmentPrices = {
     am_birdshot = 1500,
     am_flechette410 = 1500,
     am_flechetterounds = 1500,
-    am_flechetterounds2 = 1500, -- for whatever reason these decrease damage by 25% more, !my problem though
+    am_flechetterounds2 = 1500, -- for whatever reason these decrease damage by 25% more, not my problem though
     am_m79_ammo = 1500,
     am_magnum = 1500,
     am_matchgrade = 1500,
@@ -39,7 +39,7 @@ GM.attachmentPrices = {
     am_slugrounds = 1500,
     am_slugrounds2k = 1500,
     am_slugroundsneo = 1500,
-    am_sp7 = 1000, -- !free, optional part of PM
+    am_sp7 = 1000, -- not free, optional part of PM
     bg_3006extmag = 1500,
     bg_38 = 1250,
     bg_4inchsw29 = 1250,
@@ -81,7 +81,7 @@ GM.attachmentPrices = {
     bg_makarov_extmag = 1000,
     bg_makarov_pb_suppressor = false, -- free, part of PB
     bg_makarov_pb6p9 = 800, -- cheap, a variant of the PM
-    bg_makarov_pm_suppressor = 1000, -- !free, optional part of PM
+    bg_makarov_pm_suppressor = 1000, -- not free, optional part of PM
     bg_makpb6 = 800,
     bg_makpbsup = false,
     bg_makpmext = 1000,
@@ -194,7 +194,7 @@ GM.attachmentPrices = {
 for i = 1, GM.MaxAttachments do
     CreateClientConVar(GM.PrimaryAttachmentString .. i, "0", true, true)
     table.insert(GM.PrimaryAttachmentStrings, GM.PrimaryAttachmentString .. i)
-
+    
     CreateClientConVar(GM.SecondaryAttachmentString .. i, "0", true, true)
     table.insert(GM.SecondaryAttachmentStrings, GM.SecondaryAttachmentString .. i)
 end
@@ -221,31 +221,31 @@ end
 
 for attName, price in pairs(GM.attachmentPrices) do
     local attData = CustomizableWeaponry.registeredAttachmentsSKey[attName]
-    if attData != nil then attData.price = price end
+    if attData ~= nil then attData.price = price end
 end
 
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:hasUnlockedAttachment(attachmentName)
     local attData = CustomizableWeaponry.registeredAttachmentsSKey[attachmentName]
-
-    if !attData then
+    
+    if not attData then
         return false
     end
-
-    if !attData.price or attData.price < 0 then -- first we check whether the attachment is free by default
+    
+    if not attData.price or attData.price < 0 then -- first we check whether the attachment is free by default
         return true
     end
-
-    return self.ownedAttachments[attachmentName]
+    
+    return self.ownedAttachments[attachmentName] 
 end
 
 function PLAYER:getNextAttachmentSlotPrice(slot)
     slot = slot or self.unlockedAttachmentSlots + 1
-
-    -- local freeSlots = GAMEMODE:getFreeSlotCount()
+    
+    local freeSlots = GAMEMODE:getFreeSlotCount()
     local slotPrice = GAMEMODE.BaseLockedSlotPrice + slot * GAMEMODE.PriceIncreasePerSlot
-
+    
     return slotPrice
 end
 
@@ -267,7 +267,7 @@ end
 
 function PLAYER:setUnlockedAttachmentSlots(slotAmount)
     self.unlockedAttachmentSlots = slotAmount
-
+    
     if SERVER then
         self:sendUnlockedAttachmentSlots()
     end
@@ -279,10 +279,10 @@ end
 
 function PLAYER:setExperience(exp)
     if SERVER then
-        if !self:canUnlockMoreSlots() then
+        if not self:canUnlockMoreSlots() then
             return
         end
-
+    
         self.experience = exp
         self:checkForAttachmentSlotUnlock()
         self:saveExperience()
