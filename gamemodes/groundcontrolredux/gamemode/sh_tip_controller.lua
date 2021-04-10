@@ -23,7 +23,7 @@ GM.tipController.events = { -- key is event name
     THROW_FRAGS = {times = 3, text = "Hold USE_KEY and press PRIMARY_ATTACK_KEY to throw frag grenades.", formatFunc = function(text) return string.easyformatbykeys(text, "USE_KEY", GAMEMODE:getKeyBind("+use"), "PRIMARY_ATTACK_KEY", GAMEMODE:getKeyBind("+attack")) end},
     LOUD_LANDING = {times = 3, text = "The higher your loadout weight, the lesser the distance required to make a noisy landing."},
     WEAPON_CUSTOMIZATION = {times = 4, text = "Press C_MENU_KEY to open the weapon interaction menu at the start of a round.", formatFunc = function(text) return string.gsub(text, "C_MENU_KEY", GAMEMODE:getKeyBind("+menu_context")) end},
-    LOADOUT_LIMIT = {times = -1, text = "Your loadout would exceed your max cost! It won't save."}
+    LOADOUT_LIMIT = {times = 10, text = "Your loadout has been stripped of armor for the first round, reset your loadout in the menu."}
 }
 
 GM.tipController.nextTip = 0

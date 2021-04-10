@@ -5,7 +5,7 @@ function GM:registerWepsBaseCW()
     local g3a3 = {
         weaponClass = "cw_g3a3",
         weight = 4.1,
-        pointCost = 28
+        pointCost = 30
     }
     GAMEMODE:registerPrimaryWeapon(g3a3)
 
@@ -19,7 +19,7 @@ function GM:registerWepsBaseCW()
     local m14 = {
         weaponClass = "cw_m14",
         weight = 5.1,
-        pointCost = 30
+        pointCost = 32
     }
     GAMEMODE:registerPrimaryWeapon(m14)
 
@@ -34,7 +34,7 @@ function GM:registerWepsBaseCW()
     local ar15 = {
         weaponClass = "cw_ar15",
         weight = 2.88,
-        pointCost = 25
+        pointCost = 24
     }
     GAMEMODE:registerPrimaryWeapon(ar15)
 
@@ -63,7 +63,8 @@ function GM:registerWepsBaseCW()
     local mp5 = {
         weaponClass = "cw_mp5",
         weight = 2.5,
-        pointCost = 15
+        pointCost = 15,
+        penMod = 1.5
     }
     GAMEMODE:registerPrimaryWeapon(mp5)
 
@@ -77,7 +78,8 @@ function GM:registerWepsBaseCW()
     local ump45 = {
         weaponClass = "cw_ump45",
         weight = 2.5,
-        pointCost = 13
+        pointCost = 13,
+        penMod = 1.5
     }
     GAMEMODE:registerPrimaryWeapon(ump45)
 
@@ -101,7 +103,7 @@ function GM:registerWepsBaseCW()
     local serbushorty = {
         weaponClass = "cw_shorty",
         weight = 1.8,
-        pointCost = 12
+        pointCost = 10
     }
     GAMEMODE:registerPrimaryWeapon(serbushorty)
 
@@ -131,7 +133,7 @@ function GM:registerWepsBaseCW()
     local m1911 = {
         weaponClass = "cw_m1911",
         weight = 1.105,
-        pointCost = 7
+        pointCost = 4
     }
     GAMEMODE:registerSecondaryWeapon(m1911)
 
@@ -145,14 +147,14 @@ function GM:registerWepsBaseCW()
     local p99 = {
         weaponClass = "cw_p99",
         weight = 0.63,
-        pointCost = 8
+        pointCost = 6
     }
     GAMEMODE:registerSecondaryWeapon(p99)
 
     local makarov = {
         weaponClass = "cw_makarov",
         weight = 0.73,
-        pointCost = 5
+        pointCost = 4
     }
     GAMEMODE:registerSecondaryWeapon(makarov)
 

@@ -35,13 +35,8 @@ function PLAYER:giveLoadout(forceGive)
         return
     end
 
-    -- WIP
-    -- GAMEMODE:cheapOut(self)
 
     self:StripWeapons()
-    ply:resetAllArmor()
-    ply:sendArmor("vest")
-    ply:sendArmor("helmet")
     self:RemoveAllAmmo()
     self:resetGadgetData()
     self:applyTraits()
@@ -69,6 +64,8 @@ function PLAYER:giveLoadout(forceGive)
         if !IsValid(plyObj) or !plyObj:Alive() then
             return
         end
+
+        GAMEMODE:cheapOut(self)
 
         if GAMEMODE.curGametype.skipAttachmentGive then
             if !GAMEMODE.curGametype:skipAttachmentGive(self) then
@@ -129,9 +126,15 @@ function PLAYER:giveLoadout(forceGive)
     end)
 
     self:giveGadgets()
-    print(self:getDesiredVest() .. "," .. self:getDesiredHelmet())
-    self:giveArmor("vest")
-    self:giveArmor("helmet")
+    if GAMEMODE:getImaginaryLoadoutCost(plyObj) > self:getCurrentLoadoutPoints() then
+        self:giveArmor("vest", 0)
+        self:giveArmor("helmet", 0)
+        plyObj:sendTip("LOADOUT_LIMIT")
+    else
+        self:giveArmor("vest")
+        self:giveArmor("helmet")
+    end
+
     self:Give(GAMEMODE.KnifeWeaponClass)
 end
 
@@ -141,17 +144,22 @@ end
 ]]--
 function GM:cheapOut(ply)
     local limit = ply:getCurrentLoadoutPoints()
-    while self:getImaginaryLoadoutCost(ply) > limit and ply:GetInfoNum("gc_tertiary_weapon", GAMEMODE.DefaultTertiaryIndex) > 0 do
+    if self:getImaginaryLoadoutCost(ply) <= limit then return end
+
+    if ply:GetInfoNum("gc_tertiary_weapon", GAMEMODE.DefaultTertiaryIndex) > 0 then
         ply:ConCommand("gc_tertiary_weapon " .. 0)
     end
     local curHelmet = ply:GetInfoNum("gc_armor_helmet", 0)
     while self:getImaginaryLoadoutCost(ply) > limit and curHelmet > 0 do
+        print(ply:getDesiredHelmet())
         ply:ConCommand("gc_armor_helmet " .. curHelmet - 1)
+        print(ply:getDesiredHelmet())
         curHelmet = curHelmet - 1
         print("docked a helmet, curHelmet is now " .. curHelmet)
     end
     local curArmor = ply:GetInfoNum("gc_armor_vest", 0)
     while self:getImaginaryLoadoutCost(ply) > limit and curArmor > 0 do
+        print(ply:getDesiredVest())
         ply:ConCommand("gc_armor_vest " .. curArmor - 1)
         curArmor = curArmor - 1
         print("docked a vest, curvest is now " .. curArmor)

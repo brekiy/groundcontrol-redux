@@ -11,9 +11,12 @@ function PLAYER:getCurrentLoadoutPoints()
 end
 
 function PLAYER:updateLoadoutPoints()
+    -- in case someone cheeky tries to set the base higher than the max? idk
+    local max = math.max(GetConVar("gc_max_loadout_points"):GetInt(), GetConVar("gc_base_loadout_points"):GetInt())
     self.loadoutPoints = math.min(
-        GetConVar("gc_max_loadout_points"):GetInt(),
-        GetConVar("gc_base_loadout_points"):GetInt() + math.floor(self:GetNWInt("GC_SCORE") * GetConVar("gc_loadout_points_per_score"):GetFloat()))
+        max,
+        GetConVar("gc_base_loadout_points"):GetInt() + math.floor(self:GetNWInt("GC_SCORE") * GetConVar("gc_loadout_points_per_score"):GetFloat())
+    )
 end
 
 

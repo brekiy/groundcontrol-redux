@@ -450,7 +450,7 @@ function gcWeaponPanel:OnMousePressed(bind)
         end
     end
     if !canSelect then
-        ply:complainAboutLoadout(self.weapoNData.weaponObject.PrintName)
+        ply:complainAboutLoadout(self.weaponData.weaponObject.PrintName)
     end
 end
 
@@ -928,7 +928,7 @@ function weaponStats:Paint()
         self:DrawStatBar("Movement speed", GetConVar("gc_base_run_speed"):GetInt() - wepClass.SpeedDec, targetTable.speedDec, wepClass.SpeedDec, 130, w)
         self:DrawStatBar("Weapon weight", math.Round(wepClass.weight, 2) .. "KG", wepClass.weight, targetTable.weight, 145, w)
         self:DrawStatBar("Mag weight", math.Round(wepClass.magWeight, 2) .. "KG", wepClass.magWeight, targetTable.magWeight, 160, w)
-        self:DrawStatBar("Penetration", GAMEMODE:getAmmoPen(wepClass.Primary.Ammo), GAMEMODE:getAmmoPen(wepClass.Primary.Ammo), targetTable.penetrationValue, 175, w)
+        self:DrawStatBar("Penetration", GAMEMODE:getAmmoPen(wepClass.Primary.Ammo, wepClass.penMod), GAMEMODE:getAmmoPen(wepClass.Primary.Ammo, wepClass.penMod), targetTable.penetrationValue, 175, w)
     end
 end
 

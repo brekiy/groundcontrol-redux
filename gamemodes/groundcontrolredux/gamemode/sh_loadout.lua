@@ -14,7 +14,6 @@ GM.MaxSpareAmmoCount = 400
 GM.MaxPrimaryMags = 5
 GM.MaxSecondaryMags = 5
 
-GM.DefaultPoints = 70
 
 if CLIENT then
     include("cl_loadout.lua")
@@ -92,6 +91,7 @@ function GM:applyWeaponDataToWeaponClass(weaponData, primaryWeapon, slot)
     wepClass.Slot = slot
     wepClass.penetrationValue = weaponData.penetration
     wepClass.pointCost = weaponData.pointCost
+    wepClass.penMod = weaponData.penMod
 
     weaponData.weaponObject = wepClass
     weaponData.processedWeaponObject = weapons.Get(weaponData.weaponClass)

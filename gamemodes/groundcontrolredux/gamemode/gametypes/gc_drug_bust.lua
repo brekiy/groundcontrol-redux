@@ -195,7 +195,7 @@ function GM:registerDrugBust()
             ply:resetGadgetData()
             ply:applyTraits()
 
-            ply:resetAllArmor()
+            ply:resetTrackedArmor()
             ply:sendArmor("vest")
             ply:sendArmor("helmet")
 

@@ -75,13 +75,18 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
 end
 
 -- Get a player's desired armor piece for a given category, add it to the player armor attribute, and send it to the client
-function PLAYER:giveArmor(category)
+function PLAYER:giveArmor(category, forceArmor)
     self:resetArmorData(category)
+    local desiredArmor = nil
     local caseSwitch = {
         ["vest"] = self:getDesiredVest(),
         ["helmet"] = self:getDesiredHelmet()
     }
-    local desiredArmor = caseSwitch[category]
+    if forceArmor then
+        desiredArmor = forceArmor
+    else
+        desiredArmor = caseSwitch[category]
+    end
     if desiredArmor != 0 then
         self:addArmorPart(desiredArmor, category)
         self:sendArmor(category)

@@ -327,7 +327,7 @@ end)
 
 if SERVER then
     CustomizableWeaponry.callbacks:addNew("finalizePhysicalBullet", "GroundControl_finalizePhysicalBullet", function(self, bulletStruct)
-        bulletStruct.penetrationValue = GAMEMODE:getAmmoPen(self.Primary.Ammo)
+        bulletStruct.penetrationValue = GAMEMODE:getAmmoPen(self.Primary.Ammo, self.penMod)
     end)
 end
 

@@ -79,7 +79,7 @@ function GM:PlayerInitialSpawn(ply)
     ply:SetTeam(TEAM_SPECTATOR)
     ply:KillSilent()
     ply:resetSpectateData()
-
+    -- ply:resetAllArmor()
     ply:loadAttachments()
     ply:loadCash()
     ply:loadExperience()
@@ -135,7 +135,7 @@ function GM:PlayerSpawn(ply)
     ply:resetWeightData()
     ply:resetRadioData()
     ply:resetRecentVictimData()
-    ply:resetAllArmor()
+    ply:resetTrackedArmor()
     ply:resetHealthRegenData()
     ply:updateLoadoutPoints()
     ply:setBandages(ply:getDesiredBandageCount())
@@ -199,7 +199,7 @@ function GM:PlayerSpawn(ply)
         self.curGametype:playerSpawn(ply)
     end
 
-    ply:Give(self.KnifeWeaponClass)
+    -- ply:Give(self.KnifeWeaponClass)
 
     return true
 end
@@ -412,7 +412,7 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
             local wep = attacker:GetActiveWeapon()
 
             if wep then
-                penValue = GAMEMODE:getAmmoPen(wep.Primary.Ammo)
+                penValue = GAMEMODE:getAmmoPen(wep.Primary.Ammo, wep.penMod)
             end
         end
 
@@ -684,7 +684,7 @@ end)
 concommand.Add("gc_assignbotstoteam", function(ply)
     for key, value in pairs(player.GetBots()) do
         value:SetTeam(math.random(TEAM_RED, TEAM_BLUE))
-        value:resetAllArmor()
+        value:resetTrackedArmor()
         value:Spawn()
     end
 end)

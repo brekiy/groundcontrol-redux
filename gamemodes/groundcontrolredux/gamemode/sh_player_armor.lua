@@ -135,7 +135,7 @@ local vestRatnik = {
     category = "vest",
     id = "vest_ratnik",
     displayName = "6B45 Body Armor",
-    weight = 15,
+    weight = 18,
     protection = 40,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true},
     damageDecrease = 0.775,
@@ -240,11 +240,16 @@ function PLAYER:resetArmorData(category)
 end
 
 -- Clear all of the player's tracked armor
-function PLAYER:resetAllArmor()
+function PLAYER:resetTrackedArmor()
     self.armor = self.armor or {}
     table.Empty(self.armor)
 end
 
+-- Force resets the player to have no armor
+function PLAYER:resetAllArmor()
+    self:giveArmor("vest", 0)
+    self:giveArmor("helmet", 0)
+end
 
 function PLAYER:getDesiredVest()
     return tonumber(self:GetInfoNum("gc_armor_vest", 1))
