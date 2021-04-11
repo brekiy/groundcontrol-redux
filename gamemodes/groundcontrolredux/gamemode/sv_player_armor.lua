@@ -25,8 +25,8 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 shouldBleed = false
                 if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
                 damageNegation = armorData.damageDecrease + penetrationDelta * armorData.protectionDelta
-                -- Cap health regen at 80% of stopped damage
-                local regenAmount = math.floor(dmgInfo:GetDamage() * (1 - damageNegation) * 0.8)
+                -- Cap health regen at 90% of stopped damage
+                local regenAmount = math.floor(dmgInfo:GetDamage() * (1 - damageNegation) * 0.9)
                 self:addHealthRegen(regenAmount)
                 self:delayHealthRegen()
             else
@@ -48,9 +48,9 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 Armor damage formula: dmg * (1 + (armor - bulletPen) / armor)
                 The more a bullet defeats armor, the less damage it does to the material.
                 The less a bullet defeats armor, the more damage it does to the material.
-                Clamp the factor between 0.75-1.1 and then further scale it by our armor damage factor.
+                Clamp the factor between 0.75-1.25 and then further scale it by our armor damage factor.
             ]]--
-            local armorDamage = dmgInfo:GetDamage() * math.Clamp(1 + (penetrationDelta / armorData.protection), 0.75, 1.1) * GetConVar("gc_armor_damage_factor"):GetFloat()
+            local armorDamage = dmgInfo:GetDamage() * math.Clamp(1 + (penetrationDelta / armorData.protection), 0.75, 1.25) * GetConVar("gc_armor_damage_factor"):GetFloat()
             self:takeArmorDamage(armorPiece, armorDamage)
 
             local health = armorPiece.health

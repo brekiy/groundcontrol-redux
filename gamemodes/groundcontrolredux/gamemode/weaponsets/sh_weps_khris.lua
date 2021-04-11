@@ -132,14 +132,14 @@ function GM:registerWepsKhris()
     local m620 = {
         weaponClass = "khr_m620",
         weight = 3.6,
-        pointCost = 15
+        pointCost = 14
     }
     self:registerPrimaryWeapon(m620)
 
     local toz194 = {
         weaponClass = "khr_toz194",
         weight = 2.9,
-        pointCost = 15
+        pointCost = 14
     }
     self:registerPrimaryWeapon(toz194)
 
@@ -182,7 +182,7 @@ function GM:registerWepsKhris()
         weaponClass = "khr_mosin",
         weight = 4,
         pointCost = 20,
-        penMod = 1.25
+        penMod = 1.15
     }
     self:registerPrimaryWeapon(mosin)
 

@@ -30,12 +30,12 @@ BestPrimaryWeapons = BestPrimaryWeapons or {damage = -math.huge, recoil = -math.
 BestSecondaryWeapons = BestSecondaryWeapons or {damage = -math.huge, recoil = -math.huge, aimSpread = math.huge, firerate = math.huge, hipSpread = math.huge, spreadPerShot = -math.huge, velocitySensitivity = math.huge, maxSpreadInc = -math.huge, speedDec = math.huge, weight = -math.huge, magWeight = -math.huge, penetrationValue = -math.huge}
 
 -- Weapon packs
-include("sh_weps_base_cw.lua")
-include("sh_weps_khris.lua")
-include("sh_weps_misc.lua")
+include("weaponsets/sh_weps_base_cw.lua")
+include("weaponsets/sh_weps_khris.lua")
+include("weaponsets/sh_weps_misc.lua")
 
 -- Ammo definitions
-include ("sh_weps_calibers.lua")
+include ("weaponsets/sh_weps_calibers.lua")
 
 local PLAYER = FindMetaTable("Player")
 

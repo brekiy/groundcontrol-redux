@@ -59,8 +59,6 @@ function ENT:drawHUD()
         pos.z = pos.z + 32
 
         local text = nil
-        -- local gametype = GAMEMODE.curGametype
-        -- local team = ply:Team()
 
         local alpha = ply.hasIntel and 0.4 or 1
 

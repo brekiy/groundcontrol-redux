@@ -363,8 +363,8 @@ end
 
 GM.HitgroupDamageModifiers = {
     [HITGROUP_HEAD] = 3.5,
-    [HITGROUP_CHEST] = 1.15,
-    [HITGROUP_STOMACH] = 0.7,
+    [HITGROUP_CHEST] = 1,
+    [HITGROUP_STOMACH] = 0.65,
     [HITGROUP_LEFTARM] = 0.45,
     [HITGROUP_RIGHTARM] = 0.45,
     [HITGROUP_LEFTLEG] = 0.55,

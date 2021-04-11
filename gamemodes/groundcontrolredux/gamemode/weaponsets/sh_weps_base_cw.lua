@@ -55,7 +55,7 @@ function GM:registerWepsBaseCW()
     local vss = {
         weaponClass = "cw_vss",
         weight = 2.6,
-        pointCost = 28
+        pointCost = 27
     }
     GAMEMODE:registerPrimaryWeapon(vss)
 
@@ -88,7 +88,7 @@ function GM:registerWepsBaseCW()
         weaponClass = "cw_m249_official",
         weight = 7.5,
         maxMags = 2,
-        pointCost = 30
+        pointCost = 32
     }
     GAMEMODE:registerPrimaryWeapon(m249)
 
@@ -110,6 +110,7 @@ function GM:registerWepsBaseCW()
     -- sniper rifles
     local l115 = {
         weaponClass = "gc_cw_l115",
+        -- weaponClass = "cw_l115",
         weight = 6.5,
         pointCost = 38
     }

@@ -7,6 +7,8 @@ AddCSLuaFile()
 
     VIP will have a random secondary weapon and the lightest armor/helmet, as well as a unique playermodel.
 --]]
+
+-- TODO
 function GM:registerVIPEscort()
     print("lol")
 end

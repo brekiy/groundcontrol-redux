@@ -10,7 +10,7 @@ ENT.deCaptureTime = 1
 ENT.deCaptureTimeOnCapture = 5 -- time in seconds the de-capture will be delayed when being capped
 ENT.deCaptureAmount = 1
 ENT.deCaptureSpeedMultiplier = 2.5
-ENT.noCaptureDuration = 30
+ENT.noCaptureDuration = 10
 ENT.roundWinTime = 5 -- seconds until round win if: 1. time has run out + the person was capturing a point and suddenly left the capture range
 ENT.roundOverOnCapture = true
 ENT.captureReward = {cash = 50, exp = 50}
