@@ -76,7 +76,7 @@ include("sv_net_strings.lua")
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
-AddCSLuaFile("cl_player.lua")
+-- AddCSLuaFile("cl_player.lua")
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_loop.lua")
 AddCSLuaFile("cl_view.lua")

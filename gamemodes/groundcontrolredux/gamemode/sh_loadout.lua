@@ -31,8 +31,10 @@ BestSecondaryWeapons = BestSecondaryWeapons or {damage = -math.huge, recoil = -m
 
 -- Weapon packs
 include("weaponsets/sh_weps_base_cw.lua")
-include("weaponsets/sh_weps_khris.lua")
+-- include("weaponsets/sh_weps_khris.lua")
 include("weaponsets/sh_weps_misc.lua")
+-- include("weaponsets/sh_weps_kk.lua")
+-- include("weaponsets/sh_weps_soap.lua")
 
 -- Ammo definitions
 include ("weaponsets/sh_weps_calibers.lua")
@@ -80,7 +82,7 @@ end
 
 function checkWeaponExists(weaponClassname)
     local storedWep = weapons.GetStored(weaponClassname)
-    if !storedWep then print("Attempted to register non-existing weapon " .. weaponClassname) end
+    if !storedWep then print("Couldn't register weapon " .. weaponClassname) end
     return storedWep
 end
 
@@ -92,6 +94,7 @@ function GM:applyWeaponDataToWeaponClass(weaponData, primaryWeapon, slot)
     wepClass.penetrationValue = weaponData.penetration
     wepClass.pointCost = weaponData.pointCost
     wepClass.penMod = weaponData.penMod
+    -- wepClass.Damage = weaponData.dmgMod
 
     weaponData.weaponObject = wepClass
     weaponData.processedWeaponObject = weapons.Get(weaponData.weaponClass)
@@ -191,8 +194,9 @@ end
 function GM:postInitEntity()
 
     GAMEMODE:registerWepsBaseCW()
-    GAMEMODE:registerWepsKhris()
+    -- GAMEMODE:registerWepsKhris()
     GAMEMODE:registerWepsMisc()
+    -- GAMEMODE:registerWepsSoap()
 
     -- KNIFE, give it 0 weight and make it undroppable (can't shoot out of hand, can't drop when dying)
     local wepObj = weapons.GetStored(self.KnifeWeaponClass)

@@ -15,7 +15,7 @@ function PLAYER:bleed(silentBleed)
     self:postBleed()
 
     if !silentBleed then
-        self:EmitSound("GC_BLEED")
+        self:EmitSound("GC_BLEED_SOUND")
     end
 end
 
@@ -71,7 +71,7 @@ function PLAYER:bandage(bandagedBy)
     bandagedBy = bandagedBy or self
 
     bandagedBy:useBandage()
-    bandagedBy:EmitSound("GC_BANDAGE")
+    bandagedBy:EmitSound("GC_BANDAGE_SOUND")
     bandagedBy:sendBandages()
     bandagedBy:calculateWeight()
 

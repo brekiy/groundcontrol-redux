@@ -5,42 +5,42 @@ function GM:registerWepsMisc()
     local mini14 = {
         weaponClass = "cw_kk_ins2_mini14",
         weight = 2.9,
-        pointCost = 22,
+        pointCost = 24,
     }
     self:registerPrimaryWeapon(mini14)
 
     local ak74 = {
         weaponClass = "cw_kk_ins2_ak74",
         weight = 3.07,
-        pointCost = 20,
+        pointCost = 22,
     }
     self:registerPrimaryWeapon(ak74)
 
     local akm = {
         weaponClass = "cw_kk_ins2_akm",
-        weight = 3.3,
-        pointCost = 22,
+        weight = 3.5,
+        pointCost = 24,
     }
     self:registerPrimaryWeapon(akm)
 
     local aks74u = {
         weaponClass = "cw_kk_ins2_aks74u",
         weight = 2.7,
-        pointCost = 22,
+        pointCost = 24,
     }
     self:registerPrimaryWeapon(aks74u)
 
     local fnfal = {
         weaponClass = "cw_kk_ins2_fnfal",
         weight = 4.45,
-        pointCost = 28
+        pointCost = 32
     }
     self:registerPrimaryWeapon(fnfal)
 
     local galil = {
         weaponClass = "cw_kk_ins2_galil",
         weight = 4.35,
-        pointCost = 21,
+        pointCost = 24,
     }
     self:registerPrimaryWeapon(galil)
 
@@ -69,7 +69,7 @@ function GM:registerWepsMisc()
     local l1a1 = {
         weaponClass = "cw_kk_ins2_l1a1",
         weight = 4.337,
-        pointCost = 25,
+        pointCost = 27,
     }
     self:registerPrimaryWeapon(l1a1)
 
@@ -90,14 +90,15 @@ function GM:registerWepsMisc()
     local m16a4 = {
         weaponClass = "cw_kk_ins2_m16a4",
         weight = 6.37,
-        pointCost = 22,
+        pointCost = 26,
+        penMod = 1.1
     }
     self:registerPrimaryWeapon(m16a4)
 
     local para = {
         weaponClass = "cw_kk_ins2_m1a1_para",
-        weight = 2.4,
-        pointCost = ,
+        weight = 2,
+        pointCost = 19,
     }
     self:registerPrimaryWeapon(para)
 
@@ -105,7 +106,7 @@ function GM:registerWepsMisc()
         weaponClass = "cw_kk_ins2_m249",
         weight = 7.5,
         maxMags = 2,
-        pointCost = 30,
+        pointCost = 32,
     }
     self:registerPrimaryWeapon(m249)
 
@@ -119,8 +120,8 @@ function GM:registerWepsMisc()
 
     local m4a1 = {
         weaponClass = "cw_kk_ins2_m4a1",
-        weight = 2.88,
-        pointCost = 24,
+        weight = 3.1,
+        pointCost = 26,
     }
     self:registerPrimaryWeapon(m4a1)
 
@@ -134,14 +135,15 @@ function GM:registerWepsMisc()
     local mk18 = {
         weaponClass = "cw_kk_ins2_mk18",
         weight = 2.72,
-        pointCost = 25,
+        pointCost = 27,
+        penMod = 1.05
     }
     self:registerPrimaryWeapon(mk18)
 
     local mosin = {
         weaponClass = "cw_kk_ins2_mosin",
         weight = 4,
-        pointCost = 20,
+        pointCost = 24,
         penMod = 1.15
     }
     self:registerPrimaryWeapon(mosin)
@@ -149,7 +151,7 @@ function GM:registerWepsMisc()
     local rpk = {
         weaponClass = "cw_kk_ins2_rpk",
         weight = 4.8,
-        pointCost = 27,
+        pointCost = 29,
     }
     self:registerPrimaryWeapon(rpk)
 
@@ -186,34 +188,34 @@ function GM:registerWepsMisc()
         weight = 1.105,
         pointCost = 4,
     }
-    self:registerPrimaryWeapon(m45)
+    self:registerSecondaryWeapon(m45)
 
     local m1911 = {
         weaponClass = "cw_kk_ins2_m1911",
         weight = 1.105,
         pointCost = 4,
     }
-    self:registerPrimaryWeapon(m1911)
+    self:registerSecondaryWeapon(m1911)
 
     local makarov = {
         weaponClass = "cw_kk_ins2_makarov",
         weight = 0.73,
         pointCost = 4,
     }
-    self:registerPrimaryWeapon(makarov)
+    self:registerSecondaryWeapon(makarov)
 
     local revolver = {
         weaponClass = "cw_kk_ins2_revolver",
         weight = 0.963,
         pointCost = 2,
     }
-    self:registerPrimaryWeapon(revolver)
+    self:registerSecondaryWeapon(revolver)
 
     local p2a1 = {
         weaponClass = "cw_kk_ins2_p2a1",
         weight = 0.52,
         pointCost = 1,
     }
-    self:registerPrimaryWeapon(p2a1)
+    self:registerSecondaryWeapon(p2a1)
 end
 

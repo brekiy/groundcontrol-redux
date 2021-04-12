@@ -10,13 +10,45 @@ GM.soundTable = {
     sound = "path/to/sound"
 }
 
+local helmetImpacts = {
+    "physics/metal/metal_sheet_impact_bullet1.wav",
+    "physics/metal/metal_sheet_impact_bullet2.wav",
+    "physics/metal/metal_computer_impact_bullet1.wav",
+    "physics/metal/metal_computer_impact_bullet2.wav",
+    "physics/metal/metal_computer_impact_bullet3.wav",
+}
+
+local headImpacts = {
+    "flesh_squishy_impact_hard1.wav",
+    "flesh_squishy_impact_hard2.wav",
+    "flesh_squishy_impact_hard3.wav",
+    "flesh_squishy_impact_hard4.wav",
+}
+
+local deathSounds = {
+    "vo/npc/Barney/ba_pain01.wav",
+    "vo/npc/Barney/ba_pain02.wav",
+    "vo/npc/Barney/ba_pain03.wav",
+    "vo/npc/Barney/ba_pain04.wav",
+    "vo/npc/Barney/ba_pain05.wav",
+    "vo/npc/Barney/ba_pain06.wav",
+    "vo/npc/Barney/ba_pain07.wav",
+    "vo/npc/Barney/ba_pain08.wav",
+    "vo/npc/Barney/ba_pain09.wav",
+    "vo/npc/male01/pain01.wav",
+    "vo/npc/male01/pain02.wav",
+    "vo/npc/male01/pain03.wav",
+    "vo/npc/male01/pain04.wav",
+    "vo/npc/male01/pain05.wav"
+}
+
 function GM:registerSound(name, snd, volume, soundLevel, channel, pitchStart, pitchEnd)
     -- use defaults if no args are provided
     volume = volume or 1
     soundLevel = soundLevel or 65
     channel = channel or CHAN_AUTO
-    pitchStart = pitchStart or 100
-    pitchEnd = pitchEnd or 100
+    pitchStart = pitchStart or 90
+    pitchEnd = pitchEnd or 110
 
     self.soundTable.name = name
     self.soundTable.sound = snd
@@ -39,7 +71,8 @@ function GM:registerSound(name, snd, volume, soundLevel, channel, pitchStart, pi
     end
 end
 
-GM:registerSound("GC_BANDAGE", {"ground_control/player/bandage1.mp3", "ground_control/player/bandage2.mp3", "ground_control/player/bandage3.mp3"})
-GM:registerSound("GC_BLEED", {"ground_control/player/bleed1.mp3", "ground_control/player/bleed2.mp3", "ground_control/player/bleed3.mp3", "ground_control/player/bleed4.mp3", "ground_control/player/bleed5.mp3"})
-GM:registerSound("GC_DEATH_SOUND", {"vo/npc/Barney/ba_pain01.wav", "vo/npc/Barney/ba_pain02.wav", "vo/npc/Barney/ba_pain03.wav", "vo/npc/Barney/ba_pain04.wav", "vo/npc/Barney/ba_pain05.wav", "vo/npc/Barney/ba_pain06.wav", "vo/npc/Barney/ba_pain07.wav", "vo/npc/Barney/ba_pain08.wav", "vo/npc/Barney/ba_pain09.wav", "vo/npc/male01/pain01.wav", "vo/npc/male01/pain02.wav", "vo/npc/male01/pain03.wav", "vo/npc/male01/pain04.wav", "vo/npc/male01/pain05.wav"}, 1, 400)
-GM:registerSound("GC_DINK", {"physics/metal/metal_sheet_impact_bullet1.wav", "physics/metal/metal_sheet_impact_bullet2.wav"}, 1, 200)
+GM:registerSound("GC_BANDAGE_SOUND", {"ground_control/player/bandage1.mp3", "ground_control/player/bandage2.mp3", "ground_control/player/bandage3.mp3"}, 1, 140, CHAN_ITEM)
+GM:registerSound("GC_BLEED_SOUND", {"ground_control/player/bleed1.mp3", "ground_control/player/bleed2.mp3", "ground_control/player/bleed3.mp3", "ground_control/player/bleed4.mp3", "ground_control/player/bleed5.mp3"}, 1, 140, CHAN_BODY)
+GM:registerSound("GC_DEATH_SOUND", deathSounds, 1, 125, CHAN_BODY)
+GM:registerSound("GC_HELMET_RICOCHET_SOUND", helmetImpacts, 1, 80, CHAN_BODY)
+GM:registerSound("GC_HEADSHOT_SOUND", headImpacts, 1, 75, CHAN_BODY)

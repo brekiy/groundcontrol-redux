@@ -21,12 +21,12 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
             local penetratesArmor = penetrationDelta <= 0
             local damageNegation = nil
 
+            if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_HELMET_RICOCHET_SOUND") end
             if !penetratesArmor then
                 shouldBleed = false
-                if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_DINK") end
                 damageNegation = armorData.damageDecrease + penetrationDelta * armorData.protectionDelta
-                -- Cap health regen at 90% of stopped damage
-                local regenAmount = math.floor(dmgInfo:GetDamage() * (1 - damageNegation) * 0.9)
+                -- Cap health regen at 95% of stopped damage
+                local regenAmount = math.floor(dmgInfo:GetDamage() * (1 - damageNegation) * 0.95)
                 self:addHealthRegen(regenAmount)
                 self:delayHealthRegen()
             else
@@ -45,16 +45,18 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
             damageNegation = math.Clamp(damageNegation, 0, 0.9)
             dmgInfo:ScaleDamage(1 - damageNegation)
             --[[
-                Armor damage formula: dmg * (1 + (armor - bulletPen) / armor)
+                Armor damage formula: dmg * (1 + (armor - bulletPen) / armor))
                 The more a bullet defeats armor, the less damage it does to the material.
                 The less a bullet defeats armor, the more damage it does to the material.
-                Clamp the factor between 0.75-1.25 and then further scale it by our armor damage factor.
+                Clamp the penetration delta stuff
+                and then further scale it by our armor damage factor.
             ]]--
-            local armorDamage = dmgInfo:GetDamage() * math.Clamp(1 + (penetrationDelta / armorData.protection), 0.75, 1.25) * GetConVar("gc_armor_damage_factor"):GetFloat()
+            local armorDamage = dmgInfo:GetDamage()
+                * (1 + math.Clamp(penetrationDelta / armorData.protection, -0.75, 0.75))
+                * GetConVar("gc_armor_damage_factor"):GetFloat()
             self:takeArmorDamage(armorPiece, armorDamage)
 
             local health = armorPiece.health
-
             if armorPiece.health <= 0 then
                 removeArmor = true
             end
@@ -65,11 +67,11 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 self:calculateWeight()
             end
         end
-        -- removeIndex = removeIndex + 1
     end
 
     if allowBleeding and shouldBleed then
         self:startBleeding(dmgInfo:GetAttacker())
+        if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_HEADSHOT_SOUND") end
     end
 end
 

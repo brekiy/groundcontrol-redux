@@ -5,14 +5,14 @@ function GM:registerWepsBaseCW()
     local g3a3 = {
         weaponClass = "cw_g3a3",
         weight = 4.1,
-        pointCost = 30
+        pointCost = 32
     }
     GAMEMODE:registerPrimaryWeapon(g3a3)
 
     local scarH = {
         weaponClass = "cw_scarh",
         weight = 3.72,
-        pointCost = 30
+        pointCost = 32
     }
     GAMEMODE:registerPrimaryWeapon(scarH)
 
@@ -27,35 +27,35 @@ function GM:registerWepsBaseCW()
      local ak74 = {
         weaponClass = "cw_ak74",
         weight = 3.07,
-        pointCost = 20
+        pointCost = 22
     }
     GAMEMODE:registerPrimaryWeapon(ak74)
 
     local ar15 = {
         weaponClass = "cw_ar15",
-        weight = 2.88,
-        pointCost = 24
+        weight = 3.1,
+        pointCost = 26
     }
     GAMEMODE:registerPrimaryWeapon(ar15)
 
     local g36c = {
         weaponClass = "cw_g36c",
         weight = 2.82,
-        pointCost = 22
+        pointCost = 24
     }
     GAMEMODE:registerPrimaryWeapon(g36c)
 
     local l85 = {
         weaponClass = "cw_l85a2",
         weight = 3.82,
-        pointCost = 22
+        pointCost = 24
     }
     GAMEMODE:registerPrimaryWeapon(l85)
 
     local vss = {
         weaponClass = "cw_vss",
         weight = 2.6,
-        pointCost = 27
+        pointCost = 26
     }
     GAMEMODE:registerPrimaryWeapon(vss)
 
@@ -103,9 +103,9 @@ function GM:registerWepsBaseCW()
     local serbushorty = {
         weaponClass = "cw_shorty",
         weight = 1.8,
-        pointCost = 10
+        pointCost = 8
     }
-    GAMEMODE:registerPrimaryWeapon(serbushorty)
+    GAMEMODE:registerSecondaryWeapon(serbushorty)
 
     -- sniper rifles
     local l115 = {

@@ -339,7 +339,7 @@ function GM:OnPlayerHitGround(ply)
     local weightCorrelation = math.max(0, self.MaxWeight - len * self.HeavyLandingVelocityToWeight)
 
     if ply.weight >= weightCorrelation then
-        ply:EmitSound("npc/combine_soldier/gear" .. math.random(3, 6) .. ".wav", 70, math.random(95, 105))
+        ply:EmitSound("npc/combine_soldier/gear" .. math.random(3, 6) .. ".wav", 70, math.random(95, 105), 1, CHAN_BODY)
     end
 end
 

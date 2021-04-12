@@ -10,7 +10,7 @@ function GM:registerUrbanWarfare()
     urbanwarfare.spawnDuringPreparation = true
     urbanwarfare.objectiveEnts = {}
     urbanwarfare.startingTickets = 100 -- the amount of tickets that a team starts with
-    urbanwarfare.ticketsPerPlayer = 5 -- amount of tickets to increase per each player on server
+    urbanwarfare.ticketsPerPlayer = 3 -- amount of tickets to increase per each player on server
     urbanwarfare.capturePoint = nil -- the entity responsible for a bulk of the gametype logic, the reference to it is assigned when it is initialized
     urbanwarfare.waveWinReward = {cash = 50, exp = 50}
 

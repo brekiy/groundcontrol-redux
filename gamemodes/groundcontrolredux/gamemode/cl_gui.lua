@@ -579,23 +579,22 @@ end
 
 function curWeaponPanel:UpdateAvailableAttachments()
     table.Empty(self.availableAttachments)
+    -- get all these checks out the way
+    if !self.weaponData then return end
+    local weaponObject = self.weaponData.weaponObject
+    if !weaponObject.Attachments then return end
 
-    if self.weaponData then
-        local weaponObject = self.weaponData.weaponObject
-        local ply = LocalPlayer()
-        local ownedAttachments = ply.ownedAttachments
-        local cash = ply.cash or 0
+    local ply = LocalPlayer()
+    local ownedAttachments = ply.ownedAttachments
+    local cash = ply.cash or 0
 
-        if weaponObject.Attachments then
-            for categoryID, data in pairs(weaponObject.Attachments) do
-                for key, attachmentID in ipairs(data.atts) do
-                    if CustomizableWeaponry.registeredAttachmentsSKey[attachmentID] then
-                        local price = CustomizableWeaponry.registeredAttachmentsSKey[attachmentID].price
+    for categoryID, data in pairs(weaponObject.Attachments) do
+        for key, attachmentID in ipairs(data.atts) do
+            if CustomizableWeaponry.registeredAttachmentsSKey[attachmentID] then
+                local price = CustomizableWeaponry.registeredAttachmentsSKey[attachmentID].price
 
-                        if !ownedAttachments[attachmentID] and price and cash >= price then
-                            self.availableAttachments[#self.availableAttachments + 1] = attachmentID
-                        end
-                    end
+                if !ownedAttachments[attachmentID] and price and cash >= price then
+                    self.availableAttachments[#self.availableAttachments + 1] = attachmentID
                 end
             end
         end

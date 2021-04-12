@@ -199,6 +199,7 @@ function GM:PlayerSpawn(ply)
         self.curGametype:playerSpawn(ply)
     end
 
+    ply:SetupHands()
     -- ply:Give(self.KnifeWeaponClass)
 
     return true
@@ -670,6 +671,16 @@ end
 function PLAYER:setInvincibilityPeriod(time) -- used for anti-spawncamp systems
     self.invincibilityPeriod = CurTime() + time
 end
+
+function GM:PlayerSetHandsModel(ply, ent)
+    local simplemodel = player_manager.TranslateToPlayerModelName(ply:GetModel())
+    local info = player_manager.TranslatePlayerHands(simplemodel)
+    if info then
+       ent:SetModel(info.model)
+       ent:SetSkin(info.skin)
+       ent:SetBodyGroups(info.body)
+    end
+ end
 
 concommand.Add("gc_request_data", function(ply, com, args)
     if CurTime() < ply.lastDataRequest then

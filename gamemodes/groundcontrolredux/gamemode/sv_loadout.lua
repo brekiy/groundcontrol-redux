@@ -126,7 +126,10 @@ function PLAYER:giveLoadout(forceGive)
     end)
 
     self:giveGadgets()
-    if GAMEMODE:getImaginaryLoadoutCost(plyObj) > self:getCurrentLoadoutPoints() then
+    if plyObj:IsBot() then
+        plyObj:giveArmor("vest", 2)
+        plyObj:giveArmor("helmet", 1)
+    elseif GAMEMODE:getImaginaryLoadoutCost(plyObj) > self:getCurrentLoadoutPoints() then
         self:giveArmor("vest", 0)
         self:giveArmor("helmet", 0)
         plyObj:sendTip("LOADOUT_LIMIT")

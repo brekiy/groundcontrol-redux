@@ -185,7 +185,7 @@ function GM:playFootstepSound(ply, loudnessID, materialID)
         -- for some very strange reason, if I register the sounds via sound.Add, and then play it back via ply:EmitSound I get really weird stutters
         -- I assume that I am not the only one with this issue, so just to be safe, I am going to be playing them using another method
         -- this method, on the other hand, does not cause stutters, so I have no idea wtf is going on
-        EmitSound(sound, ply:GetPos(), ply:EntIndex(), CHAN_AUTO, self.FOOTSTEP_VOLUME_LEVELS[loudnessID], self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], 0, math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END))
+        EmitSound(sound, ply:GetPos(), ply:EntIndex(), CHAN_BODY, self.FOOTSTEP_VOLUME_LEVELS[loudnessID], self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], 0, math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END))
     else -- in the case of a server we send a usermessage to everyone to play the sound
         net.Start("GC_FOOTSTEP")
         net.WriteEntity(ply)
