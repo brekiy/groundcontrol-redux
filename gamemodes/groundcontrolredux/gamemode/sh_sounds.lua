@@ -19,10 +19,10 @@ local helmetImpacts = {
 }
 
 local headImpacts = {
-    "flesh_squishy_impact_hard1.wav",
-    "flesh_squishy_impact_hard2.wav",
-    "flesh_squishy_impact_hard3.wav",
-    "flesh_squishy_impact_hard4.wav",
+    "physics/flesh/flesh_squishy_impact_hard1.wav",
+    "physics/flesh/flesh_squishy_impact_hard2.wav",
+    "physics/flesh/flesh_squishy_impact_hard3.wav",
+    "physics/flesh/flesh_squishy_impact_hard4.wav",
 }
 
 local deathSounds = {
@@ -73,6 +73,6 @@ end
 
 GM:registerSound("GC_BANDAGE_SOUND", {"ground_control/player/bandage1.mp3", "ground_control/player/bandage2.mp3", "ground_control/player/bandage3.mp3"}, 1, 140, CHAN_ITEM)
 GM:registerSound("GC_BLEED_SOUND", {"ground_control/player/bleed1.mp3", "ground_control/player/bleed2.mp3", "ground_control/player/bleed3.mp3", "ground_control/player/bleed4.mp3", "ground_control/player/bleed5.mp3"}, 1, 140, CHAN_BODY)
-GM:registerSound("GC_DEATH_SOUND", deathSounds, 1, 125, CHAN_BODY)
-GM:registerSound("GC_HELMET_RICOCHET_SOUND", helmetImpacts, 1, 80, CHAN_BODY)
-GM:registerSound("GC_HEADSHOT_SOUND", headImpacts, 1, 75, CHAN_BODY)
+GM:registerSound("GC_DEATH_SOUND", deathSounds, 1, 125, CHAN_VOICE)
+GM:registerSound("GC_HELMET_RICOCHET_SOUND", helmetImpacts, 1, 85, CHAN_BODY)
+GM:registerSound("GC_HEADSHOT_SOUND", headImpacts, 1, 85, CHAN_BODY)

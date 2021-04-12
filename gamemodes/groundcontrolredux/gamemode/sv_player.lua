@@ -479,7 +479,7 @@ function GM:PlayerDeathThink(ply)
     if self.curGametype.canSpawn then
         return self.curGametype:canSpawn(ply)
     else
-        if #player.GetAll() < 2 and ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_JUMP) then
+        if #player.GetAll() < 2 and (ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_JUMP)) then
             ply:Spawn()
             return true
         end

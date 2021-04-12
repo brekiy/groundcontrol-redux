@@ -21,8 +21,8 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
             local penetratesArmor = penetrationDelta <= 0
             local damageNegation = nil
 
-            if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_HELMET_RICOCHET_SOUND") end
             if !penetratesArmor then
+                if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_HELMET_RICOCHET_SOUND") end
                 shouldBleed = false
                 damageNegation = armorData.damageDecrease + penetrationDelta * armorData.protectionDelta
                 -- Cap health regen at 95% of stopped damage
@@ -30,6 +30,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 self:addHealthRegen(regenAmount)
                 self:delayHealthRegen()
             else
+                if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_HEADSHOT_SOUND") end
                 --[[
                     New penetration dmg formula:
                     armorData.damageDecreasePenetrated + penetrationDelta * 0.01
@@ -71,7 +72,6 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
 
     if allowBleeding and shouldBleed then
         self:startBleeding(dmgInfo:GetAttacker())
-        if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_HEADSHOT_SOUND") end
     end
 end
 
