@@ -25,19 +25,10 @@ GM.PrimaryWeapons = GM.PrimaryWeapons or {}
 GM.SecondaryWeapons = GM.SecondaryWeapons or {}
 GM.TertiaryWeapons = GM.TertiaryWeapons or {}
 GM.Calibers = GM.Calibers or {}
+GM.CaliberAliases = GM.CaliberAliases or {}
 
 BestPrimaryWeapons = BestPrimaryWeapons or {damage = -math.huge, recoil = -math.huge, aimSpread = math.huge, firerate = math.huge, hipSpread = math.huge, spreadPerShot = -math.huge, velocitySensitivity = math.huge, maxSpreadInc = -math.huge, speedDec = math.huge, weight = -math.huge, magWeight = -math.huge, penetrationValue = -math.huge}
 BestSecondaryWeapons = BestSecondaryWeapons or {damage = -math.huge, recoil = -math.huge, aimSpread = math.huge, firerate = math.huge, hipSpread = math.huge, spreadPerShot = -math.huge, velocitySensitivity = math.huge, maxSpreadInc = -math.huge, speedDec = math.huge, weight = -math.huge, magWeight = -math.huge, penetrationValue = -math.huge}
-
--- Weapon packs
-include("weaponsets/sh_weps_base_cw.lua")
--- include("weaponsets/sh_weps_khris.lua")
-include("weaponsets/sh_weps_misc.lua")
--- include("weaponsets/sh_weps_kk.lua")
--- include("weaponsets/sh_weps_soap.lua")
-
--- Ammo definitions
-include ("weaponsets/sh_weps_calibers.lua")
 
 local PLAYER = FindMetaTable("Player")
 
@@ -143,7 +134,7 @@ end
 --[[
     Sets up an ammo type for the gamemode, assigning a weight and penetration value to it
 ]]--
-function GM:registerCaliber(caliberName, grams, penetration)
+function GM:registerCaliber(caliberName, grams, penetration, aliases)
     -- 1 grain = 0.06479891 gram
     -- convert grams to kilograms in advance
     local caliberObj = {
@@ -152,6 +143,13 @@ function GM:registerCaliber(caliberName, grams, penetration)
     }
     -- kill all attempts at unique capitalization
     self.Calibers[string.lower(caliberName)] = caliberObj
+
+    -- further kill different naming conventions
+    if aliases then
+        for alias in alises do
+            self.CaliberAliases[string.lower(alias)] = string.lower(caliberName)
+        end
+    end
 end
 
 function GM:findBestWeapons(lookInto, output)
@@ -187,16 +185,26 @@ end
 function GM:getAmmoPen(caliber, penMod)
     caliber = string.lower(caliber)
     penMod = penMod or 1
-    return self.Calibers[caliber] and math.Round(self.Calibers[caliber].penetration * penMod) or 0
+    local pen = self.Calibers[caliber] and self.Calibers[caliber].penetration
+        or (self.Calibers[self.CaliberAliases[caliber]] and self.Calibers[self.CaliberAliases[caliber]].penetration or 0)
+    return math.Round(pen * penMod)
 end
 
 -- this function gets called in InitPostEntity for both the client and server, this is where we register a bunch of stuff
 function GM:postInitEntity()
 
-    GAMEMODE:registerWepsBaseCW()
-    -- GAMEMODE:registerWepsKhris()
-    GAMEMODE:registerWepsMisc()
-    -- GAMEMODE:registerWepsSoap()
+    -- Load all allowed weapon packs and registered ammo
+
+    -- Weapon packs
+    if GetConVar("gc_use_cw2_weps"):GetBool() then
+        include("weaponsets/cw2/sh_weps_base_cw.lua")
+        -- include("weaponsets/cw2/sh_weps_khris.lua")
+        include("weaponsets/cw2/sh_weps_misc.lua")
+        include("weaponsets/cw2/sh_weps_kk.lua")
+        -- include("weaponsets/cw2/sh_weps_soap.lua")
+    end
+    -- Ammo definitions
+    include ("weaponsets/sh_weps_calibers.lua")
 
     -- KNIFE, give it 0 weight and make it undroppable (can't shoot out of hand, can't drop when dying)
     local wepObj = weapons.GetStored(self.KnifeWeaponClass)

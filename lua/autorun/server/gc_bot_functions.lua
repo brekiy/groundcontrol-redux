@@ -1,5 +1,9 @@
 include("sv_gcbot_names.lua")
-print("loading gc bot stuff wip")
+
+concommand.Add("gc_print_cur_weapon", function(ply, com, args)
+    PrintTable(weapons.Get(ply:GetActiveWeapon():GetClass()))
+end)
+
 concommand.Add("gc_bot_add", function(ply, com, args)
     createGCBot()
 end)
