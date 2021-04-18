@@ -302,3 +302,7 @@ function GM:countLivingPlayers(teamToCheck)
     end
     return alive
 end
+
+hook.Add("TFA_InspectVGUI_Start", "Kill TFA customization", function()
+    return CurTime() < GAMEMODE.PreparationTime
+end)

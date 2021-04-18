@@ -15,6 +15,8 @@ local point = surface.GetTextureID("ground_control/hud/point_of_interest")
 
 function ENT:drawHUD()
     local ply = LocalPlayer()
+    local sameTeam = ply:Team() == self.dt.captureTeam
+    if !sameTeam then return end
     local pos = nil
 
     -- we know that this entity's position isn't going to be changed (it's a static ent)

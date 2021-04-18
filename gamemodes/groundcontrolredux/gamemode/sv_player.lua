@@ -310,7 +310,8 @@ function GM:PlayerCanHearPlayersVoice(listener, talker)
     if self.proximityVoiceChat then
         local tooFar = listener:GetPos():Distance(talker:GetPos()) > self.proximityVoiceChatDistance
 
-        if self.proximityVoiceChatGlobal then -- if global proximity chat is on, we check whether we're close enough to anyone, and if we are too far - disable voice
+        if self.proximityVoiceChatGlobal then
+            -- if global proximity chat is on, we check whether we're close enough to anyone, and if we are too far - disable voice
             if tooFar then
                 return false
             end

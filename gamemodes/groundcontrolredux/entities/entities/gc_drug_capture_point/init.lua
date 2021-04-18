@@ -2,7 +2,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
-ENT.CaptureRange = 128
+ENT.captureDistance = 128
 
 function ENT:Initialize()
     self:SetNoDraw(true)
@@ -13,7 +13,7 @@ function ENT:Think()
         return
     end
 
-    for key, obj in ipairs(ents.FindInSphere(self:GetPos(), self.CaptureRange)) do
+    for key, obj in ipairs(ents.FindInSphere(self:GetPos(), self.captureDistance)) do
         if obj:IsPlayer() and obj:Alive() and GAMEMODE.curGametype:attemptCaptureDrugs(obj, self) then
             GAMEMODE:endRound(obj:Team())
         end
