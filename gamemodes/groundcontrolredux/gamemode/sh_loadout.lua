@@ -14,6 +14,18 @@ GM.MaxSpareAmmoCount = 400
 GM.MaxPrimaryMags = 5
 GM.MaxSecondaryMags = 5
 
+-- Load all allowed weapon packs and registered ammo
+if GetConVar("gc_use_cw2_weps"):GetBool() then
+    include("weaponsets/cw2/sh_weps_cw2_base.lua")
+    include("weaponsets/cw2/sh_weps_cw2_khris.lua")
+    include("weaponsets/cw2/sh_weps_cw2_misc.lua")
+    include("weaponsets/cw2/sh_weps_cw2_kk.lua")
+    include("weaponsets/cw2/sh_weps_cw2_soap.lua")
+end
+if GetConVar("gc_use_tfa_weps"):GetBool() then
+    include("weaponsets/tfa/sh_weps_tfa_ins2.lua")
+end
+include("weaponsets/sh_weps_calibers.lua")
 
 if CLIENT then
     include("cl_loadout.lua")
@@ -77,15 +89,24 @@ function checkWeaponExists(weaponClassname)
     return storedWep
 end
 
+-- Should work just fine for TFA and ArcCW
 function GM:applyWeaponDataToWeaponClass(weaponData, primaryWeapon, slot)
     local wepClass = weapons.GetStored(weaponData.weaponClass)
+
     wepClass.weight = weaponData.weight -- apply weight to the weapon class
     wepClass.isPrimaryWeapon = primaryWeapon
     wepClass.Slot = slot
     wepClass.penetrationValue = weaponData.penetration
     wepClass.pointCost = weaponData.pointCost
     wepClass.penMod = weaponData.penMod
-    -- wepClass.Damage = weaponData.dmgMod
+    -- Let people rebalance stuff as they want for this gamemode
+    -- if weaponData.Base == "tfa_gun_base" then
+    --     wepClass.Damage = self:parseTFAWeapon(weaponData)
+    -- elseif weaponData.Base == "arccw_base" then
+    --     wepClass.Damage = self:parseArcCWWeapon(weaponData)
+    -- else
+    --     wepClass.Damage = weaponData.damage or wepClass.Damage
+    -- end
 
     weaponData.weaponObject = wepClass
     weaponData.processedWeaponObject = weapons.Get(weaponData.weaponClass)
@@ -152,14 +173,57 @@ function GM:registerCaliber(caliberName, grams, penetration, aliases)
     end
 end
 
+function GM:parseArcCWWeapon(data)
+    local walkSpeed = GetConVar("gc_base_walk_speed"):GetInt()
+    local output = {
+        Shots = data.Num,
+        Damage = data.Damage,
+        GCRecoil = data.Recoil,
+        AimSpread = data.AccuracyMOA * 0.017,
+        FireDelay = data.Delay,
+        HipSpread = (data.AccuracyMOA + data.HipDispersion) * 0.017,
+        SpreadPerShot = 0,
+        VelocitySensitivity = 1,
+        MaxSpreadInc = 0,
+        SpeedDec = walkSpeed - walkSpeed * data.SpeedMult,
+        weight = data.weight
+    }
+    return output
+end
+
+function GM:parseTFAWeapon(data)
+    local walkSpeed = GetConVar("gc_base_walk_speed"):GetInt()
+    local output = {
+        Shots = data.Primary.NumShots,
+        Damage = data.Primary.Damage,
+        GCRecoil = data.Primary.StaticRecoilFactor,
+        AimSpread = data.Primary.IronAccuracy,
+        FireDelay = data.Primary.RPM,
+        HipSpread = data.Primary.Spread,
+        SpreadPerShot = data.Primary.SpreadIncrement,
+        VelocitySensitivity = 1,
+        MaxSpreadInc = data.Primary.SpreadMultiplierMax,
+        SpeedDec = walkSpeed - walkSpeed * data.MoveSpeed,
+        weight = data.weight
+    }
+    return output
+end
+
 function GM:findBestWeapons(lookInto, output)
     for key, weaponData in ipairs(lookInto) do
         local wepObj = weaponData.weaponObject
+        -- We need a separate field otherwise TFA breaks
+        wepObj.GCRecoil = wepObj.Recoil or 1
+        if wepObj.Base == "tfa_gun_base" then
+            wepObj = table.Merge(wepObj, self:parseTFAWeapon(wepObj))
+        elseif weaponData.Base == "arccw_base" then
+            wepObj = table.Merge(wepObj, self:parseArcCWWeapon(wepObj))
+        end
         -- Handle edge cases where the SWEP creator didn't define this property explicitly
         if !wepObj.Shots then wepObj.Shots = 1 end
 
-        output.damage = math.max(output.damage, wepObj.Damage * wepObj.Shots)
-        output.recoil = math.max(output.recoil, wepObj.Recoil)
+        output.damage = math.max(output.damage, wepObj.Damage * wepObj.Shots or 1)
+        output.recoil = math.max(output.recoil, wepObj.GCRecoil)
         output.aimSpread = math.min(output.aimSpread, wepObj.AimSpread)
         output.firerate = math.min(output.firerate, wepObj.FireDelay)
         output.hipSpread = math.min(output.hipSpread, wepObj.HipSpread)
@@ -192,20 +256,15 @@ end
 
 -- this function gets called in InitPostEntity for both the client and server, this is where we register a bunch of stuff
 function GM:postInitEntity()
-
     -- Load all allowed weapon packs and registered ammo
-
     -- Weapon packs
     if GetConVar("gc_use_cw2_weps"):GetBool() then
-        include("weaponsets/cw2/sh_weps_base_cw.lua")
-        -- include("weaponsets/cw2/sh_weps_khris.lua")
-        include("weaponsets/cw2/sh_weps_misc.lua")
-        include("weaponsets/cw2/sh_weps_kk.lua")
-        -- include("weaponsets/cw2/sh_weps_soap.lua")
+        GAMEMODE:registerWepsCW2Base()
+    end
+    if GetConVar("gc_use_tfa_weps"):GetBool() then
+        GAMEMODE:registerWepsTFAIns2()
     end
     -- Ammo definitions
-    include ("weaponsets/sh_weps_calibers.lua")
-
     -- KNIFE, give it 0 weight and make it undroppable (can't shoot out of hand, can't drop when dying)
     local wepObj = weapons.GetStored(self.KnifeWeaponClass)
     wepObj.weight = 0

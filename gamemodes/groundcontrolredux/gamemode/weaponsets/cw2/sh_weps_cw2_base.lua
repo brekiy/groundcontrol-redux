@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-function GM:registerWepsBaseCW()
+function GM:registerWepsCW2Base()
     -- battle rifles
     local g3a3 = {
         weaponClass = "cw_g3a3",

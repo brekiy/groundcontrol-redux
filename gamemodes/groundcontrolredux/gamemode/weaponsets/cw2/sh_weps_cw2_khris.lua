@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-function GM:registerWepsKhris()
+function GM:registerWepsCW2Khris()
     local fnfal = {
         weaponClass = "khr_fnfal",
         weight = 4.45,

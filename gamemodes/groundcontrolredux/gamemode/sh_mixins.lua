@@ -39,6 +39,25 @@ function team.GetLivingPlayers(teamID)
     return total
 end
 
+-- Lifted pretty much from CW2.0
+function GCCheckLowTotalAmmo(wep)
+    if wep:GetOwner():GetAmmoCount(wep.Primary.Ammo) + wep:Clip1() <= wep.Primary.ClipSize * 2 then
+        return true
+    end
+
+    return false
+end
+
+function GCGetMagCapacity(wep)
+    local mag = wep:Clip1()
+    local magCap = wep:GetMaxClip1()
+    if mag > magCap then
+        return magCap .. " + " .. mag - magCap
+    end
+
+    return mag
+end
+
 if CLIENT then
     draw.VERTICAL = 1
     draw.HORIZONTAL = 2

@@ -1,7 +1,7 @@
 AddCSLuaFile()
 
 -- HUGE pack made by soap on kk's improved cw2 base, quality is however inconsistent
-function GM:registerWepsSoap()
+function GM:registerWepsCW2Soap()
 
     -- bro why doesnt this have burst mode? wack
     local abakan = {

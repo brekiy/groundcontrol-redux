@@ -1,7 +1,7 @@
 AddCSLuaFile()
 
 -- Knife Kitty's INS2 pack
-function GM:registerWepsMisc()
+function GM:registerWepsCW2KK()
     local mini14 = {
         weaponClass = "cw_kk_ins2_mini14",
         weight = 2.9,

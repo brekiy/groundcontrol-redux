@@ -850,7 +850,7 @@ function weaponStats:SetWeapon(weaponData, id)
         targetTable = BestSecondaryWeapons
     end
 
-    self.displayRecoil = self.weaponObject.Recoil
+    self.displayRecoil = self.weaponObject.GCRecoil
     self.displaySpread = self.weaponObject.AimSpread
     self.displayFireDelay = self.weaponObject.FireDelay
     self.displayDamage = self.weaponObject.Damage

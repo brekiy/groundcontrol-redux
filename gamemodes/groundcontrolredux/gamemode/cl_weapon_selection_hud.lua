@@ -156,7 +156,7 @@ function GM:drawWeaponSelection(w, h, curTime)
 
                 local ammoCountColor = self.HUDColors.white
 
-                if weaponObj:isLowOnTotalAmmo() then
+                if GCCheckLowTotalAmmo(weaponObj) then
                     ammoCountColor = self.HUDColors.red
                 end
 
@@ -176,14 +176,16 @@ function GM:drawWeaponSelection(w, h, curTime)
                     end
 
                     if usesAmmo then
-                        draw.ShadowText(weaponObj:getMagCapacity() .. " / " .. weaponObj:getReserveAmmoText(), "CW_HUD20", startW + 5, drawY + 77, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        -- draw.ShadowText(GCGetMagCapacity(weaponObj) .. " / " .. weaponObj:getReserveAmmoText(), "CW_HUD20", startW + 5, drawY + 77, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        draw.ShadowText(GCGetMagCapacity(weaponObj) .. " / " .. weaponObj:GetOwner():GetAmmoCount(weaponObj.Primary.Ammo), "CW_HUD20", startW + 5, drawY + 77, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     end
                 else
                     draw.ShadowText(weaponObj.PrintName, "CW_HUD20", startW + 5, drawY + 3, self.HUDColors.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     draw.ShadowText("[" .. i .. "]", "CW_HUD20", self.weaponSelectionElementWidth + startW - 5, drawY + 3, self.HUDColors.white, backColor, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
 
                     if usesAmmo then
-                        draw.ShadowText(weaponObj:getMagCapacity() .. " / " .. weaponObj:getReserveAmmoText(), "CW_HUD20", startW + 5, drawY + 23, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        -- draw.ShadowText(GCGetMagCapacity(weaponObj) .. " / " .. weaponObj:getReserveAmmoText(), "CW_HUD20", startW + 5, drawY + 23, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        draw.ShadowText(GCGetMagCapacity(weaponObj) .. " / " .. weaponObj:GetOwner():GetAmmoCount(weaponObj.Primary.Ammo), "CW_HUD20", startW + 5, drawY + 23, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     end
                 end
             end

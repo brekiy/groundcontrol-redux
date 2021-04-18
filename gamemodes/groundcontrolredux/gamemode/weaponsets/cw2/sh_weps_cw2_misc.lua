@@ -1,7 +1,7 @@
 AddCSLuaFile()
 
 -- Weapons that are uploaded individually
-function GM:registerWepsMisc()
+function GM:registerWepsCW2Misc()
     local pkp = {
         weaponClass = "cw_pkp",
         weight = 8.7,
