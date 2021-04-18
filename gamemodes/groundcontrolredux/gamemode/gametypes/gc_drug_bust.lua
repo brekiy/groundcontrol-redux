@@ -101,9 +101,8 @@ function GM:registerDrugBust()
             if IsValid(attacker) and ply != attacker and attacker:IsPlayer() then
                 local plyTeam = ply:Team()
                 local attackerTeam = attacker:Team()
-
                 if plyTeam != attackerTeam then -- we grant the killer a cash and exp bonus if they kill the drug carrier of the opposite team
-                    attacker:addCurrency(self.cashPerDrugCarrierKill, self.expPerDrugCarrierKill, "KILLED_DRUG_CARRIER")
+                    attacker:addCurrency("KILLED_OBJ_CARRIER", nil, self.cashPerDrugCarrierKill, self.expPerDrugCarrierKill)
                 end
             end
 
@@ -156,7 +155,7 @@ function GM:registerDrugBust()
             ghettoDrugBust:removeDrugs(player)
 
             host:createDrugPackageObject()
-            player:addCurrency(self.cashPerDrugReturn, self.expPerDrugReturn, "RETURNED_DRUGS")
+            player:addCurrency("RETURNED_DRUGS", nil, self.cashPerDrugReturn, self.expPerDrugReturn)
             GAMEMODE:startAnnouncement("ghetto", "drugs_retrieved", CurTime(), nil, player)
         end
     end
@@ -167,7 +166,7 @@ function GM:registerDrugBust()
         if team == ghettoDrugBust.swatTeam and player.hasDrugs then
             ghettoDrugBust:removeDrugs(player)
 
-            player:addCurrency(self.cashPerDrugCapture, self.expPerDrugCapture, "SECURED_DRUGS")
+            player:addCurrency("SECURED_DRUGS", nil, self.cashPerDrugCapture, self.expPerDrugCapture)
             GAMEMODE:startAnnouncement("ghetto", "drugs_secured", CurTime(), self.gangTeam)
             return true
         end

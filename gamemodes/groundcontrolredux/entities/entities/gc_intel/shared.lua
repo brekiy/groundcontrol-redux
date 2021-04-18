@@ -15,10 +15,10 @@ end
 function ENT:Think()
     if self.dt.Dropped and self.NextBeepTime < CurTime() then
         if SERVER then
-            sound.Play(beep, self:GetPos(), amp, 100)
+            self:EmitSound("HL1/fvox/beep.wav", 110, 100)
         end
 
-        local nextTime = (etime - CurTime()) / 30
+        local nextTime = 1.5
         self.NextBeepTime = CurTime() + nextTime
     end
 end

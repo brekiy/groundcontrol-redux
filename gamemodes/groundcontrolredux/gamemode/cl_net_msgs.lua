@@ -213,3 +213,29 @@ end)
 net.Receive("GC_UPDATE_LOADOUT_LIMIT", function(a, b)
     LocalPlayer():updateLoadoutPoints()
 end)
+
+net.Receive("GC_GOT_INTEL", function(a, b)
+    if GAMEMODE.teamSwitchPopup then
+        GAMEMODE.teamSwitchPopup:Remove()
+        GAMEMODE.teamSwitchPopup = nil
+    end
+
+    local bottomText = "Now deliver it to the secure point!"
+
+    local popup = vgui.Create("GCGenericPopup")
+    popup:SetSize(330, 50)
+    popup:SetText("You picked up the intel!", bottomText)
+    popup:SetExistTime(7)
+    popup:Center()
+
+    local x, y = popup:GetPos()
+    popup:SetPos(x, y - 140)
+
+    GAMEMODE.teamSwitchPopup = popup
+
+    LocalPlayer().hasIntel = true
+end)
+
+net.Receive("GC_INTEL_REMOVED", function(a, b)
+    LocalPlayer().hasIntel = false
+end)

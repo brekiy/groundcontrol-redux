@@ -1,36 +1,9 @@
-GM.CashPerKill = 50
-GM.ExpPerKill = 20
-
 GM.CashPerAssist = 50 -- depends on damage dealt, if you dealt 99.9% damage, you'll get 50$
 GM.ExpPerAssist = 40
-
-GM.CashPerSave = 25 -- every time we "save" someone (aka we kill a target that was about to kill one of our guys), we get this much money
-GM.ExpPerSave = 40
-
-GM.CashPerMateHelp = 15 -- every time we "help a teammate" (aka we kill a target who was recently firing at our teammate), we get this much money
-GM.ExpPerMateHelp = 30
-
-GM.CashPerCloseCall = 15 -- every time we kill our assailant and have less or equal to MinHealthForCloseCall, we get this much money
-GM.ExpPerCloseCall = 10
-
-GM.CashPerHeadshot = 10
-GM.ExpPerHeadshot = 5
-
-GM.CashPerBandage = 20 -- we get this much money when we bandage our teammate
-GM.ExpPerBandage = 25
-
-GM.CashPerResupply = 15 -- we get this much money when we resupply someone's ammo
-GM.ExpPerResupply = 20
 
 GM.MinHealthForCloseCall = 25
 GM.MinHealthForSave = 25
 GM.SaveEventTimeWindow = 5
-
-GM.CashPerOneManArmy = 15
-GM.ExpPerOneManArmy = 10
-
-GM.CashPerTeamKill = -50
-GM.ExpPerTeamKill = -80
 
 GM.SendCurrencyAmount = {cash = nil, exp = nil}
 
@@ -216,22 +189,22 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
 
             attacker:AddFrags(1)
             ply:AddDeaths(1)
-            attacker:addCurrency(self.CashPerKill, self.ExpPerKill, "ENEMY_KILLED", ply)
+            attacker:addCurrency("ENEMY_KILLED", ply)
             self:trackRoundMVP(attacker, "kills", 1)
             attacker:checkForTeammateSave(ply)
             attacker:increaseKillcount(ply)
 
             if ply:LastHitGroup() == HITGROUP_HEAD then
-                attacker:addCurrency(self.CashPerHeadshot, self.ExpPerHeadshot, "HEADSHOT")
+                attacker:addCurrency("HEADSHOT")
                 self:trackRoundMVP(attacker, "headshots", 1)
             end
 
             if self:countLivingPlayers(attacker:Team()) == 1 then
-                attacker:addCurrency(self.CashPerOneManArmy, self.ExpPerOneManArmy, "ONE_MAN_ARMY")
+                attacker:addCurrency("ONE_MAN_ARMY")
             end
         else
             if ply != attacker then
-                attacker:addCurrency(self.CashPerTeamKill, self.ExpPerTeamKill, "TEAMKILL", ply)
+                attacker:addCurrency("TEAMKILL", ply)
             end
         end
 
@@ -266,7 +239,7 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
             for obj, damageAmount in pairs(ply.attackedBy) do -- iterate over all players that attacked us and give them assist money
                 if IsValid(obj) and ply != attacker and obj != attacker then
                     local percentage = damageAmount / ply:GetMaxHealth()
-                    obj:addCurrency(math.ceil(percentage * self.CashPerAssist), math.ceil(percentage * self.ExpPerAssist), "KILL_ASSIST")
+                    obj:addCurrency("KILL_ASSIST", nil, math.ceil(percentage * self.CashPerAssist), math.ceil(percentage * self.ExpPerAssist))
                 end
             end
         end
@@ -580,20 +553,23 @@ function PLAYER:checkForTeammateSave(victim)
         if victimObj != self and victimObj:Health() > 0 then
             if CurTime() < recentVictim.timeWindow then
                 if victimObj:Health() <= GAMEMODE.MinHealthForSave then
-                    self:addCurrency(GAMEMODE.CashPerSave, GAMEMODE.ExpPerSave, "TEAMMATE_SAVED")
+                    self:addCurrency("TEAMMATE_SAVED")
                 else
-                    self:addCurrency(GAMEMODE.CashPerMateHelp, GAMEMODE.ExpPerMateHelp, "TEAMMATE_HELPED")
+                    self:addCurrency("TEAMMATE_HELPED")
                 end
             end
         else
             if self:Health() <= GAMEMODE.MinHealthForCloseCall and self:Alive() then
-                self:addCurrency(GAMEMODE.CashPerCloseCall, GAMEMODE.ExpPerCloseCall, "CLOSE_CALL")
+                self:addCurrency("CLOSE_CALL")
             end
         end
     end
 end
 
-function PLAYER:addCurrency(cash, exp, event, entity)
+function PLAYER:addCurrency(event, entity, cash, exp)
+    local eventData = GAMEMODE:getEventByName(event)
+    cash = cash or eventData.cash
+    exp = exp or eventData.exp
     if exp and cash then
         self:addCash(cash)
         self:addExperience(exp)

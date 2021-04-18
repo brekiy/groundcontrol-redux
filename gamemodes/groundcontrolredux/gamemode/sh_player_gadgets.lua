@@ -131,7 +131,7 @@ function spareAmmo:resupply(resuppliedBy, target, availableAmmo, gadgetData)
 
         if resuppliedBy != target then
             local percentage = givenAmmo / wep.Primary.ClipSize_Orig
-            resuppliedBy:addCurrency(math.ceil(percentage * GAMEMODE.CashPerResupply), math.ceil(percentage * GAMEMODE.ExpPerResupply), "TEAMMATE_RESUPPLIED")
+            resuppliedBy:addCurrency("TEAMMATE_RESUPPLIED", nil, math.ceil(percentage * GAMEMODE.CashPerResupply), math.ceil(percentage * GAMEMODE.ExpPerResupply))
             GAMEMODE:trackRoundMVP(resuppliedBy, "resupply", 1)
         end
 

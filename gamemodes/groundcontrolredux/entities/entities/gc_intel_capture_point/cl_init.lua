@@ -15,7 +15,7 @@ local point = surface.GetTextureID("ground_control/hud/point_of_interest")
 
 function ENT:drawHUD()
     local ply = LocalPlayer()
-    local sameTeam = ply:Team() == self.dt.captureTeam
+    local sameTeam = ply:Team() == self.dt.CapturerTeam
     if !sameTeam then return end
     local pos = nil
 

@@ -31,7 +31,7 @@ function ENT:Use(activator, caller)
         self:Remove()
 
         if self.host then
-            self.host.dt.hasIntel = false
+            self.host.dt.HasIntel = false
         end
     end
 end

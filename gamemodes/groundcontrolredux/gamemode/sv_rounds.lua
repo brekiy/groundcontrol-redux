@@ -1,6 +1,3 @@
-GM.RoundWonCash = 200
-GM.RoundWonExp = 150
-
 GM.RoundsPerMap = GetConVar("gc_default_rounds_per_map"):GetInt()
 GM.RoundsPlayed = 0
 GM.MaxMapsPerPick = 9
@@ -126,7 +123,7 @@ function GM:endRound(winningTeam)
         net.Broadcast()
     else
         for key, obj in ipairs(team.GetPlayers(winningTeam)) do
-            obj:addCurrency(self.RoundWonCash, self.RoundWonExp, "WON_ROUND")
+            obj:addCurrency("WON_ROUND")
         end
 
         net.Start("GC_ROUND_OVER")

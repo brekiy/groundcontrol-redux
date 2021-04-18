@@ -13,7 +13,6 @@ ENT.deCaptureSpeedMultiplier = 2.5
 ENT.noCaptureDuration = 10
 ENT.roundWinTime = 5 -- seconds until round win if: 1. time has run out + the person was capturing a point and suddenly left the capture range
 ENT.roundOverOnCapture = true
-ENT.captureReward = {cash = 50, exp = 50}
 
 function ENT:Initialize()
     self:SetModel("models/error.mdl")
@@ -190,7 +189,7 @@ function ENT:advanceCapture(capSpeed, capturerTeam)
             self:endWave(self.capturerTeam, true)
 
             for key, ply in ipairs(team.GetPlayers(self.capturerTeam)) do
-                ply:addCurrency(self.captureReward.cash, self.captureReward.exp, "OBJECTIVE_CAPTURED")
+                ply:addCurrency("OBJECTIVE_CAPTURED")
             end
 
             return

@@ -3,6 +3,7 @@ AddCSLuaFile()
 include("gametypes/gc_drug_bust.lua")
 include("gametypes/gc_urban_warfare.lua")
 include("gametypes/gc_rush.lua")
+include("gametypes/gc_intel_retrieval.lua")
 
 GM.Gametypes = {}
 GM.GametypesByName = {}
@@ -316,3 +317,4 @@ GM:registerNewGametype(tdm)
 GM:registerRush()
 GM:registerUrbanWarfare()
 GM:registerDrugBust()
+GM:registerIntelRetrieval()

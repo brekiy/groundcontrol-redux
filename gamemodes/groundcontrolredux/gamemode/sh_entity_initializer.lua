@@ -93,3 +93,19 @@ GM.entityInitializer:registerEntityInitializeCallback("gc_drug_point", function(
     entity:freezeNearbyProps()
     entity:setHasDrugs(true)
 end)
+
+GM.entityInitializer:registerEntityInitializeCallback("gc_intel_spawn_point", function(entity, curGameType, data)
+    entity:freezeNearbyProps()
+end)
+
+GM.entityInitializer:registerEntityInitializeCallback("gc_intel_capture_point", function(entity, curGameType, data)
+    if data.data then
+        if data.data.captureDistance then
+            entity:setCaptureDistance(data.data.captureDistance)
+        end
+
+        if data.data.capturerTeam then
+            entity:setCapturerTeam(data.data.capturerTeam)
+        end
+    end
+end)

@@ -89,7 +89,7 @@ function GM:registerUrbanWarfare()
             end
 
             if capturer == teamID then
-                ply:addCurrency(self.waveWinReward.cash, self.waveWinReward.exp, "WAVE_WON")
+                ply:addCurrency("WAVE_WON", self.waveWinReward.cash, self.waveWinReward.exp)
             end
         end
 
