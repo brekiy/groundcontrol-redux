@@ -29,7 +29,7 @@ end
 
 function ENT:setCapturerTeam(team) -- the team that has to capture this point
     self.capturerTeam = team
-    self.dt.CapturerTeam = team
+    self:SetCapturerTeam(team)
 end
 
 function ENT:setDefenderTeam(team)
@@ -38,18 +38,20 @@ end
 
 function ENT:setCaptureDistance(distance)
     self.captureDistance = distance
-    self.dt.CaptureDistance = distance
+    self:SetCaptureDistance(distance)
 end
 
 function ENT:setCaptureSpeed(speed)
     self.captureAmount = speed
 end
 
-function ENT:setCaptureDuration(time) -- we increase CaptureProgress by captureAmount every captureTime
+-- we increase CaptureProgress by captureAmount every captureTime
+function ENT:setCaptureDuration(time)
     self.captureTime = time
 end
 
-function ENT:setCaptureSpeedInceasePerPlayer(speedIncrease) -- each player makes the capture go this % faster
+-- each player makes the capture go this % faster
+function ENT:setCaptureSpeedInceasePerPlayer(speedIncrease)
     self.captureSpeedIncrease = speedIncrease
 end
 
@@ -66,7 +68,7 @@ function ENT:Think()
         return
     end
 
-    if self.roundOverOnCapture and self.dt.CaptureProgress == 100 then
+    if self.roundOverOnCapture and self:GetCaptureProgress() == 100 then
         GAMEMODE:endRound(self.capturerTeam)
         return
     end
@@ -104,15 +106,15 @@ function ENT:Think()
         if curTime > self.captureDelay then
             local multiplier = math.max(1 - (capturingPlayers - 1) * self.captureSpeedIncrease, self.maxSpeedIncrease)
 
-            self.dt.CaptureSpeed = self.captureTime * multiplier / self.captureTime
+            self:SetCaptureSpeed(self.captureTime * multiplier / self.captureTime)
             self.captureDelay = curTime + self.captureTime * multiplier
             self.deCaptureDelay = curTime + self.deCaptureTime
             self.winDelay = curTime + self.roundWinTime
-            self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 100, self.captureAmount)
+            self:SetCaptureProgress(math.Approach(self:GetCaptureProgress(), 100, self.captureAmount))
         end
     else
         if curTime > self.deCaptureDelay then
-            self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 0, 1)
+            self:SetCaptureProgress(math.Approach(self:GetCaptureProgress(), 0, 1))
             self.deCaptureDelay = curTime + self.deCaptureTime
         end
     end

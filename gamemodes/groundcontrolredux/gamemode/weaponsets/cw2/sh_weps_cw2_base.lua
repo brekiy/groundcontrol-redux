@@ -109,8 +109,8 @@ function GM:registerWepsCW2Base()
 
     -- sniper rifles
     local l115 = {
-        weaponClass = "gc_cw_l115",
-        -- weaponClass = "cw_l115",
+        -- weaponClass = "gc_cw_l115",
+        weaponClass = "cw_l115",
         weight = 6.5,
         pointCost = 38
     }

@@ -12,6 +12,7 @@ function PLAYER:resetSpectateData()
 end
 
 -- take a bool whether to go back or not
+-- TODO (brekiy): actually make the bool work
 function PLAYER:spectateNext(goBack)
     local wasFound = false
     local alivePlayers = 0

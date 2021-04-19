@@ -19,7 +19,7 @@ function GM:removeFrame(frame)
     end
 end
 
--- Clamps position to screen size, so that the descbox does !go out of the screen's boundaries
+-- Clamps position to screen size, so that the descbox stays within the screen's boundaries
 function GM:ClampVGUIPosition(element)
     local scrW, scrH = ScrW(), ScrH()
     local x, y = element:GetPos()
@@ -233,7 +233,6 @@ function teamSelectionButton:Paint()
     end
 
     local color = self.teamData.color
-    -- local r, g, b, a = color.r, color.g, color.b, color.a
     local r, g, b = color.r, color.g, color.b
 
     if hovered then
@@ -306,7 +305,6 @@ function gcModelPanel:GetBackgroundColor()
 end
 
 function gcModelPanel:Paint()
-    -- local ply = LocalPlayer()
     local w, h = self:GetSize()
 
     surface.SetDrawColor(40, 40, 40, 255)
@@ -726,7 +724,8 @@ function curWeaponPanel:UpdateWeapon(wepId)
 
     local targetWeapon = targetTable[wepId]
 
-    if targetWeapon == self.weaponData then -- re-selecting the same weapon
+    -- re-selecting the same weapon
+    if targetWeapon == self.weaponData then
         return
     end
 
@@ -882,8 +881,6 @@ function weaponStats:SetBarSizeReduction(size)
 end
 
 function weaponStats:AdjustBarSizeReduction()
-    -- local baseReduction = weaponStats.barSizeReduction
-
     self:getLargestTextSize(math.Round(self.weaponObject.weight, 2) .. "KG")
     self:getLargestTextSize(math.Round(self.weaponObject.magWeight, 2) .. "KG")
     self.barSizeReduction = math.max(self.largestTextSize + 10, 37)
@@ -906,8 +903,6 @@ function weaponStats:Paint()
 
     surface.SetDrawColor(0, 0, 0, 210)
     surface.DrawRect(1, 1, w - 2, h - 2)
-
-    -- local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
 
     local wepClass = self.weaponObject
     local targetTable = self.bestWeaponTable
@@ -1062,7 +1057,8 @@ function attachmentSelection:GetBackgroundColor()
 
     local cvarTable = self.isPrimary and GAMEMODE.PrimaryAttachmentStrings or GAMEMODE.SecondaryAttachmentStrings
 
-    for key, cvarString in ipairs(cvarTable) do -- since we can select attachments in whatever way we wish, we need to iterate over all attachment cvars and check what their values are
+    -- since we can select attachments in whatever way we wish, we need to iterate over all attachment cvars and check what their values are
+    for key, cvarString in ipairs(cvarTable) do
         local attValue = GetConVar(cvarString):GetString()
 
         if attValue == self.attachmentName then
@@ -2292,7 +2288,8 @@ end
 vgui.Register("GCTraitPanel", gcTraitPanel, "DPanel")
 
 local gcMVPDisplay = {}
-gcMVPDisplay.avatarImageSize = 64 -- one of: 16, 32, 64, 84, 128, 184 (as per wiki)
+-- one of: 16, 32, 64, 84, 128, 184 (as per wiki)
+gcMVPDisplay.avatarImageSize = 64
 gcMVPDisplay.mainTextFont = "CW_HUD28"
 gcMVPDisplay.scoreTextFont = "CW_HUD20"
 
@@ -2376,7 +2373,8 @@ function gcKillerDisplay:SetKillData(killer, inflictorData)
             end
         end
     else
-        if type(inflictorData) == "table" and inflictorData.PrintName then -- if the inflictor data is a table, then we try to display the PrintName variable if it has one
+        -- if the inflictor data is a table, then we try to display the PrintName variable if it has one
+        if type(inflictorData) == "table" and inflictorData.PrintName then
             self.killerText = inflictorData.PrintName
         end
     end
@@ -2410,7 +2408,8 @@ function gcKillerDisplay:Paint()
     draw.ShadowText(self.playerText, self.mainTextFont, h + 4, 1, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
     draw.ShadowText(self.killerText, self.scoreTextFont, h + 4, fontHeight, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
-    if self.teamKill then -- draw a separate element so that people can't fake TK reports as easily
+    -- draw a separate element so that people can't fake TK reports as easily
+    if self.teamKill then
         DisableClipping(true)
             surface.SetDrawColor(0, 0, 0, 230)
             surface.DrawRect(w + self.tkSpacing, 0, h, h)

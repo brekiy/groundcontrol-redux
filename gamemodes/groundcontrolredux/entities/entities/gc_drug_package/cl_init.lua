@@ -17,7 +17,8 @@ function ENT:Initialize()
     self.halfVertFontSize = self.vertFontSize * 0.5
 end
 
-ENT.displayDistance = 128 -- the distance within which the contents of the box will be displayed
+-- the distance within which the contents of the box will be displayed
+ENT.displayDistance = 128
 
 function ENT:Think()
     self.inRange = LocalPlayer():GetPos():Distance(self:GetPos()) <= self.displayDistance
@@ -66,7 +67,7 @@ function ENT:drawHUD()
 
         local alpha = ply.hasDrugs and 0.4 or 1
 
-        if self.dt.Dropped then
+        if self:GetDropped() then
             text = team == gametype.swatTeam and self.CaptureText or self.RetrieveAndProtect
             alpha = alpha * (0.25 + 0.75 * math.flash(CurTime(), 1.5))
         else

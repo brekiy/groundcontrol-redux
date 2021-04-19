@@ -104,14 +104,16 @@ function PLAYER:spawn()
     end)
 end
 
-function GM:roundPreparation(preparationTime) -- called upon the start of a new round
+-- called upon the start of a new round
+function GM:roundPreparation(preparationTime)
     self:resetAllStatusEffects()
     LocalPlayer():spawn()
     self:createRoundPreparationDisplay(preparationTime)
     self:destroyMVPPanel()
 end
 
-function GM:resetRoundData() -- called upon the end of a round
+-- called upon the end of a round
+function GM:resetRoundData()
     self:resetTimeLimit()
 
     if GAMEMODE.curGametype.resetRoundData then

@@ -7,7 +7,6 @@ AddCSLuaFile()
     models/props_lab/harddrive01.mdl
 --]]
 
--- TODO
 function GM:registerIntelRetrieval()
     local intelRetrieval = {}
     intelRetrieval.name = "intel_retrieval"
@@ -25,7 +24,6 @@ function GM:registerIntelRetrieval()
     end
 
     function intelRetrieval:pickupIntel(intelEnt, ply)
-
         if !ply.hasIntel then
             self:giveIntel(ply)
             return true
@@ -54,17 +52,18 @@ function GM:registerIntelRetrieval()
     end
 
     function intelRetrieval:dropIntel(ply)
-        local pos = ply:GetPos()
-        pos.z = pos.z + 20
+        -- local pos = ply:GetPos()
+        -- pos.z = pos.z + 20
 
-        local ent = ents.Create("gc_intel")
-        ent:SetPos(pos)
-        ent:SetAngles(AngleRand())
-        ent:Spawn()
-        ent:wakePhysics()
-        ent.dt.Dropped = true
+        -- local ent = ents.Create("gc_intel")
+        -- ent:SetPos(pos)
+        -- ent:SetAngles(AngleRand())
+        -- ent:Spawn()
+        -- ent:wakePhysics()
+        -- ent:SetDropped(true)
 
         ply.hasIntel = false
+        ply.intel:Drop()
     end
 
     function intelRetrieval:resetRoundData()

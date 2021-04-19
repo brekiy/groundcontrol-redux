@@ -7,7 +7,7 @@ ENT.AdminSpawnable = false
 ENT.CaptureDistance = 192
 
 function ENT:SetupDataTables()
-    self:DTVar("Int", 0, "CapturerTeam")
-    self:DTVar("Int", 1, "PointID")
-    self:DTVar("Int", 2, "CaptureDistance")
+    self:NetworkVar("Int", 0, "CapturerTeam")
+    self:NetworkVar("Int", 1, "PointID")
+    self:NetworkVar("Int", 2, "CaptureDistance")
 end

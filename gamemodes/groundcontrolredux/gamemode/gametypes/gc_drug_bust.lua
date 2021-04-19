@@ -195,9 +195,8 @@ function GM:registerDrugBust()
             ply:applyTraits()
 
             ply:resetTrackedArmor()
-            ply:sendArmor("vest")
-            ply:sendArmor("helmet")
-
+            ply:giveArmor("vest", 0)
+            ply:giveArmor("helmet", 0)
             local pickedWeapon = nil
 
             for key, weaponData in ipairs(self.redTeamWeapons) do

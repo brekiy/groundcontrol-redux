@@ -12,12 +12,12 @@ end
 
 function ENT:setCaptureDistance(distance)
     self.captureDistance = distance
-    self.dt.CaptureDistance = distance
+    self:SetCaptureDistance(distance)
 end
 
 function ENT:setCapturerTeam(team) -- the team that has to capture this point
     self.capturerTeam = team
-    self.dt.CapturerTeam = team
+    self:SetCapturerTeam(team)
 end
 
 function ENT:Think()

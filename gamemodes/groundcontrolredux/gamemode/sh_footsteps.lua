@@ -34,13 +34,13 @@ GM.FOOTSTEP_VOLUME_LEVELS = {
     [GM.FOOTSTEP_LOUDNESS.HIGH] = 0.95 -- running with >15kg
 }
 
-MAT_LADDER = -100 -- there is no MAT_LADDER enumeration, and because I'm too lazy to check for enumeration ids that aren't used I will use -100, oh god
+-- special enumerations that don't have values listed in the wiki
+MAT_LADDER = -100
 MAT_GRAVEL = -101
 MAT_CARPET = -102
 MAT_WOODPANEL = -103
 
--- map the default sounds to a material ID, way cheaper than traces, but also hacky as shit
--- whoever wrote the PlayerFootstep hook but thought it's a good idea to not provide the material ID of the surface that the player stepped on is a fucking retard
+-- map the default sounds to a material ID, cheaper/hackier than traces
 GM.DEFAULT_FOOTSTEP_TO_MATERIAL = {
     ["player/footsteps/wood1.wav"] = MAT_WOOD,
     ["player/footsteps/wood2.wav"] = MAT_WOOD,

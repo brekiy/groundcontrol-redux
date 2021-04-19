@@ -31,7 +31,7 @@ function ENT:Use(activator, caller)
         self:Remove()
 
         if self.host then
-            self.host.dt.HasDrugs = false
+            self.host:SetHasDrugs(false)
         end
     end
 end

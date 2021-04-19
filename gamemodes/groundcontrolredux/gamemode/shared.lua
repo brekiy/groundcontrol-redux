@@ -68,7 +68,7 @@ CustomizableWeaponry.canOpenInteractionMenu = true
 CustomizableWeaponry.customizationEnabled = true
 CustomizableWeaponry.useAttachmentPossessionSystem = true
 CustomizableWeaponry.playSoundsOnInteract = true
-CustomizableWeaponry.physicalBulletsEnabled = false -- physical bullets for cw 2.0, unfortunately
+CustomizableWeaponry.physicalBulletsEnabled = false -- physical bullets for cw 2.0, unfortunately theyre kinda broken
 CustomizableWeaponry.suppressOnSpawnAttachments = true
 -- Override this from the weapon base to toss our special ground control frag grenade
 function CustomizableWeaponry.quickGrenade:createThrownGrenade(player)
@@ -284,14 +284,15 @@ hook.Add("CW20HasAttachment", "GroundControl.CW20HasAttachment", function(ply, a
 end)
 
 hook.Add("AdjustMouseSensitivity", "GCR OverrideAimSens", function(wpnSens)
-    -- This code was taken straight from the base - override it to stop scopes and attachments from slowing your sens to a crawl
+    -- This code was taken straight from the base - we override it to stop scopes and attachments from slowing your sens to a crawl
     local ply = LocalPlayer()
     if ply and ply:Alive() then
         local plyWep = ply:GetActiveWeapon()
         local plyWepTable = plyWep:GetTable()
         if plyWep and plyWepTable then
             local sensitivity = 1
-            local mod = math.Clamp(plyWepTable.OverallMouseSens or 1, 0.1, 1) -- !lower than 10% and !higher than 100% (in case someone uses atts that increase handling)
+            -- aim sens between 10-100% (in case someone uses atts that increase handling)
+            local mod = math.Clamp(plyWepTable.OverallMouseSens or 1, 0.1, 1)
             local freeAimMod = 1
 
             if plyWep.freeAimOn and !plyWep.dt.BipodDeployed then
@@ -394,10 +395,11 @@ function GM:Move(ply, moveData)
     end
 
     if SERVER then
+        -- sure way to get whether the player jumped (ply:KeyDown(IN_JUMP) can be bypassed by simply running the command)
         local jumpDown = ply:GetCurrentCommand():KeyDown(IN_JUMP)
         local onGround = ply:OnGround()
 
-        if jumpDown then -- sure way to get whether the player jumped (ply:KeyDown(IN_JUMP) can be bypassed by simply running the command, !by pressing the key bound to the jump key)
+        if jumpDown then
             if onGround and ply.hasReleasedJumpKey then
                 ply:setStamina(ply.stamina - ply:getJumpStaminaDrain()) -- fuck your bunnyhopping
                 ply:delayStaminaRegen(self.JumpStaminaRegenDelay)

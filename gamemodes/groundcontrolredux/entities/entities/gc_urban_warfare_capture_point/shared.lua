@@ -4,17 +4,17 @@ ENT.Spawnable         = false
 ENT.AdminSpawnable     = false
 
 function ENT:SetupDataTables()
-    self:DTVar("Float", 0, "CaptureProgress")
-    self:DTVar("Float", 1, "WaveTimeLimit")
-    self:DTVar("Int", 1, "CapturerTeam")
-    self:DTVar("Int", 2, "PointID")
-    self:DTVar("Int", 3, "CaptureDistance")
+    self:NetworkVar("Float", 0, "CaptureProgress")
+    self:NetworkVar("Float", 1, "WaveTimeLimit")
+    self:NetworkVar("Int", 1, "CapturerTeam")
+    self:NetworkVar("Int", 2, "PointID")
+    self:NetworkVar("Int", 3, "CaptureDistance")
 
-    self:DTVar("Int", 4, "RedTicketCount")
-    self:DTVar("Int", 5, "BlueTicketCount")
+    self:NetworkVar("Int", 4, "RedTicketCount")
+    self:NetworkVar("Int", 5, "BlueTicketCount")
 
-    self:DTVar("Float", 2, "CaptureSpeed")
-    self:DTVar("Float", 3, "Cooldown")
+    self:NetworkVar("Float", 2, "CaptureSpeed")
+    self:NetworkVar("Float", 3, "Cooldown")
 
     self:NetworkVar("Vector", 0, "CaptureMin")
     self:NetworkVar("Vector", 1, "CaptureMax")

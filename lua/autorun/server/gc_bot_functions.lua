@@ -12,9 +12,9 @@ function createGCBot()
     local bot = player.CreateNextBot(getBotName())
 end
 local Meta = FindMetaTable("Player")
-local nav = navmesh.GetAllNavAreas()
+local navareas = navmesh.GetAllNavAreas()
 local sniperSpots = {}
-for key, value in pairs(nav) do
+for key, value in pairs(navareas) do
     local spots = value:GetExposedSpots()
     for spotKey, spotValue in pairs(spots) do
         sniperSpots[#sniperSpots + 1] = spotValue
@@ -117,7 +117,7 @@ end)
 
 function Meta:FollowPath(cmd, goal, speed, turnspeed, stopatdist, nosee)
     local see = !nosee
-    -- local nav = self.nav
+    local nav = self.nav
     nav.PosGen = goal
     if nav.P == nil then return end
     local bot = self

@@ -91,7 +91,7 @@ function GM:CreateMove(cmd)
                 -- ang.p = ang.p - math.cos(CT * 1.25) * 0.003 * wep.AimBreathingIntensity * wep.CurBreatheIntensity
                 local stamShakeFactor = (GetConVar("gc_stamina_run_impact_level"):GetInt() - ply.stamina) * GetConVar("gc_stamina_aim_shake_factor"):GetFloat()
                 local stamBreathingCos = math.cos(CurTime() * 3) * 0.001 * stamShakeFactor
-                local stamBreathingSin = math.sin(CurTime() * 1.25) * 0.001 * stamShakeFactor
+                -- local stamBreathingSin = math.sin(CurTime() * 1.25) * 0.001 * stamShakeFactor
                 ang.p = ang.p - (stamBreathingCos * 0.25) + newDirY * self.ShakeIntensity * ply.adrenaline
                 ang.y = ang.y + newDirX * self.ShakeIntensity * (ply.adrenaline + stamShakeFactor * 0.025)
 

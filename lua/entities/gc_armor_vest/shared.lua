@@ -11,7 +11,7 @@ ENT.CanUseKey = true
 -- AccessorFuncDT(ENT, "worn", "BeingWorn")
 
 function ENT:SetupDataTables()
-    self:DTVar("Bool", 0, "worn")
+    self:NetworkVar("Bool", 0, "worn")
 end
 
 function ENT:Initialize()

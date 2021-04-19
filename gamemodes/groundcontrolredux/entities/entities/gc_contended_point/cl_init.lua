@@ -29,14 +29,14 @@ function ENT:drawHUD()
         surface.SetDrawColor(0, 0, 0, 200 * alpha)
         surface.DrawRect(baseX + 1, baseY + 1, self.barWidth - 2, self.barHeight - 2)
 
-        local drawColor = self.colorByTeam[self.dt.CurCaptureTeam]
+        local drawColor = self.colorByTeam[self:GetCurCaptureTeam()]
 
         if drawColor then
             drawColor.a = 255 * alpha
 
             surface.SetDrawColor(drawColor)
 
-            local percentage = self.dt.CaptureProgress / 100
+            local percentage = self:GetCaptureProgress() / 100
             surface.DrawRect(baseX + 2, baseY + 2, (self.barWidth - 4) * percentage, self.barHeight - 4)
         end
 

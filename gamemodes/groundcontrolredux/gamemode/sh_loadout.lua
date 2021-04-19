@@ -22,9 +22,9 @@ if GetConVar("gc_use_cw2_weps"):GetBool() then
     include("weaponsets/cw2/sh_weps_cw2_kk.lua")
     include("weaponsets/cw2/sh_weps_cw2_soap.lua")
 end
-if GetConVar("gc_use_tfa_weps"):GetBool() then
-    include("weaponsets/tfa/sh_weps_tfa_ins2.lua")
-end
+-- if GetConVar("gc_use_tfa_weps"):GetBool() then
+--     include("weaponsets/tfa/sh_weps_tfa_ins2.lua")
+-- end
 include("weaponsets/sh_weps_calibers.lua")
 
 if CLIENT then
@@ -135,7 +135,6 @@ function GM:registerSecondaryWeapon(weaponData)
     if checkWeaponExists(weaponData.weaponClass) then
         weaponData.id = weaponData.id or weaponData.weaponClass
         self.RegisteredWeaponData[weaponData.id] = weaponData
-
         self:applyWeaponDataToWeaponClass(weaponData, false, 1)
         self.SecondaryWeapons[#self.SecondaryWeapons + 1] = weaponData
     end
@@ -145,7 +144,6 @@ function GM:registerTertiaryWeapon(weaponData)
     if checkWeaponExists(weaponData.weaponClass) then
         weaponData.id = weaponData.id or weaponData.weaponClass
         self.RegisteredWeaponData[weaponData.id] = weaponData
-
         self:applyWeaponDataToWeaponClass(weaponData, false, 2)
         weapons.GetStored(weaponData.weaponClass).isTertiaryWeapon = true
         self.TertiaryWeapons[#self.TertiaryWeapons + 1] = weaponData
@@ -261,10 +259,11 @@ function GM:postInitEntity()
     if GetConVar("gc_use_cw2_weps"):GetBool() then
         GAMEMODE:registerWepsCW2Base()
     end
-    if GetConVar("gc_use_tfa_weps"):GetBool() then
-        GAMEMODE:registerWepsTFAIns2()
-    end
+    -- if GetConVar("gc_use_tfa_weps"):GetBool() then
+    --     GAMEMODE:registerWepsTFAIns2()
+    -- end
     -- Ammo definitions
+    GAMEMODE:registerCalibers()
     -- KNIFE, give it 0 weight and make it undroppable (can't shoot out of hand, can't drop when dying)
     local wepObj = weapons.GetStored(self.KnifeWeaponClass)
     wepObj.weight = 0
@@ -272,7 +271,6 @@ function GM:postInitEntity()
     wepObj.isKnife = true
     wepObj.pointCost = 0
 
-    GAMEMODE:registerCalibers()
     hook.Call("GroundControlPostInitEntity", nil)
 
     self:findBestWeapons(self.PrimaryWeapons, BestPrimaryWeapons)

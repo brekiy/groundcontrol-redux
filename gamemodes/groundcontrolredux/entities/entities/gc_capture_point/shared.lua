@@ -4,10 +4,10 @@ ENT.Spawnable         = false
 ENT.AdminSpawnable     = false
 
 function ENT:SetupDataTables()
-    self:DTVar("Int", 0, "CaptureProgress")
-    self:DTVar("Int", 1, "CapturerTeam")
-    self:DTVar("Int", 2, "PointID")
-    self:DTVar("Int", 3, "CaptureDistance")
+    self:NetworkVar("Int", 0, "CaptureProgress")
+    self:NetworkVar("Int", 1, "CapturerTeam")
+    self:NetworkVar("Int", 2, "PointID")
+    self:NetworkVar("Int", 3, "CaptureDistance")
 
-    self:DTVar("Float", 0, "CaptureSpeed")
+    self:NetworkVar("Float", 0, "CaptureSpeed")
 end

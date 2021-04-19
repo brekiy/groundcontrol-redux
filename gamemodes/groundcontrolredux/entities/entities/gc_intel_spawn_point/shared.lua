@@ -6,5 +6,5 @@ ENT.Spawnable = false
 ENT.AdminSpawnable = false
 
 function ENT:SetupDataTables()
-    self:DTVar("Bool", 0, "HasIntel")
+    self:NetworkVar("Bool", 0, "HasIntel")
 end

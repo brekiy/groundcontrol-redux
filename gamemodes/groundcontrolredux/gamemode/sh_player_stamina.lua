@@ -2,7 +2,7 @@ AddCSLuaFile()
 
 GM.MaxStamina = 100
 GM.InitialStamina = 100
-GM.StaminaDrainPerTick = 1 -- how much stamina we lose every stamina drain tick
+GM.StaminaDrainPerTick = 1 -- how much stamina we lose every drain tick
 GM.PostDrainStaminaRegenTickDelay = 1 -- we have to wait this much after our stamina being drained
 GM.StaminaRegenAmount = 1 -- how much stamina we regen when we're in idle state
 GM.MinStaminaFromSprinting = 20 -- how far our stamina will drop from sprinting

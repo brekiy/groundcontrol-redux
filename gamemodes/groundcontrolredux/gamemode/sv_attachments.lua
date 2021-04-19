@@ -66,7 +66,8 @@ function PLAYER:unlockAttachment(attachmentName, isFree)
         price = attachmentData.price
     end
 
-    if !isFree and (!price or price < 0) or self.ownedAttachments[attachmentName] then -- this attachment is free/already was bought, what are you doing
+    -- this attachment is free/already was bought, dont need to unlock
+    if !isFree and (!price or price < 0) or self.ownedAttachments[attachmentName] then
         return
     end
 
@@ -83,7 +84,8 @@ function PLAYER:unlockAttachment(attachmentName, isFree)
     end
 end
 
-function PLAYER:lockAttachment(attachmentName) -- no idea why you would need this, but whatever
+-- no idea why you would need this, but whatever
+function PLAYER:lockAttachment(attachmentName)
     self.ownedAttachments[attachmentName] = nil
 end
 
@@ -109,7 +111,8 @@ function PLAYER:setupAttachmentLoadTable(weaponObject)
         local desiredAttachment = self:GetInfo(targetTable[i]) --self:GetInfo(baseConvarName .. i)
 
         if desiredAttachment and self:hasUnlockedAttachment(desiredAttachment) then -- check whether the attachment exists
-            for category, data in pairs(weaponObject.Attachments) do -- now we iterate over all weapon attachments, find it in it's category and assign the category to the attachment name
+            -- now we iterate over all weapon attachments, find it in it's category and assign the category to the attachment name
+            for category, data in pairs(weaponObject.Attachments) do
                 for index, attachmentName in ipairs(data.atts) do
                     if attachmentName == desiredAttachment then
                         GAMEMODE.AttachmentLoadTable[category] = index

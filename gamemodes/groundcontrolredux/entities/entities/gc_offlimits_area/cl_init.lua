@@ -19,7 +19,7 @@ function ENT:Think()
 end
 
 function ENT:getPenaltyText()
-    if self.dt.inverseFunctioning then
+    if self:GetinverseFunctioning() then
         return "You're too far away! You have TIME second(s) to get back to the playing area!"
     end
 

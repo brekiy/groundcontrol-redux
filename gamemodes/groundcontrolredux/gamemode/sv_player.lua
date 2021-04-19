@@ -346,12 +346,14 @@ GM.HitgroupDamageModifiers = {
     [HITGROUP_RIGHTLEG] = 0.55
 }
 
-GM.DropPrimaryHitgroup = { -- clear hitbox indexes in this table if you don't want players to drop their primary weapons when they get hit in their arms
+-- clear hitbox indexes in this table if you don't want players to drop their primary weapons when they get hit in their arms
+GM.DropPrimaryHitgroup = {
     [HITGROUP_LEFTARM] = true,
     [HITGROUP_RIGHTARM] = true
 }
 
-GM.DropPrimarySustainedDamage = 40 -- how much arm damage the player has to sustain in order to drop the weapon
+-- how much arm damage the player has to sustain in order to drop the weapon
+GM.DropPrimarySustainedDamage = 40
 
 
 function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)

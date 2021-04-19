@@ -4,6 +4,6 @@ ENT.Spawnable         = false
 ENT.AdminSpawnable     = false
 
 function ENT:SetupDataTables()
-    self:DTVar("Int", 0, "CaptureProgress")
-    self:DTVar("Int", 1, "CurCaptureTeam")
+    self:NetworkVar("Int", 0, "CaptureProgress")
+    self:NetworkVar("Int", 1, "CurCaptureTeam")
 end

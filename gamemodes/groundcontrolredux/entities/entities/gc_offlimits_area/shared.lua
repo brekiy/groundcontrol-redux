@@ -7,9 +7,10 @@ ENT.distance = 1024
 ENT.timeToPenalize = 10
 
 function ENT:SetupDataTables()
-    self:DTVar("Bool", 0, "inverseFunctioning") -- whether the entity should function in reverse (too far = get back here)
-    self:DTVar("Int", 0, "targetTeam")
-    self:DTVar("Int", 1, "distance")
+    -- whether the entity should function in reverse (too far = get back here)
+    self:NetworkVar("Bool", 0, "inverseFunctioning")
+    self:NetworkVar("Int", 0, "targetTeam")
+    self:NetworkVar("Int", 1, "distance")
 end
 
 function ENT:isInRange(target, ourPos)

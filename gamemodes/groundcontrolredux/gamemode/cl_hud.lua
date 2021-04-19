@@ -1,9 +1,11 @@
-local noDraw = {CHudAmmo = true,
+local noDraw = {
+    CHudAmmo = true,
     CHudSecondaryAmmo = true,
     CHudHealth = true,
     CHudBattery = true,
     CHudWeaponSelection = true,
-    CHudDamageIndicator = true}
+    CHudDamageIndicator = true
+}
 
 -- use a separate hook, since otherwise GM:HUDPaint wouldn't work
 local function CW_HUDShouldDraw(n)
@@ -48,13 +50,13 @@ GM.WholeScreenAlpha = 0
 GM.teamMateMarkerDisplayDistance = 256
 
 local traceData = {}
-traceData.mask = bit.bor(CONTENTS_SOLID, CONTENTS_OPAQUE, CONTENTS_MOVEABLE, CONTENTS_DEBRIS, CONTENTS_MONSTER, CONTENTS_HITBOX, 402653442, CONTENTS_WATER) -- ignores transparent stuff
+-- ignores transparent stuff
+traceData.mask = bit.bor(CONTENTS_SOLID, CONTENTS_OPAQUE, CONTENTS_MOVEABLE, CONTENTS_DEBRIS, CONTENTS_MONSTER, CONTENTS_HITBOX, 402653442, CONTENTS_WATER)
 
 GM.BaseHUDX = 50
 
 function GM:HUDPaint()
     local ply = LocalPlayer()
-    -- local wep = ply:GetActiveWeapon()
     local scrW, scrH = ScrW(), ScrH()
 
     local healthText = nil

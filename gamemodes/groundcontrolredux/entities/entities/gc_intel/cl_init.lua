@@ -1,9 +1,9 @@
 include("shared.lua")
 
 local baseFont = "CW_HUD72"
--- ENT.AttackAndCapture = "Attack & capture"
-ENT.CaptureText = "Capture"
 ENT.BasicText = "Intel"
+-- the distance within which the contents of the box will be displayed
+ENT.displayDistance = 128
 
 function ENT:Initialize()
     GAMEMODE:addObjectiveEntity(self)
@@ -14,8 +14,6 @@ function ENT:Initialize()
     self.halfBaseHorSize = self.baseHorSize * 0.5
     self.halfVertFontSize = self.vertFontSize * 0.5
 end
-
-ENT.displayDistance = 128 -- the distance within which the contents of the box will be displayed
 
 function ENT:Think()
     self.inRange = LocalPlayer():GetPos():Distance(self:GetPos()) <= self.displayDistance

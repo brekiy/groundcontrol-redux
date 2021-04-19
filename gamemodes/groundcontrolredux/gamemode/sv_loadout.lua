@@ -89,10 +89,12 @@ function PLAYER:giveLoadout(forceGive)
             plyObj:equipAttachments(secWepObj, GAMEMODE.AttachmentLoadTable)
         end
 
-        plyObj:RemoveAllAmmo() -- remove any ammo that may have been added to our reserve
+        -- remove any ammo that may have been added to our reserve
+        plyObj:RemoveAllAmmo()
 
         if primaryWepObj then
-            plyObj:GiveAmmo(primaryMags * primaryWepObj.Primary.ClipSize_Orig, primaryWepObj.Primary.Ammo) -- set the ammo after we've attached everything, since some attachments may modify mag size
+            -- set the ammo after we've attached everything, since some attachments may modify mag size
+            plyObj:GiveAmmo(primaryMags * primaryWepObj.Primary.ClipSize_Orig, primaryWepObj.Primary.Ammo)
             primaryWepObj:maxOutWeaponAmmo(primaryWepObj.Primary.ClipSize_Orig) -- same for the magazine
         end
 

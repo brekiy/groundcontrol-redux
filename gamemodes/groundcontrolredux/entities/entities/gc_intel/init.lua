@@ -4,10 +4,15 @@ include("shared.lua")
 
 function ENT:Initialize()
     self:SetModel("models/props_lab/harddrive01.mdl")
-    self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_NONE)
+    -- for some reason, use() wasn't working with solid_none
     self:SetSolid(SOLID_VPHYSICS)
     self:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+    self:SetDropped(true)
+    self:SetUseType(SIMPLE_USE)
+    if SERVER then
+        self:AddEffects(bit.bor(EF_BONEMERGE, EF_BONEMERGE_FASTCULL, EF_PARENT_ANIMATES))
+    end
 end
 
 function ENT:wakePhysics()
@@ -26,12 +31,29 @@ function ENT:Use(activator, caller)
     end
 
     local gametype = GAMEMODE.curGametype
-
     if gametype:pickupIntel(self, activator) then
         self:Remove()
-
         if self.host then
-            self.host.dt.HasIntel = false
+            self.host:SetHasIntel(false)
+        end
+        activator.intel = self
+        self:SetMoveType(MOVETYPE_NONE)
+        self:SetSolid(SOLID_NONE)
+        self:SetParent(activator)
+        self:SetDropped(false)
+        local bone = activator:LookupBone("ValveBiped.Bip01_Spine2")
+        if bone then
+            local pos, ang = activator:GetBonePosition(bone)
+            pos.y = pos.y + 10
+            self:SetPos(pos)
+            self:SetAngles(ang)
+            print("attached to bone")
+        else
+            local pos = activator:GetPos()
+            pos.z = pos.z + 50
+            pos.y = pos.y + 10
+            self:SetPos(pos)
+            print("did general attachment")
         end
     end
 end
@@ -42,4 +64,35 @@ end
 
 function ENT:UpdateTransmitState()
     return TRANSMIT_ALWAYS
+end
+
+function ENT:Drop()
+    local ply = self:GetParent()
+    ply.intel = nil
+    self:SetParent(nil)
+    local pos = ply:GetPos()
+    pos.z = pos.z + 20
+
+    self:PhysicsInit(SOLID_VPHYSICS)
+    self:SetSolid(SOLID_VPHYSICS)
+    self:SetMoveType(MOVETYPE_VPHYSICS)
+
+    -- physics push
+    local phys = self:GetPhysicsObject()
+    if IsValid(phys) then
+       phys:SetMass(10)
+
+       if IsValid(ply) then
+          phys:SetVelocityInstantaneous(ply:GetVelocity())
+       end
+
+       if not dir then
+          phys:ApplyForceCenter(Vector(0, 0, 1200))
+       else
+          phys:ApplyForceCenter(Vector(0, 0, 700) + dir * 500)
+       end
+
+       phys:AddAngleVelocity(VectorRand() * 200)
+       phys:Wake()
+    end
 end

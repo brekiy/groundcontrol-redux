@@ -36,7 +36,6 @@ function GM:calculateCurrentLoadoutCost(ply, withCost, filterPrimary, filterSeco
     filterSecondary = filterSecondary or false
     filterTertiary = filterTertiary or false
     local totalCost = 0 + withCost
-    -- print("starting totalcost " .. totalCost .. "filter primary/secondary/tertiary? " .. tostring(filterPrimary) .. "," .. tostring(filterSecondary) .. "," .. tostring(filterTertiary))
     totalCost = totalCost + GAMEMODE:getArmorCost("vest", ply:getDesiredVest())
     totalCost = totalCost + GAMEMODE:getArmorCost("helmet", ply:getDesiredHelmet())
 

@@ -33,17 +33,12 @@ GM:registerMapStartCallback("rp_downtown_v2", function()
 end)
 
 GM:registerMapStartCallback("rp_downtown_v4c_v2", function()
-    -- local maxPlayers = game.MaxPlayers()
-
     for k, v in pairs(ents.FindByClass("prop_door_rotating")) do -- unlock all building doors
-        -- local entIndex = v:EntIndex() - maxPlayers
-
         v:Fire("unlock")
     end
 end)
 
 GM:registerMapStartCallback("ph_skyscraper_construct", function()
-    -- local maxPlayers = game.MaxPlayers()
 
     for k, v in pairs(ents.FindByClass("prop_physics")) do -- freeze all entities on this map
         v:SetMoveType(MOVETYPE_NONE)

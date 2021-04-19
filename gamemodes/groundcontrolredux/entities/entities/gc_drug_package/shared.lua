@@ -4,8 +4,8 @@ ENT.PrintName = ""
 ENT.Author = "Spy"
 ENT.Spawnable = false
 ENT.AdminSpawnable = false
-ENT.Model = "models/Items/ammocrate_smg1.mdl" -- what model to use
+ENT.Model = "models/Items/ammocrate_smg1.mdl"
 
 function ENT:SetupDataTables()
-    self:DTVar("Bool", 0, "Dropped")
+    self:NetworkVar("Bool", 0, "Dropped")
 end

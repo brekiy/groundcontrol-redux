@@ -216,7 +216,7 @@ mvpTracker.registerData({
 
 mvpTracker.registerData({
     id = "bandaging",
-    name = "Walking Bandage",
+    name = "Field Medic",
     minimum = 2,
     text = "Most team bandaging",
     formatText = function(self, amount)
@@ -227,7 +227,7 @@ mvpTracker.registerData({
 
 mvpTracker.registerData({
     id = "resupply",
-    name = "Walking Ammobox",
+    name = "Ammo Mule",
     minimum = 40,
     text = "Most team resupplies",
     formatText = function(self, amount)

@@ -17,6 +17,8 @@ function PLAYER:bleed(silentBleed)
     if !silentBleed then
         self:EmitSound("GC_BLEED_SOUND")
     end
+    local plyTrace = util.GetPlayerTrace(self, Vector(0, 0, -1))
+    util.Decal("Blood", plyTrace.start, plyTrace.endpos)
 end
 
 function PLAYER:delayBleed(time)

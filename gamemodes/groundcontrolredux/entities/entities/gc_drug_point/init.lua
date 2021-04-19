@@ -26,7 +26,7 @@ function ENT:Think()
 end
 
 function ENT:setHasDrugs(has)
-    self.dt.HasDrugs = has
+    self:SetHasDrugs(has)
 
     if has then
         self:createDrugPackageObject()
@@ -54,7 +54,7 @@ function ENT:createDrugPackageObject()
     ent:Spawn()
     ent:SetHost(self)
 
-    self.dt.HasDrugs = true
+    self:SetHasDrugs(true)
 end
 
 function ENT:UpdateTransmitState()

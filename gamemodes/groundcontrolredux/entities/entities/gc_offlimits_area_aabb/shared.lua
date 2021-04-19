@@ -8,8 +8,9 @@ ENT.timeToPenalize = 10
 ENT.Base = "gc_offlimits_area"
 
 function ENT:SetupDataTables()
-    self:DTVar("Bool", 0, "inverseFunctioning") -- whether the entity should function in reverse (too far = get back here)
-    self:DTVar("Int", 0, "targetTeam")
+    -- whether the entity should function in reverse (too far = get back here)
+    self:NetworkVar("Bool", 0, "inverseFunctioning")
+    self:NetworkVar("Int", 0, "targetTeam")
 
     self:NetworkVar("Vector", 0, "AABBMin")
     self:NetworkVar("Vector", 1, "AABBMax")

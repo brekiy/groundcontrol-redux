@@ -7,11 +7,13 @@ ENT.captureAmount = 3
 ENT.captureSpeedIncrease = 0.25
 ENT.maxSpeedIncrease = 0.5
 ENT.deCaptureTime = 1
-ENT.deCaptureTimeOnCapture = 5 -- time in seconds the de-capture will be delayed when being capped
+-- time in seconds the de-capture will be delayed when being capped
+ENT.deCaptureTimeOnCapture = 5
 ENT.deCaptureAmount = 1
 ENT.deCaptureSpeedMultiplier = 2.5
 ENT.noCaptureDuration = 10
-ENT.roundWinTime = 5 -- seconds until round win if: 1. time has run out + the person was capturing a point and suddenly left the capture range
+-- seconds until round win if: 1. time has run out + the person was capturing a point and suddenly left the capture range
+ENT.roundWinTime = 5
 ENT.roundOverOnCapture = true
 
 function ENT:Initialize()
@@ -33,7 +35,8 @@ function ENT:Initialize()
     self:SetCaptureMax(Vector(0, 0, 0))
 end
 
-function ENT:setCapturerTeam(team) -- the team that has to capture this point
+-- the team that has to capture this point
+function ENT:setCapturerTeam(team)
     self.capturerTeam = team
     self.dt.CapturerTeam = team
 end
@@ -47,7 +50,8 @@ function ENT:setCaptureSpeed(speed)
     self.captureAmount = speed
 end
 
-function ENT:setCaptureSpeedInceasePerPlayer(speedIncrease) -- each player makes the capture go this % faster
+-- each player makes the capture go this % faster
+function ENT:setCaptureSpeedInceasePerPlayer(speedIncrease)
     self.captureSpeedIncrease = speedIncrease
 end
 
@@ -58,8 +62,6 @@ end
 function ENT:setRoundOverOnCapture(roundOver)
     self.roundOverOnCapture = roundOver
 end
-
--- local plys, CT
 
 function ENT:getClosePlayers(position, listOfPlayers)
     local total, alive = 0, 0
@@ -108,14 +110,12 @@ function ENT:Think()
         return
     end
 
-    -- local defendingPlayers = 0
     local ownPos = self:GetPos()
 
     local red, blue = team.GetPlayers(TEAM_RED), team.GetPlayers(TEAM_BLUE)
     local redPlayers, redAlive = self:getClosePlayers(ownPos, red)
     local bluePlayers, blueAlive = self:getClosePlayers(ownPos, blue)
     local capturer, capturerPlayers, capturerAlive = nil, nil, nil
-    -- local loser, loserPlayers = nil, nil
     local loserPlayers = nil
 
     -- if there are equal forces on both teams, then the enemy team will begin capture
@@ -123,13 +123,11 @@ function ENT:Think()
         capturer = TEAM_RED
         capturerPlayers = redPlayers
         capturerAlive = redAlive
-        -- loser = TEAM_BLUE
         loserPlayers = bluePlayers
     elseif bluePlayers > redPlayers then
         capturer = TEAM_BLUE
         capturerPlayers = bluePlayers
         capturerAlive = blueAlive
-        -- loser = TEAM_RED
         loserPlayers = redPlayers
     end
 
@@ -147,7 +145,8 @@ function ENT:Think()
     if capturer then
         local capSpeed = self.captureAmount
 
-        if loserPlayers > 0 then -- if there are losing team players on the point, then the capture should be slower depending on how many people are on point
+        -- if there are losing team players on the point, slow down the capture progress
+        if loserPlayers > 0 then
             local delta = math.abs(loserPlayers - capturerPlayers)
             delta = 1 - delta / capturerPlayers
             capSpeed = capSpeed * delta
@@ -175,11 +174,13 @@ end
 function ENT:advanceCapture(capSpeed, capturerTeam)
     local delta = CurTime() - self.lastUpdate
 
-    if capturerTeam != self.capturerTeam and self.dt.CaptureProgress != 0 then -- de-throne the previous capturer team in case they were capping it
+    -- de-throne the previous capturer team in case they were capping it
+    if capturerTeam != self.capturerTeam and self.dt.CaptureProgress != 0 then
         self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 0, capSpeed * delta * self.deCaptureSpeedMultiplier)
 
         if self.dt.CaptureProgress == 0 then
-            self:setCapturerTeam(capturerTeam) -- update capturer team
+            -- swap capturing team once progress resets
+            self:setCapturerTeam(capturerTeam)
         end
     else
         self.dt.CaptureSpeed = capSpeed / self.captureAmount
@@ -199,9 +200,10 @@ function ENT:advanceCapture(capSpeed, capturerTeam)
 end
 
 function ENT:endWave(capturerTeam, noTicketDrainForWinner)
-    self.noCaptureTime = CurTime() + self.noCaptureDuration -- disable capturing for 10 secs
-    self.dt.Cooldown = self.noCaptureTime
-    self.dt.CaptureProgress = 0 -- reset cap progress
+    -- disable capturing for 10 secs
+    self.noCaptureTime = CurTime() + self.noCaptureDuration
+    self:SetCooldown(self.noCaptureTime)
+    self:SetCaptureProgress(0)
     self:setupWaveTime(-15)
     GAMEMODE.curGametype:endWave(capturerTeam, noTicketDrainForWinner)
 end

@@ -18,7 +18,7 @@ function ENT:Initialize()
 end
 
 function ENT:setHasIntel(has)
-    self.dt.HasIntel = has
+    self:SetHasIntel(has)
 
     if has then
         self:createIntelObject()
@@ -46,7 +46,7 @@ function ENT:createIntelObject()
     ent:Spawn()
     ent:SetHost(self)
 
-    self.dt.HasIntel = true
+    self:SetHasIntel(true)
 end
 
 function ENT:UpdateTransmitState()
