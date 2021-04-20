@@ -88,7 +88,7 @@ function GM:registerDrugBust()
                 return true
             end
         elseif team == self.gangTeam then
-            if drugEnt.dt.Dropped and !ply.hasDrugs then
+            if drugEnt:GetDropped() and !ply.hasDrugs then
                 self:giveDrugs(ply)
                 GAMEMODE:startAnnouncement("ghetto", "return_drugs", CurTime(), nil, ply)
                 return true
@@ -131,7 +131,7 @@ function GM:registerDrugBust()
         ent:SetAngles(AngleRand())
         ent:Spawn()
         ent:wakePhysics()
-        ent.dt.Dropped = true
+        ent:SetDropped(true)
 
         ply.hasDrugs = false
     end
@@ -151,7 +151,7 @@ function GM:registerDrugBust()
     function ghettoDrugBust:attemptReturnDrugs(player, host)
         local team = player:Team()
 
-        if team == ghettoDrugBust.gangTeam and player.hasDrugs and !host.dt.HasDrugs then
+        if team == ghettoDrugBust.gangTeam and player.hasDrugs and !host:GetHasDrugs() then
             ghettoDrugBust:removeDrugs(player)
 
             host:createDrugPackageObject()

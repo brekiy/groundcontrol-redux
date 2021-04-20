@@ -9,8 +9,8 @@ ENT.Base = "gc_offlimits_area"
 
 function ENT:SetupDataTables()
     -- whether the entity should function in reverse (too far = get back here)
-    self:NetworkVar("Bool", 0, "inverseFunctioning")
-    self:NetworkVar("Int", 0, "targetTeam")
+    self:NetworkVar("Bool", 0, "InverseFunctioning")
+    self:NetworkVar("Int", 0, "TargetTeam")
 
     self:NetworkVar("Vector", 0, "AABBMin")
     self:NetworkVar("Vector", 1, "AABBMax")
@@ -44,11 +44,11 @@ function ENT:canPenalizePlayer(ply, ownPos)
         return false
     end
 
-    if self.dt.targetTeam != 0 and self.dt.targetTeam != ply:Team() then
+    if self:GetTargetTeam() != 0 and self:GetTargetTeam() != ply:Team() then
         return false
     end
 
-    if self.dt.inverseFunctioning then
+    if self:GetInverseFunctioning() then
         return !self:isWithinCaptureAABB(ply:GetPos())
     end
 

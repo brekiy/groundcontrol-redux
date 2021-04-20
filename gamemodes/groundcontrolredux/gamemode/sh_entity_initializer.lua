@@ -43,15 +43,15 @@ end)
 GM.entityInitializer:registerEntityInitializeCallback("gc_offlimits_area", function(entity, curGameType, data)
     if data.data then
         if data.data.inverseFunctioning then
-            entity.dt.inverseFunctioning = true
+            entity:SetInverseFunctioning(true)
         end
 
         if data.data.targetTeam then
-            entity.dt.targetTeam = data.data.targetTeam
+            entity:SetTargetTeam(data.data.targetTeam)
         end
 
         if data.data.distance then
-            entity.dt.distance = data.data.distance
+            entity:SetDistance(data.data.distance)
         end
     end
 end)
@@ -59,11 +59,11 @@ end)
 GM.entityInitializer:registerEntityInitializeCallback("gc_offlimits_area_aabb", function(entity, curGameType, data)
     if data.data then
         if data.data.inverseFunctioning then
-            entity.dt.inverseFunctioning = true
+            entity:SetInverseFunctioning(true)
         end
 
         if data.data.targetTeam then
-            entity.dt.targetTeam = data.data.targetTeam
+            entity:SetTargetTeam(data.data.targetTeam)
         end
 
         entity:setAABB(data.data.min, data.data.max)

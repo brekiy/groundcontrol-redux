@@ -33,8 +33,8 @@ end
 
 function ENT:getTeamTickets(teamID)
     if teamID == TEAM_RED then
-        return self.dt.RedTicketCount
+        return self:GetRedTicketCount()
     else
-        return self.dt.BlueTicketCount
+        return self:GetBlueTicketCount()
     end
 end

@@ -8,13 +8,13 @@ ENT.timeToPenalize = 10
 
 function ENT:SetupDataTables()
     -- whether the entity should function in reverse (too far = get back here)
-    self:NetworkVar("Bool", 0, "inverseFunctioning")
-    self:NetworkVar("Int", 0, "targetTeam")
-    self:NetworkVar("Int", 1, "distance")
+    self:NetworkVar("Bool", 0, "InverseFunctioning")
+    self:NetworkVar("Int", 0, "TargetTeam")
+    self:NetworkVar("Int", 1, "Distance")
 end
 
 function ENT:isInRange(target, ourPos)
-    return target:GetPos():Distance(ourPos) <= self.dt.distance
+    return target:GetPos():Distance(ourPos) <= self:GetDistance()
 end
 
 function ENT:canPenalizePlayer(ply, ownPos)
@@ -26,13 +26,13 @@ function ENT:canPenalizePlayer(ply, ownPos)
         return false
     end
 
-    if self.dt.targetTeam != 0 and self.dt.targetTeam != ply:Team() then
-            return false
+    if self:GetTargetTeam() != 0 and self:GetTargetTeam() != ply:Team() then
+        return false
     end
 
     ownPos = ownPos or self:GetPos()
 
-    if self.dt.inverseFunctioning then
+    if self:GetInverseFunctioning() then
         return !self:isInRange(ply, ownPos)
     end
 
@@ -40,5 +40,5 @@ function ENT:canPenalizePlayer(ply, ownPos)
 end
 
 function ENT:setTargetTeam(teamID)
-    self.dt.targetTeam = teamID
+    self:SetTargetTeam(teamID)
 end

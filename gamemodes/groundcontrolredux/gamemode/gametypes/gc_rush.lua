@@ -19,7 +19,7 @@ function GM:registerRush()
 
     function oneSideRush:assignPointID(point)
         self.objectiveCounter = self.objectiveCounter + 1
-        point.dt.PointID = self.objectiveCounter
+        point:SetPointID(self.objectiveCounter)
     end
 
     function oneSideRush:prepare()

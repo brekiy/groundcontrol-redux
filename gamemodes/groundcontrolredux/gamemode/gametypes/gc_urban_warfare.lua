@@ -20,7 +20,7 @@ function GM:registerUrbanWarfare()
 
     function urbanwarfare:assignPointID(point)
         self.objectiveCounter = self.objectiveCounter + 1
-        point.dt.PointID = self.objectiveCounter
+        point:SetPointID(self.objectiveCounter)
     end
 
     function urbanwarfare:endWave(capturer, noTicketDrainForWinners)

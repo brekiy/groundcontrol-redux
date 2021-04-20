@@ -5,7 +5,7 @@ include("shared.lua")
 function ENT:Initialize()
     self:SetModel("models/error.mdl")
     self:SetNoDraw(true)
-    self.dt.distance = self.distance
+    self:SetDistance(self.distance)
 end
 
 
@@ -18,10 +18,10 @@ function ENT:Think()
     local ownPos = self:GetPos()
     local targets = nil
 
-    if self.dt.targetTeam == 0 then
+    if self:GetTargetTeam() == 0 then
         targets = player.GetAll()
     else
-        targets = team.GetPlayers(self.dt.targetTeam)
+        targets = team.GetPlayers(self:GetTargetTeam())
     end
 
     for key, ply in ipairs(targets) do

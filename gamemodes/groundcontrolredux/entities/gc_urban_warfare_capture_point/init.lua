@@ -38,12 +38,12 @@ end
 -- the team that has to capture this point
 function ENT:setCapturerTeam(team)
     self.capturerTeam = team
-    self.dt.CapturerTeam = team
+    self:SetCapturerTeam(team)
 end
 
 function ENT:setCaptureDistance(distance)
     self.captureDistance = distance
-    self.dt.CaptureDistance = distance
+    self:SetCaptureDistance(distance)
 end
 
 function ENT:setCaptureSpeed(speed)
@@ -78,8 +78,8 @@ function ENT:getClosePlayers(position, listOfPlayers)
 end
 
 function ENT:initTickets(startAmount)
-    self.dt.RedTicketCount = startAmount
-    self.dt.BlueTicketCount = startAmount
+    self:SetRedTicketCount(startAmount)
+    self:SetBlueTicketCount(startAmount)
     self:SetMaxTickets(startAmount)
     self:setupWaveTime()
 end
@@ -95,7 +95,7 @@ end
 function ENT:setupWaveTime(timeModifier)
     timeModifier = timeModifier or 0
 
-    self.dt.WaveTimeLimit = CurTime() + GAMEMODE.curGametype.waveTimeLimit + timeModifier
+    self:SetWaveTimeLimit(CurTime() + GAMEMODE.curGametype.waveTimeLimit + timeModifier)
 end
 
 function ENT:Think()
@@ -131,8 +131,8 @@ function ENT:Think()
         loserPlayers = redPlayers
     end
 
-    if curTime > self.dt.WaveTimeLimit then
-        if self.dt.CaptureProgress != 0 then
+    if curTime > self:GetWaveTimeLimit() then
+        if self:GetCaptureProgress() != 0 then
             if self.capturerTeam != 0 then
                 -- make the capturers win, and make them not lose any tickets if no enemies are present on the point
                 self:endWave(self.capturerTeam, loserPlayers == 0)
@@ -159,10 +159,10 @@ function ENT:Think()
         self:advanceCapture(capSpeed * capSpeedMult, capturer)
     else
         if curTime > self.deCaptureDelay then
-            self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 0, 1)
+            self:SetCaptureProgress(math.Approach(self:GetCaptureProgress(), 0, 1))
             self.deCaptureDelay = curTime + self.deCaptureTime
 
-            if self.dt.CaptureProgress == 0 then
+            if self:GetCaptureProgress() == 0 then
                 self:setCapturerTeam(0)
             end
         end
@@ -175,18 +175,18 @@ function ENT:advanceCapture(capSpeed, capturerTeam)
     local delta = CurTime() - self.lastUpdate
 
     -- de-throne the previous capturer team in case they were capping it
-    if capturerTeam != self.capturerTeam and self.dt.CaptureProgress != 0 then
-        self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 0, capSpeed * delta * self.deCaptureSpeedMultiplier)
+    if capturerTeam != self.capturerTeam and self:GetCaptureProgress() != 0 then
+        self:SetCaptureProgress(math.Approach(self:GetCaptureProgress(), 0, capSpeed * delta * self.deCaptureSpeedMultiplier))
 
-        if self.dt.CaptureProgress == 0 then
+        if self:GetCaptureProgress() == 0 then
             -- swap capturing team once progress resets
             self:setCapturerTeam(capturerTeam)
         end
     else
-        self.dt.CaptureSpeed = capSpeed / self.captureAmount
-        self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 100, capSpeed * delta)
+        self:SetCaptureSpeed(capSpeed / self.captureAmount)
+        self:SetCaptureProgress(math.Approach(self:GetCaptureProgress(), 100, capSpeed * delta))
 
-        if self.roundOverOnCapture and self.dt.CaptureProgress == 100 then
+        if self.roundOverOnCapture and self:GetCaptureProgress() == 100 then
             self:endWave(self.capturerTeam, true)
 
             for key, ply in ipairs(team.GetPlayers(self.capturerTeam)) do
@@ -210,9 +210,9 @@ end
 
 function ENT:drainTicket(teamID)
     if teamID == TEAM_RED then
-        self.dt.RedTicketCount = math.Approach(self.dt.RedTicketCount, 0, 1)
+        self:SetRedTicketCount(math.Approach(self:GetRedTicketCount(), 0, 1))
     else
-        self.dt.BlueTicketCount = math.Approach(self.dt.BlueTicketCount, 0, 1)
+        self:SetBlueTicketCount(math.Approach(self:GetBlueTicketCount(), 0, 1))
     end
 end
 
