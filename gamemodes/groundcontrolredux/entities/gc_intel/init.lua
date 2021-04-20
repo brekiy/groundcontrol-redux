@@ -10,6 +10,7 @@ function ENT:Initialize()
     self:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
     self:SetDropped(true)
     self:SetUseType(SIMPLE_USE)
+    self:DrawShadow(false)
     if SERVER then
         self:AddEffects(bit.bor(EF_BONEMERGE, EF_BONEMERGE_FASTCULL, EF_PARENT_ANIMATES))
     end
@@ -32,29 +33,13 @@ function ENT:Use(activator, caller)
 
     local gametype = GAMEMODE.curGametype
     if gametype:pickupIntel(self, activator) then
-        self:Remove()
         if self.host then
             self.host:SetHasIntel(false)
         end
-        activator.intel = self
         self:SetMoveType(MOVETYPE_NONE)
         self:SetSolid(SOLID_NONE)
-        self:SetParent(activator)
         self:SetDropped(false)
-        local bone = activator:LookupBone("ValveBiped.Bip01_Spine2")
-        if bone then
-            local pos, ang = activator:GetBonePosition(bone)
-            pos.y = pos.y + 10
-            self:SetPos(pos)
-            self:SetAngles(ang)
-            print("attached to bone")
-        else
-            local pos = activator:GetPos()
-            pos.z = pos.z + 50
-            pos.y = pos.y + 10
-            self:SetPos(pos)
-            print("did general attachment")
-        end
+        self:SetParent(activator)
     end
 end
 
@@ -68,9 +53,8 @@ end
 
 function ENT:Drop()
     local ply = self:GetParent()
-    ply.intel = nil
     self:SetParent(nil)
-    local pos = ply:GetPos()
+    local pos = self:GetPos()
     pos.z = pos.z + 20
 
     self:PhysicsInit(SOLID_VPHYSICS)
@@ -86,7 +70,7 @@ function ENT:Drop()
           phys:SetVelocityInstantaneous(ply:GetVelocity())
        end
 
-       if not dir then
+       if !dir then
           phys:ApplyForceCenter(Vector(0, 0, 1200))
        else
           phys:ApplyForceCenter(Vector(0, 0, 700) + dir * 500)

@@ -23,7 +23,7 @@ function GM:registerEvent(eventName, display, tipId, cash, exp)
     self.EventsByName[eventName] = data
     self.EventsByID[eventId] = data
 end
-GM:registerEvent("ENEMY_KILLED", "Enemy down", "KILLED_ENEMY", nil, 50, 20)
+GM:registerEvent("ENEMY_KILLED", "Enemy down", "KILLED_ENEMY", 50, 20)
 GM:registerEvent("KILL_ASSIST", "Kill assist", nil)
 GM:registerEvent("TEAMMATE_RESUPPLIED", "Teammate resupplied", nil, 15, 20)
 GM:registerEvent("TEAMMATE_BANDAGED", "Teammate bandaged", nil, 20, 25)

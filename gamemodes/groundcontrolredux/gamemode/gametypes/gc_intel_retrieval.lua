@@ -26,6 +26,7 @@ function GM:registerIntelRetrieval()
     function intelRetrieval:pickupIntel(intelEnt, ply)
         if !ply.hasIntel then
             self:giveIntel(ply)
+            ply.intel = intelEnt
             return true
         end
     end
@@ -52,28 +53,21 @@ function GM:registerIntelRetrieval()
     end
 
     function intelRetrieval:dropIntel(ply)
-        -- local pos = ply:GetPos()
-        -- pos.z = pos.z + 20
-
-        -- local ent = ents.Create("gc_intel")
-        -- ent:SetPos(pos)
-        -- ent:SetAngles(AngleRand())
-        -- ent:Spawn()
-        -- ent:wakePhysics()
-        -- ent:SetDropped(true)
-
         ply.hasIntel = false
         ply.intel:Drop()
+        ply.intel = nil
     end
 
     function intelRetrieval:resetRoundData()
         for key, ply in ipairs(player.GetAll()) do
             ply.hasIntel = false
+            ply.intel = nil
         end
     end
 
     function intelRetrieval:removeIntel(ply)
         ply.hasIntel = false
+        ply.intel = nil
         net.Start("GC_INTEL_REMOVED")
         net.Send(ply)
     end
@@ -81,7 +75,7 @@ function GM:registerIntelRetrieval()
     function intelRetrieval:attemptCaptureIntel(ply, host)
         if ply.hasIntel then
             intelRetrieval:removeIntel(ply)
-            ply:addCurrency("SECURED_INTEL", nil, self.cashPerIntelCapture, self.expPerIntelCapture)
+            ply:addCurrency("SECURED_INTEL")
             return true
         end
     end

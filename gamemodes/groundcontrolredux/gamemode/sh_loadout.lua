@@ -165,7 +165,7 @@ function GM:registerCaliber(caliberName, grams, penetration, aliases)
 
     -- further kill different naming conventions
     if aliases then
-        for alias in alises do
+        for k, alias in ipairs(aliases) do
             self.CaliberAliases[string.lower(alias)] = string.lower(caliberName)
         end
     end

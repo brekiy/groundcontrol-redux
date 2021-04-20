@@ -1,7 +1,9 @@
 ENT.Type = "anim"
 ENT.Base = "base_anim"
-ENT.PrintName = ""
+ENT.PrintName = "dfhdfh"
 ENT.Author = "brekiy"
+-- ENT.Category		= "GC Ents"
+-- ENT.Author			= "brekiy"
 ENT.Spawnable = false
 ENT.AdminSpawnable = false
 ENT.Model = "models/props_lab/harddrive01.mdl"
