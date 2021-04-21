@@ -54,8 +54,8 @@ local PLAYER = FindMetaTable("Player")
 function PLAYER:joinTeam(teamId)
     self:SetTeam(teamId) -- welp
 
-    if GAMEMODE.curGametype.playerJoinTeam then
-        GAMEMODE.curGametype:playerJoinTeam(self, teamId)
+    if GAMEMODE.curGametype.PlayerJoinTeam then
+        GAMEMODE.curGametype:PlayerJoinTeam(self, teamId)
     end
 
     if GAMEMODE.curGametype.spawnDuringPreparation and GAMEMODE:isPreparationPeriod() then

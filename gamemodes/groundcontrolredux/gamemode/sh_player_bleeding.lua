@@ -90,9 +90,9 @@ function PLAYER:resetBleedData()
     self.healAmount = 0
 end
 
-function PLAYER:getDesiredBandageCount()
-    if GAMEMODE.curGametype.getDesiredBandageCount then
-        local count = GAMEMODE.curGametype:getDesiredBandageCount(self)
+function PLAYER:GetDesiredBandageCount()
+    if GAMEMODE.curGametype.GetDesiredBandageCount then
+        local count = GAMEMODE.curGametype:GetDesiredBandageCount(self)
 
         if count then
             return count

@@ -72,8 +72,8 @@ function GM:PlayerInitialSpawn(ply)
     self:sendTimeLimit(ply)
     ply:sendGameType()
 
-    if self.curGametype.playerInitialSpawn then
-        self.curGametype:playerInitialSpawn(ply)
+    if self.curGametype.PlayerInitialSpawn then
+        self.curGametype:PlayerInitialSpawn(ply)
     end
 end
 
@@ -108,10 +108,10 @@ function GM:PlayerSpawn(ply)
     ply:resetWeightData()
     ply:resetRadioData()
     ply:resetRecentVictimData()
-    ply:resetTrackedArmor()
+    ply:ResetTrackedArmor()
     ply:resetHealthRegenData()
     ply:updateLoadoutPoints()
-    ply:setBandages(ply:getDesiredBandageCount())
+    ply:setBandages(ply:GetDesiredBandageCount())
     ply:SetCanZoom(false)
     ply:resetLastKillData()
     ply:SetCrouchedWalkSpeed(self.CrouchedWalkSpeed)
@@ -168,8 +168,8 @@ function GM:PlayerSpawn(ply)
     ply:giveLoadout()
     self:sendTimeLimit(ply)
 
-    if self.curGametype.playerSpawn then
-        self.curGametype:playerSpawn(ply)
+    if self.curGametype.PlayerSpawn then
+        self.curGametype:PlayerSpawn(ply)
     end
 
     ply:SetupHands()
@@ -189,22 +189,22 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
 
             attacker:AddFrags(1)
             ply:AddDeaths(1)
-            attacker:addCurrency("ENEMY_KILLED", ply)
+            attacker:AddCurrency("ENEMY_KILLED", ply)
             self:trackRoundMVP(attacker, "kills", 1)
             attacker:checkForTeammateSave(ply)
             attacker:increaseKillcount(ply)
 
             if ply:LastHitGroup() == HITGROUP_HEAD then
-                attacker:addCurrency("HEADSHOT")
+                attacker:AddCurrency("HEADSHOT")
                 self:trackRoundMVP(attacker, "headshots", 1)
             end
 
             if self:countLivingPlayers(attacker:Team()) == 1 then
-                attacker:addCurrency("ONE_MAN_ARMY")
+                attacker:AddCurrency("ONE_MAN_ARMY")
             end
         else
             if ply != attacker then
-                attacker:addCurrency("TEAMKILL", ply)
+                attacker:AddCurrency("TEAMKILL", ply)
             end
         end
 
@@ -239,7 +239,7 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
             for obj, damageAmount in pairs(ply.attackedBy) do -- iterate over all players that attacked us and give them assist money
                 if IsValid(obj) and ply != attacker and obj != attacker then
                     local percentage = damageAmount / ply:GetMaxHealth()
-                    obj:addCurrency("KILL_ASSIST", nil, math.ceil(percentage * self.CashPerAssist), math.ceil(percentage * self.ExpPerAssist))
+                    obj:AddCurrency("KILL_ASSIST", nil, math.ceil(percentage * self.CashPerAssist), math.ceil(percentage * self.ExpPerAssist))
                 end
             end
         end
@@ -327,10 +327,10 @@ function GM:PlayerCanSeePlayersChat(text, teamOnly, listener, talker)
 end
 
 function GM:PostPlayerDeath(ply)
-    --self:checkRoundOverPossibility()
+    --self:CheckRoundOverPossibility()
 
-    if ply:Team() != TEAM_SPECTATOR and self.curGametype.postPlayerDeath then
-        self.curGametype:postPlayerDeath(ply)
+    if ply:Team() != TEAM_SPECTATOR and self.curGametype.PostPlayerDeath then
+        self.curGametype:PostPlayerDeath(ply)
     end
 
     ply:delaySpectate(self.DeadPeriodTime)
@@ -474,9 +474,9 @@ function GM:PlayerDeathThink(ply)
 end
 
 function GM:PlayerDisconnected(ply)
-    --self:checkRoundOverPossibility()
-    if self.curGametype.playerDisconnected then
-        self.curGametype:playerDisconnected(ply)
+    --self:CheckRoundOverPossibility()
+    if self.curGametype.PlayerDisconnected then
+        self.curGametype:PlayerDisconnected(ply)
     end
 
     self:removePlayerObjectFromReportedDeadList(ply)
@@ -555,20 +555,20 @@ function PLAYER:checkForTeammateSave(victim)
         if victimObj != self and victimObj:Health() > 0 then
             if CurTime() < recentVictim.timeWindow then
                 if victimObj:Health() <= GAMEMODE.MinHealthForSave then
-                    self:addCurrency("TEAMMATE_SAVED")
+                    self:AddCurrency("TEAMMATE_SAVED")
                 else
-                    self:addCurrency("TEAMMATE_HELPED")
+                    self:AddCurrency("TEAMMATE_HELPED")
                 end
             end
         else
             if self:Health() <= GAMEMODE.MinHealthForCloseCall and self:Alive() then
-                self:addCurrency("CLOSE_CALL")
+                self:AddCurrency("CLOSE_CALL")
             end
         end
     end
 end
 
-function PLAYER:addCurrency(event, entity, cash, exp)
+function PLAYER:AddCurrency(event, entity, cash, exp)
     local eventData = GAMEMODE:getEventByName(event)
     cash = cash or eventData.cash
     exp = exp or eventData.exp
@@ -614,7 +614,7 @@ function PLAYER:setSpawnPoint(vec)
     self.spawnPoint = vec
 
     if GAMEMODE.LoadoutSelectTime then
-        if GAMEMODE.curGametype.canReceiveLoadout and !GAMEMODE.curGametype:canReceiveLoadout(self) then
+        if GAMEMODE.curGametype.CanReceiveLoadout and !GAMEMODE.curGametype:CanReceiveLoadout(self) then
             return
         end
 
@@ -674,7 +674,7 @@ end)
 concommand.Add("gc_assignbotstoteam", function(ply)
     for key, value in pairs(player.GetBots()) do
         value:SetTeam(math.random(TEAM_RED, TEAM_BLUE))
-        value:resetTrackedArmor()
+        value:ResetTrackedArmor()
         value:Spawn()
     end
 end)

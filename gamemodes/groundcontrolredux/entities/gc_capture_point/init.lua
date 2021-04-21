@@ -23,8 +23,8 @@ function ENT:Initialize()
 
     self:setCaptureDistance(self.captureDistance)
 
-    local gametype = GAMEMODE:getGametype()
-    gametype:assignPointID(self)
+    local gametype = GAMEMODE:GetGametype()
+    gametype:AssignPointID(self)
 end
 
 function ENT:setCapturerTeam(team) -- the team that has to capture this point
@@ -69,7 +69,7 @@ function ENT:Think()
     end
 
     if self.roundOverOnCapture and self:GetCaptureProgress() == 100 then
-        GAMEMODE:endRound(self.capturerTeam)
+        GAMEMODE:EndRound(self.capturerTeam)
         return
     end
 

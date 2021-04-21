@@ -31,7 +31,7 @@ function PLAYER:postBleed()
         self:Kill()
 
         if IsValid(self.bleedInflictor) then -- reward whoever caused us to bleed
-            self.bleedInflictor:addCurrency("BLEED_OUT_KILL", ply)
+            self.bleedInflictor:AddCurrency("BLEED_OUT_KILL", ply)
             self.bleedInflictor = nil
         end
     end
@@ -86,7 +86,7 @@ function PLAYER:bandage(bandagedBy)
     self:setBleeding(false)
 
     if bandagedBy != self then
-        bandagedBy:addCurrency("TEAMMATE_BANDAGED")
+        bandagedBy:AddCurrency("TEAMMATE_BANDAGED")
         GAMEMODE:trackRoundMVP(bandagedBy, "bandaging", 1)
     end
 

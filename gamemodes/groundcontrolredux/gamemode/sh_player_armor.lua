@@ -240,15 +240,15 @@ function PLAYER:resetArmorData(category)
 end
 
 -- Clear all of the player's tracked armor
-function PLAYER:resetTrackedArmor()
+function PLAYER:ResetTrackedArmor()
     self.armor = self.armor or {}
     table.Empty(self.armor)
 end
 
 -- Force resets the player to have no armor
 function PLAYER:resetAllArmor()
-    self:giveArmor("vest", 0)
-    self:giveArmor("helmet", 0)
+    self:GiveGCArmor("vest", 0)
+    self:GiveGCArmor("helmet", 0)
 end
 
 function PLAYER:getDesiredVest()

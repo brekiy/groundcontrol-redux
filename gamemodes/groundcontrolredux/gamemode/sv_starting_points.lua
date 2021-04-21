@@ -128,8 +128,8 @@ end
 function GM:pickValidStartingPoint(ply)
     local team = ply:Team()
 
-    if self.curGametype.adjustSpawnpoint then
-        team = self.curGametype:adjustSpawnpoint(ply, team) or team
+    if self.curGametype.AdjustSpawnpoint then
+        team = self.curGametype:AdjustSpawnpoint(ply, team) or team
     end
 
     if self.curGametype.invertSpawnpoints then

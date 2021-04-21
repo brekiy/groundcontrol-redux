@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-function GM:resetTimeLimit()
+function GM:reSetTimeLimit()
     self.TimeLimit = nil
     self.RoundStart = nil
     self.RoundTime = nil

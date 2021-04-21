@@ -27,7 +27,7 @@ function ENT:Use(activator, caller)
 
     local gametype = GAMEMODE.curGametype
 
-    if gametype:pickupDrugs(self, activator) then
+    if gametype:PickupDrugs(self, activator) then
         self:Remove()
 
         if self.host then

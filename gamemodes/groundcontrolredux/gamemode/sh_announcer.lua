@@ -11,7 +11,7 @@ net.Receive("GC_ANNOUNCEMENT", function(len, ply)
     local announcement = net.ReadString()
     local seed = net.ReadFloat()
 
-    GAMEMODE:startAnnouncement(announcer, announcement, seed)
+    GAMEMODE:StartAnnouncement(announcer, announcement, seed)
 end)
 function GM:registerAnnouncer(id)
     local data = {lines = {}, curSound = nil}
@@ -29,7 +29,7 @@ function GM:registerAnnouncement(announcerId, announcementId, sounds, callback)
     self.RegisteredAnnouncementsById[announcementId] = data
 end
 
-function GM:startAnnouncement(announcer, id, seed, targetTeam, player)
+function GM:StartAnnouncement(announcer, id, seed, targetTeam, player)
     if SERVER then
         if player then
             net.Start("GC_ANNOUNCEMENT")

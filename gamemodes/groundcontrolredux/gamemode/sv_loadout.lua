@@ -31,15 +31,15 @@ function PLAYER:attemptPostGiveWeapon(givenWeaponData)
 end
 
 function PLAYER:giveLoadout(forceGive)
-    if !forceGive and GAMEMODE.curGametype.canReceiveLoadout and !GAMEMODE.curGametype:canReceiveLoadout(self) then
+    if !forceGive and GAMEMODE.curGametype.CanReceiveLoadout and !GAMEMODE.curGametype:CanReceiveLoadout(self) then
         return
     end
 
 
     self:StripWeapons()
     self:RemoveAllAmmo()
-    self:resetGadgetData()
-    self:applyTraits()
+    self:ResetGadgetData()
+    self:ApplyTraits()
 
     -- get the weapons we want to spawn with
     local primaryData = self:getDesiredPrimaryWeapon()
@@ -67,8 +67,8 @@ function PLAYER:giveLoadout(forceGive)
 
         GAMEMODE:cheapOut(self)
 
-        if GAMEMODE.curGametype.skipAttachmentGive then
-            if !GAMEMODE.curGametype:skipAttachmentGive(self) then
+        if GAMEMODE.curGametype.SkipAttachmentGive then
+            if !GAMEMODE.curGametype:SkipAttachmentGive(self) then
                 CustomizableWeaponry.giveAttachments(self, self.ownedAttachmentsNumeric, true, true)
             end
         else
@@ -129,15 +129,15 @@ function PLAYER:giveLoadout(forceGive)
 
     self:giveGadgets()
     if plyObj:IsBot() then
-        plyObj:giveArmor("vest", 2)
-        plyObj:giveArmor("helmet", 1)
+        plyObj:GiveGCArmor("vest", 2)
+        plyObj:GiveGCArmor("helmet", 1)
     elseif GAMEMODE:getImaginaryLoadoutCost(plyObj) > self:getCurrentLoadoutPoints() then
-        self:giveArmor("vest", 0)
-        self:giveArmor("helmet", 0)
+        self:GiveGCArmor("vest", 0)
+        self:GiveGCArmor("helmet", 0)
         plyObj:sendTip("LOADOUT_LIMIT")
     else
-        self:giveArmor("vest")
-        self:giveArmor("helmet")
+        self:GiveGCArmor("vest")
+        self:GiveGCArmor("helmet")
     end
 
     self:Give(GAMEMODE.KnifeWeaponClass)

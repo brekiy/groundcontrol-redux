@@ -248,8 +248,8 @@ function GM:HUDPaint()
         -- draw.ShadowText(self:getKeyBind("+attack2") .. " - previous spectate target", "CW_HUD24", 5, 165, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
         draw.ShadowText(self:getKeyBind("+jump") .. " - switch spectate perspective", "CW_HUD24", 5, 190, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
-        if self.curGametype.deadDraw then
-            self.curGametype:deadDraw(scrW, scrH)
+        if self.curGametype.DeadDraw then
+            self.curGametype:DeadDraw(scrW, scrH)
         end
     end
 
@@ -456,7 +456,7 @@ function GM:createRoundPreparationDisplay(preparationTime)
     self:playMusic(self.RoundStartMusicObjects[math.random(1, #self.RoundStartMusicObjects)], nil, self.RoundStartTrackVolume)
 
     if self.curGametype.roundStart then
-        self.curGametype:roundStart()
+        self.curGametype:RoundStart()
     end
 
     self.tipController:handleEvent("WEAPON_CUSTOMIZATION")

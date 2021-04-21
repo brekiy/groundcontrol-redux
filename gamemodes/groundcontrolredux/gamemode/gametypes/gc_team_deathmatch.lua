@@ -13,23 +13,22 @@ function GM:registerTeamDeathmatch()
     end
 
     if SERVER then
-        function tdm:postPlayerDeath(ply) -- check for round over possibility
-            GAMEMODE:checkRoundOverPossibility(ply:Team())
+        function tdm:PostPlayerDeath(ply) -- check for round over possibility
+            GAMEMODE:CheckRoundOverPossibility(ply:Team())
         end
 
-        function tdm:playerDisconnected(ply)
-            local hisTeam = ply:Team()
-
-            timer.Simple(0, function() -- nothing fancy, just skip 1 frame and call postPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
-                GAMEMODE:checkRoundOverPossibility(hisTeam, true)
+        function tdm:PlayerDisconnected(ply)
+            -- nothing fancy, just skip 1 frame and call PostPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
+            timer.Simple(0, function()
+                GAMEMODE:CheckRoundOverPossibility(ply:Team(), true)
             end)
         end
 
-        function tdm:playerJoinTeam(ply, teamId)
-            GAMEMODE:checkRoundOverPossibility(nil, true)
+        function tdm:PlayerJoinTeam(ply, teamId)
+            GAMEMODE:CheckRoundOverPossibility(nil, true)
         end
     end
 
-    GM:registerNewGametype(tdm)
+    GM:RegisterNewGametype(tdm)
 end
 ]]--

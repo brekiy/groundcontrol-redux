@@ -52,7 +52,7 @@ function ENT:Think()
     end
 
     if self.roundOverOnCapture and self:GetCaptureProgress() == 100 then
-        GAMEMODE:endRound(self:GetCurCaptureTeam())
+        GAMEMODE:EndRound(self:GetCurCaptureTeam())
         return
     end
 

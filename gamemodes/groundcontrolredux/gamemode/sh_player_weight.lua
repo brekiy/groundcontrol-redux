@@ -44,7 +44,7 @@ function GM:calculateImaginaryWeight(ply, withoutWeight, withWeight)
     end
 
     -- tally up other equipment weight
-    totalWeight = totalWeight + self:getBandageWeight(ply:getDesiredBandageCount())
+    totalWeight = totalWeight + self:getBandageWeight(ply:GetDesiredBandageCount())
     totalWeight = totalWeight + self:getSpareAmmoWeight(ply:getDesiredAmmoCount())
     totalWeight = totalWeight + self:getArmorWeight("vest", ply:getDesiredVest())
     totalWeight = totalWeight + self:getArmorWeight("helmet", ply:getDesiredHelmet())

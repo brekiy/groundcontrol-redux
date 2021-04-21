@@ -27,7 +27,7 @@ function ENT:Think()
 
     for key, obj in ipairs(ents.FindInSphere(self:GetPos(), self.captureDistance)) do
         if obj:IsPlayer() and obj:Alive() and GAMEMODE.curGametype:attemptCaptureIntel(obj, self) then
-            GAMEMODE:endRound(obj:Team())
+            GAMEMODE:EndRound(obj:Team())
         end
     end
 end

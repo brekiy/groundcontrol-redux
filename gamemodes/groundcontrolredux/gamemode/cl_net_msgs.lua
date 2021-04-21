@@ -49,12 +49,12 @@ net.Receive("GC_ROUND_OVER", function(a, b)
     local winningTeam = net.ReadInt(8)
     local actionType = net.ReadInt(8)
 
-    GAMEMODE:resetRoundData()
+    GAMEMODE:ResetRoundData()
     GAMEMODE:createRoundOverDisplay(winningTeam, actionType)
 end)
 
 net.Receive("GC_GAME_BEGIN", function(a, b)
-    GAMEMODE:resetRoundData()
+    GAMEMODE:ResetRoundData()
     GAMEMODE:createRoundOverDisplay(nil)
 end)
 

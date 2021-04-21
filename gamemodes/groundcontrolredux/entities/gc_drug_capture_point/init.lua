@@ -14,8 +14,8 @@ function ENT:Think()
     end
 
     for key, obj in ipairs(ents.FindInSphere(self:GetPos(), self.captureDistance)) do
-        if obj:IsPlayer() and obj:Alive() and GAMEMODE.curGametype:attemptCaptureDrugs(obj, self) then
-            GAMEMODE:endRound(obj:Team())
+        if obj:IsPlayer() and obj:Alive() and GAMEMODE.curGametype:AttemptCaptureDrugs(obj, self) then
+            GAMEMODE:EndRound(obj:Team())
         end
     end
 end

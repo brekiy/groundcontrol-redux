@@ -28,8 +28,8 @@ function ENT:Initialize()
 
     self:setCaptureDistance(self.captureDistance)
 
-    local gametype = GAMEMODE:getGametype()
-    gametype:assignPointID(self)
+    local gametype = GAMEMODE:GetGametype()
+    gametype:AssignPointID(self)
 
     self:SetCaptureMin(Vector(0, 0, 0))
     self:SetCaptureMax(Vector(0, 0, 0))
@@ -190,7 +190,7 @@ function ENT:advanceCapture(capSpeed, capturerTeam)
             self:endWave(self.capturerTeam, true)
 
             for key, ply in ipairs(team.GetPlayers(self.capturerTeam)) do
-                ply:addCurrency("OBJECTIVE_CAPTURED")
+                ply:AddCurrency("OBJECTIVE_CAPTURED")
             end
 
             return

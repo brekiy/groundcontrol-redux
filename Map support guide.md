@@ -13,7 +13,7 @@ Original recommendation from the old documentation was to put this call in the s
 
 2. Create objectives.
 You need to call the function
-GM:addObjectivePositionToGametype("gameTypeName", "mapName", entityPosition, "entityClass", {customFlagsWithinTable = "yeas my bro."})
+GM:AddObjectivePositionToGametype("gameTypeName", "mapName", entityPosition, "entityClass", {customFlagsWithinTable = "yeas my bro."})
 
 Read sh_gametypes.lua and the corresponding entities for examples. The custom flags are only needed if the entities require them.
 
@@ -26,7 +26,7 @@ GM.entityInitializer:registerEntityInitializeCallback("entityClass", function(en
         end
     end)
 
-"data.data" refers to the table that was passed in through the addObjectivePositionToGametype() function.
+"data.data" refers to the table that was passed in through the AddObjectivePositionToGametype() function.
 
 3. Add spawn points.
 Check sv_custom_spawn_points.lua for examples. They're very self explanatory.

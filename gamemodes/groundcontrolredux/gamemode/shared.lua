@@ -158,7 +158,7 @@ CustomizableWeaponry.callbacks:addNew("preventAttachment", "GroundControl_preven
 end)
 
 CustomizableWeaponry.callbacks:addNew("disableInteractionMenu", "GroundControl_disableInteractionMenu", function(self)
-    if GAMEMODE.curGametype.canHaveAttachments and !GAMEMODE.curGametype:canHaveAttachments(self:GetOwner()) then
+    if GAMEMODE.curGametype.CanHaveAttachments and !GAMEMODE.curGametype:CanHaveAttachments(self:GetOwner()) then
         return true
     end
 

@@ -100,7 +100,7 @@ CustomizableWeaponry.canDropWeapon = false -- don't let the players be able to d
 
 function GM:InitPostEntity()
     self:postInitEntity()
-    self:setGametype(self:getGametypeFromConVar())
+    self:setGametype(self:GetGametypeFromConVar())
     self:autoRemoveEntities()
     self:runMapStartCallback()
 

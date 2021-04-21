@@ -10,30 +10,30 @@ GM.GametypesByName = {}
 GM.curGametype = nil
 GM.DefaultGametypeID = 1 -- this is what we default to in case something goes wrong when attempting to switch to another gametype
 
-function GM:registerNewGametype(gametypeData)
+function GM:RegisterNewGametype(gametypeData)
     table.insert(self.Gametypes, gametypeData)
     self.GametypesByName[gametypeData.name] = gametypeData
 end
 
-function GM:setGametype(gameTypeID)
-    self.curGametypeID = gameTypeID
-    self.curGametype = self.Gametypes[gameTypeID]
+function GM:SetGametype(gameTypeID)
+    self.CurGametypeID = gameTypeID
+    self.CurGametype = self.Gametypes[gameTypeID]
 
-    if self.curGametype.prepare then
-        self.curGametype:prepare()
+    if self.CurGametype.Prepare then
+        self.CurGametype:Prepare()
     end
 
     if SERVER then
         -- doesn't do what the method says it does, please look in sv_gametypes.lua to see what it really does (bad name for the method, I know)
-        self:removeCurrentGametype()
+        self:RemoveCurrentGametype()
     end
 end
 
-function GM:setGametypeCVarByPrettyName(targetName)
-    local key, _ = self:getGametypeFromConVar(targetName)
+function GM:SetGametypeCVarByPrettyName(targetName)
+    local key, _ = self:GetGametypeFromConVar(targetName)
 
     if key then
-        self:changeGametype(key)
+        self:ChangeGametype(key)
         game.ConsoleCommand("gc_gametype " .. key .. "\n")
 
         return true
@@ -42,11 +42,11 @@ function GM:setGametypeCVarByPrettyName(targetName)
     return false
 end
 
-function GM:getGametypeNameData(id)
+function GM:GetGametypeNameData(id)
     return id .. " - " .. self.Gametypes[id].prettyName .. " (" .. self.Gametypes[id].name .. ")"
 end
 
-function GM:getGametypeFromConVar(targetValue)
+function GM:GetGametypeFromConVar(targetValue)
     local cvarValue = targetValue and targetValue or GetConVar("gc_gametype"):GetString()
     local newGID = tonumber(cvarValue)
 
@@ -65,18 +65,18 @@ function GM:getGametypeFromConVar(targetValue)
     end
 
     -- in case of failure
-    print(self:appendHelpText("[GROUND CONTROL] Error - non-existent gametype ID '" .. targetValue .. "', last gametype in gametype table is '" .. GAMEMODE:getGametypeNameData(#self.Gametypes) .. "', resetting to default gametype"))
+    print(self:AppendHelpText("[GROUND CONTROL] Error - non-existent gametype ID '" .. targetValue .. "', last gametype in gametype table is '" .. GAMEMODE:GetGametypeNameData(#self.Gametypes) .. "', resetting to default gametype"))
     return self.DefaultGametypeID, self.Gametypes[self.DefaultGametypeID]
 end
 
-GM.HelpText = "\ntype 'gc_gametypelist' to get a list of all valid gametypes\ntype 'gc_gametype_maplist' to get a list of all supported maps for all available gametypes\n"
+GM.HELP_TEXT = "\ntype 'gc_gametypelist' to get a list of all valid gametypes\ntype 'gc_gametype_maplist' to get a list of all supported maps for all available gametypes\n"
 
-function GM:appendHelpText(text)
-    return text .. self.HelpText
+function GM:AppendHelpText(text)
+    return text .. self.HELP_TEXT
 end
 
 -- changes the gametype for the next map
-function GM:changeGametype(newGametypeID)
+function GM:ChangeGametype(newGametypeID)
     if !newGametypeID then
         return
     end
@@ -84,8 +84,8 @@ function GM:changeGametype(newGametypeID)
     local newGID = tonumber(newGametypeID) -- check if the passed on value is a string
 
     -- if it is, attempt to set a gametype by the string we were passed on
-    if !newGID and self:setGametypeCVarByPrettyName(newGametypeID) then
-            return true
+    if !newGID and self:SetGametypeCVarByPrettyName(newGametypeID) then
+        return true
     end
 
     if newGID then
@@ -105,16 +105,16 @@ function GM:changeGametype(newGametypeID)
 
         return true
     else
-        print(self:appendHelpText("[GROUND CONTROL] Invalid gametype '" .. tostring(newGametypeID) .. "'\n"))
+        print(self:AppendHelpText("[GROUND CONTROL] Invalid gametype '" .. tostring(newGametypeID) .. "'\n"))
         return false
     end
 end
 
-function GM:getGametypeByID(id)
+function GM:GetGametypeByID(id)
     return GAMEMODE.Gametypes[id]
 end
 
-function GM:initializeGameTypeEntities(gameType)
+function GM:InitializeGameTypeEntities(gameType)
     local map = string.lower(game.GetMap())
     local objEnts = gameType.objectives[map]
     if objEnts then
@@ -130,7 +130,7 @@ function GM:initializeGameTypeEntities(gameType)
     end
 end
 
-function GM:addObjectivePositionToGametype(gametypeName, map, pos, objectiveClass, additionalData)
+function GM:AddObjectivePositionToGametype(gametypeName, map, pos, objectiveClass, additionalData)
     local gametypeData = self.GametypesByName[gametypeName]
     if gametypeData then
         gametypeData.objectives = gametypeData.objectives or {}
@@ -140,11 +140,11 @@ function GM:addObjectivePositionToGametype(gametypeName, map, pos, objectiveClas
     end
 end
 
-function GM:getGametype()
+function GM:GetGametype()
     return self.curGametype
 end
 
-GM:registerRush()
-GM:registerUrbanWarfare()
-GM:registerDrugBust()
-GM:registerIntelRetrieval()
+GM:RegisterRush()
+GM:RegisterUrbanWarfare()
+GM:RegisterDrugBust()
+GM:RegisterIntelRetrieval()

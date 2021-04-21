@@ -216,7 +216,7 @@ function command:onPlayerDeath(victim, attacker, data)
         local dist = victim:GetPos():Distance(data.position)
 
         if dist <= self.killRangeReward then
-            marker:addCurrency("SPOT_KILL", nil, self.cashReward, self.expReward)
+            marker:AddCurrency("SPOT_KILL", nil, self.cashReward, self.expReward)
             GAMEMODE:trackRoundMVP(marker, "spotting", 1)
         end
     end
@@ -310,7 +310,7 @@ function command:send(ply, commandId, category)
         end
 
         if team.GetAlivePlayers(ply:Team()) > 1 and !GAMEMODE.RoundOver then -- only give the reward if there's at least one player alive or the round hasn't ended yet
-            ply:addCurrency("REPORT_ENEMY_DEATH", nil, self.cashReward, self.expReward)
+            ply:AddCurrency("REPORT_ENEMY_DEATH", nil, self.cashReward, self.expReward)
         end
 
         ply:resetLastKillData()

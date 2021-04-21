@@ -34,7 +34,7 @@ function PLAYER:getSpecificGadget(id)
     end
 end
 
-function PLAYER:resetGadgetData()
+function PLAYER:ResetGadgetData()
     self.gadgets = self.gadgets or {}
     table.Empty(self.gadgets)
 end
@@ -131,7 +131,7 @@ function spareAmmo:resupply(resuppliedBy, target, availableAmmo, gadgetData)
 
         if resuppliedBy != target then
             local percentage = givenAmmo / wep.Primary.ClipSize_Orig
-            resuppliedBy:addCurrency("TEAMMATE_RESUPPLIED", nil, math.ceil(percentage * GAMEMODE.CashPerResupply), math.ceil(percentage * GAMEMODE.ExpPerResupply))
+            resuppliedBy:AddCurrency("TEAMMATE_RESUPPLIED", nil, math.ceil(percentage * GAMEMODE.CashPerResupply), math.ceil(percentage * GAMEMODE.ExpPerResupply))
             GAMEMODE:trackRoundMVP(resuppliedBy, "resupply", 1)
         end
 

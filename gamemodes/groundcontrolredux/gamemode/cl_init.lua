@@ -63,7 +63,7 @@ function GM:InitPostEntity()
     local ply = LocalPlayer()
     ply.cash = ply.cash or 0
     ply:spawn()
-    ply:resetGadgetData()
+    ply:ResetGadgetData()
     ply:resetAttachmentData()
     ply:resetTraitData()
 
@@ -113,11 +113,11 @@ function GM:roundPreparation(preparationTime)
 end
 
 -- called upon the end of a round
-function GM:resetRoundData()
-    self:resetTimeLimit()
+function GM:ResetRoundData()
+    self:reSetTimeLimit()
 
-    if GAMEMODE.curGametype.resetRoundData then
-        GAMEMODE.curGametype:resetRoundData()
+    if GAMEMODE.curGametype.ResetRoundData then
+        GAMEMODE.curGametype:ResetRoundData()
     end
 end
 

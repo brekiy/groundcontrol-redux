@@ -3,7 +3,7 @@ include("sh_player_traits.lua")
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:applyTraits()
+function PLAYER:ApplyTraits()
     self:removeTraits()
 
     for key, convar in ipairs(GAMEMODE.TraitConvars) do

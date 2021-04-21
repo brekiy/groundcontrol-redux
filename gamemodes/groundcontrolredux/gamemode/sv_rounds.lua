@@ -49,7 +49,7 @@ function GM:makeDebrisMovetypeForTrash(entList)
 end
 
 -- this is the default round over check, for gametypes with no player respawns
-function GM:checkRoundOverPossibility(teamId, ignoreDisplay)
+function GM:CheckRoundOverPossibility(teamId, ignoreDisplay)
     if !self.RoundOver then
         local allPlayers = player.GetAll()
 
@@ -78,10 +78,10 @@ function GM:checkRoundOverPossibility(teamId, ignoreDisplay)
             end
 
             if winner then
-                self:endRound(winner)
+                self:EndRound(winner)
             end
         else
-            self:endRound(nil)
+            self:EndRound(nil)
         end
     end
 
@@ -98,7 +98,7 @@ function GM:canRestartRound()
     return true
 end
 
-function GM:endRound(winningTeam)
+function GM:EndRound(winningTeam)
     if self.RoundOver then -- we're already restarting a round wtf
         return
     end
@@ -123,7 +123,7 @@ function GM:endRound(winningTeam)
         net.Broadcast()
     else
         for key, obj in ipairs(team.GetPlayers(winningTeam)) do
-            obj:addCurrency("WON_ROUND")
+            obj:AddCurrency("WON_ROUND")
         end
 
         net.Start("GC_ROUND_OVER")
@@ -173,7 +173,7 @@ end
 
 function GM:startVoteMap()
     if self:canStartVote() then
-        local _, data = self:getGametypeFromConVar()
+        local _, data = self:GetGametypeFromConVar()
         local mapList = self:filterExistingMaps(data.mapRotation)
 
         self:setupCurrentVote("Vote for the next map", mapList, player.GetAll(), self.MaxMapsPerPick, true, nil, function()
@@ -234,7 +234,7 @@ function GM:startGameTypeVote()
     self:setupCurrentVote("Vote for next game type", possibilities, player.GetAll(), self.MaxGameTypesPerPick, false, nil, function()
         local highestOption, _ = self:getHighestVote()
 
-        self:setGametypeCVarByPrettyName(highestOption.option)
+        self:SetGametypeCVarByPrettyName(highestOption.option)
     end, self.VoteGametypeVoteID)
 
     hook.Call("GroundControlGametypeVoteStarted", nil, possibilities, self.VoteID)
@@ -252,7 +252,7 @@ function GM:restartRound()
     self:runMapStartCallback()
 
     if self.curGametype.roundStart then
-        self.curGametype:roundStart()
+        self.curGametype:RoundStart()
     end
 
     self:setupRoundPreparation()
