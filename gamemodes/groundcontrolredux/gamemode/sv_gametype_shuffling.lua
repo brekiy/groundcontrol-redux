@@ -2,11 +2,11 @@
 -- this module will assume that you have at least 1 map for at least 1 gametype (ie. a minimum of 1 valid gametype)
 CreateConVar("gc_randomly_pick_gametype_and_map", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
 
-function GM:randomlyPickGametypeAndMap()
+function GM:RandomlyPickGametypeAndMap()
     local validGametypes = {}
 
     for key, gametypeData in ipairs(self.Gametypes) do
-        local validMaps = self:filterExistingMaps(gametypeData.mapRotation)
+        local validMaps = self:FilterExistingMaps(gametypeData.mapRotation)
 
         if #validMaps > 0 then
             validGametypes[gametypeData] = validMaps

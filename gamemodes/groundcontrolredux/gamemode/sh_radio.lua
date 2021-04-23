@@ -6,7 +6,7 @@ if CLIENT then
 end
 
 if SERVER then
-    GM.HUDColors = {} -- just a dummy table
+    GM.HUD_COLORS = {} -- just a dummy table
 end
 
 GM.RadioCommands = {}
@@ -47,7 +47,7 @@ if SERVER then
     end
 end
 
-function GM:registerRadioVoiceVariant(voiceID, display, texture, redPlayerModel, bluePlayerModel, invisible, requiresSubtitles)
+function GM:RegisterRadioVoiceVariant(voiceID, display, texture, redPlayerModel, bluePlayerModel, invisible, requiresSubtitles)
     local voiceData = {}
     voiceData.id = voiceID
     voiceData.display = display
@@ -88,15 +88,15 @@ function GM:getVoiceModel(ply)
     return model
 end
 
-GM:registerRadioVoiceVariant("us", "US", nil, "models/player/swat.mdl", "models/player/leet.mdl")
-GM:registerRadioVoiceVariant("aus", "AUS", nil, "models/player/urban.mdl", "models/player/guerilla.mdl")
-GM:registerRadioVoiceVariant("rus", "RUS", nil, "models/player/riot.mdl", "models/player/phoenix.mdl", false, true)
-GM:registerRadioVoiceVariant("bandlet", "Cheeki", nil, "models/player/bandit_backpack.mdl", "models/custom/stalker_bandit_veteran.mdl", false, true)
--- GM:registerRadioVoiceVariant("combine", "Combine", nil,
+GM:RegisterRadioVoiceVariant("us", "US", nil, "models/player/swat.mdl", "models/player/leet.mdl")
+GM:RegisterRadioVoiceVariant("aus", "AUS", nil, "models/player/urban.mdl", "models/player/guerilla.mdl")
+GM:RegisterRadioVoiceVariant("rus", "RUS", nil, "models/player/riot.mdl", "models/player/phoenix.mdl", false, true)
+GM:RegisterRadioVoiceVariant("bandlet", "Cheeki", nil, "models/player/bandit_backpack.mdl", "models/custom/stalker_bandit_veteran.mdl", false, true)
+-- GM:RegisterRadioVoiceVariant("combine", "Combine", nil,
 --     {"models/player/group01/male_03.mdl", "models/player/group01/male_01.mdl"}, {"models/player/group01/male_03.mdl", "models/player/group01/male_01.mdl"}, true)
-GM:registerRadioVoiceVariant("franklin", "Franklin", nil,
+GM:RegisterRadioVoiceVariant("franklin", "Franklin", nil,
     {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, true, true)
-GM:registerRadioVoiceVariant("trevor", "Trevor", nil,
+GM:RegisterRadioVoiceVariant("trevor", "Trevor", nil,
     {"models/player/Group02/Male_04.mdl", "models/player/Group02/male_02.mdl", "models/player/Group01/male_07.mdl"}, {"models/player/Group02/Male_04.mdl", "models/player/Group02/male_02.mdl", "models/player/Group01/male_07.mdl"}, true, true)
 
 function GM:registerRadioCommand(data)
@@ -105,12 +105,12 @@ function GM:registerRadioCommand(data)
 end
 
 -- call this method if you're adding a new voiceover and need to insert text and sounds into already-existing radio commands for that specific voiceover
-function GM:addRadioCommandVariation(radioCommandID, voiceoverID, listOfEntries)
+function GM:AddRadioCommandVariation(radioCommandID, voiceoverID, listOfEntries)
     local commandData = self.RadioCommandsById[radioCommandID]
     commandData.commands[voiceoverID] = listOfEntries
 end
 
-function GM:registerRadioCommandCategory(category, display, invisible)
+function GM:RegisterRadioCommandCategory(category, display, invisible)
     local structure = {commands = {}, display = display, invisible = invisible}
     self.RadioCommands[category] = structure
     self.RadioCategories[display] = category
@@ -120,11 +120,11 @@ function GM:registerRadioCommandCategory(category, display, invisible)
     end
 end
 
-GM:registerRadioCommandCategory(1, "Combat")
-GM:registerRadioCommandCategory(2, "Reply")
-GM:registerRadioCommandCategory(3, "Orders")
-GM:registerRadioCommandCategory(4, "Status")
-GM:registerRadioCommandCategory(9, "special", true)
+GM:RegisterRadioCommandCategory(1, "Combat")
+GM:RegisterRadioCommandCategory(2, "Reply")
+GM:RegisterRadioCommandCategory(3, "Orders")
+GM:RegisterRadioCommandCategory(4, "Status")
+GM:RegisterRadioCommandCategory(9, "special", true)
 
 -- {sound = "ground_control/radio/aus/.mp3", text = ""}
 
@@ -195,7 +195,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/contact.mp3", text
 }
 
 command.onScreenText = "Enemy spotted"
-command.onScreenColor = GM.HUDColors.lightRed
+command.onScreenColor = GM.HUD_COLORS.lightRed
 command.menuText = "Enemy spotted"
 command.displayTime = 5
 command.category = GM.RadioCategories.Combat
@@ -217,7 +217,7 @@ function command:onPlayerDeath(victim, attacker, data)
 
         if dist <= self.killRangeReward then
             marker:AddCurrency("SPOT_KILL", nil, self.cashReward, self.expReward)
-            GAMEMODE:trackRoundMVP(marker, "spotting", 1)
+            GAMEMODE:TrackRoundMVP(marker, "spotting", 1)
         end
     end
 end
@@ -233,7 +233,7 @@ function command:send(ply, commandId, category)
         GAMEMODE:markSpot(trace.HitPos, ply, self)
 
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
-            GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, trace.HitPos)
+            GAMEMODE:SendMarkedSpot(category, commandId, ply, obj, trace.HitPos)
         end
     end
 end
@@ -297,7 +297,7 @@ command.variations = {
 command.menuText = "Enemy down"
 command.category = GM.RadioCategories.Combat
 command.onScreenText = "Enemy down"
-command.onScreenColor = GM.HUDColors.green
+command.onScreenColor = GM.HUD_COLORS.green
 command.displayTime = 6
 command.cashReward = 5
 command.expReward = 5
@@ -306,7 +306,7 @@ command.expReward = 5
 function command:send(ply, commandId, category)
     if ply.lastKillData.position and CurTime() < ply.lastKillData.time then
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
-            GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ply.lastKillData.position)
+            GAMEMODE:SendMarkedSpot(category, commandId, ply, obj, ply.lastKillData.position)
         end
 
         if team.GetAlivePlayers(ply:Team()) > 1 and !GAMEMODE.RoundOver then -- only give the reward if there's at least one player alive or the round hasn't ended yet
@@ -316,11 +316,11 @@ function command:send(ply, commandId, category)
         ply:resetLastKillData()
     else
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
-            GAMEMODE:sendRadio(ply, obj, category, commandId)
+            GAMEMODE:SendRadio(ply, obj, category, commandId)
         end
     end
 
-    ply:sendKillConfirmations()
+    ply:SendKillConfirmations()
 end
 
 local worldSpawn = Vector(0, 0, 0)
@@ -603,7 +603,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/suppressthispositi
 
 command.onScreenText = "Suppress"
 command.id = "suppress"
-command.onScreenColor = GM.HUDColors.blue
+command.onScreenColor = GM.HUD_COLORS.blue
 command.menuText = "Suppress this position"
 command.displayTime = 5
 command.category = GM.RadioCategories.Orders
@@ -617,7 +617,7 @@ function command:send(ply, commandId, category)
 
     if !trace.HitSky then
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
-            GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, trace.HitPos)
+            GAMEMODE:SendMarkedSpot(category, commandId, ply, obj, trace.HitPos)
         end
     end
 end
@@ -667,7 +667,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/defendthisposition
 }
 
 command.onScreenText = "Defend"
-command.onScreenColor = GM.HUDColors.blue
+command.onScreenColor = GM.HUD_COLORS.blue
 command.menuText = "Defend this position"
 command.displayTime = 5
 command.category = GM.RadioCategories.Orders
@@ -681,7 +681,7 @@ function command:send(ply, commandId, category)
 
     if !trace.HitSky then
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
-            GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, trace.HitPos)
+            GAMEMODE:SendMarkedSpot(category, commandId, ply, obj, trace.HitPos)
         end
     end
 end
@@ -777,7 +777,7 @@ command.variations = {
 command.menuText = "Need medic"
 command.category = GM.RadioCategories.Combat
 command.onScreenText = "Need medic"
-command.onScreenColor = GM.HUDColors.blue
+command.onScreenColor = GM.HUD_COLORS.blue
 command.displayTime = 5
 
 function command:send(ply, commandId, category)
@@ -785,7 +785,7 @@ function command:send(ply, commandId, category)
     ourPos.z = ourPos.z + 32
 
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
-        GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
+        GAMEMODE:SendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
 end
 
@@ -837,7 +837,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/ineedammo.mp3", te
 command.menuText = "Need ammo"
 command.category = GM.RadioCategories.Combat
 command.onScreenText = "Need ammo"
-command.onScreenColor = GM.HUDColors.limeYellow
+command.onScreenColor = GM.HUD_COLORS.limeYellow
 command.displayTime = 5
 
 function command:send(ply, commandId, category)
@@ -845,7 +845,7 @@ function command:send(ply, commandId, category)
     ourPos.z = ourPos.z + 32
 
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
-        GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
+        GAMEMODE:SendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
 end
 
@@ -896,7 +896,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/ineedsomehelphere.
 command.menuText = "Need help"
 command.category = GM.RadioCategories.Status
 command.onScreenText = "Need help"
-command.onScreenColor = GM.HUDColors.blue
+command.onScreenColor = GM.HUD_COLORS.blue
 command.displayTime = 5
 
 function command:send(ply, commandId, category)
@@ -904,7 +904,7 @@ function command:send(ply, commandId, category)
     ourPos.z = ourPos.z + 32
 
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
-        GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
+        GAMEMODE:SendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
 end
 
@@ -955,7 +955,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/impinneddown.mp3",
 command.menuText = "Pinned down"
 command.category = GM.RadioCategories.Status
 command.onScreenText = "Pinned down"
-command.onScreenColor = GM.HUDColors.red
+command.onScreenColor = GM.HUD_COLORS.red
 command.displayTime = 5
 
 function command:send(ply, commandId, category)
@@ -963,7 +963,7 @@ function command:send(ply, commandId, category)
     ourPos.z = ourPos.z + 32
 
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
-        GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
+        GAMEMODE:SendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
 end
 
@@ -1017,7 +1017,7 @@ command.variations = {us = {{sound = "ground_control/radio/us/approachingenemypo
 command.menuText = "Approaching enemy"
 command.category = GM.RadioCategories.Status
 command.onScreenText = "Approaching enemy"
-command.onScreenColor = GM.HUDColors.limeYellow
+command.onScreenColor = GM.HUD_COLORS.limeYellow
 command.displayTime = 5
 command.radioWait = 2.5
 
@@ -1026,7 +1026,7 @@ function command:send(ply, commandId, category)
     ourPos.z = ourPos.z + 32
 
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
-        GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
+        GAMEMODE:SendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
 end
 
@@ -1129,7 +1129,7 @@ command.variations = {
 command.menuText = "Area clear"
 command.category = GM.RadioCategories.Status
 command.onScreenText = "Area clear"
-command.onScreenColor = GM.HUDColors.green
+command.onScreenColor = GM.HUD_COLORS.green
 command.displayTime = 5
 
 function command:send(ply, commandId, category)
@@ -1137,7 +1137,7 @@ function command:send(ply, commandId, category)
     ourPos.z = ourPos.z + 32
 
     for key, obj in pairs(team.GetPlayers(ply:Team())) do
-        GAMEMODE:sendMarkedSpot(category, commandId, ply, obj, ourPos)
+        GAMEMODE:SendMarkedSpot(category, commandId, ply, obj, ourPos)
     end
 end
 

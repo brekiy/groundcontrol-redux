@@ -2,15 +2,15 @@ AddCSLuaFile()
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:resetLoadoutPoints()
+function PLAYER:ResetLoadoutPoints()
     self.loadoutPoints = 0
 end
 
-function PLAYER:getCurrentLoadoutPoints()
+function PLAYER:GetCurrentLoadoutPoints()
     return self.loadoutPoints
 end
 
-function PLAYER:updateLoadoutPoints()
+function PLAYER:UpdateLoadoutPoints()
     -- in case someone cheeky tries to set the base higher than the max? idk
     local max = math.max(GetConVar("gc_max_loadout_points"):GetInt(), GetConVar("gc_base_loadout_points"):GetInt())
     self.loadoutPoints = math.min(
@@ -20,24 +20,24 @@ function PLAYER:updateLoadoutPoints()
 end
 
 
-function GM:getImaginaryLoadoutCost(ply, primaryCost, secondaryCost, tertiaryCost, vestCost, helmetCost)
-    local primary = primaryCost or (ply:getDesiredPrimaryWeapon() != nil and ply:getDesiredPrimaryWeapon().pointCost or 0)
-    local secondary = secondaryCost or (ply:getDesiredSecondaryWeapon() != nil and ply:getDesiredSecondaryWeapon().pointCost or 0)
-    local tertiary = tertiaryCost or (ply:getDesiredTertiaryWeapon() != nil and ply:getDesiredTertiaryWeapon().pointCost or 0)
-    local vest = vestCost or GAMEMODE:getArmorCost("vest", ply:getDesiredVest())
-    local helmet = helmetCost or GAMEMODE:getArmorCost("helmet", ply:getDesiredHelmet())
+function GM:GetImaginaryLoadoutCost(ply, primaryCost, secondaryCost, tertiaryCost, vestCost, helmetCost)
+    local primary = primaryCost or (ply:GetDesiredPrimaryWeapon() != nil and ply:GetDesiredPrimaryWeapon().pointCost or 0)
+    local secondary = secondaryCost or (ply:GetDesiredSecondaryWeapon() != nil and ply:GetDesiredSecondaryWeapon().pointCost or 0)
+    local tertiary = tertiaryCost or (ply:GetDesiredTertiaryWeapon() != nil and ply:GetDesiredTertiaryWeapon().pointCost or 0)
+    local vest = vestCost or GAMEMODE:GetArmorCost("vest", ply:GetDesiredVest())
+    local helmet = helmetCost or GAMEMODE:GetArmorCost("helmet", ply:GetDesiredHelmet())
     -- print("total cost: " .. primary + secondary + tertiary + vest + helmet)
     return primary + secondary + tertiary + vest + helmet
 end
 
-function GM:calculateCurrentLoadoutCost(ply, withCost, filterPrimary, filterSecondary, filterTertiary)
+function GM:CalculateCurrentLoadoutCost(ply, withCost, filterPrimary, filterSecondary, filterTertiary)
     withCost = withCost or 0
     filterPrimary = filterPrimary or false
     filterSecondary = filterSecondary or false
     filterTertiary = filterTertiary or false
     local totalCost = 0 + withCost
-    totalCost = totalCost + GAMEMODE:getArmorCost("vest", ply:getDesiredVest())
-    totalCost = totalCost + GAMEMODE:getArmorCost("helmet", ply:getDesiredHelmet())
+    totalCost = totalCost + GAMEMODE:GetArmorCost("vest", ply:GetDesiredVest())
+    totalCost = totalCost + GAMEMODE:GetArmorCost("helmet", ply:GetDesiredHelmet())
 
     for key, weapon in pairs(ply:GetWeapons()) do
         if !((filterPrimary and weapon.isPrimaryWeapon) or

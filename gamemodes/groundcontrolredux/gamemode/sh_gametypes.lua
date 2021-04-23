@@ -123,7 +123,7 @@ function GM:InitializeGameTypeEntities(gameType)
             objEnt:SetPos(data.pos)
             objEnt:Spawn()
 
-            GAMEMODE.entityInitializer:initEntity(objEnt, gameType, data)
+            GAMEMODE.entityInitializer:InitEntity(objEnt, gameType, data)
 
             table.insert(gameType.objectiveEnts, objEnt)
         end

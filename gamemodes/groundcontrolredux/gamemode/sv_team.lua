@@ -11,10 +11,10 @@ concommand.Add("gc_attempt_join_team", function(ply, com, data)
     end
 
     team = tonumber(team)
-    local join = GAMEMODE:canJoinTeam(ply, team)
+    local join = GAMEMODE:CanJoinTeam(ply, team)
 
     if join == true then
-        GAMEMODE:attemptJoinTeam(ply, team)
+        GAMEMODE:AttemptJoinTeam(ply, team)
 
         net.Start("GC_TEAM_SELECTION_SUCCESS")
         net.WriteUInt(team, 8)
@@ -58,11 +58,11 @@ function PLAYER:joinTeam(teamId)
         GAMEMODE.curGametype:PlayerJoinTeam(self, teamId)
     end
 
-    if GAMEMODE.curGametype.spawnDuringPreparation and GAMEMODE:isPreparationPeriod() then
+    if GAMEMODE.curGametype.spawnDuringPreparation and GAMEMODE:IsPreparationPeriod() then
         self:Spawn()
     end
 
-    GAMEMODE:resetKillcountData()
+    GAMEMODE:ResetKillcountData()
 end
 
 function PLAYER:autobalancedSwitchTeam(teamId)
@@ -70,5 +70,5 @@ function PLAYER:autobalancedSwitchTeam(teamId)
     net.Start("GC_AUTOBALANCED_TO_TEAM")
     net.WriteInt(teamId, 16)
     net.Send(self)
-    GAMEMODE:resetKillcountData()
+    GAMEMODE:ResetKillcountData()
 end

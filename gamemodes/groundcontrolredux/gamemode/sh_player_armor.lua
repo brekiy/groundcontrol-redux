@@ -18,7 +18,7 @@ end
 GM.Armor = {}
 GM.ArmorById = {}
 
-function GM:registerArmor(data)
+function GM:RegisterArmor(data)
     self.Armor[data.category] = self.Armor[data.category] or {}
     table.insert(self.Armor[data.category], data)
 
@@ -30,11 +30,11 @@ function GM:registerArmor(data)
     end
 end
 
-function GM:getArmorData(armorId, category)
+function GM:GetArmorData(armorId, category)
     return self.Armor[category][armorId]
 end
 
-function GM:prepareArmorPiece(ply, armorId, category)
+function GM:PrepareArmorPiece(ply, armorId, category)
     local armorPiece = self.Armor[category]
 
     if !armorPiece or !armorPiece[armorId] then
@@ -47,12 +47,12 @@ function GM:prepareArmorPiece(ply, armorId, category)
     ply.armor[category] = armorObject
 end
 
-function GM:getArmorWeight(category, id)
+function GM:GetArmorWeight(category, id)
     local data = self.Armor[category][id]
     return data and data.weight or 0
 end
 
-function GM:getArmorCost(category, id)
+function GM:GetArmorCost(category, id)
     local data = self.Armor[category][id]
     return data and data.pointCost or 1
 end
@@ -95,7 +95,7 @@ local vestPaca = {
     icon = "ground_control/hud/armor/aa_vest_dyneema",
     description = "Minimalist carrier with level II soft panels."
 }
-GM:registerArmor(vestPaca)
+GM:RegisterArmor(vestPaca)
 
 local vestIba = {
     category = "vest",
@@ -112,7 +112,7 @@ local vestIba = {
     icon = "ground_control/hud/armor/aa_vest_spectra",
     description = "Surplus soft armor with level III rifle plates."
 }
-GM:registerArmor(vestIba)
+GM:RegisterArmor(vestIba)
 
 local vestPc = {
     category = "vest",
@@ -129,7 +129,7 @@ local vestPc = {
     icon = "ground_control/hud/armor/aa_vest_lbx",
     description = "Modern lightweight plate carrier with level IV rifle plates."
 }
-GM:registerArmor(vestPc)
+GM:RegisterArmor(vestPc)
 
 local vestRatnik = {
     category = "vest",
@@ -146,7 +146,7 @@ local vestRatnik = {
     icon = "ground_control/hud/armor/aa_vest_ratnik",
     description = "Body armor with level IV rifle plates and additional soft protection."
 }
-GM:registerArmor(vestRatnik)
+GM:RegisterArmor(vestRatnik)
 
 
 -- Helmets
@@ -167,7 +167,7 @@ local helmetPasgt = {
     icon = "ground_control/hud/armor/aa_helmet_spectra",
     description = "Surplus kevlar helmet. Provides level IIIA protection."
 }
-GM:registerArmor(helmetPasgt)
+GM:RegisterArmor(helmetPasgt)
 
 local helmetAltyn = {
     category = "helmet",
@@ -184,7 +184,7 @@ local helmetAltyn = {
     icon = "ground_control/hud/armor/aa_helmet_altyn",
     description = "Heavy titanium helmet. Provides level IIIA protection."
 }
-GM:registerArmor(helmetAltyn)
+GM:RegisterArmor(helmetAltyn)
 
 local helmetOperator = {
     category = "helmet",
@@ -201,7 +201,7 @@ local helmetOperator = {
     icon = "ground_control/hud/armor/aa_helmet_operator",
     description = "Modern lightweight ballistic helmet with additional armor. Provides level III protection."
 }
-GM:registerArmor(helmetOperator)
+GM:RegisterArmor(helmetOperator)
 
 local helmetVulkan = {
     category = "helmet",
@@ -218,21 +218,21 @@ local helmetVulkan = {
     icon = "ground_control/hud/armor/aa_helmet_vulkan",
     description = "Heavy composite helmet. Provides level IV protection."
 }
-GM:registerArmor(helmetVulkan)
+GM:RegisterArmor(helmetVulkan)
 
 local PLAYER = FindMetaTable("Player")
 
 -- Set the armor on the client side. Why? idk
-function PLAYER:setArmorPiece(armorData, category)
+function PLAYER:SetArmorPiece(armorData, category)
     if CLIENT then
-        self:resetArmorData(armorData.category)
-        self:setupArmorPiece(armorData, category)
+        self:ResetArmorData(armorData.category)
+        self:SetupArmorPiece(armorData, category)
         self.armor[category] = armorData
     end
 end
 
 -- Clear the armor attribute for a given category
-function PLAYER:resetArmorData(category)
+function PLAYER:ResetArmorData(category)
     self.armor = self.armor or {}
     if self.armor[category] then
         self.armor[category] = nil
@@ -246,20 +246,20 @@ function PLAYER:ResetTrackedArmor()
 end
 
 -- Force resets the player to have no armor
-function PLAYER:resetAllArmor()
+function PLAYER:ResetAllArmor()
     self:GiveGCArmor("vest", 0)
     self:GiveGCArmor("helmet", 0)
 end
 
-function PLAYER:getDesiredVest()
+function PLAYER:GetDesiredVest()
     return tonumber(self:GetInfoNum("gc_armor_vest", 1))
 end
 
-function PLAYER:getDesiredHelmet()
+function PLAYER:GetDesiredHelmet()
     return tonumber(self:GetInfoNum("gc_armor_helmet", 1))
 end
 
-function PLAYER:getTotalArmorPieces()
+function PLAYER:GetTotalArmorPieces()
     local combinedArmor = {}
     if self.armor then
         for k,v in pairs(self.armor) do

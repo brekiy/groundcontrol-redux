@@ -21,22 +21,22 @@ function ENT:Initialize()
     self.defenderTeam = nil
     self.winDelay = 0
 
-    self:setCaptureDistance(self.captureDistance)
+    self:SetCaptureDistance(self.captureDistance)
 
     local gametype = GAMEMODE:GetGametype()
     gametype:AssignPointID(self)
 end
 
-function ENT:setCapturerTeam(team) -- the team that has to capture this point
+function ENT:SetCapturerTeam(team) -- the team that has to capture this point
     self.capturerTeam = team
     self:SetCapturerTeam(team)
 end
 
-function ENT:setDefenderTeam(team)
+function ENT:SetDefenderTeam(team)
     self.defenderTeam = team
 end
 
-function ENT:setCaptureDistance(distance)
+function ENT:SetCaptureDistance(distance)
     self.captureDistance = distance
     self:SetCaptureDistance(distance)
 end

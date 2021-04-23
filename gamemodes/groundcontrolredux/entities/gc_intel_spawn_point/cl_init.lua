@@ -11,7 +11,7 @@ local horizontalBoundary, verticalBoundary = 75, 75
 local point = surface.GetTextureID("ground_control/hud/point_of_interest")
 
 function ENT:drawHUD()
-    if self:GetHasIntel() and GAMEMODE:isPreparationPeriod() then
+    if self:GetHasIntel() and GAMEMODE:IsPreparationPeriod() then
         local pos = nil
 
         -- this is a static ent, get it's position once instead of spamming tables per each draw call

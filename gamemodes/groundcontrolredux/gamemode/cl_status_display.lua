@@ -9,15 +9,16 @@ GM.SmallScale = 1
 GM.BigScaleTime = 0.5
 GM.SmallScaleApproachRate = 2
 
-function GM:resetAllStatusEffects() -- on absolutely everyone (ie on round end)
+-- FIXME (brekiy): seems like it makes more sense to be a server only function
+function GM:ResetAllStatusEffects() -- on absolutely everyone (ie on round end)
     for key, ply in ipairs(player.GetAll()) do -- on other players
-        ply:resetStatusEffects()
+        ply:ResetStatusEffects()
     end
 
-    self:removeAllStatusEffects() -- on self
+    self:RemoveAllStatusEffects() -- on self
 end
 
-function GM:showStatusEffect(id) -- on self
+function GM:ShowStatusEffect(id) -- on self
     if !LocalPlayer():Alive() then -- should !have status effects added if we're dead
         return
     end
@@ -32,7 +33,7 @@ function GM:showStatusEffect(id) -- on self
     table.insert(self.ActiveStatusEffects, {id = id, scale = self.IconScaleStart, bigScaleTime = CurTime() + self.BigScaleTime})
 end
 
-function GM:removeStatusEffect(id) -- on self
+function GM:RemoveStatusEffect(id) -- on self
     for key, effect in ipairs(self.ActiveStatusEffects) do
         if effect.id == id then
             effect.removed = true
@@ -42,14 +43,14 @@ function GM:removeStatusEffect(id) -- on self
     return false
 end
 
-function GM:removeAllStatusEffects() -- on self
+function GM:RemoveAllStatusEffects() -- on self
     table.Empty(self.ActiveStatusEffects)
 end
 
 GM.BaseStatusEffectX = GM.BaseHUDX
 GM.BaseStatusEffectY = 190
 
-function GM:drawStatusEffects(w, h)
+function GM:DrawStatusEffects(w, h)
     local xPos = self.BaseStatusEffectX
     local yPos = h - self.BaseStatusEffectY
     local curTime = CurTime()
@@ -83,7 +84,7 @@ function GM:drawStatusEffects(w, h)
         surface.SetDrawColor(255, 255, 255, 255)
         surface.DrawTexturedRect(xPos, yPos - height, height, height)
 
-        draw.ShadowText(effectData.text, "CW_HUD16", xPos, yPos + 10, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.ShadowText(effectData.text, "CW_HUD16", xPos, yPos + 10, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         xPos = xPos + height + self.IconSpacing
         curIndex = curIndex + 1
@@ -97,6 +98,6 @@ net.Receive("GC_STATUS_EFFECT_ON_PLAYER", function(a, b)
     local state = net.ReadBool()
 
     if IsValid(playerObject) and playerObject:Alive() then
-        playerObject:setStatusEffect(statusID, state)
+        playerObject:SetStatusEffect(statusID, state)
     end
 end)

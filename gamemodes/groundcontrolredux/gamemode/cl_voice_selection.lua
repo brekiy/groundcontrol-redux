@@ -1,10 +1,10 @@
 CreateClientConVar("gc_desired_voice", 0, true, true)
 
 concommand.Add("gc_voice_menu", function(ply)
-    GAMEMODE:openVoiceSelection()
+    GAMEMODE:OpenVoiceSelection()
 end)
 
-function GM:openVoiceSelection()
+function GM:OpenVoiceSelection()
     if IsValid(self.curPanel) then
         self.curPanel:Remove()
         self.curPanel = nil
@@ -26,6 +26,6 @@ function GM:openVoiceSelection()
         option:SetPos(5, 30 * key)
         option:SetSize(190, 22)
         option:SetVoice(voiceData.id)
-        option:SetTextColor(self.HUDColors.white)
+        option:SetTextColor(self.HUD_COLORS.white)
     end
 end

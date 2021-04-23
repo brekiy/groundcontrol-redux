@@ -52,16 +52,16 @@ GM.RemoveEntitiesByIndex = {
     }
 }
 
-function GM:addAutoRemoveEntity(class)
+function GM:AddAutoRemoveEntity(class)
     self.RemoveEntities[class] = true
 end
 
-function GM:addAutoRemoveEntityIndex(map, index)
+function GM:AddAutoRemoveEntityIndex(map, index)
     self.RemoveEntitiesByIndex[map] = GM.RemoveEntitiesByIndex[map] or {}
     self.RemoveEntitiesByIndex[map][index] = true
 end
 
-function GM:autoRemoveEntities()
+function GM:AutoRemoveEntities()
     local maxPlayers = game.MaxPlayers()
 
     if self.RemoveEntitiesByIndex[self.CurrentMap] then

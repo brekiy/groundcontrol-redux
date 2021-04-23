@@ -40,7 +40,7 @@ function ENT:drawHUD()
             surface.DrawRect(baseX + 2, baseY + 2, (self.barWidth - 4) * percentage, self.barHeight - 4)
         end
 
-        local white, black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+        local white, black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
         white.a = 255 * alpha
         black.a = 255 * alpha
         draw.ShadowText("Capture", "CW_HUD14", coords.x, coords.y - 16, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)

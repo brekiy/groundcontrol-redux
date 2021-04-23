@@ -1,6 +1,6 @@
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:unlockAttachment(attachmentName)
+function PLAYER:UnlockAttachment(attachmentName)
     if !self.ownedAttachments then
         RunConsoleCommand("gc_request_data")
         return
@@ -23,5 +23,5 @@ net.Receive("GC_ATTACHMENTS", function(len, ply)
 end)
 
 net.Receive("GC_UNLOCK_ATTACHMENT", function (a, b)
-    LocalPlayer():unlockAttachment(net.ReadString())
+    LocalPlayer():UnlockAttachment(net.ReadString())
 end)

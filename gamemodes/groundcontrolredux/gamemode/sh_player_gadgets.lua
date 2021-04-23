@@ -8,10 +8,10 @@ end
 GM.Gadgets = {}
 GM.GadgetsById = {}
 
-GM.MaxSpareAmmo = 150
-GM.MinSpareAmmo = 0
+GM.MAX_SPARE_AMMO = 150
+GM.MIN_SPARE_AMMO = 0
 
-function GM:registerGadget(data)
+function GM:RegisterGadget(data)
     if CLIENT then
         data.icon = surface.GetTextureID(data.texture)
     end
@@ -20,7 +20,7 @@ function GM:registerGadget(data)
     self.Gadgets[#self.Gadgets + 1] = data
 end
 
-function GM:getSpareAmmoWeight(amount)
+function GM:GetSpareAmmoWeight(amount)
     return self.GadgetsById.spareammo.weight * amount
 end
 
@@ -39,11 +39,11 @@ function PLAYER:ResetGadgetData()
     table.Empty(self.gadgets)
 end
 
-function PLAYER:getDesiredAmmoCount()
-    return math.Clamp(self:GetInfoNum("gc_spare_ammo", 0), GAMEMODE.MinSpareAmmo, GAMEMODE.MaxSpareAmmo)
+function PLAYER:GetDesiredAmmoCount()
+    return math.Clamp(self:GetInfoNum("gc_spare_ammo", 0), GAMEMODE.MIN_SPARE_AMMO, GAMEMODE.MAX_SPARE_AMMO)
 end
 
-function PLAYER:addGadget(gadgetData)
+function PLAYER:AddGadget(gadgetData)
     if CLIENT then
         local baseData = GAMEMODE.GadgetsById[gadgetData.id]
         setmetatable(gadgetData, {__index = baseData})
@@ -112,7 +112,7 @@ function spareAmmo:use(ply, gadgetData)
     end
 
     self:resupply(ply, target, availableAmmo, gadgetData)
-    ply:setWeight(ply:calculateWeight())
+    ply:SetWeight(ply:CalculateWeight())
 end
 
 function spareAmmo:resupply(resuppliedBy, target, availableAmmo, gadgetData)
@@ -132,12 +132,12 @@ function spareAmmo:resupply(resuppliedBy, target, availableAmmo, gadgetData)
         if resuppliedBy != target then
             local percentage = givenAmmo / wep.Primary.ClipSize_Orig
             resuppliedBy:AddCurrency("TEAMMATE_RESUPPLIED", nil, math.ceil(percentage * GAMEMODE.CashPerResupply), math.ceil(percentage * GAMEMODE.ExpPerResupply))
-            GAMEMODE:trackRoundMVP(resuppliedBy, "resupply", 1)
+            GAMEMODE:TrackRoundMVP(resuppliedBy, "resupply", 1)
         end
 
         resuppliedBy:sendGadgets()
         resuppliedBy:GetActiveWeapon():setGlobalDelay(self.resupplyTime + 0.3, true, CW_ACTION, self.resupplyTime)
-        resuppliedBy:calculateWeight()
+        resuppliedBy:CalculateWeight()
     end
 end
 
@@ -164,8 +164,8 @@ function spareAmmo:draw(x, y)
     surface.SetTexture(self.icon)
     surface.DrawTexturedRect(x, y - 50, 50, 50)
 
-    draw.ShadowText(GAMEMODE:getKeyBind(self.useKey) .. " " .. self.display, GAMEMODE.GadgetDisplayFont, x + 25, y, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    draw.ShadowText("x" .. self.uses, GAMEMODE.GadgetDisplayFont, x + 25, y + 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.ShadowText(GAMEMODE:getKeyBind(self.useKey) .. " " .. self.display, GAMEMODE.GadgetDisplayFont, x + 25, y, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.ShadowText("x" .. self.uses, GAMEMODE.GadgetDisplayFont, x + 25, y + 15, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
-GM:registerGadget(spareAmmo)
+GM:RegisterGadget(spareAmmo)

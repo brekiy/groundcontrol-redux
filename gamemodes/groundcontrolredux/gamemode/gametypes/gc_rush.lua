@@ -14,7 +14,7 @@ function GM:registerRush()
     oneSideRush.spawnDuringPreparation = true
 
     if SERVER then
-        oneSideRush.mapRotation = GM:getMapRotation("one_side_rush")
+        oneSideRush.mapRotation = GM:GetMapRotation("one_side_rush")
     end
 
     function oneSideRush:AssignPointID(point)
@@ -50,7 +50,7 @@ function GM:registerRush()
         if SERVER then
             -- if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GAMEMODE.RoundsPerMap * 0.5 then
             if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GetConVar("gc_default_rounds_per_map"):GetInt() * 0.5 then
-                GAMEMODE:swapTeams(self.attackerTeam, self.defenderTeam, oneSideRush.teamSwapCallback, oneSideRush.teamSwapCallback)
+                GAMEMODE:SwapTeams(self.attackerTeam, self.defenderTeam, oneSideRush.teamSwapCallback, oneSideRush.teamSwapCallback)
                 self.swappedTeams = true
             end
 
@@ -101,7 +101,7 @@ function GM:registerRush()
 
     function oneSideRush:PlayerJoinTeam(ply, teamId)
         GAMEMODE:CheckRoundOverPossibility(nil, true)
-        GAMEMODE:sendTimeLimit(ply)
+        GAMEMODE:SendTimeLimit(ply)
         ply:reSpectate()
     end
 

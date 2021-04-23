@@ -1,8 +1,8 @@
 GM.AllFrames = {}
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:complainAboutLoadout(objName)
-    chat.AddText(GAMEMODE.HUDColors.limeYellow, "Not enough points for " .. objName .. "!\nGet good and increase your requisition allowance.")
+function PLAYER:ComplainAboutLoadout(objName)
+    chat.AddText(GAMEMODE.HUD_COLORS.limeYellow, "Not enough points for " .. objName .. "!\nGet good and increase your requisition allowance.")
     surface.PlaySound("buttons/combine_button7.wav")
 end
 
@@ -110,7 +110,7 @@ function gcPanel:Paint()
     surface.DrawRect(1, 1, w - 2, h - 2)
 
     surface.DrawRect(2, 2, w - 4, self.fontHeight + 2)
-    draw.ShadowText(self.text, self.font, 4, 2, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+    draw.ShadowText(self.text, self.font, 4, 2, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 end
 
 function gcPanel:OnRemove()
@@ -125,7 +125,7 @@ vgui.Register("GCPanel", gcPanel, "DPanel")
 local gcBaseButton = {}
 gcBaseButton.font = "CW_HUD16"
 gcBaseButton.text = ""
-gcBaseButton.hoverR, gcBaseButton.hoverG, gcBaseButton.hoverB, gcBaseButton.hoverA = GM.HUDColors.brass:Unpack()
+gcBaseButton.hoverR, gcBaseButton.hoverG, gcBaseButton.hoverB, gcBaseButton.hoverA = GM.HUD_COLORS.brass:Unpack()
 gcBaseButton.idleR, gcBaseButton.idleG, gcBaseButton.idleB, gcBaseButton.idleA = 75, 75, 75, 255
 gcBaseButton.textColor = Color(255, 255, 255, 255)
 
@@ -169,7 +169,7 @@ function gcBaseButton:Paint()
     surface.DrawRect(1, 1, w - 2, h - 2)
 
     local x, y = math.ceil(w * 0.5), math.ceil(h * 0.5)
-    draw.ShadowText(self.text, self.font, x, y, self.textColor, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.ShadowText(self.text, self.font, x, y, self.textColor, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("GCBaseButton", gcBaseButton, "DPanel")
@@ -250,7 +250,7 @@ function teamSelectionButton:Paint()
     draw.ShadowText(
         string.easyformatbykeys("TEAMNAME - COUNT PLAYERTEXT", "TEAMNAME", self.teamData.teamName,
             "COUNT", playerCount, "PLAYERTEXT", playerCount == 1 and "player" or "players"),
-        "CW_HUD28", 5, h - self.BOTTOM_SIZE * 0.5, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER
+        "CW_HUD28", 5, h - self.BOTTOM_SIZE * 0.5, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER
     )
 end
 
@@ -259,7 +259,7 @@ function teamSelectionButton:OnMousePressed(a, b, c)
         GAMEMODE.curPanel:Remove()
     end
 
-    GAMEMODE:attemptJoinTeam(LocalPlayer(), self.desiredTeam)
+    GAMEMODE:AttemptJoinTeam(LocalPlayer(), self.desiredTeam)
 end
 
 vgui.Register("GCTeamSelectionButton", teamSelectionButton, "GCBaseButton")
@@ -420,13 +420,13 @@ function gcWeaponPanel:OnMousePressed(bind)
     local ply = LocalPlayer()
     local imaginaryCost = nil
     if self.isPrimary then
-        imaginaryCost = GAMEMODE:getImaginaryLoadoutCost(ply, self.weaponData.weaponObject.pointCost)
+        imaginaryCost = GAMEMODE:GetImaginaryLoadoutCost(ply, self.weaponData.weaponObject.pointCost)
     elseif self.isPrimary != nil and !self.isPrimary then
-        imaginaryCost = GAMEMODE:getImaginaryLoadoutCost(ply, nil, self.weaponData.weaponObject.pointCost)
+        imaginaryCost = GAMEMODE:GetImaginaryLoadoutCost(ply, nil, self.weaponData.weaponObject.pointCost)
     else
-        imaginaryCost = GAMEMODE:getImaginaryLoadoutCost(ply, nil, nil, self.weaponData.weaponObject.pointCost)
+        imaginaryCost = GAMEMODE:GetImaginaryLoadoutCost(ply, nil, nil, self.weaponData.weaponObject.pointCost)
     end
-    local canSelect = imaginaryCost <= ply:getCurrentLoadoutPoints()
+    local canSelect = imaginaryCost <= ply:GetCurrentLoadoutPoints()
     if bind == MOUSE_LEFT and canSelect then
         GAMEMODE:saveWeaponLoadout(nil, self.isPrimary, self.ConVar)
         GAMEMODE:setCurrentWeaponLoadout(self.weaponData.weaponObject)
@@ -448,16 +448,16 @@ function gcWeaponPanel:OnMousePressed(bind)
         end
     end
     if !canSelect then
-        ply:complainAboutLoadout(self.weaponData.weaponObject.PrintName)
+        ply:ComplainAboutLoadout(self.weaponData.weaponObject.PrintName)
     end
 end
 
 function gcWeaponPanel:GetBackgroundColor()
     if GetConVar(self.ConVar):GetInt() == self.weaponID then
-        return GAMEMODE.HUDColors.ecru:Unpack()
+        return GAMEMODE.HUD_COLORS.ecru:Unpack()
     else
         if self:IsHovered() then
-            return GAMEMODE.HUDColors.brass:Unpack()
+            return GAMEMODE.HUD_COLORS.brass:Unpack()
         end
     end
 
@@ -528,7 +528,7 @@ function gcWeaponPanel:PaintOver()
 
     cam.IgnoreZ(false)
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 
     local name = wepObject and wepObject.PrintName or "None selected"
     local ammo = wepObject and wepObject.Primary.Ammo or "None selected"
@@ -620,7 +620,7 @@ end
 
 function curWeaponPanel:GetBackgroundColor()
     if self:IsHovered() then
-        return GAMEMODE.HUDColors.brass:Unpack()
+        return GAMEMODE.HUD_COLORS.brass:Unpack()
     end
 
     if #self.availableAttachments > 0 and !self.acknowledged then
@@ -669,7 +669,7 @@ function curWeaponPanel:OnCursorEntered()
         self.descBox:SetZPos(10000)
         self.descBox:SetDrawOnTop(true)
 
-        self.descBox:InsertText("Click to begin purchase.", "CW_HUD28", 0, GAMEMODE.HUDColors.limeYellow)
+        self.descBox:InsertText("Click to begin purchase.", "CW_HUD28", 0, GAMEMODE.HUD_COLORS.limeYellow)
         self.acknowledged = true
     end
 end
@@ -789,7 +789,7 @@ function curWeaponPanel:OnMousePressed(bind)
                 local label = vgui.Create("DLabel", frame)
                 label:SetText(data.header)
                 label:SetPos(5, curYPos - 10)
-                label:SetTextColor(GAMEMODE.HUDColors.white)
+                label:SetTextColor(GAMEMODE.HUD_COLORS.white)
                 label:SetFont("CW_HUD32")
                 label:SizeToContents()
 
@@ -922,12 +922,12 @@ function weaponStats:Paint()
         self:DrawStatBar("Movement speed", GetConVar("gc_base_run_speed"):GetInt() - wepClass.SpeedDec, targetTable.speedDec, wepClass.SpeedDec, 130, w)
         self:DrawStatBar("Weapon weight", math.Round(wepClass.weight, 2) .. "KG", wepClass.weight, targetTable.weight, 145, w)
         self:DrawStatBar("Mag weight", math.Round(wepClass.magWeight, 2) .. "KG", wepClass.magWeight, targetTable.magWeight, 160, w)
-        self:DrawStatBar("Penetration", GAMEMODE:getAmmoPen(wepClass.Primary.Ammo, wepClass.penMod), GAMEMODE:getAmmoPen(wepClass.Primary.Ammo, wepClass.penMod), targetTable.penetrationValue, 175, w)
+        self:DrawStatBar("Penetration", GAMEMODE:GetAmmoPen(wepClass.Primary.Ammo, wepClass.penMod), GAMEMODE:GetAmmoPen(wepClass.Primary.Ammo, wepClass.penMod), targetTable.penetrationValue, 175, w)
     end
 end
 
 function weaponStats:DrawStatBar(baseText, postBarText, barVar1, barVar2, y, w)
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 
     draw.ShadowText(baseText, "CW_HUD16", 5, y, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
@@ -973,18 +973,18 @@ function weightBar:Paint()
     surface.DrawRect(1, 1, w - 2, h - 2)
 
     local ply = LocalPlayer()
-    local curWeight = GAMEMODE:calculateImaginaryWeight(ply)
-    local weightPercentage = curWeight / GAMEMODE.MaxWeight
+    local curWeight = GAMEMODE:CalculateImaginaryWeight(ply)
+    local weightPercentage = curWeight / GAMEMODE.MAX_HEIGHT
 
     surface.SetDrawColor(213, 213, 213, 255)
     surface.DrawRect(2, 2, (w - 4) * weightPercentage, h - 4)
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 
-    draw.ShadowText("Stamina drain: +" .. math.Round((ply:getStaminaDrainWeightModifier(curWeight) - 1) * 100, 1) .. "%", "CW_HUD16", 5, h * 0.5 - 1, GAMEMODE.HUDColors.lightRed, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.ShadowText("Noise factor: +" .. math.Round(ply:getWeightFootstepNoiseAffector(curWeight), 1), "CW_HUD16", w - 5, h * 0.5 - 1, GAMEMODE.HUDColors.lightRed, Black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    draw.ShadowText("Stamina drain: +" .. math.Round((ply:GetStaminaDrainWeightModifier(curWeight) - 1) * 100, 1) .. "%", "CW_HUD16", 5, h * 0.5 - 1, GAMEMODE.HUD_COLORS.lightRed, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.ShadowText("Noise factor: +" .. math.Round(ply:GetWeightFootstepNoiseAffector(curWeight), 1), "CW_HUD16", w - 5, h * 0.5 - 1, GAMEMODE.HUD_COLORS.lightRed, Black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
-    draw.ShadowText("Weight: " .. math.Round(curWeight, 2) .. "/" .. GAMEMODE.MaxWeight .. "KG", "CW_HUD16", w * 0.5, h * 0.5 - 1, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.ShadowText("Weight: " .. math.Round(curWeight, 2) .. "/" .. GAMEMODE.MAX_HEIGHT .. "KG", "CW_HUD16", w * 0.5, h * 0.5 - 1, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 function weightBar:OnCursorEntered()
@@ -1062,12 +1062,12 @@ function attachmentSelection:GetBackgroundColor()
         local attValue = GetConVar(cvarString):GetString()
 
         if attValue == self.attachmentName then
-            return GAMEMODE.HUDColors.ecru:Unpack()
+            return GAMEMODE.HUD_COLORS.ecru:Unpack()
         end
     end
 
     if self:IsHovered() then
-        return GAMEMODE.HUDColors.brass:Unpack()
+        return GAMEMODE.HUD_COLORS.brass:Unpack()
     end
 
     return 0, 0, 0, 200
@@ -1098,7 +1098,7 @@ function attachmentSelection:Paint()
         surface.DrawTexturedRect(1, 1, w - 2, h - 2)
     cam.IgnoreZ(false)
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
     draw.ShadowText(self.displayText, "CW_HUD16", 3, 8, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
     if self.isLocked then
@@ -1450,11 +1450,11 @@ end
 
 function attachmentAssignment:GetBackgroundColor()
     if !self:IsSlotUnlocked() then
-        return GAMEMODE.HUDColors.bittersweet:Unpack()
+        return GAMEMODE.HUD_COLORS.bittersweet:Unpack()
     end
 
     if self:IsHovered() then
-        return GAMEMODE.HUDColors.brass:Unpack()
+        return GAMEMODE.HUD_COLORS.brass:Unpack()
     end
 
     return 0, 0, 0, 200
@@ -1483,7 +1483,7 @@ function attachmentAssignment:Paint()
                 surface.SetDrawColor(50, 50, 50, 255)
             else
                 if self.validCategory then
-                    surface.SetDrawColor(GAMEMODE.HUDColors.brass:Unpack())
+                    surface.SetDrawColor(GAMEMODE.HUD_COLORS.brass:Unpack())
                 else
                     surface.SetDrawColor(255, 255, 255, 255)
                 end
@@ -1536,7 +1536,7 @@ function attachmentAssignment:Paint()
         self:RemoveDescBox()
     end
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
     draw.ShadowText(self.displayText, "CW_HUD16", 3, 30, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     draw.ShadowText(self.slotString, "CW_HUD20", 3, 10, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end
@@ -1552,13 +1552,13 @@ function loadoutPoints:Paint()
     local w, h = self:GetSize()
 
     local ply = LocalPlayer()
-    local curCost = GAMEMODE:getImaginaryLoadoutCost(ply)
+    local curCost = GAMEMODE:GetImaginaryLoadoutCost(ply)
 
     surface.SetDrawColor(100, 213, 100, 255)
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 
-    draw.ShadowText("Loadout cost: " .. curCost .. "/" .. ply:getCurrentLoadoutPoints(), "CW_HUD20", 10, h * 0.5 - 5, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.ShadowText("Loadout cost: " .. curCost .. "/" .. ply:GetCurrentLoadoutPoints(), "CW_HUD20", 10, h * 0.5 - 5, White, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end
 
 function loadoutPoints:OnCursorEntered()
@@ -1612,7 +1612,7 @@ function genericDescbox:Paint()
     surface.SetDrawColor(0, 0, 0, self.alpha)
     surface.DrawRect(1, 1, w - 2, h - 2)
 
-    local Black = GAMEMODE.HUDColors.black
+    local Black = GAMEMODE.HUD_COLORS.black
 
     for key, textEntry in ipairs(self.allText) do
         draw.ShadowText(textEntry.t, textEntry.font, 5, textEntry.y + 5, textEntry.c, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
@@ -1649,7 +1649,7 @@ function genericDescbox:AddText(textEntry)
 end
 
 function genericDescbox:InsertText(text, font, offset, color)
-    color = color or GAMEMODE.HUDColors.white
+    color = color or GAMEMODE.HUD_COLORS.white
     self:AddText({t = text, c = color, font = font or "CW_HUD20", offset = offset or 10})
 end
 
@@ -1724,7 +1724,7 @@ function roundOver:Paint()
 
     local w, h = self:GetSize()
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
     White.a = 255 * self.alpha
     Black.a = 255 * self.alpha
 
@@ -1765,7 +1765,7 @@ function roundPrepare:Paint()
 
     local w, h = self:GetSize()
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
     White.a = 255 * self.alpha
     Black.a = 255 * self.alpha
 
@@ -1850,7 +1850,7 @@ function gcExperienceBar:Paint()
         helperText = "Unlock more slots by playing cooperatively."
     end
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
     draw.ShadowText(expDisplay .. "/" .. nextSlotPrice .. " EXP", "CW_HUD16", w * 0.5, 9, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     draw.ShadowText(helperText, "CW_HUD20", w * 0.5, h - 10, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
@@ -1867,7 +1867,7 @@ function gcCashDisplay:Paint()
     local w, h = self:GetSize()
     local cash = LocalPlayer().cash
 
-    draw.ShadowText("Cash $" .. (cash > self.maxDisplayCash and (self.maxDisplayCash .. "+") or cash), "CW_HUD28", w - 5, h * 0.5, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    draw.ShadowText("Cash $" .. (cash > self.maxDisplayCash and (self.maxDisplayCash .. "+") or cash), "CW_HUD28", w - 5, h * 0.5, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 end
 
 vgui.Register("GCCashDisplay", gcCashDisplay, "DPanel")
@@ -1899,14 +1899,14 @@ function gcArmorDisplay:UpdateArmor(direction)
     self.pos = math.Clamp(self.pos + direction, self.min, self.max)
     local canSelect = nil
     if self.category == "vest" then
-        canSelect = GAMEMODE:getImaginaryLoadoutCost(LocalPlayer(), nil, nil, nil, GAMEMODE:getArmorCost("vest", self.pos)) <= ply:getCurrentLoadoutPoints()
+        canSelect = GAMEMODE:GetImaginaryLoadoutCost(LocalPlayer(), nil, nil, nil, GAMEMODE:GetArmorCost("vest", self.pos)) <= ply:GetCurrentLoadoutPoints()
     elseif self.category == "helmet" then
-        canSelect = GAMEMODE:getImaginaryLoadoutCost(LocalPlayer(), nil, nil, nil, nil, GAMEMODE:getArmorCost("helmet", self.pos)) <= ply:getCurrentLoadoutPoints()
+        canSelect = GAMEMODE:GetImaginaryLoadoutCost(LocalPlayer(), nil, nil, nil, nil, GAMEMODE:GetArmorCost("helmet", self.pos)) <= ply:GetCurrentLoadoutPoints()
     end
     if canSelect then
         RunConsoleCommand(self.cvar, self.pos)
     else
-        LocalPlayer():complainAboutLoadout(GAMEMODE.Armor[self.category][self.pos].displayName)
+        LocalPlayer():ComplainAboutLoadout(GAMEMODE.Armor[self.category][self.pos].displayName)
     end
     self:SetArmorDisplayed(GAMEMODE.Armor[self.category][self.pos])
 end
@@ -2005,7 +2005,7 @@ function gcArmorDisplay:Paint()
     surface.DrawRect(0, 0, w, h)
 
     if self:IsHovered() then
-        surface.SetDrawColor(GAMEMODE.HUDColors.ecru:Unpack())
+        surface.SetDrawColor(GAMEMODE.HUD_COLORS.ecru:Unpack())
     else
         surface.SetDrawColor(45, 45, 45, 255)
     end
@@ -2016,7 +2016,7 @@ function gcArmorDisplay:Paint()
         surface.SetTexture(self.armorData.icon)
         surface.SetDrawColor(255, 255, 255, 255)
         surface.DrawTexturedRect(1, 1, w - 2, h - 2)
-        local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+        local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
         draw.ShadowText(self.armorData.pointCost .. "pts" or "", "CW_HUD16", w - 5, 10, White, Black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     end
 end
@@ -2055,7 +2055,7 @@ function gcArmorSelection:Paint()
 
     surface.DrawRect(1, 1, w - 2, h - 2)
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 
     if self.direction < 0 then
         draw.ShadowText("<", "CW_HUD20", w * 0.5, 10, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -2124,7 +2124,7 @@ function gcGenericPopup:Paint()
 
     local w, h = self:GetSize()
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
     White.a = 255 * self.alpha
     Black.a = 255 * self.alpha
 
@@ -2161,7 +2161,7 @@ end
 function gcTraitPanel:OnMousePressed(bind)
     local ply = LocalPlayer()
 
-    if !ply:hasTrait(self.traitData.id) then
+    if !ply:HasTrait(self.traitData.id) then
         RunConsoleCommand("gc_buy_trait", self.traitData.id)
     else
         if bind == 108 then
@@ -2195,10 +2195,10 @@ function gcTraitPanel:GetBackgroundColor()
     end
 
     if self:IsTraitActive() then
-        return GAMEMODE.HUDColors.ecru:Unpack()
+        return GAMEMODE.HUD_COLORS.ecru:Unpack()
     else
         if self:IsHovered() then
-            return GAMEMODE.HUDColors.brass:Unpack()
+            return GAMEMODE.HUD_COLORS.brass:Unpack()
         end
     end
 
@@ -2234,9 +2234,9 @@ function gcTraitPanel:OnCursorEntered()
 
         if traitLevel < self.traitData.maxLevel then
             if traitLevel > 0 then
-                unlockText = "Right-click to increase level for $" .. GAMEMODE:getTraitPrice(self.traitData, traitLevel)
+                unlockText = "Right-click to increase level for $" .. GAMEMODE:GetTraitPrice(self.traitData, traitLevel)
             else
-                unlockText = "Left-click to unlock specialization for $" .. GAMEMODE:getTraitPrice(self.traitData, 0)
+                unlockText = "Left-click to unlock specialization for $" .. GAMEMODE:GetTraitPrice(self.traitData, 0)
             end
 
             unlockText = unlockText .. " (you have $" .. ply.cash .. ")"
@@ -2328,7 +2328,7 @@ function gcMVPDisplay:Paint()
     surface.SetDrawColor(0, 0, 0, 200)
     surface.DrawRect(0, 0, w, h)
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 
     draw.LinearGradient(h, 0, w - h - 1, h - 2, self.startColor, self.finishColor, draw.VERTICAL, w)
 
@@ -2399,7 +2399,7 @@ function gcKillerDisplay:Paint()
     surface.SetDrawColor(0, 0, 0, 200)
     surface.DrawRect(0, 0, w, h)
 
-    local White, Black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local White, Black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 
     draw.LinearGradient(h, 0, w - h - 1, h - 2, self.startColor, self.finishColor, draw.VERTICAL, w)
 

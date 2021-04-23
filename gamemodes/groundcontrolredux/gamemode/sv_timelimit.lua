@@ -7,7 +7,7 @@ function GM:SetTimeLimit(time)
     self.RoundTime = CurTime() + time
 end
 
-function GM:sendTimeLimit(target)
+function GM:SendTimeLimit(target)
     if !self.TimeLimit then
         return
     end
@@ -18,7 +18,7 @@ function GM:sendTimeLimit(target)
     net.Send(target)
 end
 
-function GM:hasTimeLimit()
+function GM:HasTimeLimit()
     return self.TimeLimit != nil
 end
 

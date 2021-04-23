@@ -2,29 +2,29 @@ GM.KillCountByTeam = {}
 GM.ReportedDeadEnemies = {}
 GM.AlivePlayers = {}
 
-function GM:resetKillcountData()
+function GM:ResetKillcountData()
     for teamID, teamData in pairs(self.RegisteredTeamData) do
         self.KillCountByTeam[teamID] = 0
 
         self.ReportedDeadEnemies[teamID] = self.ReportedDeadEnemies[teamID] and table.Empty(self.ReportedDeadEnemies[teamID]) or {}
         self.AlivePlayers[teamID] = #team.GetPlayers(teamID) -- get the amount of players at the start of round
 
-        self:sendAlivePlayerCount(self.OpposingTeam[teamID])
+        self:SendAlivePlayerCount(self.OpposingTeam[teamID])
     end
 end
 
-function GM:resetAllKillcountData() -- used in Urban Warfare
-    self:resetKillcountData()
+function GM:ResetAllKillcountData() -- used in Urban Warfare
+    self:ResetKillcountData()
 
     -- reset unconfirmed kills on players
 
     for key, plyObj in ipairs(player.GetAll()) do
-        plyObj:resetKillcountData()
+        plyObj:ResetKillcountData()
     end
 end
 
 -- teamID is the recipient, it will automatically determine which list to send based on that
-function GM:sendAlivePlayerCount(teamID)
+function GM:SendAlivePlayerCount(teamID)
     if teamID then -- if we're providing a team ID to send the alive player count to, then we will send the opposing team to them
         local playerCount = self.AlivePlayers[self.OpposingTeam[teamID]]
 
@@ -41,11 +41,11 @@ function GM:sendAlivePlayerCount(teamID)
     end
 
     for key, enemyTeamID in pairs(self.OpposingTeam) do
-        self:sendAlivePlayerCount(key)
+        self:SendAlivePlayerCount(key)
     end
 end
 
-function GM:wasPlayerReportedDead(playerObject)
+function GM:WasPlayerReportedDead(playerObject)
     local plyTeam = playerObject:Team()
 
     for key, otherPlayer in ipairs(self.ReportedDeadEnemies[plyTeam]) do
@@ -58,7 +58,7 @@ function GM:wasPlayerReportedDead(playerObject)
 end
 
 -- called when a player disconnects
-function GM:removePlayerObjectFromReportedDeadList(playerObject, key)
+function GM:RemovePlayerFromReportedDeadList(playerObject, key)
     local theirTeam = playerObject:Team()
 
     if !self.OpposingTeam[theirTeam] then -- spectator, ignore
@@ -67,21 +67,21 @@ function GM:removePlayerObjectFromReportedDeadList(playerObject, key)
 
     if key then
         table.remove(self.ReportedDeadEnemies[theirTeam], key)
-        self:sendAlivePlayerCount(self.OpposingTeam[theirTeam])
+        self:SendAlivePlayerCount(self.OpposingTeam[theirTeam])
         return
     end
 
-    local newKey = self:wasPlayerReportedDead(playerObject)
+    local newKey = self:WasPlayerReportedDead(playerObject)
 
     if newKey then
-        self:removePlayerObjectFromReportedDeadList(playerObject, newKey)
+        self:RemovePlayerFromReportedDeadList(playerObject, newKey)
     else
         self.AlivePlayers[theirTeam] = self.AlivePlayers[theirTeam] - 1
-        self:sendAlivePlayerCount(self.OpposingTeam[theirTeam])
+        self:SendAlivePlayerCount(self.OpposingTeam[theirTeam])
     end
 end
 
-function GM:addReportedDeadEnemy(playerObject)
+function GM:AddReportedDeadEnemy(playerObject)
     local plyTeam = playerObject:Team()
 
     table.insert(self.ReportedDeadEnemies[plyTeam], playerObject)
@@ -90,16 +90,16 @@ end
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:resetKillcountData()
+function PLAYER:ResetKillcountData()
     self.unconfirmedKills = self.unconfirmedKills and table.Empty(self.unconfirmedKills) or {}
     self.confirmedKills = 0
 end
 
-function PLAYER:increaseKillcount(killedPlayer)
+function PLAYER:IncreaseKillcount(killedPlayer)
     self.unconfirmedKills[#self.unconfirmedKills + 1] = killedPlayer
 end
 
-function PLAYER:sendKillConfirmations()
+function PLAYER:SendKillConfirmations()
     local confirmable = #self.unconfirmedKills
 
     if confirmable == 0 then
@@ -107,11 +107,11 @@ function PLAYER:sendKillConfirmations()
     end
 
     for key, playerObject in ipairs(self.unconfirmedKills) do
-        GAMEMODE:addReportedDeadEnemy(playerObject)
+        GAMEMODE:AddReportedDeadEnemy(playerObject)
         self.unconfirmedKills[key] = nil
     end
 
-    GAMEMODE:sendAlivePlayerCount(self:Team())
+    GAMEMODE:SendAlivePlayerCount(self:Team())
 
     return confirmable -- return the amount of people we've confirmed the deaths of
 end

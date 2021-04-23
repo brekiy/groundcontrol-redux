@@ -18,25 +18,25 @@ function GM:SendRadioCommand(ply, category, radioId, command)
         command:send(ply, radioId, category)
     else
         for key, obj in pairs(team.GetPlayers(ply:Team())) do
-            self:sendRadio(ply, obj, category, radioId)
+            self:SendRadio(ply, obj, category, radioId)
         end
     end
 end
 
-function GM:setVoiceVariant(ply, stringID)
+function GM:SetVoiceVariant(ply, stringID)
     ply.voiceVariant = self.VoiceVariantsById[stringID].numId
 end
 
-function GM:attemptSetMemeRadio(ply)
+function GM:AttemptSetMemeRadio(ply)
     if self.MemeRadio and math.random(1, 1000) <= GetConVar("gc_meme_radio_chance"):GetInt() then
-        self:setVoiceVariant(ply, "bandlet")
+        self:SetVoiceVariant(ply, "bandlet")
         return true
     end
 
     return false
 end
 
-function GM:sendRadio(ply, target, category, radioId)
+function GM:SendRadio(ply, target, category, radioId)
     net.Start("GC_RADIO")
     net.WriteFloat(CurTime())
     net.WriteUInt(category, 8)
@@ -46,7 +46,7 @@ function GM:sendRadio(ply, target, category, radioId)
     net.Send(target)
 end
 
-function GM:sendMarkedSpot(category, commandId, sender, receiver, pos)
+function GM:SendMarkedSpot(category, commandId, sender, receiver, pos)
     net.Start("GC_RADIO_MARKED")
     net.WriteFloat(CurTime())
     net.WriteUInt(category, 8)

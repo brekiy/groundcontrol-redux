@@ -50,7 +50,7 @@ function ENT:drawHUD()
         surface.DrawRect(hudPos + 1, 51, (self.topSize - 2) * percentage, self.topSize - 2)
     end
 
-    local white, black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local white, black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 
     white.a = 255
     black.a = 255

@@ -1,4 +1,4 @@
-function GM:createLastManStandingDisplay(teamId)
+function GM:CreateLastManStandingDisplay(teamId)
     local living = 0
     local obj = nil
 
@@ -15,7 +15,7 @@ function GM:createLastManStandingDisplay(teamId)
     end
 end
 
-function GM:swapPlayerTeams(players, targetTeam, callback)
+function GM:SwapPlayerTeams(players, targetTeam, callback)
     for key, ply in ipairs(players) do
         ply:SetTeam(targetTeam)
 
@@ -25,10 +25,10 @@ function GM:swapPlayerTeams(players, targetTeam, callback)
     end
 end
 
-function GM:swapTeams(teamOne, teamTwo, teamOneCallback, teamTwoCallback)
+function GM:SwapTeams(teamOne, teamTwo, teamOneCallback, teamTwoCallback)
     local playersOne = team.GetPlayers(teamOne)
     local playersTwo = team.GetPlayers(teamTwo)
 
-    self:swapPlayerTeams(playersOne, teamTwo, teamOneCallback)
-    self:swapPlayerTeams(playersTwo, teamOne, teamTwoCallback)
+    self:SwapPlayerTeams(playersOne, teamTwo, teamOneCallback)
+    self:SwapPlayerTeams(playersTwo, teamOne, teamTwoCallback)
 end

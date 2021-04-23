@@ -9,7 +9,7 @@ function GM:registerTeamDeathmatch()
     tdm.prettyName = "Team Deathmatch"
 
     if SERVER then
-        tdm.mapRotation = GM:getMapRotation("one_side_rush")
+        tdm.mapRotation = GM:GetMapRotation("one_side_rush")
     end
 
     if SERVER then

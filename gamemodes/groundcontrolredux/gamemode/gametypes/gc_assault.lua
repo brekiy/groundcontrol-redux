@@ -17,7 +17,7 @@ function GM:registerAssault()
 
     if SERVER then
         -- this map rotation has been commented out. if youre digging around and wanna play assault uncomment it
-        assault.mapRotation = GM:getMapRotation("assault_maps")
+        assault.mapRotation = GM:GetMapRotation("assault_maps")
     end
 
     function assault:AssignPointID(point)
@@ -79,7 +79,7 @@ function GM:registerAssault()
 
     function assault:RoundStart()
         if SERVER then
-            GAMEMODE:swapTeams(self.attackerTeam, self.defenderTeam, assault.teamSwapCallback, assault.teamSwapCallback) -- swap teams on every round start
+            GAMEMODE:SwapTeams(self.attackerTeam, self.defenderTeam, assault.teamSwapCallback, assault.teamSwapCallback) -- swap teams on every round start
 
             GAMEMODE:SetTimeLimit(self.timeLimit)
 
@@ -101,13 +101,13 @@ function GM:registerAssault()
 
     function assault:PlayerJoinTeam(ply, teamId)
         GAMEMODE:CheckRoundOverPossibility(nil, true)
-        GAMEMODE:sendTimeLimit(ply)
+        GAMEMODE:SendTimeLimit(ply)
         ply:reSpectate()
     end
 
     function assault:DeadDraw(w, h)
-        if GAMEMODE:getActivePlayerAmount() < 2 then
-            draw.ShadowText("This gametype requires at least 2 players, waiting for more people...", "CW_HUD20", w * 0.5, 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        if GAMEMODE:GetActivePlayerAmount() < 2 then
+            draw.ShadowText("This gametype requires at least 2 players, waiting for more people...", "CW_HUD20", w * 0.5, 15, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
     end
 

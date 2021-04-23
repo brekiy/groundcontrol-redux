@@ -14,7 +14,7 @@ GM.TrashPropMaxWeight = 2 -- max weight of a prop to be considered trash
 GM.VoteMapVoteID = "votemap"
 GM.VoteGametypeVoteId = "votegametype"
 
-function GM:trackRoundMVP(player, id, amount)
+function GM:TrackRoundMVP(player, id, amount)
     self.MVPTracker:trackID(player, id, amount)
 end
 
@@ -86,7 +86,7 @@ function GM:CheckRoundOverPossibility(teamId, ignoreDisplay)
     end
 
     if teamId and !ignoreDisplay then
-        self:createLastManStandingDisplay(teamId)
+        self:CreateLastManStandingDisplay(teamId)
     end
 end
 
@@ -145,7 +145,7 @@ function GM:EndRound(winningTeam)
     else
         if canPickRandomMapAndGametype then
             timer.Simple(self.RoundRestartTime, function()
-                self:randomlyPickGametypeAndMap()
+                self:RandomlyPickGametypeAndMap()
             end)
         end
     end
@@ -158,7 +158,7 @@ function GM:EndRound(winningTeam)
         end
     else
         print("Can pick random map/gametype?", canPickRandomMapAndGametype)
-        if self.RoundsPlayed == self.RoundsPerMap - 1 and self:gametypeVotesEnabled() and !canPickRandomMapAndGametype then -- start a vote for next gametype if we're on the second last round
+        if self.RoundsPlayed == self.RoundsPerMap - 1 and self:GametypeVotesEnabled() and !canPickRandomMapAndGametype then -- start a vote for next gametype if we're on the second last round
             self:startGameTypeVote()
         end
 
@@ -174,7 +174,7 @@ end
 function GM:startVoteMap()
     if self:canStartVote() then
         local _, data = self:GetGametypeFromConVar()
-        local mapList = self:filterExistingMaps(data.mapRotation)
+        local mapList = self:FilterExistingMaps(data.mapRotation)
 
         self:setupCurrentVote("Vote for the next map", mapList, player.GetAll(), self.MaxMapsPerPick, true, nil, function()
             local highestOption, _ = self:getHighestVote()
@@ -209,7 +209,7 @@ end
 
 function GM:hasAtLeastOneMapForGametype(gametypeData)
     for key, map in ipairs(gametypeData.mapRotation) do
-        if self:hasMap(map) then
+        if self:HasMap(map) then
             return true
         end
     end
@@ -242,14 +242,14 @@ end
 
 function GM:restartRound()
     if !self.curGametype.noTeamBalance then
-        self:balanceTeams()
+        self:BalanceTeams()
     end
 
     self.canSpawn = true
     game.CleanUpMap()
     self:dealWithTrashProps()
-    self:autoRemoveEntities()
-    self:runMapStartCallback()
+    self:AutoRemoveEntities()
+    self:RunMapStartCallback()
 
     if self.curGametype.roundStart then
         self.curGametype:RoundStart()
@@ -267,7 +267,7 @@ function GM:restartRound()
     net.Start("GC_NEW_ROUND")
     net.Broadcast()
 
-    self:resetKillcountData()
+    self:ResetKillcountData()
 end
 
 function GM:setupLoadoutSelectionTime()

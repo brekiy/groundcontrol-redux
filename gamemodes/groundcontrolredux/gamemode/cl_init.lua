@@ -65,7 +65,7 @@ function GM:InitPostEntity()
     ply:spawn()
     ply:ResetGadgetData()
     ply:resetAttachmentData()
-    ply:resetTraitData()
+    ply:ResetTraitData()
 
     self:postInitEntity()
 
@@ -73,19 +73,19 @@ function GM:InitPostEntity()
     ply:SetHullDuck(self.DuckHullMin, self.DuckHullMax)
     ply:SetViewOffsetDucked(self.ViewOffsetDucked)
 
-    self.tipController:loadShownEvents()
+    self.tipController:LoadShownTips()
 end
 
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:spawn()
     local ply = LocalPlayer()
-    ply:updateLoadoutPoints()
-    ply:resetBleedData()
-    ply:resetAdrenalineData()
-    ply:resetStaminaData()
-    ply:resetWeightData()
-    GAMEMODE:removeAllStatusEffects()
+    ply:UpdateLoadoutPoints()
+    ply:ResetBleedData()
+    ply:ResetAdrenalineData()
+    ply:ResetStaminaData()
+    ply:ResetWeightData()
+    GAMEMODE:RemoveAllStatusEffects()
 
     RunConsoleCommand("cw_freeaim_autocenter", 1)
     RunConsoleCommand("cw_freeaim_autocenter_time", 0.650000)
@@ -95,7 +95,7 @@ function PLAYER:spawn()
 
     timer.Simple(1, function()
         for key, tipId in ipairs(GAMEMODE.tipController.genericTips) do
-            local result = GAMEMODE.tipController:handleEvent(tipId)
+            local result = GAMEMODE.tipController:HandleTipEvent(tipId)
 
             if result == false or result == true then
                 break
@@ -106,7 +106,7 @@ end
 
 -- called upon the start of a new round
 function GM:roundPreparation(preparationTime)
-    self:resetAllStatusEffects()
+    self:ResetAllStatusEffects()
     LocalPlayer():spawn()
     self:createRoundPreparationDisplay(preparationTime)
     self:destroyMVPPanel()
@@ -114,7 +114,7 @@ end
 
 -- called upon the end of a round
 function GM:ResetRoundData()
-    self:reSetTimeLimit()
+    self:ResetTimeLimit()
 
     if GAMEMODE.curGametype.ResetRoundData then
         GAMEMODE.curGametype:ResetRoundData()
@@ -134,11 +134,11 @@ end
 function GM:onLocalPlayerDied(data)
     local ply = LocalPlayer()
 
-    self:removeAllStatusEffects()
-    ply:resetBleedData()
-    ply:resetAdrenalineData()
-    ply:resetStaminaData()
-    ply:resetWeightData()
+    self:RemoveAllStatusEffects()
+    ply:ResetBleedData()
+    ply:ResetAdrenalineData()
+    ply:ResetStaminaData()
+    ply:ResetWeightData()
 end
 
 -- 'data' is the same data from entity_killed, this is called when a player that dies
@@ -146,7 +146,7 @@ function GM:onPlayerDied(ply, data)
     if ply == LocalPlayer() then
         self:onLocalPlayerDied()
     else
-        ply:resetStatusEffects()
+        ply:ResetStatusEffects()
     end
 end
 
@@ -200,7 +200,7 @@ end
 function GM:handlePlayerRadioPress(ply, bind, pressed)
     if bind == "+attack2" then
         if self.RadioSelection.selectedCategory == 0 then
-            self:toggleRadio()
+            self:ToggleRadio()
         else
             self.RadioSelection.selectedCategory = 0
         end
@@ -244,8 +244,8 @@ function GM:PlayerBindPress(ply, bind, pressed)
             elseif bind == "undo" then
                 RunConsoleCommand("use", self.KnifeWeaponClass)
             end
-            -- if bind:find("slot") then print(self:isVoteActive(), self:didPlyVote(ply)) end
-            -- if !self:isVoteActive() or (self:isVoteActive() and self:didPlyVote(ply)) then
+            -- if bind:find("slot") then print(self:isVoteActive(), self:DidPlyVote(ply)) end
+            -- if !self:isVoteActive() or (self:isVoteActive() and self:DidPlyVote(ply)) then
             if !self:isVoteActive() then
                 if self.RadioSelection.active then
                     return self:handlePlayerRadioPress(ply, bind, pressed)
@@ -295,7 +295,7 @@ end
 
 CustomizableWeaponry.callbacks:addNew("deployWeapon", "GroundControl_deployWeapon", function(self)
     if self.SpeedDec >= 20 then
-        GAMEMODE.tipController:handleEvent("FASTER_MOVEMENT")
+        GAMEMODE.tipController:HandleTipEvent("FASTER_MOVEMENT")
     end
 end)
 
@@ -303,7 +303,7 @@ CustomizableWeaponry.callbacks:addNew("postAttachAttachment", "GroundControl_pos
     local attachmentName = self.Attachments[attCategory].atts[self.Attachments[attCategory].last]
 
     if self.BackupSights and self.BackupSights[attachmentName] then
-        GAMEMODE.tipController:handleEvent("BACKUP_SIGHTS")
+        GAMEMODE.tipController:HandleTipEvent("BACKUP_SIGHTS")
     end
 end)
 

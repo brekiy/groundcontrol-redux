@@ -1,11 +1,11 @@
 -- allows you to register callbacks on a per-map basis that get called when the map is loaded or a round is restarted
 GM.MapStartCallbacks = {}
 
-function GM:registerMapStartCallback(map, callback)
+function GM:RegisterMapStartCallback(map, callback)
     self.MapStartCallbacks[map] = callback
 end
 
-function GM:runMapStartCallback()
+function GM:RunMapStartCallback()
     local map = string.lower(game.GetMap())
 
     if self.MapStartCallbacks[map] then
@@ -20,7 +20,7 @@ local excludeUnlock = {
     [626] = true
 }
 
-GM:registerMapStartCallback("rp_downtown_v2", function()
+GM:RegisterMapStartCallback("rp_downtown_v2", function()
     local maxPlayers = game.MaxPlayers()
 
     for k, v in pairs(ents.FindByClass("prop_door_rotating")) do -- unlock all building doors
@@ -32,13 +32,13 @@ GM:registerMapStartCallback("rp_downtown_v2", function()
     end
 end)
 
-GM:registerMapStartCallback("rp_downtown_v4c_v2", function()
+GM:RegisterMapStartCallback("rp_downtown_v4c_v2", function()
     for k, v in pairs(ents.FindByClass("prop_door_rotating")) do -- unlock all building doors
         v:Fire("unlock")
     end
 end)
 
-GM:registerMapStartCallback("ph_skyscraper_construct", function()
+GM:RegisterMapStartCallback("ph_skyscraper_construct", function()
 
     for k, v in pairs(ents.FindByClass("prop_physics")) do -- freeze all entities on this map
         v:SetMoveType(MOVETYPE_NONE)

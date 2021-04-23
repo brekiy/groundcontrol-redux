@@ -134,7 +134,7 @@ function GM:RegisterIntelRetrieval()
     function intelRetrieval:DeadDraw(w, h)
         if GAMEMODE:GetActivePlayerAmount() < 2 then
             draw.ShadowText("This gametype requires at least 2 players, waiting for more people...",
-                    "CW_HUD20", w * 0.5, 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1,
+                    "CW_HUD20", w * 0.5, 15, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1,
                     TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
     end

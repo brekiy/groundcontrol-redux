@@ -5,10 +5,10 @@ concommand.Add("gc_team_selection", function(ply)
         return
     end
 
-    GAMEMODE:openTeamSelection()
+    GAMEMODE:OpenTeamSelection()
 end)
 
-function GM:openTeamSelection()
+function GM:OpenTeamSelection()
     if IsValid(self.curPanel) then
         self.curPanel:Remove()
         self.curPanel = nil

@@ -32,7 +32,7 @@ function PLAYER:spectateNext(goBack)
         if ply:Alive() then
             if !self.spectatedPlayers[ply] then
                 self.spectatedPlayers[ply] = true
-                self:setSpectateTarget(ply)
+                self:SetSpectateTarget(ply)
                 wasFound = true
 
                 break

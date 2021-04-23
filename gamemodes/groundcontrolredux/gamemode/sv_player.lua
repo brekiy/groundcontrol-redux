@@ -14,32 +14,32 @@ CreateConVar("gc_proximity_voicechat_directional", 0, {FCVAR_ARCHIVE, FCVAR_NOTI
 CreateConVar("gc_invincibility_time_period", 3, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- how long should the player be invincible for after spawning (for anti spawn killing in gametypes like urban warfare)
 CreateConVar("gc_team_damage", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- how long should the player be invincible for after spawning (for anti spawn killing in gametypes like urban warfare)
 
-GM:registerAutoUpdateConVar("gc_proximity_voicechat", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_proximity_voicechat", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.proximityVoiceChat = newValue >= 1
 end)
 
-GM:registerAutoUpdateConVar("gc_proximity_voicechat_distance", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_proximity_voicechat_distance", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.proximityVoiceChatDistance = newValue
 end)
 
-GM:registerAutoUpdateConVar("gc_proximity_voicechat_global", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_proximity_voicechat_global", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.proximityVoiceChatGlobal = newValue >= 1
 end)
 
-GM:registerAutoUpdateConVar("gc_proximity_voicechat_directional", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_proximity_voicechat_directional", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.proximityVoiceChatDirectional3D = newValue >= 1
 end)
 
-GM:registerAutoUpdateConVar("gc_invincibility_time_period", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_invincibility_time_period", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.postSpawnInvincibilityTimePeriod = newValue or 3
 end)
 
-GM:registerAutoUpdateConVar("gc_team_damage", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_team_damage", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.noTeamDamage = newValue <= 0
 end)
@@ -47,21 +47,21 @@ end)
 local PLAYER = FindMetaTable("Player")
 
 function GM:PlayerInitialSpawn(ply)
-    ply:resetSpawnData()
+    ply:ResetSpawnData()
 
     ply:SetTeam(TEAM_SPECTATOR)
     ply:KillSilent()
     ply:resetSpectateData()
 
-    ply:loadAttachments()
-    ply:loadCash()
-    ply:loadExperience()
-    ply:loadUnlockedAttachmentSlots()
-    ply:loadTraits()
+    ply:LoadAttachments()
+    ply:LoadCash()
+    ply:LoadExperience()
+    ply:LoadUnlockedAttachmentSlots()
+    ply:LoadTraits()
     ply.lastDataRequest = 0
     ply.invincibilityPeriod = 0
     ply:SetNWInt("GC_SCORE", 0)
-    ply:resetLoadoutPoints()
+    ply:ResetLoadoutPoints()
     ply:SetDTFloat(0, 1) -- movement speed multiplier
     ply:SetDTFloat(1, 0) -- delay for movement speed multiplier reset
     ply.attackedBy = {}
@@ -69,8 +69,8 @@ function GM:PlayerInitialSpawn(ply)
     ply:initLastKillData()
 
     self:checkVoteStatus(ply)
-    self:sendTimeLimit(ply)
-    ply:sendGameType()
+    self:SendTimeLimit(ply)
+    ply:SendGameType()
 
     if self.curGametype.PlayerInitialSpawn then
         self.curGametype:PlayerInitialSpawn(ply)
@@ -94,24 +94,24 @@ function GM:PlayerSpawn(ply)
     ply.currentTraits = ply.currentTraits and table.Empty(ply.currentTraits) or {}
     ply.armor = {}
     ply:UnSpectate()
-    ply:sendAttachments()
+    ply:SendAttachments()
     ply:SetHealth(100)
-    ply:SetMaxHealth(100)
+    ply:SetMAX_HEALTH(100)
     ply:SetJumpPower(190)
     ply:SetWalkSpeed(GetConVar("gc_base_walk_speed"):GetInt())
     ply:SetRunSpeed(GetConVar("gc_base_run_speed"):GetInt())
     ply:resetSpectateData()
-    ply:resetSpawnData()
-    ply:resetBleedData()
-    ply:resetAdrenalineData()
-    ply:resetStaminaData()
-    ply:resetWeightData()
+    ply:ResetSpawnData()
+    ply:ResetBleedData()
+    ply:ResetAdrenalineData()
+    ply:ResetStaminaData()
+    ply:ResetWeightData()
     ply:resetRadioData()
     ply:resetRecentVictimData()
     ply:ResetTrackedArmor()
-    ply:resetHealthRegenData()
-    ply:updateLoadoutPoints()
-    ply:setBandages(ply:GetDesiredBandageCount())
+    ply:ResetHealthRegenData()
+    ply:UpdateLoadoutPoints()
+    ply:SetBandages(ply:GetDesiredBandageCount())
     ply:SetCanZoom(false)
     ply:resetLastKillData()
     ply:SetCrouchedWalkSpeed(self.CrouchedWalkSpeed)
@@ -124,8 +124,8 @@ function GM:PlayerSpawn(ply)
     table.Empty(ply.attackedBy)
     ply:SetHullDuck(self.DuckHullMin, self.DuckHullMax)
     ply:SetViewOffsetDucked(self.ViewOffsetDucked)
-    ply:resetStatusEffects()
-    ply:resetKillcountData()
+    ply:ResetStatusEffects()
+    ply:ResetKillcountData()
 
     local desiredVoice = nil
 
@@ -142,7 +142,7 @@ function GM:PlayerSpawn(ply)
     end
 
     if !desiredVoice then
-        if !self:attemptSetMemeRadio(ply) then
+        if !self:AttemptSetMemeRadio(ply) then
             desiredVoice = ply:GetInfoNum("gc_desired_voice", 0)
 
             if !desiredVoice or desiredVoice == 0 then
@@ -166,7 +166,7 @@ function GM:PlayerSpawn(ply)
     self:positionPlayerOnMap(ply)
 
     ply:giveLoadout()
-    self:sendTimeLimit(ply)
+    self:SendTimeLimit(ply)
 
     if self.curGametype.PlayerSpawn then
         self.curGametype:PlayerSpawn(ply)
@@ -190,13 +190,13 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
             attacker:AddFrags(1)
             ply:AddDeaths(1)
             attacker:AddCurrency("ENEMY_KILLED", ply)
-            self:trackRoundMVP(attacker, "kills", 1)
+            self:TrackRoundMVP(attacker, "kills", 1)
             attacker:checkForTeammateSave(ply)
-            attacker:increaseKillcount(ply)
+            attacker:IncreaseKillcount(ply)
 
             if ply:LastHitGroup() == HITGROUP_HEAD then
                 attacker:AddCurrency("HEADSHOT")
-                self:trackRoundMVP(attacker, "headshots", 1)
+                self:TrackRoundMVP(attacker, "headshots", 1)
             end
 
             if self:countLivingPlayers(attacker:Team()) == 1 then
@@ -376,8 +376,8 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
         return
     end
 
-    ply:setStamina(ply.stamina - damage)
-    ply:suppress(4, 0.25)
+    ply:SetStamina(ply.stamina - damage)
+    ply:Suppress(4, 0.25)
 
     if IsValid(attacker) and attacker:IsPlayer() then
         local penValue = nil
@@ -389,7 +389,7 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
             local wep = attacker:GetActiveWeapon()
 
             if wep then
-                penValue = GAMEMODE:getAmmoPen(wep.Primary.Ammo, wep.penMod)
+                penValue = GAMEMODE:GetAmmoPen(wep.Primary.Ammo, wep.penMod)
             end
         end
 
@@ -419,7 +419,7 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
     end
 
     if differentTeam then
-        GAMEMODE:trackRoundMVP(attacker, "damage", dmgInfo:GetDamage())
+        GAMEMODE:TrackRoundMVP(attacker, "damage", dmgInfo:GetDamage())
     end
 
     local traits = GAMEMODE.Traits
@@ -479,7 +479,7 @@ function GM:PlayerDisconnected(ply)
         self.curGametype:PlayerDisconnected(ply)
     end
 
-    self:removePlayerObjectFromReportedDeadList(ply)
+    self:RemovePlayerFromReportedDeadList(ply)
 
     for key, plyObj in pairs(team.GetPlayers(ply:Team())) do
         if plyObj.currentSpectateEntity == self then
@@ -493,16 +493,16 @@ function PLAYER:crippleArm()
 
     if IsValid(wep) and wep.CW20Weapon and wep.isPrimaryWeapon and !wep.dropsDisabled then
         self:dropWeaponNicely(wep, VectorRand() * 20, VectorRand() * 200)
-        self:sendTip("DROPPED_WEAPON")
+        self:SendTip("DROPPED_WEAPON")
 
         -- only send the status effect if we weren't crippled before
         if !self.crippledArm then
-            self:setStatusEffect("crippled_arm", true)
+            self:SetStatusEffect("crippled_arm", true)
         end
     end
 
     self.crippledArm = true
-    self:setWeight(self:calculateWeight())
+    self:SetWeight(self:CalculateWeight())
 end
 
 function PLAYER:dropWeaponNicely(wepObj, velocity, angleVelocity) -- velocity and angleVelocity is optional
@@ -569,12 +569,12 @@ function PLAYER:checkForTeammateSave(victim)
 end
 
 function PLAYER:AddCurrency(event, entity, cash, exp)
-    local eventData = GAMEMODE:getEventByName(event)
+    local eventData = GAMEMODE:GetEventByName(event)
     cash = cash or eventData.cash
     exp = exp or eventData.exp
     if exp and cash then
-        self:addCash(cash)
-        self:addExperience(exp)
+        self:AddCash(cash)
+        self:AddExperience(exp)
 
         GAMEMODE.SendCurrencyAmount.exp = exp
         GAMEMODE.SendCurrencyAmount.cash = cash
@@ -590,11 +590,11 @@ function PLAYER:AddCurrency(event, entity, cash, exp)
     end
 
     if exp then
-        self:addExperience(exp, event)
+        self:AddExperience(exp, event)
     end
 
     if cash then
-        self:addCash(cash, event)
+        self:AddCash(cash, event)
     end
 end
 
@@ -603,10 +603,10 @@ function PLAYER:restoreHealth(amount)
 end
 
 function PLAYER:sendPlayerData()
-    self:sendCash()
-    self:sendExperience()
-    self:sendAttachments()
-    self:sendUnlockedAttachmentSlots()
+    self:SendCash()
+    self:SendExperience()
+    self:SendAttachments()
+    self:SendUnlockedAttachmentSlots()
     self:sendTraits()
 end
 
@@ -625,7 +625,7 @@ function PLAYER:setSpawnPoint(vec)
     end
 end
 
-function PLAYER:sendStatusEffect(id, state)
+function PLAYER:SendStatusEffect(id, state)
     net.Start("GC_STATUS_EFFECT")
     net.WriteString(id)
     net.WriteBool(state)
@@ -684,7 +684,7 @@ hook.Add("CW20_PickedUpCW20Weapon", "GC_CW20_PickedUpCW20Weapon", function(ply, 
         if wepObj != newWeaponObject and wepObj.Slot == newWeaponObject.Slot then
             ply:dropWeaponNicely(wepObj)
             ply.canPickupWeapon = false -- prevent weapon pickups until we finish assigning attachments to the weapon
-            ply:sendTip("PICKUP_WEAPON")
+            ply:SendTip("PICKUP_WEAPON")
         end
     end
 end)

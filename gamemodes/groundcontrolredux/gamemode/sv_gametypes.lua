@@ -11,20 +11,20 @@ include("sh_gametypes.lua")
 ]]
 GM.RemovePreviousGametype = false
 
-function GM:gametypeVotesEnabled()
+function GM:GametypeVotesEnabled()
     return GetConVar("gc_allow_gametype_votes"):GetBool()
 end
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:sendGameType()
+function PLAYER:SendGameType()
     net.Start("GC_GAMETYPE")
     net.WriteInt(GAMEMODE.curGametypeID, 16)
     net.Send(self)
 end
 
 concommand.Add("gc_request_gametype", function(ply, com, args)
-    ply:sendGameType()
+    ply:SendGameType()
 end)
 
 concommand.Add("gc_gametypelist", function(ply, com, args)
@@ -44,10 +44,10 @@ concommand.Add("gc_gametype_maplist", function(ply, com, args)
         text = text .. GAMEMODE:GetGametypeNameData(gamemodeKey) .. "\n"
         for key, map in pairs(data.mapRotation) do
             if key != nil and map != nil then
-                if GAMEMODE:hasMap(map) then
+                if GAMEMODE:HasMap(map) then
                     text = text .. "\t" .. map .. "\n"
                 else
-                    text = text .. "\t" .. map .. " (not installed, workshop ID: " .. GAMEMODE:getAutoDownloadMapID(map) .. ")\n"
+                    text = text .. "\t" .. map .. " (not installed, workshop ID: " .. GAMEMODE:GetAutoDownloadMapID(map) .. ")\n"
                 end
             end
         end

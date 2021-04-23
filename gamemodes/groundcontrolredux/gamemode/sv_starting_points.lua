@@ -8,7 +8,7 @@ GM.TeamBlueFallbackSpawnPoints = {"info_player_terrorist", "info_player_combine"
 
 local zeroAngles = Angle(0, 0, 0)
 
-function GM:registerStartingPoint(map, team, position, viewAngles, gametype)
+function GM:RegisterStartingPoint(map, team, position, viewAngles, gametype)
     self.StartingPoints[map] = self.StartingPoints[map] or {}
     self.StartingPoints[map][team] = self.StartingPoints[map][team] or {}
 

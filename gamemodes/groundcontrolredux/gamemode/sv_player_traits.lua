@@ -4,7 +4,7 @@ include("sh_player_traits.lua")
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:ApplyTraits()
-    self:removeTraits()
+    self:RemoveTraits()
 
     for key, convar in ipairs(GAMEMODE.TraitConvars) do
         local desiredTrait = self:GetInfoNum(convar, "0")
@@ -12,12 +12,12 @@ function PLAYER:ApplyTraits()
         if desiredTrait then
             desiredTrait = tonumber(desiredTrait)
 
-            GAMEMODE:applyTraitToPlayer(self, convar, desiredTrait)
+            GAMEMODE:ApplyTraitToPlayer(self, convar, desiredTrait)
         end
     end
 end
 
-function PLAYER:removeTraits()
+function PLAYER:RemoveTraits()
     local traits = GAMEMODE.Traits
 
     for key, traitConfig in ipairs(self.currentTraits) do
@@ -31,7 +31,7 @@ function PLAYER:removeTraits()
     end
 end
 
-function PLAYER:loadTraits()
+function PLAYER:LoadTraits()
     local traitData = self:GetPData("GC_TRAITS")
 
     if traitData then
@@ -43,7 +43,7 @@ function PLAYER:loadTraits()
     self.traits = traitData
 end
 
-function PLAYER:saveTraits()
+function PLAYER:SaveTraits()
     local traitData = util.TableToJSON(self.traits)
     self:SetPData("GC_TRAITS", traitData)
 end
@@ -55,17 +55,17 @@ function PLAYER:unlockTrait(traitID)
         return
     end
 
-    local requiredCash = GAMEMODE:getTraitPrice(traitData, 0)
+    local requiredCash = GAMEMODE:GetTraitPrice(traitData, 0)
 
     if self.cash < requiredCash then
         return
     end
 
-    self:setTraitLevel(traitData.id, 1)
-    self:removeCash(requiredCash)
+    self:SetTraitLevel(traitData.id, 1)
+    self:RemoveCash(requiredCash)
 end
 
-function PLAYER:progressTrait(traitID)
+function PLAYER:ProgressTrait(traitID)
     local traitLevel = self.traits[traitID]
 
     if !traitLevel then
@@ -78,19 +78,19 @@ function PLAYER:progressTrait(traitID)
         return
     end
 
-    local requiredCash = GAMEMODE:getTraitPrice(traitData, traitLevel)
+    local requiredCash = GAMEMODE:GetTraitPrice(traitData, traitLevel)
 
     if self.cash < requiredCash then
         return
     end
 
-    self:setTraitLevel(traitData.id, traitLevel + 1)
-    self:removeCash(requiredCash)
+    self:SetTraitLevel(traitData.id, traitLevel + 1)
+    self:RemoveCash(requiredCash)
 end
 
-function PLAYER:setTraitLevel(trait, level)
+function PLAYER:SetTraitLevel(trait, level)
     self.traits[trait] = level
-    self:saveTraits()
+    self:SaveTraits()
     self:sendTraits()
 end
 
@@ -107,9 +107,9 @@ concommand.Add("gc_buy_trait", function(ply, com, args)
         return
     end
 
-    if !ply:hasTrait(targetTrait) then
+    if !ply:HasTrait(targetTrait) then
         ply:unlockTrait(targetTrait)
     else
-        ply:progressTrait(targetTrait)
+        ply:ProgressTrait(targetTrait)
     end
 end)

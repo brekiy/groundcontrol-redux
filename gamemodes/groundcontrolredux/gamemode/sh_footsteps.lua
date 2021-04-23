@@ -119,7 +119,7 @@ GM.FALLBACK_FOOTSTEP_SOUNDS = {}
 GM.FOOTSTEP_PITCH_START = 95
 GM.FOOTSTEP_PITCH_END = 105
 
-function GM:registerWalkSound(materialID, desiredSounds, baseName, channel)
+function GM:RegisterWalkSound(materialID, desiredSounds, baseName, channel)
     channel = channel or CHAN_BODY
 
     local targetList = nil
@@ -134,18 +134,18 @@ function GM:registerWalkSound(materialID, desiredSounds, baseName, channel)
     table.insert(targetList, desiredSounds)
 end
 
-GM:registerWalkSound(nil, {"ground_control/footsteps/concrete1.wav", "ground_control/footsteps/concrete2.wav", "ground_control/footsteps/concrete3.wav", "ground_control/footsteps/concrete4.wav"}, "GC_FALLBACK_WALK_SOUNDS")
-GM:registerWalkSound(MAT_WOOD, {"ground_control/footsteps/wood1.wav", "ground_control/footsteps/wood2.wav", "ground_control/footsteps/wood3.wav", "ground_control/footsteps/wood4.wav"}, "GC_WALK_WOOD")
-GM:registerWalkSound(MAT_GRASS, {"ground_control/footsteps/grass1.wav", "ground_control/footsteps/grass2.wav", "ground_control/footsteps/grass3.wav", "ground_control/footsteps/grass4.wav"}, "GC_WALK_GRASS")
-GM:registerWalkSound(MAT_SLOSH, {"ground_control/footsteps/slosh1.wav", "ground_control/footsteps/slosh2.wav", "ground_control/footsteps/slosh3.wav", "ground_control/footsteps/slosh4.wav"}, "GC_WALK_SLOSH")
-GM:registerWalkSound(MAT_METAL, {"ground_control/footsteps/metal1.wav", "ground_control/footsteps/metal2.wav", "ground_control/footsteps/metal3.wav", "ground_control/footsteps/metal4.wav"}, "GC_WALK_METAL")
-GM:registerWalkSound(MAT_LADDER, {"ground_control/footsteps/ladder1.wav", "ground_control/footsteps/ladder2.wav", "ground_control/footsteps/ladder3.wav", "ground_control/footsteps/ladder4.wav"}, "GC_WALK_LADDER")
-GM:registerWalkSound(MAT_GRAVEL, {"ground_control/footsteps/gravel1.wav", "ground_control/footsteps/gravel2.wav", "ground_control/footsteps/gravel3.wav", "ground_control/footsteps/gravel4.wav"}, "GC_WALK_GRAVEL")
-GM:registerWalkSound(MAT_SNOW, {"ground_control/footsteps/snow1.wav", "ground_control/footsteps/snow2.wav", "ground_control/footsteps/snow3.wav", "ground_control/footsteps/snow4.wav"}, "GC_WALK_SNOW")
-GM:registerWalkSound(MAT_DIRT, {"ground_control/footsteps/dirt1.wav", "ground_control/footsteps/dirt2.wav", "ground_control/footsteps/dirt3.wav", "ground_control/footsteps/dirt4.wav"}, "GC_WALK_DIRT")
-GM:registerWalkSound(MAT_WOODPANEL, {"ground_control/footsteps/woodpanel1.wav", "ground_control/footsteps/woodpanel2.wav", "ground_control/footsteps/woodpanel3.wav", "ground_control/footsteps/woodpanel4.wav"}, "GC_WALK_WOODPANEL")
+GM:RegisterWalkSound(nil, {"ground_control/footsteps/concrete1.wav", "ground_control/footsteps/concrete2.wav", "ground_control/footsteps/concrete3.wav", "ground_control/footsteps/concrete4.wav"}, "GC_FALLBACK_WALK_SOUNDS")
+GM:RegisterWalkSound(MAT_WOOD, {"ground_control/footsteps/wood1.wav", "ground_control/footsteps/wood2.wav", "ground_control/footsteps/wood3.wav", "ground_control/footsteps/wood4.wav"}, "GC_WALK_WOOD")
+GM:RegisterWalkSound(MAT_GRASS, {"ground_control/footsteps/grass1.wav", "ground_control/footsteps/grass2.wav", "ground_control/footsteps/grass3.wav", "ground_control/footsteps/grass4.wav"}, "GC_WALK_GRASS")
+GM:RegisterWalkSound(MAT_SLOSH, {"ground_control/footsteps/slosh1.wav", "ground_control/footsteps/slosh2.wav", "ground_control/footsteps/slosh3.wav", "ground_control/footsteps/slosh4.wav"}, "GC_WALK_SLOSH")
+GM:RegisterWalkSound(MAT_METAL, {"ground_control/footsteps/metal1.wav", "ground_control/footsteps/metal2.wav", "ground_control/footsteps/metal3.wav", "ground_control/footsteps/metal4.wav"}, "GC_WALK_METAL")
+GM:RegisterWalkSound(MAT_LADDER, {"ground_control/footsteps/ladder1.wav", "ground_control/footsteps/ladder2.wav", "ground_control/footsteps/ladder3.wav", "ground_control/footsteps/ladder4.wav"}, "GC_WALK_LADDER")
+GM:RegisterWalkSound(MAT_GRAVEL, {"ground_control/footsteps/gravel1.wav", "ground_control/footsteps/gravel2.wav", "ground_control/footsteps/gravel3.wav", "ground_control/footsteps/gravel4.wav"}, "GC_WALK_GRAVEL")
+GM:RegisterWalkSound(MAT_SNOW, {"ground_control/footsteps/snow1.wav", "ground_control/footsteps/snow2.wav", "ground_control/footsteps/snow3.wav", "ground_control/footsteps/snow4.wav"}, "GC_WALK_SNOW")
+GM:RegisterWalkSound(MAT_DIRT, {"ground_control/footsteps/dirt1.wav", "ground_control/footsteps/dirt2.wav", "ground_control/footsteps/dirt3.wav", "ground_control/footsteps/dirt4.wav"}, "GC_WALK_DIRT")
+GM:RegisterWalkSound(MAT_WOODPANEL, {"ground_control/footsteps/woodpanel1.wav", "ground_control/footsteps/woodpanel2.wav", "ground_control/footsteps/woodpanel3.wav", "ground_control/footsteps/woodpanel4.wav"}, "GC_WALK_WOODPANEL")
 
-function GM:getWalkSound(materialID, loudnessLevel)
+function GM:GetWalkSound(materialID, loudnessLevel)
     local sounds = self.SURFACE_FOOTSTEP_SOUNDS[materialID]
 
     if sounds then
@@ -170,16 +170,17 @@ function GM:PlayerFootstep(ply, position, foot, sound, volume, filter)
     if self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound] != nil then
         materialID = self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound]
     end
-    local loudnessID, noiseLevel = self:getLoudnessLevel(ply)
-    self:playFootstepSound(ply, loudnessID, materialID)
+    local loudnessID, noiseLevel = self:GetLoudnessLevel(ply)
+    self:PlayFootstepSound(ply, loudnessID, materialID)
 
     -- suppress default sounds
     return true
 end
 
-function GM:playFootstepSound(ply, loudnessID, materialID)
+-- TODO (brekiy): see if we can get away with just having the server play the sound, this seems kind of wasteful
+function GM:PlayFootstepSound(ply, loudnessID, materialID)
     if CLIENT then
-        local sound = self:getWalkSound(materialID, loudnessID)
+        local sound = self:GetWalkSound(materialID, loudnessID)
         sound = sound[math.random(1, #sound)]
 
         -- for some very strange reason, if I register the sounds via sound.Add, and then play it back via ply:EmitSound I get really weird stutters
@@ -208,15 +209,15 @@ if CLIENT then
         local loudnessID = net.ReadInt(16)
         local materialID = net.ReadInt(16)
 
-        GAMEMODE:playFootstepSound(object, loudnessID, materialID)
+        GAMEMODE:PlayFootstepSound(object, loudnessID, materialID)
     end)
 end
 
-function GM:getLoudnessLevel(ply)
+function GM:GetLoudnessLevel(ply)
     local noiseLevel = self.BASE_NOISE_LEVEL
 
     if CLIENT then -- on the client we will re-calculate the weight, because it's more accurate that way
-        noiseLevel = noiseLevel + ply:calculateWeight() * self.NOISE_PER_KILOGRAM
+        noiseLevel = noiseLevel + ply:CalculateWeight() * self.NOISE_PER_KILOGRAM
     else -- on the server we will use the pre-calculated weight value, because the server knows more than the client about his weight values
         noiseLevel = noiseLevel + ply.weight * self.NOISE_PER_KILOGRAM
     end
@@ -253,8 +254,8 @@ end
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:getWeightFootstepNoiseAffector(weight)
-    weight = weight or self.weight or self:calculateWeight()
+function PLAYER:GetWeightFootstepNoiseAffector(weight)
+    weight = weight or self.weight or self:CalculateWeight()
 
     return weight * GAMEMODE.NOISE_PER_KILOGRAM
 end

@@ -20,7 +20,7 @@ function GM:registerVIPEscort()
     vipEscort.swappedTeams = false
 
     if SERVER then
-        vipEscort.mapRotation = GM:getMapRotation("vip_escort_maps")
+        vipEscort.mapRotation = GM:GetMapRotation("vip_escort_maps")
     end
 
     function vipEscort:PlayerSpawn(ply)

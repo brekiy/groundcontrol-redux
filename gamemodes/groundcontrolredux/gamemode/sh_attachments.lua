@@ -270,7 +270,7 @@ function PLAYER:setUnlockedAttachmentSlots(slotAmount)
     self.unlockedAttachmentSlots = slotAmount
 
     if SERVER then
-        self:sendUnlockedAttachmentSlots()
+        self:SendUnlockedAttachmentSlots()
     end
 end
 
@@ -285,9 +285,9 @@ function PLAYER:setExperience(exp)
         end
 
         self.experience = exp
-        self:checkForAttachmentSlotUnlock()
-        self:saveExperience()
-        self:sendExperience()
+        self:CheckForAttachmentSlotUnlock()
+        self:SaveExperience()
+        self:SendExperience()
     else
         self.experience = exp
     end

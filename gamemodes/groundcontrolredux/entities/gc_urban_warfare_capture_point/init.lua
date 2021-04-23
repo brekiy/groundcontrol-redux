@@ -26,7 +26,7 @@ function ENT:Initialize()
     self.deCaptureDelay = 0
     self.lastUpdate = 0
 
-    self:setCaptureDistance(self.captureDistance)
+    self:SetCaptureDistance(self.captureDistance)
 
     local gametype = GAMEMODE:GetGametype()
     gametype:AssignPointID(self)
@@ -36,12 +36,12 @@ function ENT:Initialize()
 end
 
 -- the team that has to capture this point
-function ENT:setCapturerTeam(team)
+function ENT:SetCapturerTeam(team)
     self.capturerTeam = team
     self:SetCapturerTeam(team)
 end
 
-function ENT:setCaptureDistance(distance)
+function ENT:SetCaptureDistance(distance)
     self.captureDistance = distance
     self:SetCaptureDistance(distance)
 end
@@ -77,14 +77,14 @@ function ENT:getClosePlayers(position, listOfPlayers)
     return total, alive
 end
 
-function ENT:initTickets(startAmount)
+function ENT:InitTickets(startAmount)
     self:SetRedTicketCount(startAmount)
     self:SetBlueTicketCount(startAmount)
     self:SetMaxTickets(startAmount)
     self:setupWaveTime()
 end
 
-function ENT:setCaptureAABB(vec1, vec2)
+function ENT:SetCaptureAABB(vec1, vec2)
     local vecMin = Vector(math.min(vec1.x, vec2.x), math.min(vec1.y, vec2.y), math.min(vec1.z, vec2.z))
     local vecMax = Vector(math.max(vec1.x, vec2.x), math.max(vec1.y, vec2.y), math.max(vec1.z, vec2.z))
 
@@ -163,7 +163,7 @@ function ENT:Think()
             self.deCaptureDelay = curTime + self.deCaptureTime
 
             if self:GetCaptureProgress() == 0 then
-                self:setCapturerTeam(0)
+                self:SetCapturerTeam(0)
             end
         end
     end
@@ -180,7 +180,7 @@ function ENT:advanceCapture(capSpeed, capturerTeam)
 
         if self:GetCaptureProgress() == 0 then
             -- swap capturing team once progress resets
-            self:setCapturerTeam(capturerTeam)
+            self:SetCapturerTeam(capturerTeam)
         end
     else
         self:SetCaptureSpeed(capSpeed / self.captureAmount)

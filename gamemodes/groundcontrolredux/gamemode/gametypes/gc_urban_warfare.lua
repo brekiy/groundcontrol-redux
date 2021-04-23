@@ -15,7 +15,7 @@ function GM:registerUrbanWarfare()
     urbanwarfare.waveWinReward = {cash = 50, exp = 50}
 
     if SERVER then
-        urbanwarfare.mapRotation = GM:getMapRotation("urbanwarfare_maps")
+        urbanwarfare.mapRotation = GM:GetMapRotation("urbanwarfare_maps")
     end
 
     function urbanwarfare:AssignPointID(point)
@@ -31,7 +31,7 @@ function GM:registerUrbanWarfare()
                 SafeRemoveEntity(ent)
             end
 
-            GAMEMODE:balanceTeams(true)
+            GAMEMODE:BalanceTeams(true)
 
             if capturer then
                 local opposingTeam = GAMEMODE.OpposingTeam[capturer]
@@ -48,8 +48,8 @@ function GM:registerUrbanWarfare()
             self:spawnPlayersNewWave(capturer, TEAM_BLUE, capturer and (noTicketDrainForWinners and TEAM_BLUE == capturer))
             self.waveEnded = false
 
-            GAMEMODE:resetAllKillcountData()
-            GAMEMODE:sendAlivePlayerCount()
+            GAMEMODE:ResetAllKillcountData()
+            GAMEMODE:SendAlivePlayerCount()
         end)
     end
 
@@ -146,7 +146,7 @@ function GM:registerUrbanWarfare()
 
     function urbanwarfare:PlayerJoinTeam(ply, teamId)
         GAMEMODE:CheckRoundOverPossibility(nil, true)
-        GAMEMODE:sendTimeLimit(ply)
+        GAMEMODE:SendTimeLimit(ply)
         ply:reSpectate()
     end
 

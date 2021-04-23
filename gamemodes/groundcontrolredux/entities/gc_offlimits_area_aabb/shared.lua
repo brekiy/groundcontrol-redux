@@ -16,7 +16,7 @@ function ENT:SetupDataTables()
     self:NetworkVar("Vector", 1, "AABBMax")
 end
 
-function ENT:setAABB(vec1, vec2)
+function ENT:SetAABB(vec1, vec2)
     local vecMin = Vector(math.min(vec1.x, vec2.x), math.min(vec1.y, vec2.y), math.min(vec1.z, vec2.z))
     local vecMax = Vector(math.max(vec1.x, vec2.x), math.max(vec1.y, vec2.y), math.max(vec1.z, vec2.z))
 

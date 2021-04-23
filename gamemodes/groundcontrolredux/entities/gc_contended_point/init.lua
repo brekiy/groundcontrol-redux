@@ -20,7 +20,7 @@ function ENT:Initialize()
     self:SetCurCaptureTeam(0)
 end
 
-function ENT:setCaptureDistance(distance)
+function ENT:SetCaptureDistance(distance)
     self.captureDistance = distance
 end
 

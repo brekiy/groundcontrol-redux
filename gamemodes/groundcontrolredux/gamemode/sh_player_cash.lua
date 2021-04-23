@@ -3,14 +3,14 @@ AddCSLuaFile()
 GM.CashAmount = {cash = nil} -- instead of creating a new table every time we send an "enemy killed" event to the player with the amount of $$$ he got, we instead create one static table
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:addCash(amount, event)
+function PLAYER:AddCash(amount, event)
     self.cash = self.cash or 0
 
     self.cash = math.max(self.cash + amount, 0)
-    self:sendCash()
+    self:SendCash()
 
     if SERVER then
-        self:saveCash()
+        self:SaveCash()
 
         if event then
             GAMEMODE.CashAmount.cash = amount
@@ -19,25 +19,25 @@ function PLAYER:addCash(amount, event)
     end
 end
 
-function PLAYER:removeCash(amount)
+function PLAYER:RemoveCash(amount)
     self.cash = self.cash - amount
-    self:sendCash()
+    self:SendCash()
 
     if SERVER then
-        self:saveCash()
+        self:SaveCash()
     end
 end
 
-function PLAYER:setCash(amount)
+function PLAYER:SetCash(amount)
     self.cash = amount
-    self:sendCash()
+    self:SendCash()
 
     if SERVER then
-        self:saveCash()
+        self:SaveCash()
     end
 end
 
-function PLAYER:sendCash()
+function PLAYER:SendCash()
     if SERVER then
         net.Start("GC_CASH")
         net.WriteInt(self.cash, 32)

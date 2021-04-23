@@ -10,7 +10,7 @@ GM.Traits = {}
 GM.TraitsById = {}
 GM.TraitConvars = {}
 
-function GM:registerTrait(data)
+function GM:RegisterTrait(data)
     self.Traits[data.convar] = self.Traits[data.convar] or {}
     self.TraitsById[data.id] = data
 
@@ -45,7 +45,7 @@ function GM:registerTrait(data)
     end
 end
 
-function GM:applyTraitToPlayer(ply, convar, traitID)
+function GM:ApplyTraitToPlayer(ply, convar, traitID)
     local traitData = self.Traits[convar]
 
     if !traitData then
@@ -54,7 +54,7 @@ function GM:applyTraitToPlayer(ply, convar, traitID)
 
     traitData = traitData[traitID]
 
-    if !traitData or !ply:hasTrait(traitData.id) then
+    if !traitData or !ply:HasTrait(traitData.id) then
         return
     end
 
@@ -65,7 +65,7 @@ function GM:applyTraitToPlayer(ply, convar, traitID)
     table.insert(ply.currentTraits, {convar, traitID})
 end
 
-function GM:getTraitPrice(traitData, currentLevel)
+function GM:GetTraitPrice(traitData, currentLevel)
     currentLevel = currentLevel or 0
     return traitData.basePrice + currentLevel * traitData.pricePerLevel
 end
@@ -83,16 +83,16 @@ warHardened.adrenalinePerLevel = 0.05
 warHardened.description = {
     {
         t = "You've undergone extensive training to operate efficiently in high stress situations.",
-        c = GM.HUDColors.white
+        c = GM.HUD_COLORS.white
     },
     {
         t = "Decreases adrenaline duration and increase speed by %s per each level.",
-        c = GM.HUDColors.green,
+        c = GM.HUD_COLORS.green,
         formatFunc = function(textToFormat) return string.format(textToFormat, warHardened.adrenalinePerLevel * 100 .. "%") end
     },
     {
         t = "Current adrenaline duration and increase speed reduction: -CURRENT%",
-        c = GM.HUDColors.green,
+        c = GM.HUD_COLORS.green,
         formatFunc = function(textToFormat) return string.easyformatbykeys(textToFormat, "CURRENT", math.Round(warHardened.adrenalinePerLevel * 100 * (LocalPlayer().traits[warHardened.id] or 0))) end
     }
 }
@@ -108,7 +108,7 @@ function warHardened:remove(player, currentLevel)
     player.maxAdrenalineDurationMultiplier = 1
 end
 
-GM:registerTrait(warHardened)
+GM:RegisterTrait(warHardened)
 
 local conditioned = {}
 conditioned.id = "conditioned"
@@ -121,11 +121,11 @@ conditioned.basePrice = 750
 conditioned.pricePerLevel = 250
 conditioned.staminaDrainPerLevel = 0.05
 conditioned.description = {
-    {t = "You've undergone extensive physical preparation to become more endurant.", c = GM.HUDColors.white},
-    {t = "Decreases stamina drain from sprinting by %s per each level.", c = GM.HUDColors.green, formatFunc = function(textToFormat) return string.format(textToFormat, conditioned.staminaDrainPerLevel * 100 .. "%") end},
+    {t = "You've undergone extensive physical preparation to become more endurant.", c = GM.HUD_COLORS.white},
+    {t = "Decreases stamina drain from sprinting by %s per each level.", c = GM.HUD_COLORS.green, formatFunc = function(textToFormat) return string.format(textToFormat, conditioned.staminaDrainPerLevel * 100 .. "%") end},
     {
         t = "Current sprint stamina drain reduction: -CURRENT%",
-        c = GM.HUDColors.green,
+        c = GM.HUD_COLORS.green,
         formatFunc = function(textToFormat) return string.easyformatbykeys(textToFormat, "CURRENT", math.Round(conditioned.staminaDrainPerLevel * 100 * (LocalPlayer().traits[conditioned.id] or 0))) end
     }
 }
@@ -138,7 +138,7 @@ function conditioned:remove(player, currentLevel)
     player.staminaDrainMultiplier = 1
 end
 
-GM:registerTrait(conditioned)
+GM:RegisterTrait(conditioned)
 
 local medic = {}
 medic.id = "medic"
@@ -151,12 +151,12 @@ medic.basePrice = 1000
 medic.pricePerLevel = 500
 medic.healthRestorePerLevel = 1
 medic.description = {
-    {t = "You've undergone extensive medical training to treat wounds efficiently.", c = GM.HUDColors.white},
-    {t = "You can restore health when bandaging yourself or team mates.", c = GM.HUDColors.white},
-    {t = "Each level increases health restored by %s point.", c = GM.HUDColors.green, formatFunc = function(textToFormat) return string.format(textToFormat, medic.healthRestorePerLevel) end},
+    {t = "You've undergone extensive medical training to treat wounds efficiently.", c = GM.HUD_COLORS.white},
+    {t = "You can restore health when bandaging yourself or team mates.", c = GM.HUD_COLORS.white},
+    {t = "Each level increases health restored by %s point.", c = GM.HUD_COLORS.green, formatFunc = function(textToFormat) return string.format(textToFormat, medic.healthRestorePerLevel) end},
     {
         t = "Current health restore amount: +CURRENT%",
-        c = GM.HUDColors.green,
+        c = GM.HUD_COLORS.green,
         formatFunc = function(textToFormat) return string.easyformatbykeys(textToFormat, "CURRENT", math.Round(medic.healthRestorePerLevel * (LocalPlayer().traits[medic.id] or 0))) end
     }
 }
@@ -169,7 +169,7 @@ function medic:remove(player, currentLevel)
     player.healAmount = 0
 end
 
-GM:registerTrait(medic)
+GM:RegisterTrait(medic)
 
 local willToLive = {}
 willToLive.id = "will_to_live"
@@ -184,12 +184,12 @@ willToLive.healthRestorePerLevel = 2
 willToLive.healthRestoreDelay = 6 -- time in seconds between each HP regen tick
 willToLive.healthRestoreDelayOnDamage = 10 -- delay to apply after taking damage
 willToLive.description = {
-    {t = "Your will to live is unmatched - you overcome pain and shock that would have had killed others.", c = GM.HUDColors.white},
-    {t = "Allows to restore a small amount of health passively every %s seconds.", c = GM.HUDColors.green, formatFunc = function(textToFormat) return string.format(textToFormat, willToLive.healthRestoreDelay) end},
-    {t = "Each level increases health restored by %s points.", c = GM.HUDColors.green, formatFunc = function(textToFormat) return string.format(textToFormat, willToLive.healthRestorePerLevel) end},
+    {t = "Your will to live is unmatched - you overcome pain and shock that would have had killed others.", c = GM.HUD_COLORS.white},
+    {t = "Allows to restore a small amount of health passively every %s seconds.", c = GM.HUD_COLORS.green, formatFunc = function(textToFormat) return string.format(textToFormat, willToLive.healthRestoreDelay) end},
+    {t = "Each level increases health restored by %s points.", c = GM.HUD_COLORS.green, formatFunc = function(textToFormat) return string.format(textToFormat, willToLive.healthRestorePerLevel) end},
     {
         t = "Current maximum health restored: +CURRENT%",
-        c = GM.HUDColors.green,
+        c = GM.HUD_COLORS.green,
         formatFunc = function(textToFormat) return string.easyformatbykeys(textToFormat, "CURRENT", math.Round(willToLive.healthRestorePerLevel * (LocalPlayer().traits[willToLive.id] or 0))) end
     }
 }
@@ -219,7 +219,7 @@ function willToLive:onTakeDamage(player, dmginfo, hitGroup)
     player.nextRegenTick = CurTime() + willToLive.healthRestoreDelayOnDamage
 end
 
-GM:registerTrait(willToLive)
+GM:RegisterTrait(willToLive)
 
 local covertOps = {}
 covertOps.id = "covert_ops"
@@ -233,11 +233,11 @@ covertOps.basePrice = 500
 covertOps.pricePerLevel = 1000
 
 covertOps.description = {
-    {t = "You've undergone extensive stealth training to sneak quicker while maintaining combat readiness.", c = GM.HUDColors.white},
-    {t = "Increases crouched movement speed by %s%% per level.", c = GM.HUDColors.green, formatFunc = function(textToFormat) return string.format(textToFormat, math.Round(covertOps.crouchSpeedPerLevel * 100, 1)) end},
+    {t = "You've undergone extensive stealth training to sneak quicker while maintaining combat readiness.", c = GM.HUD_COLORS.white},
+    {t = "Increases crouched movement speed by %s%% per level.", c = GM.HUD_COLORS.green, formatFunc = function(textToFormat) return string.format(textToFormat, math.Round(covertOps.crouchSpeedPerLevel * 100, 1)) end},
     {
         t = "Current crouch-move speed increase: +CURRENT%",
-        c = GM.HUDColors.green,
+        c = GM.HUD_COLORS.green,
         formatFunc = function(textToFormat) return string.easyformatbykeys(textToFormat, "CURRENT", math.Round(covertOps.crouchSpeedPerLevel * 100 * (LocalPlayer().traits[covertOps.id] or 0), 1)) end
     }
 }
@@ -246,7 +246,7 @@ function covertOps:onSpawn(player, currentLevel)
     player:SetCrouchedWalkSpeed(GAMEMODE.CrouchedWalkSpeed + covertOps.crouchSpeedPerLevel * currentLevel)
 end
 
-GM:registerTrait(covertOps)
+GM:RegisterTrait(covertOps)
 
 local PLAYER = FindMetaTable("Player")
 
@@ -254,10 +254,10 @@ function PLAYER:getTraitLevel(traitID)
     return self.traits[traitID]
 end
 
-function PLAYER:hasTrait(traitID)
+function PLAYER:HasTrait(traitID)
     return self.traits[traitID] != nil
 end
 
-function PLAYER:resetTraitData()
+function PLAYER:ResetTraitData()
     self.traits = {}
 end

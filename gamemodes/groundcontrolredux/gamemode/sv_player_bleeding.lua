@@ -44,7 +44,7 @@ function PLAYER:startBleeding(bleedInflictor)
         self.bleedInflictor = bleedInflictor -- the person that caused us to bleed
     end
 
-    self:setBleeding(true)
+    self:SetBleeding(true)
 end
 
 function PLAYER:sendBleedState()
@@ -60,7 +60,7 @@ function PLAYER:attemptBandage()
 
     local target = self:getBandageTarget()
 
-    if self:canBandage(target) then
+    if self:CanBandage(target) then
         target:bandage(self)
     end
 end
@@ -75,7 +75,7 @@ function PLAYER:bandage(bandagedBy)
     bandagedBy:useBandage()
     bandagedBy:EmitSound("GC_BANDAGE_SOUND")
     bandagedBy:sendBandages()
-    bandagedBy:calculateWeight()
+    bandagedBy:CalculateWeight()
 
     local wep = bandagedBy:GetActiveWeapon()
 
@@ -83,11 +83,11 @@ function PLAYER:bandage(bandagedBy)
         wep:setGlobalDelay(GAMEMODE.BandageTime + 0.3, true, CW_ACTION, GAMEMODE.BandageTime)
     end
 
-    self:setBleeding(false)
+    self:SetBleeding(false)
 
     if bandagedBy != self then
         bandagedBy:AddCurrency("TEAMMATE_BANDAGED")
-        GAMEMODE:trackRoundMVP(bandagedBy, "bandaging", 1)
+        GAMEMODE:TrackRoundMVP(bandagedBy, "bandaging", 1)
     end
 
     self:restoreHealth(bandagedBy.healAmount)

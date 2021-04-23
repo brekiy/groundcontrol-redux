@@ -21,10 +21,10 @@ GM.PreparationTime = 0
 GM.StaminaPerJump = 5
 GM.StaminaPerJumpBaselineNoWeightPenalty = 5 -- if our weight does not exceed this much we don't get an extra stamina drain penalty from jumping
 GM.StaminaPerJumpWeightIncrease = 0.8 -- per each kilogram we will drain this much extra stamina when our weight exceeds StaminaPerJumpBaselineNoWeightPenalty
-GM.NotOnGroundRecoilMultiplier = 1.5
-GM.NotOnGroundSpreadMultiplier = 4
+GM.AIR_RECOIL_MULT = 1.5
+GM.AIR_SPREAD_MULT = 4
 GM.JumpStaminaRegenDelay = 1
-GM.MaxHealth = 100
+GM.MAX_HEALTH = 100
 GM.VotePrepTime = 5
 GM.VoteTime = GM.VotePrepTime + 20
 GM.HeavyLandingVelocity = 500
@@ -56,9 +56,9 @@ GM.FORCE_FREE_AIM = false
 -- so to make things fair, I am forcing complex telescopics
 GM.FORCE_COMPLEX_TELESCOPICS = true
 
-GM.SidewaysSprintSpeedAffector = 0.1 -- if we're sprinting sideways + forward, we take a small hit to our movement speed
-GM.OnlySidewaysSprintSpeedAffector = 0.25 -- if we're sprinting only sideways (not forward + sideways), then we take a big hit to our movement speed
-GM.BackwardsSprintSpeedAffector = 0.25 -- if we're sprinting backwards, we take a big hit to our movement speed
+GM.SIDEWAYS_SPRINT_MULT = 0.1 -- if we're sprinting sideways + forward, we take a small hit to our movement speed
+GM.STRAFE_SPRINT_MULT = 0.25 -- if we're sprinting only sideways (not forward + sideways), then we take a big hit to our movement speed
+GM.BACKWARDS_SPRINT_MULT = 0.25 -- if we're sprinting backwards, we take a big hit to our movement speed
 
 GM.MaxLadderMovementSpeed = 20 -- how fast should the player move when using a ladder
 
@@ -105,11 +105,11 @@ CustomizableWeaponry.ITEM_PACKS_TOP_COLOR = Color(0, 0, 0, 230)
 FULL_INIT = true
 
 CustomizableWeaponry.callbacks:addNew("calculateAccuracy", "GroundControl_calculateAccuracy", function(self)
-    local hipMod, aimMod = self:GetOwner():getAdrenalineAccuracyModifiers()
+    local hipMod, aimMod = self:GetOwner():GetAdrenalineAccuracyModifiers()
     local hipMult, aimMult, maxSpread = 1, 1, 1
 
     if !self:GetOwner():OnGround() then
-        local mult = GAMEMODE.NotOnGroundSpreadMultiplier
+        local mult = GAMEMODE.AIR_SPREAD_MULT
         hipMult, aimMult, maxSpread = mult, mult, mult -- if we aren't on the ground, we get a huge spread increase
     end
 
@@ -121,7 +121,7 @@ end)
 
 CustomizableWeaponry.callbacks:addNew("calculateRecoil", "GroundControl_calculateRecoil", function(self, modifier)
     if !self:GetOwner():OnGround() then
-        modifier = modifier * GAMEMODE.NotOnGroundRecoilMultiplier -- if we aren't on the ground, we get a huge recoil increase
+        modifier = modifier * GAMEMODE.AIR_RECOIL_MULT -- if we aren't on the ground, we get a huge recoil increase
     end
 
     return modifier
@@ -162,7 +162,7 @@ CustomizableWeaponry.callbacks:addNew("disableInteractionMenu", "GroundControl_d
         return true
     end
 
-    return !GAMEMODE:isPreparationPeriod()
+    return !GAMEMODE:IsPreparationPeriod()
 end)
 
 if CLIENT then
@@ -270,10 +270,10 @@ if CLIENT then
                 for i = 1, availableSlots do
                     local x = baseX + (i - 1) * overallSize
 
-                    draw.ShadowText("Slot " .. i, GAMEMODE.AttachmentSlotDisplayFont, x + GAMEMODE.attachmentSlotDisplaySize - 5, baseY + GAMEMODE.attachmentSlotDisplaySize, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+                    draw.ShadowText("Slot " .. i, GAMEMODE.AttachmentSlotDisplayFont, x + GAMEMODE.attachmentSlotDisplaySize - 5, baseY + GAMEMODE.attachmentSlotDisplaySize, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
                 end
 
-                draw.ShadowText("Used slots " .. curPos - 1 .. "/" .. availableSlots , GAMEMODE.AttachmentSlotDisplayFont, ScrW() * 0.5, baseY + GAMEMODE.attachmentSlotDisplaySize + 20, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                draw.ShadowText("Used slots " .. curPos - 1 .. "/" .. availableSlots , GAMEMODE.AttachmentSlotDisplayFont, ScrW() * 0.5, baseY + GAMEMODE.attachmentSlotDisplaySize + 20, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
             end
         end
     end)
@@ -326,7 +326,7 @@ end)
 
 if SERVER then
     CustomizableWeaponry.callbacks:addNew("finalizePhysicalBullet", "GroundControl_finalizePhysicalBullet", function(self, bulletStruct)
-        bulletStruct.penetrationValue = GAMEMODE:getAmmoPen(self.Primary.Ammo, self.penMod)
+        bulletStruct.penetrationValue = GAMEMODE:GetAmmoPen(self.Primary.Ammo, self.penMod)
     end)
 end
 
@@ -337,7 +337,7 @@ function GM:OnPlayerHitGround(ply)
 
     local vel = ply:GetVelocity()
     local len = vel:Length()
-    local weightCorrelation = math.max(0, self.MaxWeight - len * self.HeavyLandingVelocityToWeight)
+    local weightCorrelation = math.max(0, self.MAX_HEIGHT - len * self.HeavyLandingVelocityToWeight)
 
     if ply.weight >= weightCorrelation then
         ply:EmitSound("npc/combine_soldier/gear" .. math.random(3, 6) .. ".wav", 70, math.random(95, 105), 1, CHAN_BODY)
@@ -368,7 +368,7 @@ function GM:PlayerStepSoundTime(ply, iType, bWalking)
     return steptime
 end
 
-function GM:isPreparationPeriod()
+function GM:IsPreparationPeriod()
     return CurTime() < self.PreparationTime
 end
 
@@ -401,8 +401,8 @@ function GM:Move(ply, moveData)
 
         if jumpDown then
             if onGround and ply.hasReleasedJumpKey then
-                ply:setStamina(ply.stamina - ply:getJumpStaminaDrain()) -- fuck your bunnyhopping
-                ply:delayStaminaRegen(self.JumpStaminaRegenDelay)
+                ply:SetStamina(ply.stamina - ply:GetJumpStaminaDrain()) -- fuck your bunnyhopping
+                ply:DelayStaminaRegen(self.JumpStaminaRegenDelay)
                 ply.hasReleasedJumpKey = false
                 --ply:EmitSound()
             end
@@ -415,10 +415,10 @@ function GM:Move(ply, moveData)
 
     ws, rs = ply:GetWalkSpeed(), ply:GetRunSpeed()
     -- for some reason the value returned by GetMaxSpeed is equivalent to player's run speed - 30
-    local adrenalineModifier = 1 + ply:getRunSpeedAdrenalineModifier()
+    local adrenalineModifier = 1 + ply:GetRunSpeedAdrenalineModifier()
     -- not sure what this dtfloat is but we'll copy it to walkspeed to be safe
-    local runSpeed = (GetConVar("gc_base_run_speed"):GetInt() - ply:getStaminaRunSpeedModifier() - ply:getWeightRunSpeedModifier()) * adrenalineModifier * ply:GetDTFloat(0)
-    local walkSpeed = (GetConVar("gc_base_walk_speed"):GetInt() - ply:getWeightRunSpeedModifier() * 0.1) * adrenalineModifier * ply:GetDTFloat(0)
+    local runSpeed = (GetConVar("gc_base_run_speed"):GetInt() - ply:GetStaminaRunSpeedModifier() - ply:GetWeightRunSpeedModifier()) * adrenalineModifier * ply:GetDTFloat(0)
+    local walkSpeed = (GetConVar("gc_base_walk_speed"):GetInt() - ply:GetWeightRunSpeedModifier() * 0.1) * adrenalineModifier * ply:GetDTFloat(0)
     ply:SetWalkSpeed(walkSpeed)
     ply:SetRunSpeed(runSpeed)
 
@@ -427,14 +427,14 @@ function GM:Move(ply, moveData)
 
         if ply:KeyDown(IN_MOVELEFT) or ply:KeyDown(IN_MOVERIGHT) then
             if ply:KeyDown(IN_FORWARD) then
-                finalMult = finalMult - self.SidewaysSprintSpeedAffector
+                finalMult = finalMult - self.SIDEWAYS_SPRINT_MULT
             else
-                finalMult = finalMult - self.OnlySidewaysSprintSpeedAffector
+                finalMult = finalMult - self.STRAFE_SPRINT_MULT
             end
         end
 
         if ply:KeyDown(IN_BACK) then
-            finalMult = finalMult - self.BackwardsSprintSpeedAffector
+            finalMult = finalMult - self.BACKWARDS_SPRINT_MULT
         end
 
         local finalRunSpeed = math.max(math.min(moveData:GetMaxSpeed(), runSpeed) * finalMult, walkSpeed)
@@ -446,11 +446,11 @@ end
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:resetSpawnData()
+function PLAYER:ResetSpawnData()
     self.spawnWait = 0
 end
 
-function PLAYER:setSpectateTarget(target)
+function PLAYER:SetSpectateTarget(target)
     self.currentSpectateEntity = target
 
     if SERVER then
@@ -463,12 +463,12 @@ function PLAYER:setSpectateTarget(target)
     end
 end
 
-function AccessorFuncDT(tbl, varname, name)
-   tbl["Get" .. name] = function(s) return s.dt and s.dt[varname] end
-   tbl["Set" .. name] = function(s, v) if s.dt then s.dt[varname] = v end end
-end
+-- function AccessorFuncDT(tbl, varname, name)
+--    tbl["Get" .. name] = function(s) return s.dt and s.dt[varname] end
+--    tbl["Set" .. name] = function(s, v) if s.dt then s.dt[varname] = v end end
+-- end
 
-function GM:didPlyVote(ply)
+function GM:DidPlyVote(ply)
     local result = self.VotedPlayers[ply:SteamID64()]
     if result == nil then result = false end
     return result

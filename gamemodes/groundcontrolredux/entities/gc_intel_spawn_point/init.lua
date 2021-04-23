@@ -25,7 +25,7 @@ function ENT:setHasIntel(has)
     end
 end
 
-function ENT:freezeNearbyProps()
+function ENT:FreezeNearbyProps()
     for key, obj in ipairs(ents.FindInSphere(self:GetPos(), self.FreezeRange)) do
         if freezeEnts[obj:GetClass()] then
             obj:SetMoveType(MOVETYPE_NONE) -- freeze em

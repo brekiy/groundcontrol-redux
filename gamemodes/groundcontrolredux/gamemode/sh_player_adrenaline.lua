@@ -19,7 +19,7 @@ GM.AimFireAccuracyAdrenalineModifier = 0.3
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:setAdrenaline(amount)
+function PLAYER:SetAdrenaline(amount)
     self.adrenaline = math.Clamp(amount, 0, 1)
 
     if SERVER then
@@ -29,13 +29,13 @@ function PLAYER:setAdrenaline(amount)
     end
 end
 
-function PLAYER:canSuppress(suppressedBy)
+function PLAYER:CanSuppress(suppressedBy)
     return self:Alive() and self:Team() != suppressedBy:Team()
 end
 
-function PLAYER:resetAdrenalineData()
+function PLAYER:ResetAdrenalineData()
     if SERVER then
-        self:setAdrenaline(0)
+        self:SetAdrenaline(0)
         self.adrenalineDuration = 0
         self.adrenalineSpeedHold = 0
         self.adrenalineIncreaseSpeed = 0
@@ -46,22 +46,22 @@ function PLAYER:resetAdrenalineData()
     self.adrenaline = 0
 end
 
-function PLAYER:getRunSpeedAdrenalineModifier()
+function PLAYER:GetRunSpeedAdrenalineModifier()
     -- return self.adrenaline * GAMEMODE.MaxSpeedIncreaseFromAdrenaline
     return self.adrenaline * GetConVar("gc_adrenaline_maxspeed_increase"):GetFloat()
 end
 
-function PLAYER:getStaminaDrainAdrenalineModifier()
+function PLAYER:GetStaminaDrainAdrenalineModifier()
     -- return 1 - self.adrenaline * GAMEMODE.AdrenalineStaminaDrainModifier
     return 1 - self.adrenaline * GetConVar("gc_adrenaline_stamina_drain_modifier"):GetFloat()
 end
 
-function PLAYER:getStaminaRegenAdrenalineModifier()
+function PLAYER:GetStaminaRegenAdrenalineModifier()
     -- return 1 + self.adrenaline * GAMEMODE.AdrenalineStaminaRegenModifier
     return 1 + self.adrenaline * GetConVar("gc_adrenaline_stamina_regen_modifier"):GetFloat()
 end
 
-function PLAYER:getAdrenalineAccuracyModifiers()
+function PLAYER:GetAdrenalineAccuracyModifiers()
     return 1 + GAMEMODE.HipFireAccuracyAdrenalineModifier * self.adrenaline, 1 + GAMEMODE.AimFireAccuracyAdrenalineModifier
 end
 

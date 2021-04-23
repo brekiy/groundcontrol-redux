@@ -42,7 +42,7 @@ local deathSounds = {
     "vo/npc/male01/pain05.wav"
 }
 
-function GM:registerSound(name, snd, volume, soundLevel, channel, pitchStart, pitchEnd)
+function GM:RegisterSound(name, snd, volume, soundLevel, channel, pitchStart, pitchEnd)
     -- use defaults if no args are provided
     volume = volume or 1
     soundLevel = soundLevel or 65
@@ -71,8 +71,8 @@ function GM:registerSound(name, snd, volume, soundLevel, channel, pitchStart, pi
     end
 end
 
-GM:registerSound("GC_BANDAGE_SOUND", {"ground_control/player/bandage1.mp3", "ground_control/player/bandage2.mp3", "ground_control/player/bandage3.mp3"}, 1, 70, CHAN_ITEM)
-GM:registerSound("GC_BLEED_SOUND", {"ground_control/player/bleed1.mp3", "ground_control/player/bleed2.mp3", "ground_control/player/bleed3.mp3", "ground_control/player/bleed4.mp3", "ground_control/player/bleed5.mp3"}, 1, 60, CHAN_BODY)
-GM:registerSound("GC_DEATH_SOUND", deathSounds, 1, 125, CHAN_VOICE)
-GM:registerSound("GC_HELMET_RICOCHET_SOUND", helmetImpacts, 1, 85, CHAN_BODY)
-GM:registerSound("GC_HEADSHOT_SOUND", headImpacts, 1, 85, CHAN_BODY)
+GM:RegisterSound("GC_BANDAGE_SOUND", {"ground_control/player/bandage1.mp3", "ground_control/player/bandage2.mp3", "ground_control/player/bandage3.mp3"}, 1, 70, CHAN_ITEM)
+GM:RegisterSound("GC_BLEED_SOUND", {"ground_control/player/bleed1.mp3", "ground_control/player/bleed2.mp3", "ground_control/player/bleed3.mp3", "ground_control/player/bleed4.mp3", "ground_control/player/bleed5.mp3"}, 1, 60, CHAN_BODY)
+GM:RegisterSound("GC_DEATH_SOUND", deathSounds, 1, 125, CHAN_VOICE)
+GM:RegisterSound("GC_HELMET_RICOCHET_SOUND", helmetImpacts, 1, 85, CHAN_BODY)
+GM:RegisterSound("GC_HEADSHOT_SOUND", headImpacts, 1, 85, CHAN_BODY)

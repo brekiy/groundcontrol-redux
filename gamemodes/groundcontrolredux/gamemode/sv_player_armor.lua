@@ -13,7 +13,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
 
     local shouldBleed = true
     for category, armorPiece in pairs(self.armor) do
-        local armorData = GAMEMODE:getArmorData(armorPiece.id, category)
+        local armorData = GAMEMODE:GetArmorData(armorPiece.id, category)
         local removeArmor = false
         -- if for some reason we still have health don't do any calcs
         if armorData.protectionAreas[hitGroup] and armorPiece.health > 0 then
@@ -27,8 +27,8 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 damageNegation = armorData.damageDecrease + penetrationDelta * armorData.protectionDelta
                 -- Cap health regen at 95% of stopped damage
                 local regenAmount = math.floor(dmgInfo:GetDamage() * (1 - damageNegation) * 0.95)
-                self:addHealthRegen(regenAmount)
-                self:delayHealthRegen()
+                self:AddHealthRegen(regenAmount)
+                self:DelayHealthRegen()
             else
                 if hitGroup == HITGROUP_HEAD then self:EmitSound("GC_HEADSHOT_SOUND") end
                 --[[
@@ -40,7 +40,7 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 damageNegation = armorData.damageDecreasePenetrated + penetrationDelta * 0.01
                 -- damageNegation = armorData.damageDecreasePenetrated
                 -- if our armor gets penetrated, it doesn't matter how much health we had in our regen pool, we still start bleeding
-                self:resetHealthRegenData()
+                self:ResetHealthRegenData()
             end
             -- Clamp ballistic damage reduction between 0-90%
             damageNegation = math.Clamp(damageNegation, 0, 0.9)
@@ -64,8 +64,8 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
 
             self:sendArmorHealthUpdate(health, armorData.category)
             if removeArmor then
-                self:resetArmorData()
-                self:calculateWeight()
+                self:ResetArmorData()
+                self:CalculateWeight()
             end
         end
     end
@@ -77,11 +77,11 @@ end
 
 -- Get a player's desired armor piece for a given category, add it to the player armor attribute, and send it to the client
 function PLAYER:GiveGCArmor(category, forceArmor)
-    self:resetArmorData(category)
+    self:ResetArmorData(category)
     local desiredArmor = nil
     local caseSwitch = {
-        ["vest"] = self:getDesiredVest(),
-        ["helmet"] = self:getDesiredHelmet()
+        ["vest"] = self:GetDesiredVest(),
+        ["helmet"] = self:GetDesiredHelmet()
     }
     if forceArmor then
         desiredArmor = forceArmor
@@ -99,7 +99,7 @@ function PLAYER:takeArmorDamage(armorData, dmg)
 end
 
 function PLAYER:addArmorPart(id, category)
-    GAMEMODE:prepareArmorPiece(self, id, category)
+    GAMEMODE:PrepareArmorPiece(self, id, category)
 end
 
 -- Tell the client to replace a piece of armor with something else

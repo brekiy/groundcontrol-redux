@@ -20,12 +20,12 @@ end
 function ENT:Think()
     for key, obj in ipairs(ents.FindInSphere(self:GetPos(), self.ReturnRange)) do
         if obj:IsPlayer() and obj:Alive() and GAMEMODE.curGametype:attemptReturnDrugs(obj, self) then
-            self:setHasDrugs(true)
+            self:SetHasDrugs(true)
         end
     end
 end
 
-function ENT:setHasDrugs(has)
+function ENT:SetHasDrugs(has)
     self:SetHasDrugs(has)
 
     if has then
@@ -33,7 +33,7 @@ function ENT:setHasDrugs(has)
     end
 end
 
-function ENT:freezeNearbyProps()
+function ENT:FreezeNearbyProps()
     for key, obj in ipairs(ents.FindInSphere(self:GetPos(), self.ReturnRange)) do
         if freezeEnts[obj:GetClass()] then
             obj:SetMoveType(MOVETYPE_NONE) -- freeze em

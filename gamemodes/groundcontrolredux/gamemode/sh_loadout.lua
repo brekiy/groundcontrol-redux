@@ -9,7 +9,7 @@ GM.DefaultPrimaryMagCount = 3
 GM.DefaultSecondaryMagCount = 3
 
 GM.DefaultSpareAmmoCount = 0
-GM.MaxSpareAmmoCount = 400
+GM.MAX_SPARE_AMMOCount = 400
 
 GM.MaxPrimaryMags = 5
 GM.MaxSecondaryMags = 5
@@ -44,30 +44,30 @@ BestSecondaryWeapons = BestSecondaryWeapons or {damage = -math.huge, recoil = -m
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:getDesiredPrimaryMags()
+function PLAYER:GetDesiredPrimaryMags()
     return math.Clamp(self:GetInfoNum("gc_primary_mags", GAMEMODE.DefaultPrimaryMagCount), 1, GAMEMODE.MaxPrimaryMags)
 end
 
-function PLAYER:getDesiredSecondaryMags()
+function PLAYER:GetDesiredSecondaryMags()
     return math.Clamp(self:GetInfoNum("gc_secondary_mags", GAMEMODE.DefaultSecondaryMagCount), 1, GAMEMODE.MaxSecondaryMags)
 end
 
-function PLAYER:getDesiredPrimaryWeapon()
+function PLAYER:GetDesiredPrimaryWeapon()
     local primary = math.Clamp(self:GetInfoNum("gc_primary_weapon", GAMEMODE.DefaultPrimaryIndex), 0, #GAMEMODE.PrimaryWeapons) -- don't go out of bounds
     return GAMEMODE.PrimaryWeapons[primary], primary
 end
 
-function PLAYER:getDesiredSecondaryWeapon()
+function PLAYER:GetDesiredSecondaryWeapon()
     local secondary = math.Clamp(self:GetInfoNum("gc_secondary_weapon", GAMEMODE.DefaultSecondaryIndex), 0, #GAMEMODE.SecondaryWeapons)
     return GAMEMODE.SecondaryWeapons[secondary], secondary
 end
 
-function PLAYER:getDesiredTertiaryWeapon()
+function PLAYER:GetDesiredTertiaryWeapon()
     local tertiary = math.Clamp(self:GetInfoNum("gc_tertiary_weapon", GAMEMODE.DefaultTertiaryIndex), 0, #GAMEMODE.TertiaryWeapons)
     return GAMEMODE.TertiaryWeapons[tertiary], tertiary
 end
 
-function PLAYER:adjustMagCount(weaponData, desiredMags)
+function PLAYER:AdjustMagCount(weaponData, desiredMags)
     if !weaponData then
         return 0
     end
@@ -230,21 +230,21 @@ function GM:findBestWeapons(lookInto, output)
         output.maxSpreadInc = math.max(output.maxSpreadInc, wepObj.MaxSpreadInc)
         output.speedDec = math.min(output.speedDec, wepObj.SpeedDec)
         output.weight = math.max(output.weight, wepObj.weight)
-        output.penetrationValue = math.max(output.penetrationValue, self:getAmmoPen(wepObj.Primary.Ammo, wepObj.penMod))
+        output.penetrationValue = math.max(output.penetrationValue, self:GetAmmoPen(wepObj.Primary.Ammo, wepObj.penMod))
 
-        local magWeight = self:getAmmoWeight(wepObj.Primary.Ammo, wepObj.Primary.ClipSize)
+        local magWeight = self:GetAmmoWeight(wepObj.Primary.Ammo, wepObj.Primary.ClipSize)
         wepObj.magWeight = magWeight
 
         output.magWeight = math.max(output.magWeight, magWeight)
     end
 end
 
-function GM:getAmmoWeight(caliber, roundCount)
+function GM:GetAmmoWeight(caliber, roundCount)
     roundCount = roundCount or 1
     return self.Calibers[caliber] and self.Calibers[caliber].weight * roundCount or 0
 end
 
-function GM:getAmmoPen(caliber, penMod)
+function GM:GetAmmoPen(caliber, penMod)
     caliber = string.lower(caliber)
     penMod = penMod or 1
     local pen = self.Calibers[caliber] and self.Calibers[caliber].penetration
@@ -281,6 +281,6 @@ function GM:postInitEntity()
     weapons.GetStored("cw_base").RVBRollMod = 0.4
 
     if CLIENT then
-        self:createMusicObjects()
+        self:CreateMusicObjects()
     end
 end

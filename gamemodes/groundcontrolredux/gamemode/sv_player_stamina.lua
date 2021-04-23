@@ -2,25 +2,25 @@ include("sh_player_stamina.lua")
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:drainStamina()
+function PLAYER:DrainStamina()
     if self.stamina > GAMEMODE.MinStaminaFromSprinting then
-        local drainAmount = GAMEMODE.StaminaDrainPerTick * self:getStaminaDrainAdrenalineModifier() * self:getStaminaDrainWeightModifier() * self.staminaDrainMultiplier
+        local drainAmount = GAMEMODE.STAMINA_DRAIN_PER_TICK * self:GetStaminaDrainAdrenalineModifier() * self:GetStaminaDrainWeightModifier() * self.staminaDrainMultiplier
 
-        self:setStamina(math.max(self.stamina - drainAmount, GAMEMODE.MinStaminaFromSprinting), true)
+        self:SetStamina(math.max(self.stamina - drainAmount, GAMEMODE.MinStaminaFromSprinting), true)
         self.staminaDrainTime = CurTime() + GetConVar("gc_stamina_drain_time"):GetFloat()
-        self:sendStamina()
+        self:SendStamina()
     end
 
     self.staminaRegenTime = math.max(self.staminaRegenTime, CurTime() + GAMEMODE.PostDrainStaminaRegenTickDelay)
 end
 
-function PLAYER:regenStamina()
-    local regenAmount = GAMEMODE.StaminaDrainPerTick * self:getStaminaRegenAdrenalineModifier()
+function PLAYER:RegenStamina()
+    local regenAmount = GAMEMODE.STAMINA_DRAIN_PER_TICK * self:GetStaminaRegenAdrenalineModifier()
 
-    self:setStamina(self.stamina + regenAmount)
+    self:SetStamina(self.stamina + regenAmount)
     self.staminaRegenTime = CurTime() + GetConVar("gc_stamina_regen_time"):GetFloat()
 end
 
-function PLAYER:delayStaminaRegen(time)
+function PLAYER:DelayStaminaRegen(time)
     self.staminaRegenTime = math.max(self.staminaRegenTime, CurTime() + time)
 end

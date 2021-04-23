@@ -51,7 +51,7 @@ function ENT:drawHUD()
         surface.DrawRect(hudPos + 1, 51, (self.topSize - 2) * percentage, self.topSize - 2)
     end
 
-    local white, black = GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black
+    local white, black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 
     white.a = 255
     black.a = 255
@@ -108,12 +108,12 @@ function ENT:drawHUD()
         draw.ShadowText("SPEED: x" .. math.Round(self:GetCaptureSpeed(), 2), "CW_HUD24", midX, midY + self.capBarHeight + draw.GetFontHeight("CW_HUD24") + 5, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
-    GAMEMODE.HUDColors.white.a, GAMEMODE.HUDColors.black.a = 255, 255
+    GAMEMODE.HUD_COLORS.white.a, GAMEMODE.HUD_COLORS.black.a = 255, 255
 
     surface.SetDrawColor(0, 0, 0, 150)
     surface.DrawRect(midX - 50, 10, 100, 30)
 
-    draw.ShadowText(string.ToMinutesSeconds(math.max(self:GetWaveTimeLimit() - CurTime(), 0)), "CW_HUD28", midX, 25, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.ShadowText(string.ToMinutesSeconds(math.max(self:GetWaveTimeLimit() - CurTime(), 0)), "CW_HUD28", midX, 25, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     local ourTickets, enemyTickets = 0, 0
 
@@ -145,6 +145,6 @@ function ENT:drawHUD()
     surface.SetDrawColor(255, 117, 99, 255)
     surface.DrawRect(midX + 59, baseY + 2, enemyPerc, 16)
 
-    draw.ShadowText("US: " .. ourTickets, "CW_HUD20", midX - 60, 25, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-    draw.ShadowText("ENEMY: " .. enemyTickets, "CW_HUD20", midX + 62, 25, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.ShadowText("US: " .. ourTickets, "CW_HUD20", midX - 60, 25, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    draw.ShadowText("ENEMY: " .. enemyTickets, "CW_HUD20", midX + 62, 25, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end

@@ -10,29 +10,29 @@ GM.ExpAmount = {exp = nil}
 file.verifyDataFolder(GM.MainDataDirectory)
 file.verifyDataFolder(GM.AttachmentDirectory)
 
-function PLAYER:saveAttachments()
+function PLAYER:SaveAttachments()
     local data = util.TableToJSON(self.ownedAttachments)
 
     file.Write(GAMEMODE.AttachmentDirectory .. self:SteamID64() .. ".txt", data)
 end
 
-function PLAYER:loadAttachments()
+function PLAYER:LoadAttachments()
     local readData = file.Read(GAMEMODE.AttachmentDirectory .. self:SteamID64() .. ".txt", "DATA")
     readData = readData and util.JSONToTable(readData) or {}
 
     self.ownedAttachmentsNumeric = {}
     self.ownedAttachments = readData
-    self:updateNumericAttachmentsTable(readData)
-    self:sendAttachments()
+    self:UpdateNumericAttachmentsTable(readData)
+    self:SendAttachments()
 end
 
-function PLAYER:checkForAttachmentSlotUnlock()
+function PLAYER:CheckForAttachmentSlotUnlock()
     local reqExp = self:getNextAttachmentSlotPrice()
     local residue = self.experience - reqExp
 
     if residue > 0 then
         if self:canUnlockMoreSlots() then
-            self:unlockAttachmentSlot()
+            self:UnlockAttachmentSlot()
             self:setExperience(residue)
         else
             self:setExperience(0)
@@ -40,13 +40,13 @@ function PLAYER:checkForAttachmentSlotUnlock()
     end
 end
 
-function PLAYER:unlockAttachmentSlot()
+function PLAYER:UnlockAttachmentSlot()
     self.unlockedAttachmentSlots = self.unlockedAttachmentSlots + 1
-    self:saveUnlockedAttachmentSlots()
-    self:sendUnlockedAttachmentSlots()
+    self:SaveUnlockedAttachmentSlots()
+    self:SendUnlockedAttachmentSlots()
 end
 
-function PLAYER:updateNumericAttachmentsTable(fillWith)
+function PLAYER:UpdateNumericAttachmentsTable(fillWith)
     if type(fillWith) == "string" then
         table.insert(self.ownedAttachmentsNumeric, fillWith)
     elseif type(fillWith) == "table" then
@@ -56,7 +56,7 @@ function PLAYER:updateNumericAttachmentsTable(fillWith)
     end
 end
 
-function PLAYER:unlockAttachment(attachmentName, isFree)
+function PLAYER:UnlockAttachment(attachmentName, isFree)
     local attachmentData = CustomizableWeaponry.registeredAttachmentsSKey[attachmentName]
     local price = nil
 
@@ -73,10 +73,10 @@ function PLAYER:unlockAttachment(attachmentName, isFree)
 
     if self.cash >= price then
         self.ownedAttachments[attachmentName] = true
-        self:removeCash(price)
-        self:sendUnlockedAttachment(attachmentName)
-        self:saveAttachments()
-        self:updateNumericAttachmentsTable(attachmentName)
+        self:RemoveCash(price)
+        self:SendUnlockedAttachment(attachmentName)
+        self:SaveAttachments()
+        self:UpdateNumericAttachmentsTable(attachmentName)
     else
         net.Start("GC_NOT_ENOUGH_CASH")
         net.WriteInt(price, 32)
@@ -85,23 +85,23 @@ function PLAYER:unlockAttachment(attachmentName, isFree)
 end
 
 -- no idea why you would need this, but whatever
-function PLAYER:lockAttachment(attachmentName)
+function PLAYER:LockAttachment(attachmentName)
     self.ownedAttachments[attachmentName] = nil
 end
 
-function PLAYER:sendUnlockedAttachment(attachmentName)
+function PLAYER:SendUnlockedAttachment(attachmentName)
     net.Start("GC_UNLOCK_ATTACHMENT")
     net.WriteString(attachmentName)
     net.Send(self)
 end
 
-function PLAYER:sendAttachments()
+function PLAYER:SendAttachments()
     net.Start("GC_ATTACHMENTS")
     net.WriteTable(self.ownedAttachments)
     net.Send(self)
 end
 
-function PLAYER:setupAttachmentLoadTable(weaponObject)
+function PLAYER:SetupAttachmentLoadTable(weaponObject)
     table.Empty(GAMEMODE.AttachmentLoadTable)
 
     --local baseConvarName = weaponObject.isPrimaryWeapon and "gc_primary_attachment_" or "gc_secondary_attachment_"
@@ -123,44 +123,44 @@ function PLAYER:setupAttachmentLoadTable(weaponObject)
     end
 end
 
-function PLAYER:equipAttachments(targetWeapon, data)
+function PLAYER:EquipAttachments(targetWeapon, data)
     -- and lastly, we load all the attachments via CW 2.0's attachment preset system
     CustomizableWeaponry.preset.load(targetWeapon, data, "GroundControlPreset")
 end
 
-function PLAYER:sendUnlockedAttachmentSlots()
+function PLAYER:SendUnlockedAttachmentSlots()
     net.Start("GC_UNLOCKED_SLOTS")
     net.WriteUInt(self.unlockedAttachmentSlots, 8)
     net.Send(self)
 end
 
-function PLAYER:loadUnlockedAttachmentSlots()
+function PLAYER:LoadUnlockedAttachmentSlots()
     local slots = self:GetPData("GroundControlUnlockedAttachmentSlots") or 0
 
     self.unlockedAttachmentSlots = tonumber(slots)
 end
 
-function PLAYER:saveUnlockedAttachmentSlots()
+function PLAYER:SaveUnlockedAttachmentSlots()
     self:SetPData("GroundControlUnlockedAttachmentSlots", self.unlockedAttachmentSlots)
 end
 
-function PLAYER:loadExperience()
+function PLAYER:LoadExperience()
     local exp = self:GetPData("GroundControlExperience") or 0
 
     self.experience = tonumber(exp)
 end
 
-function PLAYER:saveExperience()
+function PLAYER:SaveExperience()
     self:SetPData("GroundControlExperience", self.experience)
 end
 
-function PLAYER:sendExperience()
+function PLAYER:SendExperience()
     net.Start("GC_EXPERIENCE")
     net.WriteInt(self.experience, 32)
     net.Send(self)
 end
 
-function PLAYER:addExperience(amount, event)
+function PLAYER:AddExperience(amount, event)
     self:SetNWInt("GC_SCORE", self:GetNWInt("GC_SCORE") + amount)
 
     if !self:canUnlockMoreSlots() then
@@ -168,10 +168,10 @@ function PLAYER:addExperience(amount, event)
     end
 
     self.experience = math.max(self.experience + amount, 0)
-    self:checkForAttachmentSlotUnlock()
-    self:saveExperience()
+    self:CheckForAttachmentSlotUnlock()
+    self:SaveExperience()
 
-    self:sendExperience()
+    self:SendExperience()
 
     if event then
         GAMEMODE.ExpAmount.exp = amount
@@ -187,6 +187,6 @@ concommand.Add("gc_buy_attachment", function(ply, com, args)
     end
 
     if !ply:hasUnlockedAttachment(attName) then
-        ply:unlockAttachment(attName)
+        ply:UnlockAttachment(attName)
     end
 end)

@@ -7,15 +7,15 @@ ENT.captureDistance = 128
 function ENT:Initialize()
     self:SetNoDraw(true)
     self.captureTeam = nil
-    self:setCaptureDistance(self.captureDistance)
+    self:SetCaptureDistance(self.captureDistance)
 end
 
-function ENT:setCaptureDistance(distance)
+function ENT:SetCaptureDistance(distance)
     self.captureDistance = distance
     self:SetCaptureDistance(distance)
 end
 
-function ENT:setCapturerTeam(team) -- the team that has to capture this point
+function ENT:SetCapturerTeam(team) -- the team that has to capture this point
     self.capturerTeam = team
     self:SetCapturerTeam(team)
 end

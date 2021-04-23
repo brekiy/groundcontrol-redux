@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-GM.MVPsToShow = 3 -- how many MVP things to show (if available)
+GM.MVP_SLOTS = 3 -- how many MVP things to show (if available)
 
 mvpTracker = {}
 mvpTracker.mtindex = {__index = mvpTracker}
@@ -127,7 +127,7 @@ function mvpTracker:buildMVPList()
     table.sort(list, sortByWeight)
 
     -- remove any redundant ones
-    for i = GAMEMODE.MVPsToShow + 1, #list do
+    for i = GAMEMODE.MVP_SLOTS + 1, #list do
         list[i] = nil
     end
 

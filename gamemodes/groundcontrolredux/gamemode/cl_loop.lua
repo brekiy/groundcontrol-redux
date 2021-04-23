@@ -31,7 +31,7 @@ function GM:Think()
 
             adrenalineData.soundTime = curTime + delay
             ply:EmitSound("ground_control/player/hbeat.mp3", volume, pitch)
-            self.tipController:handleEvent("HIGH_ADRENALINE")
+            self.tipController:HandleTipEvent("HIGH_ADRENALINE")
         end
 
         if ply.stamina <= GetConVar("gc_stamina_run_impact_level"):GetInt() then

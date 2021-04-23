@@ -6,7 +6,7 @@
 
 GM.AutoUpdateConVars = {}
 
-function GM:registerAutoUpdateConVar(cvarName, onChangedCallback)
+function GM:RegisterAutoUpdateConVar(cvarName, onChangedCallback)
     self.AutoUpdateConVars[cvarName] = onChangedCallback
 
     cvars.AddChangeCallback(cvarName, onChangedCallback)
@@ -101,14 +101,14 @@ CustomizableWeaponry.canDropWeapon = false -- don't let the players be able to d
 function GM:InitPostEntity()
     self:postInitEntity()
     self:setGametype(self:GetGametypeFromConVar())
-    self:autoRemoveEntities()
-    self:runMapStartCallback()
+    self:AutoRemoveEntities()
+    self:RunMapStartCallback()
 
     timer.Simple(1, function()
         self:resetStartingPoints()
     end)
 
-    self:verifyAutoDownloadMap()
+    self:VerifyAutoDownloadMap()
 
     self:performOnChangedCvarCallbacks()
 end

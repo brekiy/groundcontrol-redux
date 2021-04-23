@@ -6,7 +6,7 @@ AddCSLuaFile("cl_status_display.lua")
 GM.StatusEffects = {}
 GM.ActiveStatusEffects = {}
 
-function GM:registerStatusEffect(data)
+function GM:RegisterStatusEffect(data)
     self.StatusEffects[data.id] = data
 
     if CLIENT then
@@ -14,19 +14,19 @@ function GM:registerStatusEffect(data)
     end
 end
 
-GM:registerStatusEffect({
+GM:RegisterStatusEffect({
     id = "bleeding",
     icon = "ground_control/hud/status/bleeding_icon",
     text = "BLEEDING"
 })
 
-GM:registerStatusEffect({
+GM:RegisterStatusEffect({
     id = "crippled_arm",
     icon = "ground_control/hud/status/crippled_arm",
     text = "CRIPPLED"
 })
 
-GM:registerStatusEffect({
+GM:RegisterStatusEffect({
     id = "healing",
     icon = "ground_control/hud/status/healing",
     text = "RECOVERY",
@@ -36,7 +36,7 @@ GM:registerStatusEffect({
 local PLAYER = FindMetaTable("Player")
 
 -- set status effects for display on other players (!yourself), to see what's going on with your friends
-function PLAYER:setStatusEffect(statusEffect, state) -- on other players
+function PLAYER:SetStatusEffect(statusEffect, state) -- on other players
     -- numeric for rendering (clientside), map for quick checks
     self.statusEffects = self.statusEffects or {numeric = {}, map = {}}
 
@@ -59,11 +59,11 @@ function PLAYER:setStatusEffect(statusEffect, state) -- on other players
     end
 
     if SERVER then
-        self:sendStatusEffect(statusEffect, state)
+        self:SendStatusEffect(statusEffect, state)
     end
 end
 
-function PLAYER:resetStatusEffects() -- on other players
+function PLAYER:ResetStatusEffects() -- on other players
     if !self.statusEffects then
         return
     end
@@ -72,6 +72,6 @@ function PLAYER:resetStatusEffects() -- on other players
     table.Empty(self.statusEffects.map)
 end
 
-function PLAYER:hasStatusEffect(statusEffect)
+function PLAYER:HasStatusEffect(statusEffect)
     return self.statusEffects and self.statusEffects.map[statusEffect]
 end

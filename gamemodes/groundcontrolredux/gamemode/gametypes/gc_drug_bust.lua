@@ -63,7 +63,7 @@ function GM:registerDrugBust()
     }
 
     if SERVER then
-        ghettoDrugBust.mapRotation = GM:getMapRotation("ghetto_drug_bust_maps")
+        ghettoDrugBust.mapRotation = GM:GetMapRotation("ghetto_drug_bust_maps")
     end
 
     function ghettoDrugBust:SkipAttachmentGive(ply)
@@ -274,8 +274,8 @@ function GM:registerDrugBust()
     end
 
     function ghettoDrugBust:DeadDraw(w, h)
-        if GAMEMODE:getActivePlayerAmount() < 2 then
-            draw.ShadowText("This gametype requires at least 2 players, waiting for more people...", "CW_HUD20", w * 0.5, 15, GAMEMODE.HUDColors.white, GAMEMODE.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        if GAMEMODE:GetActivePlayerAmount() < 2 then
+            draw.ShadowText("This gametype requires at least 2 players, waiting for more people...", "CW_HUD20", w * 0.5, 15, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
     end
 
