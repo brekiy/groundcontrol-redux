@@ -1,2 +1,8 @@
 # vscode has a handy dandy gmod workshop plugin. i highly recommend it over the annoying existing gmad/gmpublish process
 workshop-file.gma
+
+# misc stuff im just using locally
+converted.txt
+fxn bottlenecks.txt
+nameconverter.py
+to convert.txt
