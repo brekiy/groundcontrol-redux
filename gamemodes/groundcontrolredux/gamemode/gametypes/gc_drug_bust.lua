@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-function GM:registerDrugBust()
+function GM:RegisterDrugBust()
     local ghettoDrugBust = {}
     ghettoDrugBust.name = "ghettodrugbust"
     ghettoDrugBust.prettyName = "Ghetto Drug Bust"
@@ -267,7 +267,7 @@ function GM:registerDrugBust()
         end
     end
 
-    function ghettoDrugBust:onRoundEnded(winTeam)
+    function ghettoDrugBust:OnRoundEnded(winTeam)
         table.Empty(self.objectiveEnts)
         self.stopCountdown = true
         self.objectiveCounter = 0

@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-function GM:registerUrbanWarfare()
+function GM:RegisterUrbanWarfare()
     local urbanwarfare = {}
     urbanwarfare.name = "urbanwarfare"
     urbanwarfare.prettyName = "Urban Warfare"
@@ -23,7 +23,7 @@ function GM:registerUrbanWarfare()
         point:SetPointID(self.objectiveCounter)
     end
 
-    function urbanwarfare:endWave(capturer, noTicketDrainForWinners)
+    function urbanwarfare:EndWave(capturer, noTicketDrainForWinners)
         self.waveEnded = true
 
         timer.Simple(0, function()
@@ -36,7 +36,7 @@ function GM:registerUrbanWarfare()
             if capturer then
                 local opposingTeam = GAMEMODE.OpposingTeam[capturer]
 
-                if self.capturePoint:getTeamTickets(opposingTeam) == 0 then
+                if self.capturePoint:GetTeamTickets(opposingTeam) == 0 then
                     GAMEMODE:EndRound(capturer)
                 end
             else
@@ -54,7 +54,7 @@ function GM:registerUrbanWarfare()
     end
 
     function urbanwarfare:checkEndWaveTickets(teamID)
-        if self.capturePoint:getTeamTickets(teamID) == 0 then
+        if self.capturePoint:GetTeamTickets(teamID) == 0 then
             GAMEMODE:EndRound(GAMEMODE.OpposingTeam[teamID])
         end
     end
@@ -117,7 +117,7 @@ function GM:registerUrbanWarfare()
             return
         end
 
-        if self.capturePoint:getTeamTickets(teamID) == 0 then
+        if self.capturePoint:GetTeamTickets(teamID) == 0 then
             GAMEMODE:CheckRoundOverPossibility(teamID)
         else
             self:checkWaveOverPossibility(teamID)
@@ -128,11 +128,11 @@ function GM:registerUrbanWarfare()
         local players = team.GetAlivePlayers(teamID)
 
         if players == 0 then
-            self.capturePoint:endWave(GAMEMODE.OpposingTeam[teamID], true)
+            self.capturePoint:EndWave(GAMEMODE.OpposingTeam[teamID], true)
         end
     end
 
-    function urbanwarfare:prepare()
+    function urbanwarfare:Prepare()
         if CLIENT then
             RunConsoleCommand("gc_team_selection")
         else
@@ -140,7 +140,7 @@ function GM:registerUrbanWarfare()
         end
     end
 
-    function urbanwarfare:onRoundEnded(winTeam)
+    function urbanwarfare:OnRoundEnded(winTeam)
         self.objectiveCounter = 0
     end
 

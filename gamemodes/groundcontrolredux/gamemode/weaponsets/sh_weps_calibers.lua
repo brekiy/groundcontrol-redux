@@ -2,7 +2,7 @@ AddCSLuaFile()
 
 -- Manage all ammunition types here
 -- Weight recorded is that of the whole cartridge in grams
-function GM:registerCalibers()
+function GM:RegisterCalibers()
     GAMEMODE:registerCaliber(".22LR", 3.68, 2)
     GAMEMODE:registerCaliber(".30 Carbine", 12.8, 24)
     GAMEMODE:registerCaliber(".30-06", 25, 33)

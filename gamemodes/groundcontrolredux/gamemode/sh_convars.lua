@@ -38,8 +38,15 @@ CreateConVar("gc_max_loadout_points", 100, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_R
 CreateConVar("gc_armor_damage_factor", 1.25, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "adjust rate at which armor takes damage")
 CreateConVar("gc_damage_multiplier", 1.55, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "bullet damage multiplier")
 CreateConVar("gc_use_cw2_weps", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED})
-CreateConVar("gc_use_arccw_weps", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED})
-CreateConVar("gc_use_tfa_weps", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED})
+CreateConVar("gc_use_cw2_spy", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable spy's cw2 weps")
+CreateConVar("gc_use_cw2_kk_ins2", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's ins2 weps")
+CreateConVar("gc_use_cw2_kk_ext", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's extra weps")
+CreateConVar("gc_use_cw2_kk_btk", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's btk weps")
+CreateConVar("gc_use_cw2_khris", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable khris' extra weps")
+CreateConVar("gc_use_cw2_soap", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable soap's extra weps")
+CreateConVar("gc_use_cw2_misc", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable soap's extra weps")
+CreateConVar("gc_use_arccw_weps", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "wip non functional")
+CreateConVar("gc_use_tfa_weps", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "wip non functional")
 
 -- Gametype cvars
 CreateConVar("gc_gametype", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})

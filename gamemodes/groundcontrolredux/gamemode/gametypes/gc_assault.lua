@@ -37,7 +37,7 @@ function GM:registerAssault()
         return true
     end
 
-    function assault:prepare()
+    function assault:Prepare()
         if CLIENT then
             RunConsoleCommand("gc_team_selection")
         end
@@ -93,7 +93,7 @@ function GM:registerAssault()
         end
     end
 
-    function assault:onRoundEnded(winTeam)
+    function assault:OnRoundEnded(winTeam)
         table.Empty(self.objectiveEnts)
         self.stopCountdown = true
         self.objectiveCounter = 0

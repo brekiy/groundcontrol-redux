@@ -19,7 +19,7 @@ function PLAYER:Suppress(duration, speedChange)
     self.adrenalineIncreaseSpeed = math.Clamp(self.adrenalineSpeedHold + speedChange, 1, GAMEMODE.MAX_ADRENALINE_MULTIPLIER)
 end
 
-function PLAYER:increaseAdrenalineDuration(amountBy, max)
+function PLAYER:IncreaseAdrenalineDuration(amountBy, max)
     max = max or GAMEMODE.MaximumSuppressionDuration
     max = math.max(max, self.adrenalineDuration)
 

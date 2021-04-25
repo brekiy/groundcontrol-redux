@@ -51,7 +51,7 @@ if CLIENT then
         self.mvpPanel = panel
     end
 
-    function GM:destroyMVPPanel()
+    function GM:DestroyMVPPanel()
         if self.mvpPanel and self.mvpPanel:IsValid() then -- remove any previous MVP panels
             self.mvpPanel:Remove()
             self.mvpPanel = nil
@@ -59,7 +59,7 @@ if CLIENT then
     end
 
     function mvpTracker:createMVPDisplayFromList(list)
-        GAMEMODE:destroyMVPPanel()
+        GAMEMODE:DestroyMVPPanel()
 
         local panelHeight = GAMEMODE.MVPPanelBaseHeight + (GAMEMODE.SizePerMVPEntry + GAMEMODE.SpacingBetweenMVPEntries) * #list
 
@@ -102,9 +102,9 @@ function mvpTracker:sendMVPList()
 end
 
 function mvpTracker:removeInvalidPlayers()
-    for player, data in pairs(self.trackedIDs) do
-        if !IsValid(player) then
-            self.trackedIDs[player] = nil
+    for ply, data in pairs(self.trackedIDs) do
+        if !IsValid(ply) then
+            self.trackedIDs[ply] = nil
         end
     end
 end
@@ -140,28 +140,28 @@ function mvpTracker:getMostEntriesForID(id)
     local mvp = nil
     local data = mvpTracker.registeredDataByID[id]
 
-    for player, subList in pairs(self.trackedIDs) do
+    for ply, subList in pairs(self.trackedIDs) do
         local entries = subList[id]
 
         if entries and (!data.minimum or (data.minimum and entries >= data.minimum)) and (entries > highest) then
             highest = entries
-            mvp = player
+            mvp = ply
         end
     end
 
     return highest, mvp
 end
 
-function mvpTracker:getIDEntries(player, id)
-    if self.trackedIDs[player] then
-        return self.trackedIDs[player][id] or 0
+function mvpTracker:getIDEntries(ply, id)
+    if self.trackedIDs[ply] then
+        return self.trackedIDs[ply][id] or 0
     end
 
     return 0
 end
 
-function mvpTracker:getIDWeight(player, id)
-    return self.registeredDataByID[id].weight * self:getIDEntries(player, id)
+function mvpTracker:getIDWeight(ply, id)
+    return self.registeredDataByID[id].weight * self:getIDEntries(ply, id)
 end
 
 mvpTracker.registerData({

@@ -10,8 +10,8 @@ function GM:Think()
     for key, ply in pairs(player.GetAll()) do
         if ply:Alive() and ply:Team() != TEAM_SPECTATOR and ply:Team() != TEAM_UNASSIGNED then
             if ply:OnGround() then
-                ply.curMAX_STAMINA = ply:GetMaxStamina()
-                local maxStamina = math.min(ply.curMAX_STAMINA, self.MinStaminaFromSprinting)
+                -- ply.curMaxStamina = ply:GetMaxStamina()
+                -- local maxStamina = math.min(ply.curMaxStamina, self.MinStaminaFromSprinting)
                 local walkSpeed, velocity = ply:GetWalkSpeed(), ply:GetVelocity()
 
                 velocity.z = 0
@@ -23,7 +23,7 @@ function GM:Think()
                         ply:DrainStamina()
                     end
                 else
-                    if ply.stamina < 100 and curTime > ply.staminaRegenTime then
+                    if ply.stamina < ply:GetMaxStamina() and curTime > ply.staminaRegenTime then
                         ply:RegenStamina()
                     end
                 end
@@ -35,7 +35,7 @@ function GM:Think()
                 end
 
                 ply:DelayHealthRegen()
-                ply:increaseAdrenalineDuration(1, 1)
+                ply:IncreaseAdrenalineDuration(1, 1)
             else
                 if ply.regenPool > 0 and curTime > ply.regenDelay then
                     ply:RegenHealth()

@@ -7,7 +7,7 @@ function GM:registerWepsTFAIns2()
         weight = 3.7,
         pointCost = 7
     }
-    self:registerSecondaryWeapon(uspm)
+    self:RegisterSecondaryWeapon(uspm)
 
 
 end

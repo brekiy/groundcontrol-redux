@@ -134,13 +134,13 @@ function GM:EndRound(winningTeam)
 
     self.MVPTracker:sendMVPList()
 
-    if self.curGametype.onRoundEnded then
-        self.curGametype:onRoundEnded(winningTeam)
+    if self.curGametype.OnRoundEnded then
+        self.curGametype:OnRoundEnded(winningTeam)
     end
 
     if canRestart then
         timer.Simple(self.RoundRestartTime, function()
-            self:restartRound()
+            self:RestartRound()
         end)
     else
         if canPickRandomMapAndGametype then
@@ -191,7 +191,7 @@ GM.PreviousGametypeFile = "previous_gametype.txt"
 -- doesn't actually remove the gametype, it just removes any mention of what the previous gametype from the file was,
 -- in case you switch maps a lot and want to have all gametypes up for voting
 -- bad name for the method though
-function GM:removeCurrentGametype()
+function GM:RemoveCurrentGametype()
     file.Write(self.MainDataDirectory .. "/" .. self.PreviousGametypeFile, "")
 end
 
@@ -240,7 +240,7 @@ function GM:startGameTypeVote()
     hook.Call("GroundControlGametypeVoteStarted", nil, possibilities, self.VoteID)
 end
 
-function GM:restartRound()
+function GM:RestartRound()
     if !self.curGametype.noTeamBalance then
         self:BalanceTeams()
     end
@@ -251,7 +251,7 @@ function GM:restartRound()
     self:AutoRemoveEntities()
     self:RunMapStartCallback()
 
-    if self.curGametype.roundStart then
+    if self.curGametype.RoundStart then
         self.curGametype:RoundStart()
     end
 

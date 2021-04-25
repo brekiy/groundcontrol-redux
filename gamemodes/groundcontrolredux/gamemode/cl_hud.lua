@@ -330,9 +330,6 @@ GM.LoadoutFadingOutTimeLeft = 5 -- when time left is less than this until loadou
 GM.LoadoutFlashTime = 0.5
 
 function GM:drawLoadoutAvailability(w, h)
-    --self.loadoutPosition = position
-    --self.loadoutDuration = maxDuration
-
     local curTime = CurTime()
 
     if self.loadoutPosition and curTime < self.loadoutDuration then
@@ -434,7 +431,7 @@ function GM:createRoundOverDisplay(winTeam, actionType)
     local x, y = popup:GetPos()
     popup:SetPos(x, y - 200)
 
-    self:clearObjectiveEntities()
+    self:ClearObjectiveEntities()
     self:clearDrawEntities()
 
     self.lastPopup = popup
@@ -455,7 +452,7 @@ function GM:createRoundPreparationDisplay(preparationTime)
     self.PreparationTime = preparationTime
     self:PlayMusic(self.RoundStartMusicObjects[math.random(1, #self.RoundStartMusicObjects)], nil, self.RoundStartTrackVolume)
 
-    if self.curGametype.roundStart then
+    if self.curGametype.RoundStart then
         self.curGametype:RoundStart()
     end
 

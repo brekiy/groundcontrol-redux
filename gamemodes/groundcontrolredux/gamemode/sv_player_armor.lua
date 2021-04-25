@@ -53,16 +53,16 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 and then further scale it by our armor damage factor.
             ]]--
             local armorDamage = dmgInfo:GetDamage()
-                * (1 + math.Clamp(penetrationDelta / armorData.protection, -0.75, 0.75))
-                * GetConVar("gc_armor_damage_factor"):GetFloat()
-            self:takeArmorDamage(armorPiece, armorDamage)
+                    * (1 + math.Clamp(penetrationDelta / armorData.protection, -0.35, 0.35))
+                    * GetConVar("gc_armor_damage_factor"):GetFloat()
+            self:TakeArmorDamage(armorPiece, armorDamage)
 
             local health = armorPiece.health
             if armorPiece.health <= 0 then
                 removeArmor = true
             end
 
-            self:sendArmorHealthUpdate(health, armorData.category)
+            self:SendArmorHealthUpdate(health, armorData.category)
             if removeArmor then
                 self:ResetArmorData()
                 self:CalculateWeight()
@@ -89,21 +89,21 @@ function PLAYER:GiveGCArmor(category, forceArmor)
         desiredArmor = caseSwitch[category]
     end
     if desiredArmor != 0 then
-        self:addArmorPart(desiredArmor, category)
-        self:sendArmor(category)
+        self:AddArmorPart(desiredArmor, category)
+        self:SendArmor(category)
     end
 end
 
-function PLAYER:takeArmorDamage(armorData, dmg)
+function PLAYER:TakeArmorDamage(armorData, dmg)
     armorData.health = armorData.health - math.floor(dmg)
 end
 
-function PLAYER:addArmorPart(id, category)
+function PLAYER:AddArmorPart(id, category)
     GAMEMODE:PrepareArmorPiece(self, id, category)
 end
 
 -- Tell the client to replace a piece of armor with something else
-function PLAYER:sendArmor(category)
+function PLAYER:SendArmor(category)
     net.Start("GC_ARMOR")
     net.WriteTable(self.armor[category])
     net.WriteString(category)
@@ -111,7 +111,7 @@ function PLAYER:sendArmor(category)
 end
 
 -- Tell the client to set a piece of armor to a new health value
-function PLAYER:sendArmorHealthUpdate(health, category)
+function PLAYER:SendArmorHealthUpdate(health, category)
     net.Start("GC_ARMOR_HEALTH_UPDATE")
     net.WriteString(category)
     net.WriteFloat(health)

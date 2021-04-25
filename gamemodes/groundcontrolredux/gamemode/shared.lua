@@ -270,10 +270,10 @@ if CLIENT then
                 for i = 1, availableSlots do
                     local x = baseX + (i - 1) * overallSize
 
-                    draw.ShadowText("Slot " .. i, GAMEMODE.AttachmentSlotDisplayFont, x + GAMEMODE.attachmentSlotDisplaySize - 5, baseY + GAMEMODE.attachmentSlotDisplaySize, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+                    draw.ShadowText("Slot " .. i, GAMEMODE.AttachmentSlotDisplayFont, x + GAMEMODE.attachmentSlotDisplaySize - 5, baseY + GAMEMODE.attachmentSlotDisplaySize, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
                 end
 
-                draw.ShadowText("Used slots " .. curPos - 1 .. "/" .. availableSlots , GAMEMODE.AttachmentSlotDisplayFont, ScrW() * 0.5, baseY + GAMEMODE.attachmentSlotDisplaySize + 20, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                draw.ShadowText("Used slots " .. curPos - 1 .. "/" .. availableSlots , GAMEMODE.AttachmentSlotDisplayFont, ScrW() * 0.5, baseY + GAMEMODE.attachmentSlotDisplaySize + 20, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
             end
         end
     end)

@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-function GM:registerRush()
+function GM:RegisterRush()
     local oneSideRush = {} -- one side rush because you only need to cap 1 point as the attacker
     oneSideRush.name = "onesiderush"
     oneSideRush.prettyName = "Rush"
@@ -22,7 +22,7 @@ function GM:registerRush()
         point:SetPointID(self.objectiveCounter)
     end
 
-    function oneSideRush:prepare()
+    function oneSideRush:Prepare()
         if CLIENT then
             RunConsoleCommand("gc_team_selection")
         end
@@ -75,7 +75,7 @@ function GM:registerRush()
         GAMEMODE:EndRound(self.defenderTeam)
     end
 
-    function oneSideRush:onRoundEnded(winTeam)
+    function oneSideRush:OnRoundEnded(winTeam)
         table.Empty(self.objectiveEnts)
         self.stopCountdown = true
         self.objectiveCounter = 0

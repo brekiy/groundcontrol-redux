@@ -61,8 +61,8 @@ if CLIENT then
         local eventData = self.events[event]
 
         if eventData and (!self.shownEvents[event] or self.shownEvents[event] < eventData.times or eventData.times == -1) then
-                self:displayEvent(event)
-                self:saveShownEvents()
+                self:DisplayTipEvent(event)
+                self:SaveShownTips()
                 return true -- tip was shown
         end
 
@@ -100,7 +100,7 @@ if CLIENT then
 
         if self.alpha > 0 then
             if CurTime() < self.flashTime then
-                self.alpha = self.alpha * (0.6 + 0.4 * math.flash(CurTime(), 2))
+                self.alpha = self.alpha * (0.6 + 0.4 * math.flash(CurTime(), 1.5))
             end
 
             surface.SetDrawColor(0, 0, 0, 100 * self.alpha)

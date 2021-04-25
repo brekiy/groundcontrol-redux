@@ -1,239 +1,239 @@
 AddCSLuaFile()
 
-function GM:registerWepsCW2Khris()
+function GM:RegisterWepsCW2Khris()
     local fnfal = {
         weaponClass = "khr_fnfal",
         weight = 4.45,
-        pointCost = 28
+        pointCost = 32
     }
-    self:registerPrimaryWeapon(fnfal)
+    self:RegisterPrimaryWeapon(fnfal)
 
     local svt40 = {
         weaponClass = "khr_svt40",
         weight = 3.9,
-        pointCost = 26
+        pointCost = 30
     }
-    self:registerPrimaryWeapon(svt40)
+    self:RegisterPrimaryWeapon(svt40)
 
     local aek971 = {
         weaponClass = "khr_aek971",
         weight = 3.3,
-        pointCost = 24
+        pointCost = 26
     }
-    self:registerPrimaryWeapon(aek971)
+    self:RegisterPrimaryWeapon(aek971)
 
     local ak103 = {
         weaponClass = "khr_ak103",
         weight = 3.4,
-        pointCost = 23
+        pointCost = 25
     }
-    self:registerPrimaryWeapon(ak103)
+    self:RegisterPrimaryWeapon(ak103)
 
     local cz858 = {
         weaponClass = "khr_cz858",
         weight = 2.91,
-        pointCost = 24
+        pointCost = 26
     }
-    self:registerPrimaryWeapon(cz858)
+    self:RegisterPrimaryWeapon(cz858)
 
     local simsks = {
         weaponClass = "khr_simsks",
         weight = 3.67,
-        pointCost = 20
+        pointCost = 21
     }
-    self:registerPrimaryWeapon(simsks)
+    self:RegisterPrimaryWeapon(simsks)
 
     local sks = {
         weaponClass = "khr_sks",
         weight = 3.8,
-        pointCost = 20
+        pointCost = 21
     }
-    self:registerPrimaryWeapon(sks)
+    self:RegisterPrimaryWeapon(sks)
 
     local fmg9 = {
         weaponClass = "khr_fmg9",
         weight = 1.7,
         pointCost = 14
     }
-    self:registerPrimaryWeapon(fmg9)
+    self:RegisterPrimaryWeapon(fmg9)
 
     local p90 = {
         weaponClass = "khr_p90",
         weight = 2.6,
-        pointCost = 18
+        pointCost = 19
     }
-    self:registerPrimaryWeapon(p90)
+    self:RegisterPrimaryWeapon(p90)
 
     local vector = {
         weaponClass = "khr_vector",
         weight = 2.7,
         pointCost = 16
     }
-    self:registerPrimaryWeapon(vector)
+    self:RegisterPrimaryWeapon(vector)
 
     local mp40 = {
         weaponClass = "khr_mp40",
         weight = 3.97,
         pointCost = 13
     }
-    self:registerPrimaryWeapon(mp40)
+    self:RegisterPrimaryWeapon(mp40)
 
     local veresk = {
         weaponClass = "khr_veresk",
         weight = 1.65,
         pointCost = 18
     }
-    self:registerPrimaryWeapon(veresk)
+    self:RegisterPrimaryWeapon(veresk)
 
     local l2a3 = {
         weaponClass = "khr_l2a3",
         weight = 2.7,
         pointCost = 13
     }
-    self:registerPrimaryWeapon(l2a3)
+    self:RegisterPrimaryWeapon(l2a3)
 
     local m1carbine = {
         weaponClass = "khr_m1carbine",
         weight = 2.6,
         pointCost = 18
     }
-    self:registerPrimaryWeapon(m1carbine)
+    self:RegisterPrimaryWeapon(m1carbine)
 
     local pkm = {
         weaponClass = "khr_pkm",
         weight = 7.5,
         maxMags = 2,
-        pointCost = 34
+        pointCost = 37
     }
-    self:registerPrimaryWeapon(pkm)
+    self:RegisterPrimaryWeapon(pkm)
 
     local m60 = {
         weaponClass = "khr_m60",
         weight = 10.5,
         maxMags = 2,
-        pointCost = 34
+        pointCost = 37
     }
-    self:registerPrimaryWeapon(m60)
+    self:RegisterPrimaryWeapon(m60)
 
     local mp153 = {
         weaponClass = "khr_mp153",
         weight = 3.45,
         pointCost = 16
     }
-    self:registerPrimaryWeapon(mp153)
+    self:RegisterPrimaryWeapon(mp153)
 
     local ns2000 = {
         weaponClass = "khr_ns2000",
         weight = 3.9,
         pointCost = 15
     }
-    self:registerPrimaryWeapon(ns2000)
+    self:RegisterPrimaryWeapon(ns2000)
 
     local m620 = {
         weaponClass = "khr_m620",
         weight = 3.6,
         pointCost = 14
     }
-    self:registerPrimaryWeapon(m620)
+    self:RegisterPrimaryWeapon(m620)
 
     local toz194 = {
         weaponClass = "khr_toz194",
         weight = 2.9,
         pointCost = 14
     }
-    self:registerPrimaryWeapon(toz194)
+    self:RegisterPrimaryWeapon(toz194)
 
     local khr_cb4 = {
         weaponClass = "khr_cb4",
         weight = 3.27,
         pointCost = 18
     }
-    self:registerPrimaryWeapon(khr_cb4)
+    self:RegisterPrimaryWeapon(khr_cb4)
 
     local m98b = {
         weaponClass = "khr_m98b",
         weight = 5.6,
-        pointCost = 38
+        pointCost = 40
     }
-    self:registerPrimaryWeapon(m98b)
+    self:RegisterPrimaryWeapon(m98b)
 
     local hcar = {
         weaponClass = "khr_hcar",
         weight = 4.75,
-        pointCost = 32
+        pointCost = 34
     }
-    self:registerPrimaryWeapon(hcar)
+    self:RegisterPrimaryWeapon(hcar)
 
     local m82a3 = {
         weaponClass = "khr_m82a3",
         weight = 13.5,
-        pointCost = 38
+        pointCost = 40
     }
-    self:registerPrimaryWeapon(m82a3)
+    self:RegisterPrimaryWeapon(m82a3)
 
     local m95 = {
         weaponClass = "khr_m95",
         weight = 10.3,
-        pointCost = 38
+        pointCost = 40
     }
-    self:registerPrimaryWeapon(m95)
+    self:RegisterPrimaryWeapon(m95)
 
     local mosin = {
         weaponClass = "khr_mosin",
         weight = 4,
-        pointCost = 20,
+        pointCost = 22,
         penMod = 1.15
     }
-    self:registerPrimaryWeapon(mosin)
+    self:RegisterPrimaryWeapon(mosin)
 
     local t5000 = {
         weaponClass = "khr_t5000",
         weight = 6.5,
-        pointCost = 38
+        pointCost = 40
     }
-    self:registerPrimaryWeapon(t5000)
+    self:RegisterPrimaryWeapon(t5000)
 
     local sr338 = {
         weaponClass = "khr_sr338",
         weight = 6.75,
         pointCost = 42
     }
-    self:registerPrimaryWeapon(sr338)
+    self:RegisterPrimaryWeapon(sr338)
 
     local deagle = {
         weaponClass = "khr_deagle",
         weight = 1.998,
         pointCost = 10
     }
-    self:registerSecondaryWeapon(deagle)
+    self:RegisterSecondaryWeapon(deagle)
 
     local makarov = {
         weaponClass = "khr_makarov",
         weight = 0.73,
         pointCost = 4
     }
-    self:registerSecondaryWeapon(makarov)
+    self:RegisterSecondaryWeapon(makarov)
 
     local microdeagle = {
         weaponClass = "khr_microdeagle",
         weight = 0.4,
         pointCost = 7
     }
-    self:registerSecondaryWeapon(microdeagle)
+    self:RegisterSecondaryWeapon(microdeagle)
 
     local cz52 = {
         weaponClass = "khr_cz52",
         weight = 0.95,
         pointCost = 8
     }
-    self:registerSecondaryWeapon(cz52)
+    self:RegisterSecondaryWeapon(cz52)
 
     local cz75 = {
         weaponClass = "khr_cz75",
         weight = 1.12,
         pointCost = 6
     }
-    self:registerSecondaryWeapon(cz75)
+    self:RegisterSecondaryWeapon(cz75)
 
     local gsh18 = {
         weaponClass = "khr_gsh18",
@@ -241,14 +241,14 @@ function GM:registerWepsCW2Khris()
         pointCost = 7,
         penMod = 1.25
     }
-    self:registerSecondaryWeapon(gsh18)
+    self:RegisterSecondaryWeapon(gsh18)
 
     local m92fs = {
         weaponClass = "khr_m92fs",
         weight = 0.97,
         pointCost = 6
     }
-    self:registerSecondaryWeapon(m92fs)
+    self:RegisterSecondaryWeapon(m92fs)
 
     local mp443 = {
         weaponClass = "khr_mp443",
@@ -256,89 +256,89 @@ function GM:registerWepsCW2Khris()
         pointCost = 7,
         penMod = 1.25
     }
-    self:registerSecondaryWeapon(mp443)
+    self:RegisterSecondaryWeapon(mp443)
 
     local ots33 = {
         weaponClass = "khr_ots33",
         weight = 1.15,
         pointCost = 6
     }
-    self:registerSecondaryWeapon(ots33)
+    self:RegisterSecondaryWeapon(ots33)
 
     local ruby = {
         weaponClass = "khr_ruby",
         weight = 0.85,
         pointCost = 3
     }
-    self:registerSecondaryWeapon(ruby)
+    self:RegisterSecondaryWeapon(ruby)
 
     local rugermk3 = {
         weaponClass = "khr_rugermk3",
         weight = 0.88,
         pointCost = 3
     }
-    self:registerSecondaryWeapon(rugermk3)
+    self:RegisterSecondaryWeapon(rugermk3)
 
     local p345 = {
         weaponClass = "khr_p345",
         weight = 0.91,
         pointCost = 6
     }
-    self:registerSecondaryWeapon(p345)
+    self:RegisterSecondaryWeapon(p345)
 
     local p226 = {
         weaponClass = "khr_p226",
         weight = 0.964,
         pointCost = 7
     }
-    self:registerSecondaryWeapon(p226)
+    self:RegisterSecondaryWeapon(p226)
 
     local sr1m = {
         weaponClass = "khr_sr1m",
         weight = 0.95,
         pointCost = 10
     }
-    self:registerSecondaryWeapon(sr1m)
+    self:RegisterSecondaryWeapon(sr1m)
 
     local tokarev = {
         weaponClass = "khr_tokarev",
         weight = 0.854,
         pointCost = 7
     }
-    self:registerSecondaryWeapon(tokarev)
+    self:RegisterSecondaryWeapon(tokarev)
 
     local model29 = {
         weaponClass = "khr_model29",
         weight = 1.28,
         pointCost = 7
     }
-    self:registerSecondaryWeapon(model29)
+    self:RegisterSecondaryWeapon(model29)
 
     local model642 = {
         weaponClass = "khr_38snub",
         weight = 0.56,
         pointCost = 4
     }
-    self:registerSecondaryWeapon(model642)
+    self:RegisterSecondaryWeapon(model642)
 
     local swr8 = {
         weaponClass = "khr_swr8",
         weight = 1.02,
         pointCost = 5
     }
-    self:registerSecondaryWeapon(swr8)
+    self:RegisterSecondaryWeapon(swr8)
 
     local publicDefender = {
         weaponClass = "khr_410jury",
         weight = 0.765,
         pointCost = 5
     }
-    self:registerSecondaryWeapon(publicDefender)
+    self:RegisterSecondaryWeapon(publicDefender)
 
     local ragingbull = {
         weaponClass = "khr_ragingbull",
         weight = 1.5,
         pointCost = 7
     }
-    self:registerSecondaryWeapon(ragingbull)
+    self:RegisterSecondaryWeapon(ragingbull)
 end

@@ -31,7 +31,7 @@ function PLAYER:postBleed()
         self:Kill()
 
         if IsValid(self.bleedInflictor) then -- reward whoever caused us to bleed
-            self.bleedInflictor:AddCurrency("BLEED_OUT_KILL", ply)
+            self.bleedInflictor:AddCurrency("BLEED_OUT_KILL", self)
             self.bleedInflictor = nil
         end
     end

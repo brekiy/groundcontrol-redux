@@ -23,6 +23,12 @@ function GM:RegisterIntelRetrieval()
         intelRetrieval.mapRotation = GM:GetMapRotation("intel_retrieval_maps")
     end
 
+    function intelRetrieval:Prepare()
+        if CLIENT then
+            RunConsoleCommand("gc_team_selection")
+        end
+    end
+
     function intelRetrieval:PickupIntel(intelEnt, ply)
         if !ply.hasIntel then
             self:GiveIntel(ply)
@@ -42,7 +48,7 @@ function GM:RegisterIntelRetrieval()
                 end
             end
 
-            intelRetrieval:DropIntel(ply)
+            self:DropIntel(ply)
         end
     end
 
@@ -67,6 +73,7 @@ function GM:RegisterIntelRetrieval()
 
     function intelRetrieval:RemoveIntel(ply)
         ply.hasIntel = false
+        ply.intel:Remove()
         ply.intel = nil
         net.Start("GC_INTEL_REMOVED")
         net.Send(ply)
@@ -74,7 +81,7 @@ function GM:RegisterIntelRetrieval()
 
     function intelRetrieval:AttemptCaptureIntel(ply, host)
         if ply.hasIntel then
-            intelRetrieval:RemoveIntel(ply)
+            self:RemoveIntel(ply)
             ply:AddCurrency("SECURED_INTEL")
             return true
         end
@@ -121,7 +128,7 @@ function GM:RegisterIntelRetrieval()
 
             local intelSpawns = ents.FindByClass("gc_intel_spawn_point")
             local intelIdx = math.random(1, #intelSpawns)
-            intelSpawns[intelIdx]:SetHasIntel(true)
+            intelSpawns[intelIdx]:AssignAsIntelTarget(true)
         end
     end
 

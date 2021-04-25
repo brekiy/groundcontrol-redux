@@ -59,7 +59,7 @@ net.Receive("GC_GAME_BEGIN", function(a, b)
 end)
 
 net.Receive("GC_ROUND_PREPARATION", function(a, b)
-    GAMEMODE:roundPreparation(net.ReadFloat())
+    GAMEMODE:RoundPreparation(net.ReadFloat())
 end)
 
 net.Receive("GC_SPECTATE_TARGET", function(a, b)
@@ -87,7 +87,7 @@ net.Receive("GC_NOTIFICATION", function(a, b)
 end)
 
 net.Receive("GC_GAMETYPE", function(a, b)
-    GAMEMODE:setGametype(net.ReadInt(16))
+    GAMEMODE:SetGametype(net.ReadInt(16))
 end)
 
 net.Receive("GC_AUTOBALANCED_TO_TEAM", function(a, b)
@@ -198,7 +198,7 @@ end)
 net.Receive("GC_LOADOUTPOSITION", function(a, b)
     local vector = net.ReadVector()
     local duration = net.ReadFloat()
-    GAMEMODE:setLoadoutAvailabilityInfo(vector, duration)
+    GAMEMODE:SetLoadoutAvailabilityInfo(vector, duration)
 end)
 
 net.Receive("GC_KILLED_BY", function(a, b)

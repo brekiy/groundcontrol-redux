@@ -1,7 +1,7 @@
 AddCSLuaFile()
 
 -- HUGE pack made by soap on kk's improved cw2 base, quality is however inconsistent
-function GM:registerWepsCW2Soap()
+function GM:RegisterWepsCW2Soap()
 
     -- bro why doesnt this have burst mode? wack
     local abakan = {
@@ -9,28 +9,28 @@ function GM:registerWepsCW2Soap()
         weight = 3.85,
         pointCost = 23,
     }
-    self:registerPrimaryWeapon(abakan)
+    self:RegisterPrimaryWeapon(abakan)
 
     local acr556 = {
         weaponClass = "cw_kk_ins2_acr556",
         weight = 3.6,
         pointCost = 23,
     }
-    self:registerPrimaryWeapon(acr556)
+    self:RegisterPrimaryWeapon(acr556)
 
     local aek971 = {
         weaponClass = "cw_kk_ins2_aek971",
         weight = 3.3,
         pointCost = 24,
     }
-    self:registerPrimaryWeapon(aek971)
+    self:RegisterPrimaryWeapon(aek971)
 
     local ak5d = {
         weaponClass = "cw_kk_ins2_ak5d",
         weight = 3.9,
         pointCost = 22,
     }
-    self:registerPrimaryWeapon(ak5d)
+    self:RegisterPrimaryWeapon(ak5d)
 
     local ak74z = {
         weaponClass = "cw_kk_ins2_ak74z",
@@ -38,7 +38,7 @@ function GM:registerWepsCW2Soap()
         pointCost = 23,
         penMod = 1.15
     }
-    self:registerPrimaryWeapon(ak74z)
+    self:RegisterPrimaryWeapon(ak74z)
 
     local akalfa = {
         weaponClass = "cw_kk_ins2_akalfa",
@@ -46,14 +46,14 @@ function GM:registerWepsCW2Soap()
         pointCost = 25,
         penMod = 1.15
     }
-    self:registerPrimaryWeapon(akalfa)
+    self:RegisterPrimaryWeapon(akalfa)
 
     local akmconc = {
         weaponClass = "cw_kk_ins2_akmconc",
         weight = 3.1,
         pointCost = 23,
     }
-    self:registerPrimaryWeapon(akmconc)
+    self:RegisterPrimaryWeapon(akmconc)
 
     local ak742 = {
         weaponClass = "cw_kk_ins2_ak742",
@@ -61,7 +61,7 @@ function GM:registerWepsCW2Soap()
         pointCost = 21,
         penMod = 1.05
     }
-    self:registerPrimaryWeapon(ak742)
+    self:RegisterPrimaryWeapon(ak742)
 
     local aks74uz = {
         weaponClass = "cw_kk_ins2_aks74uz",
@@ -69,21 +69,21 @@ function GM:registerWepsCW2Soap()
         pointCost = 24,
         penMod = 1.1
     }
-    self:registerPrimaryWeapon(aks74uz)
+    self:RegisterPrimaryWeapon(aks74uz)
 
     local asval = {
         weaponClass = "cw_kk_ins2_asval",
         weight = 2.6,
         pointCost = 28
     }
-    self:registerPrimaryWeapon(asval)
+    self:RegisterPrimaryWeapon(asval)
 
     local aug = {
         weaponClass = "cw_kk_ins2_aug",
         weight = 3.3,
         pointCost = 25,
     }
-    self:registerPrimaryWeapon(aug)
+    self:RegisterPrimaryWeapon(aug)
 
     local edge = {
         weaponClass = "cw_kk_ins2_edge",
@@ -91,49 +91,49 @@ function GM:registerWepsCW2Soap()
         pointCost = 27,
         penMod = 1.1
     }
-    self:registerPrimaryWeapon(edge)
+    self:RegisterPrimaryWeapon(edge)
 
     local cz805 = {
         weaponClass = "cw_kk_ins2_cz805",
         weight = 3.6,
         pointCost = 26,
     }
-    self:registerPrimaryWeapon(cz805)
+    self:RegisterPrimaryWeapon(cz805)
 
     local k2 = {
         weaponClass = "cw_kk_ins2_k2",
         weight = 3.26,
         pointCost = 27,
     }
-    self:registerPrimaryWeapon(k2)
+    self:RegisterPrimaryWeapon(k2)
 
     local famasf1 = {
         weaponClass = "cw_kk_ins2_famasf1",
         weight = 3.61,
         pointCost = 27,
     }
-    self:registerPrimaryWeapon(famasf1)
+    self:RegisterPrimaryWeapon(famasf1)
 
     local fnf2000 = {
         weaponClass = "cw_kk_ins2_fnf2000",
         weight = 3.3,
         pointCost = 26,
     }
-    self:registerPrimaryWeapon(fnf2000)
+    self:RegisterPrimaryWeapon(fnf2000)
 
     local g36 = {
         weaponClass = "cw_kk_ins2_g36",
         weight = 3,
         pointCost = 26,
     }
-    self:registerPrimaryWeapon(g36)
+    self:RegisterPrimaryWeapon(g36)
 
     local lr300 = {
         weaponClass = "cw_kk_ins2_lr300",
         weight = 3.1,
         pointCost = 27,
     }
-    self:registerPrimaryWeapon(lr300)
+    self:RegisterPrimaryWeapon(lr300)
 
     -- has some really weird vm bug with the foregrip attached in ads
     -- local mk18mod1 = {
@@ -141,56 +141,56 @@ function GM:registerWepsCW2Soap()
     --     weight = ,
     --     pointCost = ,
     -- }
-    -- self:registerPrimaryWeapon(mk18mod1)
+    -- self:RegisterPrimaryWeapon(mk18mod1)
 
     local qbz03 = {
         weaponClass = "cw_kk_ins2_qbz03",
         weight = 3.5,
         pointCost = 26,
     }
-    self:registerPrimaryWeapon(qbz03)
+    self:RegisterPrimaryWeapon(qbz03)
 
     local sa58 = {
         weaponClass = "cw_kk_ins2_sa58",
         weight = 3.9,
         pointCost = 32,
     }
-    self:registerPrimaryWeapon(sa58)
+    self:RegisterPrimaryWeapon(sa58)
 
     local scarl = {
         weaponClass = "cw_kk_ins2_scarl",
         weight = 3.29,
         pointCost = 24,
     }
-    self:registerPrimaryWeapon(scarl)
+    self:RegisterPrimaryWeapon(scarl)
 
     local sg551 = {
         weaponClass = "cw_kk_ins2_sg551",
         weight = 3.4,
         pointCost = 27,
     }
-    self:registerPrimaryWeapon(sg551)
+    self:RegisterPrimaryWeapon(sg551)
 
     local sg552 = {
         weaponClass = "cw_kk_ins2_sg552",
         weight = 3.2,
         pointCost = 26,
     }
-    self:registerPrimaryWeapon(sg552)
+    self:RegisterPrimaryWeapon(sg552)
 
     local vz58 = {
         weaponClass = "cw_kk_ins2_vz58",
         weight = 2.91,
         pointCost = 24,
     }
-    self:registerPrimaryWeapon(vz58)
+    self:RegisterPrimaryWeapon(vz58)
 
     local xm8 = {
         weaponClass = "cw_kk_ins2_xm8",
         weight = 3.4,
         pointCost = 27,
     }
-    self:registerPrimaryWeapon(xm8)
+    self:RegisterPrimaryWeapon(xm8)
 
     local stonerlmg = {
         weaponClass = "cw_kk_ins2_stonerlmg",
@@ -198,7 +198,7 @@ function GM:registerWepsCW2Soap()
         maxMags = 2,
         pointCost = 32,
     }
-    self:registerPrimaryWeapon(stonerlmg)
+    self:RegisterPrimaryWeapon(stonerlmg)
 
     local m240b = {
         weaponClass = "cw_kk_ins2_m240b",
@@ -206,7 +206,7 @@ function GM:registerWepsCW2Soap()
         maxMags = 2,
         pointCost = 36,
     }
-    self:registerPrimaryWeapon(m240b)
+    self:RegisterPrimaryWeapon(m240b)
 
     local pkp = {
         weaponClass = "cw_kk_ins2_pkp",
@@ -214,14 +214,14 @@ function GM:registerWepsCW2Soap()
         maxMags = 2,
         pointCost = 38,
     }
-    self:registerPrimaryWeapon(pkp)
+    self:RegisterPrimaryWeapon(pkp)
 
     local rpk12 = {
         weaponClass = "cw_kk_ins2_rpk12",
         weight = 4.6,
         pointCost = 29,
     }
-    self:registerPrimaryWeapon(rpk12)
+    self:RegisterPrimaryWeapon(rpk12)
 
     local cs5 = {
         weaponClass = "cw_kk_ins2_cs5",
@@ -229,14 +229,14 @@ function GM:registerWepsCW2Soap()
         pointCost = 28,
         penMod = 1.1
     }
-    self:registerPrimaryWeapon(cs5)
+    self:RegisterPrimaryWeapon(cs5)
 
     local awm = {
         weaponClass = "cw_kk_ins2_awm",
         weight = 6.5,
         pointCost = 38
     }
-    self:registerPrimaryWeapon(awm)
+    self:RegisterPrimaryWeapon(awm)
 
     local ax308 = {
         weaponClass = "cw_kk_ins2_ax308",
@@ -244,7 +244,7 @@ function GM:registerWepsCW2Soap()
         pointCost = 27,
         penMod = 1.1
     }
-    self:registerPrimaryWeapon(ax308)
+    self:RegisterPrimaryWeapon(ax308)
 
     local cdxmc = {
         weaponClass = "cw_kk_ins2_cdxmc",
@@ -252,14 +252,14 @@ function GM:registerWepsCW2Soap()
         pointCost = 27,
         penMod = 1.15
     }
-    self:registerPrimaryWeapon(cdxmc)
+    self:RegisterPrimaryWeapon(cdxmc)
 
     local dsr1 = {
         weaponClass = "cw_kk_ins2_dsr1",
         weight = 5.9,
         pointCost = 42,
     }
-    self:registerPrimaryWeapon(dsr1)
+    self:RegisterPrimaryWeapon(dsr1)
 
     local obrez = {
         weaponClass = "cw_kk_ins2_obrez",
@@ -267,14 +267,14 @@ function GM:registerWepsCW2Soap()
         pointCost = 25,
         penMod = 0.9
     }
-    self:registerPrimaryWeapon(obrez)
+    self:RegisterPrimaryWeapon(obrez)
 
     local m14wood = {
         weaponClass = "cw_kk_ins2_m14wood",
         weight = 4.1,
         pointCost = 32,
     }
-    self:registerPrimaryWeapon(m14wood)
+    self:RegisterPrimaryWeapon(m14wood)
 
     local m98 = {
         weaponClass = "cw_kk_ins2_m98",
@@ -282,7 +282,7 @@ function GM:registerWepsCW2Soap()
         pointCost = 35,
         penMod = 1.3
     }
-    self:registerPrimaryWeapon(m98)
+    self:RegisterPrimaryWeapon(m98)
 
     local t5000 = {
         weaponClass = "cw_kk_ins2_t5000",
@@ -290,28 +290,28 @@ function GM:registerWepsCW2Soap()
         pointCost = 35,
         penMod = 1.3
     }
-    self:registerPrimaryWeapon(t5000)
+    self:RegisterPrimaryWeapon(t5000)
 
     local saiga762 = {
         weaponClass = "cw_kk_ins2_saiga762",
         weight = 3.2,
         pointCost = 21,
     }
-    self:registerPrimaryWeapon(saiga762)
+    self:RegisterPrimaryWeapon(saiga762)
 
     local scarh = {
         weaponClass = "cw_kk_ins2_scarh",
         weight = 3.72,
         pointCost = 32
     }
-    self:registerPrimaryWeapon(scarh)
+    self:RegisterPrimaryWeapon(scarh)
 
     -- local sv98b = {
     --     weaponClass = "cw_kk_ins2_sv98b",
     --     weight = ,
     --     pointCost = ,
     -- }
-    -- self:registerPrimaryWeapon(sv98b)
+    -- self:RegisterPrimaryWeapon(sv98b)
 
     local sv98g = {
         weaponClass = "cw_kk_ins2_sv98g",
@@ -319,7 +319,7 @@ function GM:registerWepsCW2Soap()
         pointCost = 35,
         penMod = 1.25
     }
-    self:registerPrimaryWeapon(sv98g)
+    self:RegisterPrimaryWeapon(sv98g)
 
     local svd = {
         weaponClass = "cw_kk_ins2_svd",
@@ -327,7 +327,7 @@ function GM:registerWepsCW2Soap()
         pointCost = 36,
         penMod = 1.25
     }
-    self:registerPrimaryWeapon(svd)
+    self:RegisterPrimaryWeapon(svd)
 
     local svu = {
         weaponClass = "cw_kk_ins2_svu",
@@ -335,14 +335,14 @@ function GM:registerWepsCW2Soap()
         pointCost = 37,
         penMod = 1.25
     }
-    self:registerPrimaryWeapon(svu)
+    self:RegisterPrimaryWeapon(svu)
 
     local vss = {
         weaponClass = "cw_kk_ins2_vss",
         weight = 2.6,
         pointCost = 27
     }
-    self:registerPrimaryWeapon(vss)
+    self:RegisterPrimaryWeapon(vss)
 
     local scorpion = {
         weaponClass = "cw_kk_ins2_scorpion",
@@ -350,7 +350,7 @@ function GM:registerWepsCW2Soap()
         pointCost = 17,
         penMod = 1.5
     }
-    self:registerPrimaryWeapon(scorpion)
+    self:RegisterPrimaryWeapon(scorpion)
 
     local mp5a4 = {
         weaponClass = "cw_kk_ins2_mp5a4",
@@ -358,21 +358,21 @@ function GM:registerWepsCW2Soap()
         pointCost = 15,
         penMod = 1.5
     }
-    self:registerPrimaryWeapon(mp5a4)
+    self:RegisterPrimaryWeapon(mp5a4)
 
     local mp7 = {
         weaponClass = "cw_kk_ins2_mp7",
         weight = 1.9,
         pointCost = 19,
     }
-    self:registerPrimaryWeapon(mp7)
+    self:RegisterPrimaryWeapon(mp7)
 
     local uzi = {
         weaponClass = "cw_kk_ins2_uzi",
         weight = 3.5,
         pointCost = 13,
     }
-    self:registerPrimaryWeapon(uzi)
+    self:RegisterPrimaryWeapon(uzi)
 
     local vector = {
         weaponClass = "cw_kk_ins2_vector",
@@ -380,7 +380,7 @@ function GM:registerWepsCW2Soap()
         pointCost = 15,
         penMod = 1.5
     }
-    self:registerPrimaryWeapon(vector)
+    self:RegisterPrimaryWeapon(vector)
 
     -- weird shader error
     -- local m4spec = {
@@ -388,28 +388,28 @@ function GM:registerWepsCW2Soap()
     --     weight = ,
     --     pointCost = ,
     -- }
-    -- self:registerPrimaryWeapon(m4spec)
+    -- self:RegisterPrimaryWeapon(m4spec)
 
     local mac10 = {
         weaponClass = "cw_kk_ins2_mac10",
         weight = 2.84,
         pointCost = 13,
     }
-    self:registerPrimaryWeapon(mac10)
+    self:RegisterPrimaryWeapon(mac10)
 
     local p90 = {
         weaponClass = "cw_kk_ins2_p90",
         weight = 2.6,
         pointCost = 18
     }
-    self:registerPrimaryWeapon(p90)
+    self:RegisterPrimaryWeapon(p90)
 
     local mpx = {
         weaponClass = "cw_kk_ins2_mpx",
         weight = 2.7,
         pointCost = 16,
     }
-    self:registerPrimaryWeapon(mpx)
+    self:RegisterPrimaryWeapon(mpx)
 
     local veresk = {
         weaponClass = "cw_kk_ins2_veresk",
@@ -417,7 +417,7 @@ function GM:registerWepsCW2Soap()
         pointCost = 18,
         penMod = 1.2
     }
-    self:registerPrimaryWeapon(veresk)
+    self:RegisterPrimaryWeapon(veresk)
 
     local vityaz = {
         weaponClass = "cw_kk_ins2_vityaz",
@@ -425,77 +425,77 @@ function GM:registerWepsCW2Soap()
         pointCost = 16,
         penMod = 1.2
     }
-    self:registerPrimaryWeapon(vityaz)
+    self:RegisterPrimaryWeapon(vityaz)
 
     local aa12 = {
         weaponClass = "cw_kk_ins2_aa12",
         weight = 5.2,
         pointCost = 18,
     }
-    self:registerPrimaryWeapon(aa12)
+    self:RegisterPrimaryWeapon(aa12)
 
     local br99 = {
         weaponClass = "cw_kk_ins2_br99",
         weight = 3.62,
         pointCost = 17,
     }
-    self:registerPrimaryWeapon(br99)
+    self:RegisterPrimaryWeapon(br99)
 
     local ithaca37 = {
         weaponClass = "cw_kk_ins2_ithaca37",
         weight = 3.6,
         pointCost = 14
     }
-    self:registerPrimaryWeapon(ithaca37)
+    self:RegisterPrimaryWeapon(ithaca37)
 
     local toz66 = {
         weaponClass = "cw_kk_ins2_toz66",
         weight = 3.2,
         pointCost = 11,
     }
-    self:registerPrimaryWeapon(toz66)
+    self:RegisterPrimaryWeapon(toz66)
 
     local sawed = {
         weaponClass = "cw_kk_ins2_toz66_sawed",
         weight = 2,
         pointCost = 10,
     }
-    self:registerPrimaryWeapon(sawed)
+    self:RegisterPrimaryWeapon(sawed)
 
     local ks23 = {
         weaponClass = "cw_kk_ins2_ks23",
         weight = 3.85,
         pointCost = 15,
     }
-    self:registerPrimaryWeapon(ks23)
+    self:RegisterPrimaryWeapon(ks23)
 
     local m1014 = {
         weaponClass = "cw_kk_ins2_m1014",
         weight = 3.82,
         pointCost = 15,
     }
-    self:registerPrimaryWeapon(m1014)
+    self:RegisterPrimaryWeapon(m1014)
 
     local chaser13 = {
         weaponClass = "cw_kk_ins2_chaser13",
         weight = 2.5,
         pointCost = 13,
     }
-    self:registerPrimaryWeapon(chaser13)
+    self:RegisterPrimaryWeapon(chaser13)
 
     local mts255 = {
         weaponClass = "cw_kk_ins2_mts255",
         weight = 3.7,
         pointCost = 15,
     }
-    self:registerPrimaryWeapon(mts255)
+    self:RegisterPrimaryWeapon(mts255)
 
     local saiga12 = {
         weaponClass = "cw_kk_ins2_saiga12",
         weight = 3.6,
         pointCost = 15,
     }
-    self:registerPrimaryWeapon(saiga12)
+    self:RegisterPrimaryWeapon(saiga12)
 
     local saigaspike = {
         weaponClass = "cw_kk_ins2_saigaspike",
@@ -503,63 +503,63 @@ function GM:registerWepsCW2Soap()
         pointCost = 16,
         penMod = 2
     }
-    self:registerPrimaryWeapon(saigaspike)
+    self:RegisterPrimaryWeapon(saigaspike)
 
     local sawedithaca37 = {
         weaponClass = "cw_kk_ins2_sawedithaca37",
         weight = 3,
         pointCost = 13,
     }
-    self:registerPrimaryWeapon(sawedithaca37)
+    self:RegisterPrimaryWeapon(sawedithaca37)
 
     local spas12 = {
         weaponClass = "cw_kk_ins2_spas12",
         weight = 4.4,
         pointCost = 15,
     }
-    self:registerPrimaryWeapon(spas12)
+    self:RegisterPrimaryWeapon(spas12)
 
     local typhoon12 = {
         weaponClass = "cw_kk_ins2_typhoon12",
         weight = 3.8,
         pointCost = 16,
     }
-    self:registerPrimaryWeapon(typhoon12)
+    self:RegisterPrimaryWeapon(typhoon12)
 
     local browninghp = {
         weaponClass = "cw_kk_ins2_browninghp",
         weight = 1,
         pointCost = 6,
     }
-    self:registerSecondaryWeapon(browninghp)
+    self:RegisterSecondaryWeapon(browninghp)
 
     local python = {
         weaponClass = "cw_kk_ins2_python",
         weight = 1.2,
         pointCost = 7,
     }
-    self:registerSecondaryWeapon(python)
+    self:RegisterSecondaryWeapon(python)
 
     local cz75 = {
         weaponClass = "cw_kk_ins2_cz75",
         weight = 1.12,
         pointCost = 10,
     }
-    self:registerSecondaryWeapon(cz75)
+    self:RegisterSecondaryWeapon(cz75)
 
     local deagle = {
         weaponClass = "cw_kk_ins2_deagle",
         weight = 1.998,
         pointCost = 10
     }
-    self:registerSecondaryWeapon(deagle)
+    self:RegisterSecondaryWeapon(deagle)
 
     local fiveseven = {
         weaponClass = "cw_kk_ins2_fiveseven",
         weight = 0.61,
         pointCost = 9
     }
-    self:registerSecondaryWeapon(fiveseven)
+    self:RegisterSecondaryWeapon(fiveseven)
 
     local gsh18 = {
         weaponClass = "cw_kk_ins2_gsh18",
@@ -567,7 +567,7 @@ function GM:registerWepsCW2Soap()
         pointCost = 8,
         penMod = 1.2
     }
-    self:registerSecondaryWeapon(gsh18)
+    self:RegisterSecondaryWeapon(gsh18)
 
     local gyurza = {
         weaponClass = "cw_kk_ins2_gyurza",
@@ -575,14 +575,14 @@ function GM:registerWepsCW2Soap()
         pointCost = 10,
         penMod = 1.1
     }
-    self:registerSecondaryWeapon(gyurza)
+    self:RegisterSecondaryWeapon(gyurza)
 
     local mr96 = {
         weaponClass = "cw_kk_ins2_mr96",
         weight = 1.22,
         pointCost = 8
     }
-    self:registerSecondaryWeapon(mr96)
+    self:RegisterSecondaryWeapon(mr96)
 
     local grach = {
         weaponClass = "cw_kk_ins2_grach",
@@ -590,26 +590,26 @@ function GM:registerWepsCW2Soap()
         pointCost = 8,
         penMod = 1.25,
     }
-    self:registerSecondaryWeapon(grach)
+    self:RegisterSecondaryWeapon(grach)
 
     local sw500 = {
         weaponClass = "cw_kk_ins2_sw500",
         weight = 2.26,
         pointCost = 11,
     }
-    self:registerSecondaryWeapon(sw500)
+    self:RegisterSecondaryWeapon(sw500)
 
     local tokarev = {
         weaponClass = "cw_kk_ins2_tokarev",
         weight = 0.854,
         pointCost = 7
     }
-    self:registerSecondaryWeapon(tokarev)
+    self:RegisterSecondaryWeapon(tokarev)
 
     local p99 = {
         weaponClass = "cw_kk_ins2_p99",
         weight = 0.63,
         pointCost = 6
     }
-    self:registerSecondaryWeapon(p99)
+    self:RegisterSecondaryWeapon(p99)
 end

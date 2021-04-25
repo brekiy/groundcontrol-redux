@@ -70,15 +70,12 @@ function GM:setupStartingPoints(targetTeam, entityClass, positionList)
     if !positionList then -- if we weren't given a specific position list, get the registered points for this specific map + team
         local list = self.StartingPoints[self.CurrentMap]
 
-        if list then
-            list = list[team]
-
-            if list then
-                if list[self.curGametype.name] then
-                    positionList = list[self.curGametype.name]
-                else
-                    positionList = list
-                end
+        if list and list[targetTeam] then
+            list = list[targetTeam]
+            if list[self.curGametype.name] then
+                positionList = list[self.curGametype.name]
+            else
+                positionList = list
             end
         end
     end

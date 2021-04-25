@@ -9,23 +9,40 @@ GM.DefaultPrimaryMagCount = 3
 GM.DefaultSecondaryMagCount = 3
 
 GM.DefaultSpareAmmoCount = 0
-GM.MAX_SPARE_AMMOCount = 400
+-- GM.MAX_SPARE_AMMOCount = 400
 
 GM.MaxPrimaryMags = 5
 GM.MaxSecondaryMags = 5
 
--- Load all allowed weapon packs and registered ammo
-if GetConVar("gc_use_cw2_weps"):GetBool() then
-    include("weaponsets/cw2/sh_weps_cw2_base.lua")
-    include("weaponsets/cw2/sh_weps_cw2_khris.lua")
-    include("weaponsets/cw2/sh_weps_cw2_misc.lua")
-    include("weaponsets/cw2/sh_weps_cw2_kk.lua")
-    include("weaponsets/cw2/sh_weps_cw2_soap.lua")
-end
+-- if GetConVar("gc_use_cw2_weps"):GetBool() then
+    -- if GetConVar("gc_use_cw2_spy"):GetBool() then
+    --     include("weaponsets/cw2/sh_weps_cw2_base.lua")
+    -- end
+    -- if GetConVar("gc_use_cw2_khris"):GetBool() then
+    --     include("weaponsets/cw2/sh_weps_cw2_khris.lua")
+    -- end
+    -- if GetConVar("gc_use_cw2_misc"):GetBool() then
+    --     include("weaponsets/cw2/sh_weps_cw2_misc.lua")
+    -- end
+    -- if GetConVar("gc_use_cw2_kk_ins2"):GetBool() then
+    --     include("weaponsets/cw2/sh_weps_cw2_kk.lua")
+    -- end
+    -- if GetConVar("gc_use_cw2_kk_ext"):GetBool() then
+    --     include("weaponsets/cw2/sh_weps_cw2_ext.lua")
+    -- end
+    -- if GetConVar("gc_use_cw2_kk_btk"):GetBool() then
+    --     include("weaponsets/cw2/sh_weps_cw2_btk.lua")
+    -- end
+    -- if GetConVar("gc_use_cw2_soap"):GetBool() then
+    --     include("weaponsets/cw2/sh_weps_cw2_soap.lua")
+    -- end
+-- end
 -- if GetConVar("gc_use_tfa_weps"):GetBool() then
 --     include("weaponsets/tfa/sh_weps_tfa_ins2.lua")
 -- end
-include("weaponsets/sh_weps_calibers.lua")
+IncludeDir("weaponsets", "THIRDPARTY")
+IncludeDir("weaponsets", "WORKSHOP")
+-- include("weaponsets/sh_weps_calibers.lua")
 
 if CLIENT then
     include("cl_loadout.lua")
@@ -122,7 +139,7 @@ function GM:disableDropsForWeapon(wepClass)
     wepObj.dropsDisabled = true
 end
 
-function GM:registerPrimaryWeapon(weaponData)
+function GM:RegisterPrimaryWeapon(weaponData)
     if checkWeaponExists(weaponData.weaponClass) then
         weaponData.id = weaponData.id or weaponData.weaponClass
         self.RegisteredWeaponData[weaponData.id] = weaponData
@@ -131,7 +148,7 @@ function GM:registerPrimaryWeapon(weaponData)
     end
 end
 
-function GM:registerSecondaryWeapon(weaponData)
+function GM:RegisterSecondaryWeapon(weaponData)
     if checkWeaponExists(weaponData.weaponClass) then
         weaponData.id = weaponData.id or weaponData.weaponClass
         self.RegisteredWeaponData[weaponData.id] = weaponData
@@ -207,7 +224,7 @@ function GM:parseTFAWeapon(data)
     return output
 end
 
-function GM:findBestWeapons(lookInto, output)
+function GM:FindBestWeapons(lookInto, output)
     for key, weaponData in ipairs(lookInto) do
         local wepObj = weaponData.weaponObject
         -- We need a separate field otherwise TFA breaks
@@ -254,31 +271,48 @@ end
 
 -- this function gets called in InitPostEntity for both the client and server, this is where we register a bunch of stuff
 function GM:postInitEntity()
-    -- Load all allowed weapon packs and registered ammo
-    -- Weapon packs
-    if GetConVar("gc_use_cw2_weps"):GetBool() then
-        GAMEMODE:registerWepsCW2Base()
-    end
-    -- if GetConVar("gc_use_tfa_weps"):GetBool() then
-    --     GAMEMODE:registerWepsTFAIns2()
-    -- end
-    -- Ammo definitions
-    GAMEMODE:registerCalibers()
+
     -- KNIFE, give it 0 weight and make it undroppable (can't shoot out of hand, can't drop when dying)
     local wepObj = weapons.GetStored(self.KnifeWeaponClass)
     wepObj.weight = 0
     wepObj.dropsDisabled = true
     wepObj.isKnife = true
     wepObj.pointCost = 0
-
+    -- Load all allowed weapon packs and registered ammo
+    if GetConVar("gc_use_cw2_weps"):GetBool() then
+        if GetConVar("gc_use_cw2_spy"):GetBool() then
+            self:RegisterWepsCW2Base()
+        end
+        if GetConVar("gc_use_cw2_khris"):GetBool() then
+            self:RegisterWepsCW2Khris()
+        end
+        if GetConVar("gc_use_cw2_misc"):GetBool() then
+            self:RegisterWepsCW2Misc()
+        end
+        if GetConVar("gc_use_cw2_kk_ins2"):GetBool() then
+            self:RegisterWepsCW2KK()
+        end
+        if GetConVar("gc_use_cw2_kk_ext"):GetBool() then
+            self:RegisterWepsCW2KKEXT()
+        end
+        if GetConVar("gc_use_cw2_kk_btk"):GetBool() then
+            self:RegisterWepsCW2KKBTK()
+        end
+        if GetConVar("gc_use_cw2_soap"):GetBool() then
+            self:RegisterWepsCW2Soap()
+        end
+    end
+    self:RegisterCalibers()
     hook.Call("GroundControlPostInitEntity", nil)
 
-    self:findBestWeapons(self.PrimaryWeapons, BestPrimaryWeapons)
-    self:findBestWeapons(self.SecondaryWeapons, BestSecondaryWeapons)
+    self:FindBestWeapons(self.PrimaryWeapons, BestPrimaryWeapons)
+    self:FindBestWeapons(self.SecondaryWeapons, BestSecondaryWeapons)
     weapons.GetStored("cw_base").AddSafeMode = false -- disable safe firemode
+    -- reduce/disable annoying camera effects from cw base
     weapons.GetStored("cw_base").RVBPitchMod = 0.4
     weapons.GetStored("cw_base").RVBYawMod = 0.4
     weapons.GetStored("cw_base").RVBRollMod = 0.4
+    weapons.GetStored("cw_base").HipFireFOVIncrease = false
 
     if CLIENT then
         self:CreateMusicObjects()

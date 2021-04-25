@@ -16,11 +16,11 @@ function GM:RegisterNewGametype(gametypeData)
 end
 
 function GM:SetGametype(gameTypeID)
-    self.CurGametypeID = gameTypeID
-    self.CurGametype = self.Gametypes[gameTypeID]
+    self.curGametypeID = gameTypeID
+    self.curGametype = self.Gametypes[gameTypeID]
 
-    if self.CurGametype.Prepare then
-        self.CurGametype:Prepare()
+    if self.curGametype.Prepare then
+        self.curGametype:Prepare()
     end
 
     if SERVER then
@@ -124,7 +124,6 @@ function GM:InitializeGameTypeEntities(gameType)
             objEnt:Spawn()
 
             GAMEMODE.entityInitializer:InitEntity(objEnt, gameType, data)
-
             table.insert(gameType.objectiveEnts, objEnt)
         end
     end

@@ -105,11 +105,11 @@ function PLAYER:spawn()
 end
 
 -- called upon the start of a new round
-function GM:roundPreparation(preparationTime)
+function GM:RoundPreparation(preparationTime)
     self:ResetAllStatusEffects()
     LocalPlayer():spawn()
     self:createRoundPreparationDisplay(preparationTime)
-    self:destroyMVPPanel()
+    self:DestroyMVPPanel()
 end
 
 -- called upon the end of a round
@@ -121,7 +121,7 @@ function GM:ResetRoundData()
     end
 end
 
-function GM:clearObjectiveEntities()
+function GM:ClearObjectiveEntities()
     table.Empty(self.ObjectiveEntities)
 end
 
@@ -150,11 +150,11 @@ function GM:onPlayerDied(ply, data)
     end
 end
 
-function GM:addObjectiveEntity(obj)
+function GM:AddObjectiveEntity(obj)
     table.insert(self.ObjectiveEntities, obj)
 end
 
-function GM:removeObjectiveEntity(obj)
+function GM:RemoveObjectiveEntity(obj)
     for key, otherObj in ipairs(self.ObjectiveEntities) do
         if obj == otherObj then
             table.remove(self.ObjectiveEntities, key)
@@ -167,11 +167,11 @@ function GM:clearDrawEntities()
     table.Empty(self.DrawEntities)
 end
 
-function GM:addDrawEntity(obj)
+function GM:AddDrawEntity(obj)
     table.insert(self.DrawEntities, obj)
 end
 
-function GM:removeDrawEntity(obj)
+function GM:RemoveDrawEntity(obj)
     for key, otherObj in ipairs(self.DrawEntities) do
         if obj == otherObj then
             table.remove(self.DrawEntities, key)
@@ -192,7 +192,7 @@ function GM:resetVisualStamina()
     data.soundTime = 0
 end
 
-function GM:setLoadoutAvailabilityInfo(position, maxDuration)
+function GM:SetLoadoutAvailabilityInfo(position, maxDuration)
     self.loadoutPosition = position
     self.loadoutDuration = maxDuration
 end

@@ -17,7 +17,7 @@ function GM:DrawTimeLimit()
     end
 end
 
-function GM:SetTimeLimit(start, duration)
+function GM:SetClientTimeLimit(start, duration)
     self.TimeLimit = duration
     self.RoundStart = start
     self.RoundTime = start + duration
@@ -26,5 +26,5 @@ end
 net.Receive("GC_TIMELIMIT", function(a, b)
     local start = net.ReadFloat()
     local duration = net.ReadFloat()
-    GAMEMODE:SetTimeLimit(start, duration)
+    GAMEMODE:SetClientTimeLimit(start, duration)
 end)

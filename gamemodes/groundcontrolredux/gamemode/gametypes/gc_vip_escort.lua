@@ -9,7 +9,7 @@ AddCSLuaFile()
 --]]
 
 -- TODO
-function GM:registerVIPEscort()
+function GM:RegisterVIPEscort()
     local vipEscort = {}
     vipEscort.name = "vip_escort"
     vipEscort.prettyName = "VIP Escort"
@@ -21,6 +21,12 @@ function GM:registerVIPEscort()
 
     if SERVER then
         vipEscort.mapRotation = GM:GetMapRotation("vip_escort_maps")
+    end
+
+    function oneSideRush:Prepare()
+        if CLIENT then
+            RunConsoleCommand("gc_team_selection")
+        end
     end
 
     function vipEscort:PlayerSpawn(ply)

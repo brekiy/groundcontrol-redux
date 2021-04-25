@@ -71,8 +71,8 @@ GM.entityInitializer:RegisterEntityInitializeCallback("gc_offlimits_area_aabb", 
 end)
 
 GM.entityInitializer:RegisterEntityInitializeCallback("gc_urban_warfare_capture_point", function(entity, curGameType, data)
-    if data.data and data.data.capMin then
-            entity:SetCaptureAABB(data.data.capMin, data.data.capMax)
+    if data.data and data.data.capMin and data.data.capMax then
+        entity:SetCaptureAABB(data.data.capMin, data.data.capMax)
     end
 
     curGameType.capturePoint = entity
