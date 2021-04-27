@@ -68,7 +68,7 @@ function GM:Think()
         self.RadioSelection.active = false
     end
 
-    if self.curGametype and self.curGametype.think then
-        self.curGametype:think()
+    if self.curGametype and self.curGametype.Think then
+        self.curGametype:Think()
     end
 end

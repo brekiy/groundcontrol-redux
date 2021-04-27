@@ -56,8 +56,8 @@ function GM:RegisterRush()
 
             GAMEMODE:SetTimeLimit(self.timeLimit)
 
-            self.realAttackerTeam = self.attackerTeam
-            self.realDefenderTeam = self.defenderTeam
+        --     self.realAttackerTeam = self.attackerTeam
+        --     self.realDefenderTeam = self.defenderTeam
             table.Empty(self.objectiveEnts)
             self.stopCountdown = false
 
@@ -65,7 +65,7 @@ function GM:RegisterRush()
         end
     end
 
-    function oneSideRush:think()
+    function oneSideRush:Think()
         if !self.stopCountdown and GAMEMODE:HasTimeRunOut() and self:ArePointsFree() then
                 GAMEMODE:EndRound(self.realDefenderTeam)
         end
@@ -86,9 +86,10 @@ function GM:RegisterRush()
     end
 
     function oneSideRush:PlayerDisconnected(ply)
+        local plyTeam = ply:Team()
         -- nothing fancy, just skip 1 frame and call PostPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
         timer.Simple(0, function()
-            GAMEMODE:CheckRoundOverPossibility(ply:Team(), true)
+            GAMEMODE:CheckRoundOverPossibility(plyTeam, true)
         end)
     end
 

@@ -34,7 +34,7 @@ function GM:CreateMusicObject(pathToSound, outputTable)
     if outputTable then
         outputTable[#outputTable + 1] = soundObject
     end
-
+    print("[GROUND CONTROL DEBUG] created music object", pathToSound)
     return soundObject
 end
 
@@ -54,9 +54,12 @@ end
 function GM:ReplayMusic(object, volume)
     object = object or self.currentMusicObject
     volume = volume or 1
-
-    object:Stop()
-    object:PlayEx(volume, 100)
+    if !object then
+        print("[GROUND CONTROL ERROR] missing music? skipping cl_music_handler:ReplayMusic()")
+    else
+        object:Stop()
+        object:PlayEx(volume, 100)
+    end
 end
 
 function GM:FadeMusicOut(object, fadeTime)

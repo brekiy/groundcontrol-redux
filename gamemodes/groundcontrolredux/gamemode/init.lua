@@ -125,6 +125,7 @@ function GM:EntityTakeDamage(target, dmgInfo)
 
                 if IsValid(owner) and owner:IsPlayer() then
                     attacker = owner -- use the 'owner' as the attacker
+                    print("attacker is owner ", attacker:Nick())
                 end
             end
 
@@ -150,7 +151,16 @@ function GM:EntityTakeDamage(target, dmgInfo)
             end
         end
         if !dmgInfo:IsFallDamage() then
-            AddDamageLogEntry(attacker, target, dmgInfo, false)
+            local inflictor = dmgInfo:GetInflictor()
+
+            if inflictor == attacker and inflictor != ply then -- if the inflictor matches the attacker, but it wasn't a suicide
+                local wep = attacker.GetActiveWeapon and attacker:GetActiveWeapon()
+
+                if IsValid(wep) then -- and the attacker has a valid weapon
+                    inflictor = wep -- we assume that the inflictor should be the weapon
+                end
+            end
+            AddDamageLogEntry(attacker, target, dmgInfo, inflictor:GetClass(), false)
         end
     end
 end
@@ -161,28 +171,25 @@ function GM:PlayerDeathSound()
 end
 
 -- wip
-function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
+function AddDamageLogEntry(attacker, target, dmgInfo, wep, targetDied)
     local entryText = nil
     local targetNick = target:Nick()
-    -- local inflictor = dmgInfo:GetInflictor()
-    local attackerWep = nil
     local attackerNick = nil
     if attacker and attacker:IsPlayer() then
         attackerNick = attacker:Nick()
-        attackerWep = attacker:GetActiveWeapon():GetClass()
     end
     if targetDied then
         if attacker and attacker:IsPlayer() and attacker != target then
             if attacker:Team() == target:Team() then
-                entryText = Format("KILL: %s teamkilled %s with %s", attackerNick, targetNick, attackerWep)
+                entryText = Format("KILL: %s teamkilled %s with %s", attackerNick, targetNick, wep)
             else
-                entryText = Format("KILL: %s killed %s with %s", attackerNick, targetNick, attackerWep)
+                entryText = Format("KILL: %s killed %s with %s", attackerNick, targetNick, wep)
             end
         else
             entryText = Format("DEATH: %s bled out", targetNick)
         end
     elseif attacker and attacker:IsPlayer() then
-        entryText = Format("HIT: %s shot %s with %s (%f dmg)", attackerNick, targetNick, attackerWep, dmgInfo:GetDamage())
+        entryText = Format("HIT: %s shot %s with %s (%f dmg)", attackerNick, targetNick, wep, dmgInfo:GetDamage())
     end
     table.insert(GAMEMODE.DamageLog, entryText)
 end

@@ -96,7 +96,7 @@ function GM:RegisterDrugBust()
         end
     end
 
-    function ghettoDrugBust:playerDeath(ply, attacker, dmginfo)
+    function ghettoDrugBust:GCPlayerDeath(ply, attacker, dmginfo)
         if ply.hasDrugs then
             if IsValid(attacker) and ply != attacker and attacker:IsPlayer() then
                 local plyTeam = ply:Team()
@@ -148,25 +148,27 @@ function GM:RegisterDrugBust()
         net.Send(ply)
     end
 
-    function ghettoDrugBust:attemptReturnDrugs(ply, host)
+    function ghettoDrugBust:AttemptReturnDrugs(ply, host)
         local team = ply:Team()
 
         if team == ghettoDrugBust.gangTeam and ply.hasDrugs and !host:GetHasDrugs() then
             ghettoDrugBust:RemoveDrugs(ply)
 
             host:createDrugPackageObject()
-            player:AddCurrency("RETURNED_DRUGS", nil, self.cashPerDrugReturn, self.expPerDrugReturn)
+            ply:AddCurrency("RETURNED_DRUGS", nil, self.cashPerDrugReturn, self.expPerDrugReturn)
+            GAMEMODE:TrackRoundMVP(ply, "objective", 1)
             GAMEMODE:StartAnnouncement("ghetto", "drugs_retrieved", CurTime(), nil, ply)
         end
     end
 
     function ghettoDrugBust:AttemptCaptureDrugs(ply, host)
-        local team = player:Team()
+        local team = ply:Team()
 
         if team == ghettoDrugBust.swatTeam and ply.hasDrugs then
             ghettoDrugBust:RemoveDrugs(ply)
 
-            player:AddCurrency("SECURED_DRUGS", nil, self.cashPerDrugCapture, self.expPerDrugCapture)
+            ply:AddCurrency("SECURED_DRUGS", nil, self.cashPerDrugCapture, self.expPerDrugCapture)
+            GAMEMODE:TrackRoundMVP(ply, "objective", 1)
             GAMEMODE:StartAnnouncement("ghetto", "drugs_secured", CurTime(), self.gangTeam)
             return true
         end
@@ -176,9 +178,9 @@ function GM:RegisterDrugBust()
         if ply.hasDrugs then
             self:DropDrugs(ply)
         end
-
+        local plyTeam = ply:Team()
         timer.Simple(0, function() -- nothing fancy, just skip 1 frame and call PostPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
-            GAMEMODE:CheckRoundOverPossibility(ply:Team(), true)
+            GAMEMODE:CheckRoundOverPossibility(plyTeam, true)
         end)
     end
 
@@ -225,10 +227,9 @@ function GM:RegisterDrugBust()
         return nil
     end
 
-    function ghettoDrugBust:think()
+    function ghettoDrugBust:Think()
         if !self.stopCountdown and GAMEMODE:HasTimeRunOut() then
             GAMEMODE:EndRound(self.gangTeam)
-            -- local curTime = CurTime()
         end
     end
 

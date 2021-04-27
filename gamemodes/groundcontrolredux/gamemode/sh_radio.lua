@@ -98,6 +98,7 @@ GM:RegisterRadioVoiceVariant("franklin", "Franklin", nil,
     {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, {"models/player/group01/male_03.mdl", "models/player/Eli.mdl", "models/player/group01/male_01.mdl"}, true, true)
 GM:RegisterRadioVoiceVariant("trevor", "Trevor", nil,
     {"models/player/Group02/Male_04.mdl", "models/player/Group02/male_02.mdl", "models/player/Group01/male_07.mdl"}, {"models/player/Group02/Male_04.mdl", "models/player/Group02/male_02.mdl", "models/player/Group01/male_07.mdl"}, true, true)
+GM:RegisterRadioVoiceVariant("vip", "VIP", nil, "models/player/gman_high.mdl", "models/player/gman_high.mdl", true, true)
 
 function GM:registerRadioCommand(data)
     table.insert(self.RadioCommands[data.category].commands, data)
@@ -200,8 +201,7 @@ command.menuText = "Enemy spotted"
 command.displayTime = 5
 command.category = GM.RadioCategories.Combat
 command.killRangeReward = 256 -- how close enemies have to be to the marked spot for the marker to receive points for marking the spot
-command.cashReward = 10
-command.expReward = 20
+
 
 local traceData = {}
 traceData.mask = bit.bor(CONTENTS_SOLID, CONTENTS_MOVEABLE, CONTENTS_DEBRIS, CONTENTS_MONSTER, CONTENTS_HITBOX, CONTENTS_WATER)
@@ -216,7 +216,7 @@ function command:onPlayerDeath(victim, attacker, data)
         local dist = victim:GetPos():Distance(data.position)
 
         if dist <= self.killRangeReward then
-            marker:AddCurrency("SPOT_KILL", nil, self.cashReward, self.expReward)
+            marker:AddCurrency("SPOT_KILL")
             GAMEMODE:TrackRoundMVP(marker, "spotting", 1)
         end
     end
@@ -299,8 +299,6 @@ command.category = GM.RadioCategories.Combat
 command.onScreenText = "Enemy down"
 command.onScreenColor = GM.HUD_COLORS.green
 command.displayTime = 6
-command.cashReward = 5
-command.expReward = 5
 
 
 function command:send(ply, commandId, category)
@@ -310,7 +308,7 @@ function command:send(ply, commandId, category)
         end
 
         if team.GetAlivePlayers(ply:Team()) > 1 and !GAMEMODE.RoundOver then -- only give the reward if there's at least one player alive or the round hasn't ended yet
-            ply:AddCurrency("REPORT_ENEMY_DEATH", nil, self.cashReward, self.expReward)
+            ply:AddCurrency("REPORT_ENEMY_DEATH")
         end
 
         ply:resetLastKillData()

@@ -105,10 +105,10 @@ function GM:RegisterUrbanWarfare()
     end
 
     function urbanwarfare:PlayerDisconnected(ply)
-        local hisTeam = ply:Team()
+        local plyTeam = ply:Team()
 
         timer.Simple(0, function() -- nothing fancy, just skip 1 frame and call PostPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
-            self:checkTickets(hisTeam)
+            self:checkTickets(plyTeam)
         end)
     end
 

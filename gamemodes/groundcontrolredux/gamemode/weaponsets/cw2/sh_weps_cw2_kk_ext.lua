@@ -5,7 +5,7 @@ function GM:RegisterWepsCW2KKEXT()
     local colt = {
         weaponClass = "cw_kk_ins2_cstm_colt",
         weight = 2.43,
-        pointCost = 24,
+        pointCost = 22,
         penMod = 0.85
     }
     self:RegisterPrimaryWeapon(colt)

@@ -1,7 +1,7 @@
 AddCSLuaFile("cl_voting.lua")
 
 GM.VoteOptions = {}
-GM.VotedPlayers = {}
+-- GM.VotedPlayers = {}
 GM.PossibleVoteOptions = {}
 GM.VoteCallback = nil
 GM.VoteActive = false

@@ -62,8 +62,7 @@ function PLAYER:SetBleeding(bleeding)
     self.bleeding = bleeding
 
     if SERVER then
-        self:sendBleedState()
-
+        self:SendBleedState()
         if !bleeding then
             self.bleedInflictor = nil
             if (self.regenPool and self.regenPool > 0) then
@@ -75,7 +74,6 @@ end
 
 function PLAYER:SetBandages(bandages)
     bandages = bandages or GAMEMODE.DEFAULT_BANDAGES
-
     self.bandages = bandages
 
     if SERVER then
@@ -103,5 +101,6 @@ function PLAYER:GetDesiredBandageCount()
 end
 
 function GM:GetBandageWeight(bandageCount)
+    bandageCount = bandageCount or 0
     return bandageCount * self.BANDAGE_WEIGHT
 end

@@ -22,7 +22,7 @@ GM.StaminaPerJump = 5
 GM.StaminaPerJumpBaselineNoWeightPenalty = 5 -- if our weight does not exceed this much we don't get an extra stamina drain penalty from jumping
 GM.StaminaPerJumpWeightIncrease = 0.8 -- per each kilogram we will drain this much extra stamina when our weight exceeds StaminaPerJumpBaselineNoWeightPenalty
 GM.AIR_RECOIL_MULT = 1.5
-GM.AIR_SPREAD_MULT = 4
+GM.AIR_SPREAD_MULT = 2
 GM.JumpStaminaRegenDelay = 1
 GM.MAX_HEALTH = 100
 GM.VotePrepTime = 5
@@ -30,7 +30,7 @@ GM.VoteTime = GM.VotePrepTime + 20
 GM.HeavyLandingVelocity = 500
 GM.HeavyLandingVelocityToWeight = 0.03 -- multiply velocity by this much, if the final value exceeds our weight, then it is considered a heavy landing and will make extra noise
 GM.CurMap = string.lower(game.GetMap())
--- GM.VotedPlayers = {}
+GM.VotedPlayers = {}
 
 GM.RoundOverAction = {
     NEW_ROUND = 1,
@@ -68,7 +68,7 @@ CustomizableWeaponry.canOpenInteractionMenu = true
 CustomizableWeaponry.customizationEnabled = true
 CustomizableWeaponry.useAttachmentPossessionSystem = true
 CustomizableWeaponry.playSoundsOnInteract = true
-CustomizableWeaponry.physicalBulletsEnabled = false -- physical bullets for cw 2.0, unfortunately theyre kinda broken
+CustomizableWeaponry.physicalBulletsEnabled = true -- physical bullets for cw 2.0, unfortunately theyre kinda broken
 CustomizableWeaponry.suppressOnSpawnAttachments = true
 -- Override this from the weapon base to toss our special ground control frag grenade
 function CustomizableWeaponry.quickGrenade:createThrownGrenade(player)
@@ -462,11 +462,6 @@ function PLAYER:SetSpectateTarget(target)
         net.Send(self)
     end
 end
-
--- function AccessorFuncDT(tbl, varname, name)
---    tbl["Get" .. name] = function(s) return s.dt and s.dt[varname] end
---    tbl["Set" .. name] = function(s, v) if s.dt then s.dt[varname] = v end end
--- end
 
 function GM:DidPlyVote(ply)
     local result = self.VotedPlayers[ply:SteamID64()]

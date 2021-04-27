@@ -57,7 +57,6 @@ function PLAYER:CalculateWeight(withoutWeight, withWeight)
     withWeight = withWeight or 0
 
     local totalWeight = 0 - withoutWeight + withWeight
-    totalWeight = totalWeight + GAMEMODE:GetBandageWeight(self.bandages)
     totalWeight = totalWeight + GAMEMODE:GetArmorWeight("vest", self:GetDesiredVest())
     totalWeight = totalWeight + GAMEMODE:GetArmorWeight("helmet", self:GetDesiredHelmet())
 
@@ -69,10 +68,14 @@ function PLAYER:CalculateWeight(withoutWeight, withWeight)
         totalWeight = totalWeight + GAMEMODE:GetAmmoWeight(weapon.Primary.Ammo, weapon:Clip1() + self:GetAmmoCount(weapon.Primary.Ammo))
     end
 
-    for key, data in ipairs(self.gadgets) do
-        local baseData = GAMEMODE.GadgetsById[data.id]
-
-        totalWeight = totalWeight + baseData:getWeight(self, data)
+    if !self:IsBot() then
+        totalWeight = totalWeight + GAMEMODE:GetBandageWeight(self.bandages)
+        if self.gadgets then
+            for key, data in ipairs(self.gadgets) do
+                local baseData = GAMEMODE.GadgetsById[data.id]
+                totalWeight = totalWeight + baseData:getWeight(self, data)
+            end
+        end
     end
 
     return totalWeight

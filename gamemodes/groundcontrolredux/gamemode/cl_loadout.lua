@@ -214,6 +214,7 @@ function GM:toggleLoadoutMenu()
     local curPos = 0
     local curX = 0
 
+    -- Todo: optimize this
     for key, data in ipairs(self.PrimaryWeapons) do
         local modelPanel = vgui.Create("GCWeaponPanel", basePanel)
         modelPanel:SetPos(curX, curPos)

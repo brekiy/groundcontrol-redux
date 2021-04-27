@@ -204,7 +204,7 @@ function willToLive:remove(player)
     player.nextRegenTick = nil
 end
 
-function willToLive:think(player, curTime)
+function willToLive:Think(player, curTime)
     -- can only regenerate health if there isn't any damage-related health to regenerate
     local hp = player:Health()
 

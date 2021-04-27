@@ -30,6 +30,7 @@ function ENT:Initialize()
     self.noCaptureTime = 0
     self.deCaptureDelay = 0
     self.lastUpdate = 0
+    self.ownPos = self:GetPos()
 
     self:SetCaptureDistance(self.captureDistance)
 
@@ -96,12 +97,10 @@ function ENT:Think()
         return
     end
 
-    local ownPos = self:GetPos()
-
     local red, blue = team.GetPlayers(TEAM_RED), team.GetPlayers(TEAM_BLUE)
     local redPlayers, redAlive = self:GetClosePlayers(ownPos, red)
     local bluePlayers, blueAlive = self:GetClosePlayers(ownPos, blue)
-    local capturer, capturerPlayers, capturerAlive = nil, nil, nil
+    local capturer, capturerPlayers = nil, nil
     local loserPlayers = nil
 
     -- if there are equal forces on both teams, then the enemy team will begin capture
@@ -157,14 +156,17 @@ function ENT:AdvanceCapture(capSpeed, capturerTeam)
             self:SetCapturerTeam(capturerTeam)
         end
     else
-        -- self:SetCaptureSpeed(capSpeed / self.captureAmount)
         self:SetCaptureProgress(math.Approach(self:GetCaptureProgress(), self.CAPTURE_TIME, capSpeed * delta))
 
         if self.roundOverOnCapture and self:GetCaptureProgress() >= self.CAPTURE_TIME then
             self:EndWave(self:GetCapturerTeam(), true)
 
             for key, ply in ipairs(team.GetPlayers(self.capturerTeam)) do
-                ply:AddCurrency("OBJECTIVE_CAPTURED")
+                -- award people who are credit to team
+                if ply:Alive() and ply:GetPos():Distance(self.ownPos) <= self.captureDistance then
+                    GAMEMODE:TrackRoundMVP(ply, "objective", 1)
+                    ply:AddCurrency("OBJECTIVE_CAPTURED")
+                end
             end
 
             return

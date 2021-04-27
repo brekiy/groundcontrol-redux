@@ -321,51 +321,36 @@ function gcModelPanel:Paint()
         self:LayoutEntity(self.Entity)
 
         local ang = self.aLookAngle
-
-        if ( !ang ) then
-            ang = (self.vLookatPos-self.vCamPos):Angle()
+        if (!ang) then
+            ang = (self.vLookatPos - self.vCamPos):Angle()
         end
 
-        cam.Start3D( self.vCamPos, ang, self.fFOV, x, y, w, h, 5, 4096 )
+        cam.Start3D(self.vCamPos, ang, self.fFOV, x, y, w, h, 5, self.FarZ)
         cam.IgnoreZ( true )
 
-        render.SuppressEngineLighting( true )
-        render.SetLightingOrigin( self.Entity:GetPos() )
-        render.ResetModelLighting( self.colAmbientLight.r / 255, self.colAmbientLight.g / 255, self.colAmbientLight.b / 255 )
-        render.SetColorModulation( self.colColor.r / 255, self.colColor.g / 255, self.colColor.b / 255 )
-        render.SetBlend( self.colColor.a / 255 )
+        render.SuppressEngineLighting(true)
+        render.SetLightingOrigin(self.Entity:GetPos())
+        render.ResetModelLighting(self.colAmbientLight.r / 255, self.colAmbientLight.g / 255, self.colAmbientLight.b / 255)
+        render.SetColorModulation(self.colColor.r / 255, self.colColor.g / 255, self.colColor.b / 255)
+        render.SetBlend((self:GetAlpha() / 255) * (self.colColor.a / 255))
 
-        render.SetModelLighting(1, 1, 1, 1)
-
-        local sl, st, sr, sb = x, y, x + w, y + h
-        local p = self
-
-        while p:GetParent() do
-            p = p:GetParent()
-            local  pl, pt = p:LocalToScreen( 0, 0 )
-            local pr, pb = pl + p:GetWide(), pt + p:GetTall()
-            sl = sl < pl and pl or sl
-            st = st < pt and pt or st
-            sr = sr > pr and pr or sr
-            sb = sb > pb and pb or sb
+        for i = 0, 6 do
+            local col = self.DirectionalLight[i]
+            if (col) then
+                render.SetModelLighting(i, col.r / 255, col.g / 255, col.b / 255)
+            end
         end
 
-        render.SetScissorRect( sl, st, sr, sb, true )
-            self.Entity:DrawModel()
-        render.SetScissorRect(0, 0, 0, 0, false)
+        self:DrawModel()
 
-        render.SuppressEngineLighting( false )
-        cam.IgnoreZ( false )
+        render.SuppressEngineLighting(false)
+        cam.IgnoreZ(false)
         cam.End3D()
-
-        self.LastPaint = RealTime()
-
-        self:Draw2D(w, h)
     end
 end
 
-function gcModelPanel:Draw2D(w, h)
-end
+-- function gcModelPanel:Draw2D(w, h)
+-- end
 
 function gcModelPanel:SetDistance()
     self.Entity.shouldDraw = true
@@ -397,12 +382,10 @@ gcWeaponPanel.magIcon = surface.GetTextureID("ground_control/hud/mag")
 
 function gcWeaponPanel:SetWeapon(weaponTable, id)
     self.weaponID = id
-    self.weaponData = weaponTable[id]
+    local weaponData = weaponTable[id].weaponObject
 
-    local wepClass = self.weaponData.weaponObject
-
-    if wepClass then
-        self:SetModel(wepClass.WorldModel)
+    if weaponData then
+        self:SetModel(weaponData.WorldModel)
         self:SetDistance()
     end
 end
@@ -419,18 +402,19 @@ end
 function gcWeaponPanel:OnMousePressed(bind)
     local ply = LocalPlayer()
     local imaginaryCost = nil
+    local weaponData = GAMEMODE:GetWeaponData(self.weaponID, self.isPrimary)
     if self.isPrimary then
-        imaginaryCost = GAMEMODE:GetImaginaryLoadoutCost(ply, self.weaponData.weaponObject.pointCost)
+        imaginaryCost = GAMEMODE:GetImaginaryLoadoutCost(ply, weaponData.weaponObject.pointCost)
     elseif self.isPrimary != nil and !self.isPrimary then
-        imaginaryCost = GAMEMODE:GetImaginaryLoadoutCost(ply, nil, self.weaponData.weaponObject.pointCost)
+        imaginaryCost = GAMEMODE:GetImaginaryLoadoutCost(ply, nil, weaponData.weaponObject.pointCost)
     else
-        imaginaryCost = GAMEMODE:GetImaginaryLoadoutCost(ply, nil, nil, self.weaponData.weaponObject.pointCost)
+        imaginaryCost = GAMEMODE:GetImaginaryLoadoutCost(ply, nil, nil, weaponData.weaponObject.pointCost)
     end
     local canSelect = imaginaryCost <= ply:GetCurrentLoadoutPoints()
     if bind == MOUSE_LEFT and canSelect then
         GAMEMODE:saveWeaponLoadout(nil, self.isPrimary, self.ConVar)
-        GAMEMODE:setCurrentWeaponLoadout(self.weaponData.weaponObject)
-        GAMEMODE:loadWeaponLoadout(self.weaponData.weaponObject)
+        GAMEMODE:setCurrentWeaponLoadout(weaponData.weaponObject)
+        GAMEMODE:loadWeaponLoadout(weaponData.weaponObject)
         RunConsoleCommand(self.ConVar, self.weaponID)
 
         if self.isPrimary then
@@ -448,7 +432,7 @@ function gcWeaponPanel:OnMousePressed(bind)
         end
     end
     if !canSelect then
-        ply:ComplainAboutLoadout(self.weaponData.weaponObject.PrintName)
+        ply:ComplainAboutLoadout(weaponData.weaponObject.PrintName)
     end
 end
 
@@ -474,7 +458,7 @@ function gcWeaponPanel:OnCursorEntered()
             self.weaponStats = vgui.Create("GCWeaponStats")
             self.weaponStats:SetSize(250, 185)
             self.weaponStats:SetPos(x + w, y + h)
-            self.weaponStats:SetWeapon(self.weaponData, self.weaponID)
+            self.weaponStats:SetWeapon(self.weaponID, self.isPrimary)
             --self.weaponStats:SetZPos(110)
             self.weaponStats:SetDrawOnTop(true)
             self.weaponStats:SetThoroughDescription(true)
@@ -486,9 +470,8 @@ function gcWeaponPanel:OnCursorEntered()
             self.weaponStats:SetSize(250, 170)
             self.weaponStats:SetPos(x + w, y + h)
             self.weaponStats:SetDrawOnTop(true)
-
-            -- TODO: check this works or does anything
-            for key, entry in ipairs(self.weaponData.description) do
+            local weaponData = GAMEMODE:GetWeaponData(self.weaponID, self.isPrimary)
+            for key, entry in ipairs(weaponData.description) do
                 self.weaponStats:AddText(entry)
             end
         end
@@ -509,8 +492,7 @@ end
 function gcWeaponPanel:PaintOver()
     local w, h = self:GetSize()
 
-    local wepData = self.weaponData
-    local wepObject = nil
+    local wepData = GAMEMODE:GetWeaponData(self.weaponID, self.isPrimary)
     if !wepData then return end
 
     wepObject = wepData.weaponObject
@@ -738,7 +720,7 @@ function curWeaponPanel:UpdateWeapon(wepId)
     self.weaponID = wepId
     self:SetModel(self.weaponData.weaponObject.WorldModel)
     self:SetDistance()
-    self.weaponStats:SetWeapon(self.weaponData, self.weaponID)
+    self.weaponStats:SetWeapon(self.weaponID, self.isPrimary)
     self.Entity.shouldDraw = true
     self.acknowledged = false
 
@@ -831,15 +813,14 @@ function weaponStats:Init()
     self.largestTextSize = 0
 end
 
-function weaponStats:SetWeapon(weaponData, id)
+function weaponStats:SetWeapon(id, isPrimary)
     if !id then
         self:RemoveWeapon()
         return
     end
-
+    self.isPrimary = isPrimary
     self.weaponID = id
-    self.weaponData = weaponData
-    self.weaponObject = self.weaponData.weaponObject
+    self.weaponObject = GAMEMODE:GetWeaponData(self.weaponID, self.isPrimary).weaponObject
 
     local targetTable = nil
 
@@ -1898,6 +1879,7 @@ function gcArmorDisplay:UpdateArmor(direction)
     direction = direction or 0
     self.pos = math.Clamp(self.pos + direction, self.min, self.max)
     local canSelect = nil
+    local ply = LocalPlayer()
     if self.category == "vest" then
         canSelect = GAMEMODE:GetImaginaryLoadoutCost(LocalPlayer(), nil, nil, nil, GAMEMODE:GetArmorCost("vest", self.pos)) <= ply:GetCurrentLoadoutPoints()
     elseif self.category == "helmet" then

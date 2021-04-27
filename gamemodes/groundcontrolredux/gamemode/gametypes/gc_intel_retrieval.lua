@@ -37,7 +37,7 @@ function GM:RegisterIntelRetrieval()
         end
     end
 
-    function intelRetrieval:PlayerDeath(ply, attacker, dmginfo)
+    function intelRetrieval:GCPlayerDeath(ply, attacker, dmginfo)
         if ply.hasIntel then
             if IsValid(attacker) and ply != attacker and attacker:IsPlayer() then
                 local plyTeam = ply:Team()
@@ -83,6 +83,7 @@ function GM:RegisterIntelRetrieval()
         if ply.hasIntel then
             self:RemoveIntel(ply)
             ply:AddCurrency("SECURED_INTEL")
+            self:TrackRoundMVP(ply, "objective", 1)
             return true
         end
     end
@@ -92,11 +93,11 @@ function GM:RegisterIntelRetrieval()
             self:DropIntel(ply)
         end
 
-        local theirTeam = ply:Team()
+        local plyTeam = ply:Team()
 
         -- nothing fancy, just skip 1 frame and call PostPlayerDeath, since 1 frame later the player won't be anywhere in the player tables
         timer.Simple(0, function()
-            GAMEMODE:CheckRoundOverPossibility(theirTeam, true)
+            GAMEMODE:CheckRoundOverPossibility(plyTeam, true)
         end)
     end
 

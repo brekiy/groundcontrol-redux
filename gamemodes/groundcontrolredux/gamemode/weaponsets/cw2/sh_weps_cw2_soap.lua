@@ -74,7 +74,7 @@ function GM:RegisterWepsCW2Soap()
     local asval = {
         weaponClass = "cw_kk_ins2_asval",
         weight = 2.6,
-        pointCost = 28
+        pointCost = 23
     }
     self:RegisterPrimaryWeapon(asval)
 
@@ -340,7 +340,7 @@ function GM:RegisterWepsCW2Soap()
     local vss = {
         weaponClass = "cw_kk_ins2_vss",
         weight = 2.6,
-        pointCost = 27
+        pointCost = 23
     }
     self:RegisterPrimaryWeapon(vss)
 

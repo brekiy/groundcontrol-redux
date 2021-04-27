@@ -24,6 +24,7 @@ function ENT:Initialize()
     self.captureDelay = 0
     self.deCaptureDelay = 0
     self.winDelay = 0
+    self.ownPos = self:GetPos()
 
     self:SetCaptureDistance(self.captureDistance)
 
@@ -50,6 +51,11 @@ function ENT:Think()
     end
 
     if self.roundOverOnCapture and self:GetCaptureProgress() >= self.CAPTURE_TIME then
+        for key, ply in ipairs(team.GetPlayers(self:GetCapturerTeam())) do
+            if ply:Alive() and ply:GetPos():Distance(self.ownPos) <= self.captureDistance then
+                GAMEMODE:TrackRoundMVP(ply, "objective", 1)
+            end
+        end
         GAMEMODE:EndRound(self:GetCapturerTeam())
         return
     end
@@ -57,15 +63,9 @@ function ENT:Think()
     local curTime = CurTime()
     local defendingPlayers = 0
 
-    local ownPos = self:GetPos()
-
     for key, ply in ipairs(team.GetPlayers(self:GetDefenderTeam())) do
-        if ply:Alive() then
-            local dist = ply:GetPos():Distance(ownPos)
-
-            if dist <= self.captureDistance then
-                defendingPlayers = defendingPlayers + 1
-            end
+        if ply:Alive() and ply:GetPos():Distance(self.ownPos) <= self.captureDistance then
+            defendingPlayers = defendingPlayers + 1
         end
     end
 
@@ -73,12 +73,8 @@ function ENT:Think()
 
     if defendingPlayers == 0 then
         for key, ply in ipairs(team.GetPlayers(self:GetCapturerTeam())) do
-            if ply:Alive() then
-                local dist = ply:GetPos():Distance(ownPos)
-
-                if dist <= self.captureDistance then
-                    capturingPlayers = capturingPlayers + 1
-                end
+            if ply:Alive() and ply:GetPos():Distance(self.ownPos) <= self.captureDistance then
+                capturingPlayers = capturingPlayers + 1
             end
         end
     end

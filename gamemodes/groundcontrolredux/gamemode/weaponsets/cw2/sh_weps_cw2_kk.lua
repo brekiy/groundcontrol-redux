@@ -76,7 +76,7 @@ function GM:RegisterWepsCW2KK()
     local m1a1 = {
         weaponClass = "cw_kk_ins2_m1a1",
         weight = 2.6,
-        pointCost = 18,
+        pointCost = 17,
     }
     self:RegisterPrimaryWeapon(m1a1)
 
@@ -113,8 +113,8 @@ function GM:RegisterWepsCW2KK()
     local m40a1 = {
         weaponClass = "cw_kk_ins2_m40a1",
         weight = 6.57,
-        pointCost = 26,
-        penMod = 1.2
+        pointCost = 24,
+        penMod = 1.1
     }
     self:RegisterPrimaryWeapon(m40a1)
 
@@ -143,8 +143,8 @@ function GM:RegisterWepsCW2KK()
     local mosin = {
         weaponClass = "cw_kk_ins2_mosin",
         weight = 4,
-        pointCost = 24,
-        penMod = 1.15
+        pointCost = 22,
+        -- penMod = 1.15
     }
     self:RegisterPrimaryWeapon(mosin)
 

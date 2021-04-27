@@ -7,6 +7,8 @@ local noDraw = {
     CHudDamageIndicator = true
 }
 
+-- TODO: custom hud
+
 -- use a separate hook, since otherwise GM:HUDPaint wouldn't work
 local function CW_HUDShouldDraw(n)
     if noDraw[n] then

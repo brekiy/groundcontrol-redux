@@ -173,7 +173,7 @@ function GM:PlayerSpawn(ply)
     end
 
     ply:SetupHands()
-    -- ply:Give(self.KnifeWeaponClass)
+    ply:Give(self.KnifeWeaponClass)
 
     return true
 end
@@ -181,7 +181,6 @@ end
 function GM:DoPlayerDeath(ply, attacker, dmgInfo)
     ply:dropWeaponNicely(nil, VectorRand() * 20, VectorRand() * 200)
     ply:EmitSound("GC_DEATH_SOUND")
-
     if IsValid(attacker) and attacker:IsPlayer() then
         if attacker:Team() != ply:Team() then
             attacker.lastKillData.position = ply:GetPos()
@@ -215,6 +214,9 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
 
             if IsValid(wep) then -- and the attacker has a valid weapon
                 inflictor = wep -- we assume that the inflictor should be the weapon
+                -- if wep.isPrimary != nil and !wep.isPrimary then
+                --     self:TrackRoundMVP(attacker, "pistol_kills", 1)
+                -- end
             end
         end
 
@@ -243,11 +245,11 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
                 end
             end
         end
-        AddDamageLogEntry(attacker, ply, dmgInfo, true)
+        AddDamageLogEntry(attacker, ply, dmgInfo, inflictor:GetClass(), true)
     end
 
-    if self.curGametype.playerDeath then
-        self.curGametype:playerDeath(ply, attacker, dmginfo)
+    if self.curGametype.GCPlayerDeath then
+        self.curGametype:GCPlayerDeath(ply, attacker, dmgInfo)
     end
 
     ply.spawnWait = CurTime() + 5
@@ -378,7 +380,6 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
 
     ply:SetStamina(ply.stamina - damage)
     ply:Suppress(4, 0.25)
-
     if IsValid(attacker) and attacker:IsPlayer() then
         local penValue = nil
 
@@ -509,15 +510,22 @@ function PLAYER:dropWeaponNicely(wepObj, velocity, angleVelocity) -- velocity an
     wepObj = wepObj or self:GetActiveWeapon()
 
     if IsValid(wepObj) and wepObj.dropsDisabled then
-            return
+        return
     end
+    -- TODO (brekiy): make this more general for other bases in the future
+    local testPhysObj = ents.Create("cw_dropped_weapon")
+    testPhysObj:setWeapon(wepObj)
+    if testPhysObj:GetPhysicsObject() then
+        local pos = self:EyePos()
+        local ang = self:EyeAngles()
 
-    local pos = self:EyePos()
-    local ang = self:EyeAngles()
+        pos = pos + ang:Right() * 6 + ang:Forward() * 40 - ang:Up() * 5
 
-    pos = pos + ang:Right() * 6 + ang:Forward() * 40 - ang:Up() * 5
-
-    CustomizableWeaponry:dropWeapon(self, wepObj, velocity, angleVelocity, pos, ang)
+        CustomizableWeaponry:dropWeapon(self, wepObj, velocity, angleVelocity, pos, ang)
+    else
+        CustomizableWeaponry:dropWeapon(self)
+    end
+    testPhysObj:Remove()
 end
 
 function PLAYER:storeAttacker(attacker, dmgInfo)

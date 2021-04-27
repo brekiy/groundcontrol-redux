@@ -21,18 +21,18 @@ GM.entityInitializer:RegisterEntityInitializeCallback("gc_capture_point", functi
 
         if data.data.capturerTeam then
             entity:SetCapturerTeam(data.data.capturerTeam)
-            curGameType.realAttackerTeam = data.data.capturerTeam
+            -- curGameType.realAttackerTeam = data.data.capturerTeam
         else
             entity:SetCapturerTeam(curGameType.attackerTeam)
-            curGameType.realAttackerTeam = curGameType.attackerTeam
+            -- curGameType.realAttackerTeam = curGameType.attackerTeam
         end
 
         if data.data.defenderTeam then
             entity:SetDefenderTeam(data.data.defenderTeam)
-            curGameType.realDefenderTeam = data.data.defenderTeam
+            -- curGameType.realDefenderTeam = data.data.defenderTeam
         else
             entity:SetDefenderTeam(curGameType.defenderTeam)
-            curGameType.realDefenderTeam = curGameType.defenderTeam
+            -- curGameType.realDefenderTeam = curGameType.defenderTeam
         end
     else
         entity:SetCapturerTeam(curGameType.attackerTeam)
@@ -91,7 +91,7 @@ end)
 
 GM.entityInitializer:RegisterEntityInitializeCallback("gc_drug_point", function(entity, curGameType, data)
     entity:FreezeNearbyProps()
-    entity:SetHasDrugs(true)
+    entity:SpawnDrugs()
 end)
 
 GM.entityInitializer:RegisterEntityInitializeCallback("gc_intel_spawn_point", function(entity, curGameType, data)
@@ -107,5 +107,23 @@ GM.entityInitializer:RegisterEntityInitializeCallback("gc_intel_capture_point", 
         if data.data.capturerTeam then
             entity:SetCapturerTeam(data.data.capturerTeam)
         end
+    end
+end)
+
+GM.entityInitializer:RegisterEntityInitializeCallback("gc_vip_escape_point", function(entity, curGameType, data)
+    if data.data then
+        if data.data.vipTeam then
+            entity:SetVIPTeam(data.data.vipTeam)
+            -- curGameType.realVIPTeam = data.data.vipTeam
+        else
+            entity:SetVIPTeam(curGameType.vipTeam)
+            -- curGameType.realVIPTeam = curGameType.vipTeam
+        end
+
+        if data.data.escapeDistance then
+            entity:SetEscapeDistance(data.data.escapeDistance)
+        end
+    else
+        entity:SetVIPTeam(curGameType.vipTeam)
     end
 end)

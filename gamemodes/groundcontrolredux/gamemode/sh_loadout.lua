@@ -257,8 +257,10 @@ function GM:FindBestWeapons(lookInto, output)
 end
 
 function GM:GetAmmoWeight(caliber, roundCount)
+    caliber = string.lower(caliber)
     roundCount = roundCount or 1
-    return self.Calibers[caliber] and self.Calibers[caliber].weight * roundCount or 0
+    return self.Calibers[caliber] and self.Calibers[caliber].weight * roundCount or
+        (self.Calibers[self.CaliberAliases[caliber]] and self.Calibers[self.CaliberAliases[caliber]].weight or 0)
 end
 
 function GM:GetAmmoPen(caliber, penMod)
@@ -313,6 +315,7 @@ function GM:postInitEntity()
     weapons.GetStored("cw_base").RVBYawMod = 0.4
     weapons.GetStored("cw_base").RVBRollMod = 0.4
     weapons.GetStored("cw_base").HipFireFOVIncrease = false
+    -- weapons.GetStored("cw_base").LuaViewmodelRecoil = false
 
     if CLIENT then
         self:CreateMusicObjects()

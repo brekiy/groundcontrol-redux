@@ -35,7 +35,6 @@ function PLAYER:giveLoadout(forceGive)
         return
     end
 
-
     self:StripWeapons()
     self:RemoveAllAmmo()
     self:ResetGadgetData()
@@ -119,9 +118,7 @@ function PLAYER:giveLoadout(forceGive)
             plyObj:AttemptGiveLoadoutAmmo(tertiaryData)
             plyObj:AttemptPostGiveWeapon(tertiaryData)
         end
-
         plyObj:SetWeight(plyObj:CalculateWeight())
-
         if plyObj.weight >= GAMEMODE.MAX_HEIGHT * 0.65 then
             plyObj:SendTip("HIGH_WEIGHT")
         end
@@ -139,8 +136,6 @@ function PLAYER:giveLoadout(forceGive)
         self:GiveGCArmor("vest")
         self:GiveGCArmor("helmet")
     end
-
-    self:Give(GAMEMODE.KnifeWeaponClass)
 end
 
 --[[

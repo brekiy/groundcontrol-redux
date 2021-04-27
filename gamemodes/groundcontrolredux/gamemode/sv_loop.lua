@@ -1,6 +1,6 @@
 function GM:Think()
-    if self.curGametype.think then
-        self.curGametype:think()
+    if self.curGametype.Think then
+        self.curGametype:Think()
     end
 
     local curTime = CurTime()
@@ -62,7 +62,7 @@ function GM:Think()
                 local traitData = traits[traitConfig[1]][traitConfig[2]]
 
                 if traitData.think then
-                    traitData:think(ply, curTime)
+                    traitData:Think(ply, curTime)
                 end
             end
         end

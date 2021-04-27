@@ -4,6 +4,7 @@ include("gametypes/gc_drug_bust.lua")
 include("gametypes/gc_urban_warfare.lua")
 include("gametypes/gc_rush.lua")
 include("gametypes/gc_intel_retrieval.lua")
+include("gametypes/gc_vip_escort.lua")
 
 GM.Gametypes = {}
 GM.GametypesByName = {}
@@ -147,3 +148,4 @@ GM:RegisterRush()
 GM:RegisterUrbanWarfare()
 GM:RegisterDrugBust()
 GM:RegisterIntelRetrieval()
+GM:RegisterVIPEscort()

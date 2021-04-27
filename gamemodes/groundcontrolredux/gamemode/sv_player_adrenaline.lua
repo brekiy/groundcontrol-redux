@@ -30,6 +30,9 @@ if !FULL_INIT and SERVER then
     -- physical bullets mess with this right now due to having no effective range, could maybe change this to use damage?
     CustomizableWeaponry.callbacks:addNew("bulletCallback", "GroundControl_bulletCallback", function(wep, ply, traceResult, dmgInfo)
         local effectiveRange = wep.EffectiveRange
+        if !effectiveRange then
+            effectiveRange = weapons.Get(wep.weapon):getEffectiveRange()
+        end
         local rangeInMeters = (effectiveRange or 90) / 39.37 -- convert back to meters
         local suppressionRange = math.Clamp(GAMEMODE.StartingSuppressionRange + rangeInMeters * 0.2, GAMEMODE.MinimumSuppressionRange, GAMEMODE.MaximumSuppressionRange)
         local suppressionSpeedChange = rangeInMeters * 0.0002

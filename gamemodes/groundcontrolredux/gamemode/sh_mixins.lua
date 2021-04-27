@@ -102,6 +102,16 @@ function GCGetMagCapacity(wep)
     return mag
 end
 
+function GM:GetWeaponData(id, isPrimary)
+    if isPrimary then
+        return GAMEMODE.PrimaryWeapons[id]
+    elseif isPrimary != nil and !isPrimary then
+        return GAMEMODE.SecondaryWeapons[id]
+    else
+        return GAMEMODE.TertiaryWeapons[id]
+    end
+end
+
 if CLIENT then
     draw.VERTICAL = 1
     draw.HORIZONTAL = 2

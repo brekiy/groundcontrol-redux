@@ -169,6 +169,11 @@ function GM:EndRound(winningTeam)
     hook.Call("GroundControlPostRoundEnded", nil, winningTeam)
 
     self.MVPTracker:resetAllTrackedIDs()
+
+    -- Get rid of all this stuff, some callback in Knife Kitty's base breaks when some weapons are lying around and round restarts
+    for key, ent in ipairs(ents.FindByClass("cw_dropped_weapon")) do
+        SafeRemoveEntity(ent)
+    end
 end
 
 function GM:startVoteMap()

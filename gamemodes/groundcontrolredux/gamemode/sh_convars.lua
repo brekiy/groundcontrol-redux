@@ -10,8 +10,8 @@ CreateConVar("gc_stamina_run_impact", 1.3, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_R
 CreateConVar("gc_stamina_aim_shake_factor", 0.025, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "aim shake factor when tired, set to 0 if you dont like it", 0)
 
 -- Movement cvars
-CreateConVar("gc_base_run_speed", 300, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base run speed", 170)
-CreateConVar("gc_base_walk_speed", 130, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base walk speed", 100)
+CreateConVar("gc_base_run_speed", 270, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base run speed", 170)
+CreateConVar("gc_base_walk_speed", 150, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base walk speed - if this gets too low, cw2 viewmodels start getting this really ugly jitter", 100)
 
 -- Adrenaline cvars
 CreateConVar("gc_adrenaline_maxspeed_increase", 0.1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})

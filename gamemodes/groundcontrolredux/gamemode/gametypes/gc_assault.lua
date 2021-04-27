@@ -43,7 +43,7 @@ function GM:registerAssault()
         end
     end
 
-    function assault:think()
+    function assault:Think()
         if !self.stopCountdown then
             if GAMEMODE:HasTimeRunOut() and self:ArePointsFree() then
                 GAMEMODE:EndRound(self.defenderTeam)

@@ -18,7 +18,7 @@ function PLAYER:bleed(silentBleed)
         self:EmitSound("GC_BLEED_SOUND")
     end
     local plyTrace = util.GetPlayerTrace(self, Vector(0, 0, -1))
-    util.Decal("Blood", plyTrace.start, plyTrace.endpos)
+    util.Decal("Blood", plyTrace.start, plyTrace.endpos, self)
 end
 
 function PLAYER:delayBleed(time)
@@ -32,6 +32,8 @@ function PLAYER:postBleed()
 
         if IsValid(self.bleedInflictor) then -- reward whoever caused us to bleed
             self.bleedInflictor:AddCurrency("BLEED_OUT_KILL", self)
+            self.bleedInflictor:AddFrags(1)
+            GAMEMODE:TrackRoundMVP(self.bleedInflictor, "kills", 1)
             self.bleedInflictor = nil
         end
     end
@@ -47,7 +49,7 @@ function PLAYER:startBleeding(bleedInflictor)
     self:SetBleeding(true)
 end
 
-function PLAYER:sendBleedState()
+function PLAYER:SendBleedState()
     net.Start("GC_BLEEDSTATE")
     net.WriteBool(self.bleeding)
     net.Send(self)

@@ -180,7 +180,7 @@ mvpTracker.registerData({
 
 mvpTracker.registerData({
     id = "headshots",
-    name = "Head Hunter",
+    name = "Boom, Headshot",
     text = "Most kills",
     formatText = function(self, amount)
         if amount == 1 then
@@ -234,6 +234,28 @@ mvpTracker.registerData({
         return amount .. " rounds given"
     end,
     weight = 2
+})
+
+-- mvpTracker.registerData({
+--     id = "pistol_kills",
+--     name = "Hard Boiled",
+--     minimum = 2,
+--     text = "Most kills",
+--     formatText = function(self, amount)
+--         return amount .. " sidearm kills"
+--     end,
+--     weight = 100
+-- })
+
+mvpTracker.registerData({
+    id = "objective",
+    name = "Play the fucking objective",
+    minimum = 1,
+    text = "Most objectives achieved",
+    formatText = function(self, amount)
+        return amount .. " objectives"
+    end,
+    weight = 150
 })
 
 net.Receive("GC_MVP", function(a, b)

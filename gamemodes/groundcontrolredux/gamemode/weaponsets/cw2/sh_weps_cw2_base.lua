@@ -55,7 +55,7 @@ function GM:RegisterWepsCW2Base()
     local vss = {
         weaponClass = "cw_vss",
         weight = 2.6,
-        pointCost = 26
+        pointCost = 23
     }
     GAMEMODE:RegisterPrimaryWeapon(vss)
 
