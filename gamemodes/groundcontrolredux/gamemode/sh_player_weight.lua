@@ -1,11 +1,11 @@
 AddCSLuaFile()
 
 -- weight is in kilograms
-GM.MAX_HEIGHT = 40
+GM.MAX_WEIGHT = 40
 -- factor to reduce runspeed by
 GM.MaxSpeedDecrease = 0.05
 -- Difference between "max weight" (since there's no limit to how much your dude can carry right now) and min runspeed impact threshold
-GM.MaxSpeedDecreaseWeightDelta = GM.MAX_HEIGHT - GetConVar("gc_weight_min_level_speed_decrease"):GetFloat()
+GM.MaxSpeedDecreaseWeightDelta = GM.MAX_WEIGHT - GetConVar("gc_weight_min_level_speed_decrease"):GetFloat()
 
 local PLAYER = FindMetaTable("Player")
 
@@ -94,7 +94,7 @@ end
 
 function PLAYER:GetStaminaDrainWeightModifier(weight)
     weight = weight or self.weight
-    return 1 + (weight / GAMEMODE.MAX_HEIGHT) * GetConVar("gc_weight_stamina_drain"):GetFloat()
+    return 1 + (weight / GAMEMODE.MAX_WEIGHT) * GetConVar("gc_weight_stamina_drain"):GetFloat()
 end
 
 function PLAYER:SetWeight(weight)
@@ -102,7 +102,7 @@ function PLAYER:SetWeight(weight)
 end
 
 function PLAYER:CanCarryWeight(desiredWeight)
-    return desiredWeight < GAMEMODE.MAX_HEIGHT
+    return desiredWeight < GAMEMODE.MAX_WEIGHT
 end
 
 function PLAYER:GetWeightRunSpeedModifier()

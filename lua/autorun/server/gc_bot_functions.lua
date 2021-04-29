@@ -57,7 +57,7 @@ end)
 -- end)
 
 hook.Add("StartCommand", "StartCommandExample", function( ply, cmd )
-    if ( !ply:IsBot() or !ply:Alive() ) then return end
+    if (!ply:IsBot() or !ply:Alive() or engine.ActiveGamemode() != "groundcontrolredux") then return end
 
     if ply.nav:IsValid() == false then
         ply.nav = ents.Create("gc_nextbot")

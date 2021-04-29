@@ -955,7 +955,7 @@ function weightBar:Paint()
 
     local ply = LocalPlayer()
     local curWeight = GAMEMODE:CalculateImaginaryWeight(ply)
-    local weightPercentage = curWeight / GAMEMODE.MAX_HEIGHT
+    local weightPercentage = curWeight / GAMEMODE.MAX_WEIGHT
 
     surface.SetDrawColor(213, 213, 213, 255)
     surface.DrawRect(2, 2, (w - 4) * weightPercentage, h - 4)
@@ -965,7 +965,7 @@ function weightBar:Paint()
     draw.ShadowText("Stamina drain: +" .. math.Round((ply:GetStaminaDrainWeightModifier(curWeight) - 1) * 100, 1) .. "%", "CW_HUD16", 5, h * 0.5 - 1, GAMEMODE.HUD_COLORS.lightRed, Black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     draw.ShadowText("Noise factor: +" .. math.Round(ply:GetWeightFootstepNoiseAffector(curWeight), 1), "CW_HUD16", w - 5, h * 0.5 - 1, GAMEMODE.HUD_COLORS.lightRed, Black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
-    draw.ShadowText("Weight: " .. math.Round(curWeight, 2) .. "/" .. GAMEMODE.MAX_HEIGHT .. "KG", "CW_HUD16", w * 0.5, h * 0.5 - 1, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.ShadowText("Weight: " .. math.Round(curWeight, 2) .. "/" .. GAMEMODE.MAX_WEIGHT .. "KG", "CW_HUD16", w * 0.5, h * 0.5 - 1, White, Black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 function weightBar:OnCursorEntered()

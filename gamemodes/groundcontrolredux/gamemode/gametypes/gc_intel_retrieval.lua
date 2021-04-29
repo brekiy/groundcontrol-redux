@@ -62,11 +62,16 @@ function GM:RegisterIntelRetrieval()
         ply.hasIntel = false
         ply.intel:Drop()
         ply.intel = nil
+        net.Start("GC_INTEL_REMOVED")
+        net.Send(ply)
     end
 
     function intelRetrieval:ResetRoundData()
         for key, ply in ipairs(player.GetAll()) do
             ply.hasIntel = false
+            if ply.intel then
+                ply.intel:Remove()
+            end
             ply.intel = nil
         end
     end

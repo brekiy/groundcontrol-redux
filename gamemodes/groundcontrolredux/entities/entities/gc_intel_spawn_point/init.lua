@@ -32,8 +32,6 @@ function ENT:FreezeNearbyProps()
 end
 
 function ENT:CreateIntelObject()
-    local randAngle = AngleRand()
-
     local pos = self:GetPos()
     pos.z = pos.z + 6
 
@@ -42,8 +40,6 @@ function ENT:CreateIntelObject()
     ent:SetAngles(Angle(0, randAngle.y, randAngle.r))
     ent:Spawn()
     ent:SetHost(self)
-
-    -- self:SetHasIntel(true)
 end
 
 function ENT:UpdateTransmitState()

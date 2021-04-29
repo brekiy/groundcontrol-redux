@@ -39,7 +39,19 @@ function ENT:Use(activator, caller)
         self:SetMoveType(MOVETYPE_NONE)
         self:SetSolid(SOLID_NONE)
         self:SetDropped(false)
+        local bone = activator:LookupBone("ValveBiped.Bip01_Spine2")
+        if bone then
+            local pos, ang = activator:GetBonePosition(bone)
+            pos = pos - ang:Up() * Vector(0, 0, 10) + ang:Forward() * Vector(-7, -15, 0)
+            self:SetPos(pos)
+            self:SetAngles(ang)
+        else
+            local pos = activator:GetPos()
+            pos.z = pos.z + 50
+            self:SetPos(pos)
+        end
         self:SetParent(activator)
+
     end
 end
 
@@ -54,29 +66,27 @@ end
 function ENT:Drop()
     local ply = self:GetParent()
     self:SetParent(nil)
+    self:SetUseType(SIMPLE_USE)
     local pos = self:GetPos()
     pos.z = pos.z + 20
 
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
+    self:SetDropped(true)
 
     -- physics push
     local phys = self:GetPhysicsObject()
     if IsValid(phys) then
-       phys:SetMass(10)
+        print("gc debug intel drop, valid phys object")
+        phys:SetMass(10)
 
-       if IsValid(ply) then
-          phys:SetVelocityInstantaneous(ply:GetVelocity())
-       end
+        if IsValid(ply) then
+            phys:SetVelocityInstantaneous(ply:GetVelocity())
+        end
 
-       if !dir then
-          phys:ApplyForceCenter(Vector(0, 0, 1200))
-       else
-          phys:ApplyForceCenter(Vector(0, 0, 700) + dir * 500)
-       end
-
-       phys:AddAngleVelocity(VectorRand() * 200)
-       phys:Wake()
+        phys:ApplyForceCenter(Vector(0, 0, -100))
+        phys:AddAngleVelocity(VectorRand() * 200)
+        phys:Wake()
     end
 end

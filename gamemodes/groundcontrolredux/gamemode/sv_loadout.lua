@@ -119,15 +119,15 @@ function PLAYER:giveLoadout(forceGive)
             plyObj:AttemptPostGiveWeapon(tertiaryData)
         end
         plyObj:SetWeight(plyObj:CalculateWeight())
-        if plyObj.weight >= GAMEMODE.MAX_HEIGHT * 0.65 then
+        if plyObj.weight >= GAMEMODE.MAX_WEIGHT * 0.65 then
             plyObj:SendTip("HIGH_WEIGHT")
         end
     end)
 
     self:giveGadgets()
-    if plyObj:IsBot() then
-        plyObj:GiveGCArmor("vest", 2)
-        plyObj:GiveGCArmor("helmet", 1)
+    if self:IsBot() then
+        self:GiveGCArmor("vest", 2)
+        self:GiveGCArmor("helmet", 1)
     elseif GAMEMODE:GetImaginaryLoadoutCost(plyObj) > self:GetCurrentLoadoutPoints() then
         self:GiveGCArmor("vest", 0)
         self:GiveGCArmor("helmet", 0)
@@ -136,6 +136,7 @@ function PLAYER:giveLoadout(forceGive)
         self:GiveGCArmor("vest")
         self:GiveGCArmor("helmet")
     end
+    self:Give(GAMEMODE.KnifeWeaponClass)
 end
 
 --[[

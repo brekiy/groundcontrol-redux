@@ -32,8 +32,8 @@ CreateConVar("gc_force_pip_scopes", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLI
 CreateConVar("gc_force_free_aim", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "0/1 to turn on/off free-aim hipfire for everyone", 0, 1)
 
 -- Loadout cvars
-CreateConVar("gc_base_loadout_points", 40, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "points to spend on loadout", 50)
-CreateConVar("gc_loadout_points_per_score", 0.01, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "loadout points awarded per score", 0)
+CreateConVar("gc_base_loadout_points", 40, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "points to spend on loadout", 30)
+CreateConVar("gc_loadout_points_per_score", 0.005, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "loadout points awarded per score", 0)
 CreateConVar("gc_max_loadout_points", 100, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "max loadout points", 50)
 CreateConVar("gc_armor_damage_factor", 1.25, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "adjust rate at which armor takes damage")
 CreateConVar("gc_damage_multiplier", 1.55, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "bullet damage multiplier")
@@ -44,7 +44,7 @@ CreateConVar("gc_use_cw2_kk_ext", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICA
 CreateConVar("gc_use_cw2_kk_btk", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's btk weps")
 CreateConVar("gc_use_cw2_khris", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable khris' extra weps")
 CreateConVar("gc_use_cw2_soap", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable soap's extra weps")
-CreateConVar("gc_use_cw2_misc", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable soap's extra weps")
+CreateConVar("gc_use_cw2_misc", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable misc extra cw weps")
 CreateConVar("gc_use_arccw_weps", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "wip non functional")
 CreateConVar("gc_use_tfa_weps", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "wip non functional")
 
