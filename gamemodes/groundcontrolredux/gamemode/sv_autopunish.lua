@@ -83,7 +83,6 @@ end
 function GM:updateTeamDamageCount(target, damage)
     if !self.RoundOver then
         target:increaseTeamDamageCounter(damage)
-
         if target:getTeamDamageCounter() >= GetConVar("gc_autopunish_teamdamage"):GetInt() then
             self:startPunishVote(target)
         end

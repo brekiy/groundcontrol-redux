@@ -115,9 +115,9 @@ end
 
 GM:RegisterSound("GC_BANDAGE_SOUND", {"ground_control/player/bandage1.mp3", "ground_control/player/bandage2.mp3", "ground_control/player/bandage3.mp3"}, 1, 70, CHAN_ITEM)
 GM:RegisterSound("GC_BLEED_SOUND", {"ground_control/player/bleed1.mp3", "ground_control/player/bleed2.mp3", "ground_control/player/bleed3.mp3", "ground_control/player/bleed4.mp3", "ground_control/player/bleed5.mp3"}, 1, 55, CHAN_BODY)
-GM:RegisterSound("GC_DEATH_SOUND", deathSounds, 1, 125, CHAN_VOICE)
+GM:RegisterSound("GC_DEATH_SOUND", deathSounds, 1, 100, CHAN_VOICE)
 GM:RegisterSound("GC_HELMET_RICOCHET_SOUND", helmetImpacts, 1, 85, CHAN_BODY)
-GM:RegisterSound("GC_HEADSHOT_SOUND", headImpacts, 1, 95, CHAN_BODY)
+GM:RegisterSound("GC_HEADSHOT_SOUND", headImpacts, 1, 90, CHAN_BODY)
 
 -- Footstep sounds get precached
 GM:RegisterSound("GC_FALLBACK_WALK_SOUNDS", concreteSounds, 1, 65, CHAN_BODY)

@@ -100,6 +100,7 @@ function GM:RegisterVIPEscort()
             givenWeapon:maxOutWeaponAmmo(givenWeapon.Primary.ClipSize_Orig)
             ply:SetModel(self.vipModel)
             net.Start("GC_SET_VIP", ply)
+            net.WriteBool(true)
             net.Send(ply)
         end
     end
@@ -108,7 +109,8 @@ function GM:RegisterVIPEscort()
         self.stopCountdown = true
         for k, ply in pairs(player.GetAll()) do
             ply.isVIP = false
-            net.Start("GC_UNSET_VIP", ply)
+            net.Start("GC_SET_VIP", ply)
+            net.WriteBool(false)
             net.Send(ply)
         end
     end

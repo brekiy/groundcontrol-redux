@@ -462,9 +462,3 @@ function PLAYER:SetSpectateTarget(target)
         net.Send(self)
     end
 end
-
-function GM:DidPlyVote(ply)
-    local result = self.VotedPlayers[ply:SteamID64()]
-    if result == nil then result = false end
-    return result
-end

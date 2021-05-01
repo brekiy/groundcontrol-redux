@@ -32,6 +32,7 @@ function ENT:FreezeNearbyProps()
 end
 
 function ENT:CreateIntelObject()
+    local randAngle = AngleRand()
     local pos = self:GetPos()
     pos.z = pos.z + 6
 

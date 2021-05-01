@@ -88,7 +88,7 @@ function GM:RegisterIntelRetrieval()
         if ply.hasIntel then
             self:RemoveIntel(ply)
             ply:AddCurrency("SECURED_INTEL")
-            self:TrackRoundMVP(ply, "objective", 1)
+            GAMEMODE:TrackRoundMVP(ply, "objective", 1)
             return true
         end
     end

@@ -165,11 +165,11 @@ function GM:PlayerFootstep(ply, position, foot, snd, volume, filter)
     local loudnessID, noiseLevel = self:GetLoudnessLevel(ply)
     local stepSound = self:GetWalkSound(materialID, loudnessID)
 
-    if CLIENT then
+    -- if SERVER then
         ply:EmitSound(stepSound, self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END), self.FOOTSTEP_VOLUME_LEVELS[loudnessID], CHAN_BODY)
-    elseif SERVER then
-        sound.Play(stepSound, ply:GetPos(), self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END), self.FOOTSTEP_VOLUME_LEVELS[loudnessID])
-    end
+    -- elseif SERVER then
+    --     sound.Play(stepSound, ply:GetPos(), self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END), self.FOOTSTEP_VOLUME_LEVELS[loudnessID])
+    -- end
 
     -- suppress default sounds
     return true

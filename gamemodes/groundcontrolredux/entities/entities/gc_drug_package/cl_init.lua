@@ -38,7 +38,7 @@ function ENT:drawHUD()
     if self:GetDropped() then
         text = team == gametype.swatTeam and self.CaptureText or self.RetrieveAndProtect
         alpha = alpha * (0.25 + 0.75 * math.flash(CurTime(), 1.5))
-    elseif !self.inRange then
+    elseif self.inRange then
         text = "Bag o' Drugs"
     else
         text = team == gametype.swatTeam and self.AttackAndCapture or self.ProtectText

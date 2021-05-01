@@ -30,7 +30,7 @@ function GM:setVotes(title, startTime, voteDuration, data)
     self.VoteTitle = title
     self.VoteOptions = data
     self.VoteTextWidth = math.max(self:getWidestVoteText() + 10, self.BaseVotePanelWidth)
-
+    LocalPlayer().voted = false
     self:hideWeaponSelection()
     self:HideRadio()
 end
@@ -116,8 +116,15 @@ end
 function GM:attemptVote(selection)
     if self:canVote() and self.VoteOptions[selection] then
         RunConsoleCommand("gc_vote", selection)
+        LocalPlayer().voted = true
         return true
     end
 
     return false
+end
+
+function GM:DidPlyVote(ply)
+    local result = ply.voted
+    if result == nil then result = false end
+    return result
 end

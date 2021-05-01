@@ -240,25 +240,24 @@ net.Receive("GC_INTEL_REMOVED", function(a, b)
     LocalPlayer().hasIntel = false
 end)
 
-net.Receive("GC_SET_VIP", function()
-    if GAMEMODE.teamSwitchPopup then
-        GAMEMODE.teamSwitchPopup:Remove()
-        GAMEMODE.teamSwitchPopup = nil
+net.Receive("GC_SET_VIP", function(a, b)
+    local isVIP = net.ReadBool()
+    if isVIP then
+        if GAMEMODE.teamSwitchPopup then
+            GAMEMODE.teamSwitchPopup:Remove()
+            GAMEMODE.teamSwitchPopup = nil
+        end
+
+        local popup = vgui.Create("GCGenericPopup")
+        popup:SetSize(330, 50)
+        popup:SetText("You are the VIP!", "Stay close to your bodyguards and escape!")
+        popup:SetExistTime(7)
+        popup:Center()
+
+        local x, y = popup:GetPos()
+        popup:SetPos(x, y - 140)
+
+        GAMEMODE.teamSwitchPopup = popup
     end
-
-    local popup = vgui.Create("GCGenericPopup")
-    popup:SetSize(330, 50)
-    popup:SetText("You are the VIP!", "Stay close to your bodyguards and escape!")
-    popup:SetExistTime(7)
-    popup:Center()
-
-    local x, y = popup:GetPos()
-    popup:SetPos(x, y - 140)
-
-    GAMEMODE.teamSwitchPopup = popup
-    LocalPlayer().isVIP = true
-end)
-
-net.Receive("GC_UNSET_VIP", function()
-    LocalPlayer().isVIP = false
+    LocalPlayer().isVIP = isVIP
 end)
