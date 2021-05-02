@@ -68,7 +68,8 @@ CustomizableWeaponry.canOpenInteractionMenu = true
 CustomizableWeaponry.customizationEnabled = true
 CustomizableWeaponry.useAttachmentPossessionSystem = true
 CustomizableWeaponry.playSoundsOnInteract = true
-CustomizableWeaponry.physicalBulletsEnabled = true -- physical bullets for cw 2.0, unfortunately theyre kinda broken
+-- physical bullets for cw 2.0 they were kinda broken with vanilla ground control, idk about now
+CustomizableWeaponry.physicalBulletsEnabled = GetConVar("gc_cw2_phys_bullets"):GetBool()
 CustomizableWeaponry.suppressOnSpawnAttachments = true
 -- Override this from the weapon base to toss our special ground control frag grenade
 function CustomizableWeaponry.quickGrenade:createThrownGrenade(player)

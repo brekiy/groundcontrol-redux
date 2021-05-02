@@ -1,5 +1,6 @@
 GM.AllFrames = {}
 local PLAYER = FindMetaTable("Player")
+CreateClientConVar("gc_pretty_loadout_icons", 1, true, false)
 
 function PLAYER:ComplainAboutLoadout(objName)
     chat.AddText(GAMEMODE.HUD_COLORS.limeYellow, "Not enough points for " .. objName .. "!\nGet good and increase your requisition allowance.")
@@ -315,7 +316,7 @@ function gcModelPanel:Paint()
     surface.SetDrawColor(r, g, b, a)
     surface.DrawRect(1, 1, w - 2, h - 2)
 
-    if IsValid(self.Entity) and self.Entity.shouldDraw then
+    if IsValid(self.Entity) and self.Entity.shouldDraw and GetConVar("gc_pretty_loadout_icons"):GetBool() then
         local x, y = self:LocalToScreen( 0, 0 )
 
         self:LayoutEntity(self.Entity)
@@ -387,6 +388,8 @@ function gcWeaponPanel:SetWeapon(weaponTable, id)
     if weaponData then
         self:SetModel(weaponData.WorldModel)
         self:SetDistance()
+        self.IconLetter = weaponData.IconLetter
+        self.SelectIcon = weaponData.SelectIcon
     end
 end
 
@@ -495,9 +498,23 @@ function gcWeaponPanel:PaintOver()
     local wepData = GAMEMODE:GetWeaponData(self.weaponID, self.isPrimary)
     if !wepData then return end
 
-    wepObject = wepData.weaponObject
+    local wepObject = wepData.weaponObject
 
     cam.IgnoreZ(true)
+
+    if !GetConVar("gc_pretty_loadout_icons"):GetBool() then
+        if self.IconLetter then
+            draw.ShadowText(self.IconLetter, "GroundControl_SelectIcons", w * 0.1, h * 0.1, GAMEMODE.HUD_COLORS.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        elseif self.SelectIcon then
+            -- surface.SetDrawColor(0, 0, 0, 255)
+            surface.SetDrawColor(255, 255, 255, 255)
+            surface.SetTexture(self.SelectIcon)
+            surface.DrawTexturedRect(w * 0.125, h * 0.125, w * 0.75, h * 0.75)
+
+            -- surface.SetDrawColor(255, 255, 255, 255)
+            -- surface.DrawTexturedRect(w * 0.2, h * 0.15, 100, 64)
+        end
+    end
 
     if !wepData.hideMagIcon then
         surface.SetTexture(self.magIcon)
@@ -720,6 +737,8 @@ function curWeaponPanel:UpdateWeapon(wepId)
     self.weaponID = wepId
     self:SetModel(self.weaponData.weaponObject.WorldModel)
     self:SetDistance()
+    self.IconLetter = self.weaponData.weaponObject.IconLetter
+    self.SelectIcon = self.weaponData.weaponObject.SelectIcon
     self.weaponStats:SetWeapon(self.weaponID, self.isPrimary)
     self.Entity.shouldDraw = true
     self.acknowledged = false
@@ -737,7 +756,8 @@ function curWeaponPanel:RemoveWeapon()
     self.weaponObject = nil
     self.weaponID = nil
     self.acknowledged = true
-
+    self.IconLetter = nil
+    self.SelectIcon = nil
     self:UpdateAvailableAttachments()
 end
 
