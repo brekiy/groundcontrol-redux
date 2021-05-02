@@ -83,7 +83,7 @@ end
 local vestPaca = {
     category = "vest",
     id = "vest_paca",
-    displayName = "PACA Low Visibility Carrier",
+    displayName = "PACA Low-Vis Carrier",
     weight = 1.7,
     protection = 10,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
@@ -91,7 +91,7 @@ local vestPaca = {
     protectionDelta = 0.0085,
     damageDecreasePenetrated = 0.1,
     durability = 30,
-    pointCost = 4,
+    pointCost = 5,
     icon = "ground_control/hud/armor/aa_vest_dyneema",
     description = "Minimalist carrier with level II soft panels."
 }
@@ -108,7 +108,7 @@ local vestIba = {
     protectionDelta = 0.009,
     damageDecreasePenetrated = 0.1,
     durability = 40,
-    pointCost = 14,
+    pointCost = 15,
     icon = "ground_control/hud/armor/aa_vest_spectra",
     description = "Surplus soft armor with level III rifle plates."
 }
@@ -121,11 +121,11 @@ local vestPc = {
     weight = 8.5,
     protection = 40,
     protectionAreas = {[HITGROUP_CHEST] = true},
-    damageDecrease = 0.7,
+    damageDecrease = 0.725,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.1,
     durability = 30,
-    pointCost = 18,
+    pointCost = 20,
     icon = "ground_control/hud/armor/aa_vest_lbx",
     description = "Modern lightweight plate carrier with level IV rifle plates."
 }
@@ -159,11 +159,11 @@ local helmetPasgt = {
     weight = 1.1,
     protection = 14,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.725,
+    damageDecrease = 0.675,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.05,
     durability = 10,
-    pointCost = 6,
+    pointCost = 5,
     icon = "ground_control/hud/armor/aa_helmet_spectra",
     description = "Surplus kevlar helmet. Provides level IIIA protection."
 }
@@ -176,13 +176,13 @@ local helmetAltyn = {
     weight = 4,
     protection = 14,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.725,
-    protectionDelta = 0.01,
+    damageDecrease = 0.7,
+    protectionDelta = 0.0115,
     damageDecreasePenetrated = 0.05,
-    durability = 15,
+    durability = 20,
     pointCost = 10,
     icon = "ground_control/hud/armor/aa_helmet_altyn",
-    description = "Heavy titanium helmet. Provides level IIIA protection."
+    description = "Heavy titanium helmet with faceshield. Provides level IIIA protection."
 }
 GM:RegisterArmor(helmetAltyn)
 
@@ -193,11 +193,11 @@ local helmetOperator = {
     weight = 0.9,
     protection = 30,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.725,
+    damageDecrease = 0.65,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.05,
     durability = 10,
-    pointCost = 14,
+    pointCost = 15,
     icon = "ground_control/hud/armor/aa_helmet_operator",
     description = "Modern lightweight ballistic helmet with additional armor. Provides level III protection."
 }
@@ -208,15 +208,15 @@ local helmetVulkan = {
     id = "helmet_vulkan",
     displayName = "Vulkan-5",
     weight = 4.5,
-    protection = 40,
+    protection = 30,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.725,
-    protectionDelta = 0.01,
+    damageDecrease = 0.7,
+    protectionDelta = 0.0105,
     damageDecreasePenetrated = 0.05,
     durability = 15,
     pointCost = 25,
     icon = "ground_control/hud/armor/aa_helmet_vulkan",
-    description = "Heavy composite helmet. Provides level IV protection."
+    description = "Heavy composite helmet. Provides level III protection."
 }
 GM:RegisterArmor(helmetVulkan)
 
