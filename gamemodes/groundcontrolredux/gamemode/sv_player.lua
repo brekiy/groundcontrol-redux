@@ -394,6 +394,7 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
             end
         end
 
+        -- Pass the unscaled damage into the armor damage calc
         if attacker:Team() != ply:Team() then
             dmgInfo:ScaleDamage(GetConVar("gc_damage_multiplier"):GetFloat())
             attacker:storeRecentVictim(ply)

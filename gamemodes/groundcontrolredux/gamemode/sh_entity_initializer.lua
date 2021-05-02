@@ -112,18 +112,14 @@ end)
 
 GM.entityInitializer:RegisterEntityInitializeCallback("gc_vip_escape_point", function(entity, curGameType, data)
     if data.data then
-        if data.data.vipTeam then
-            entity:SetVIPTeam(data.data.vipTeam)
-            -- curGameType.realVIPTeam = data.data.vipTeam
-        else
-            entity:SetVIPTeam(curGameType.vipTeam)
-            -- curGameType.realVIPTeam = curGameType.vipTeam
+        -- boolean
+        if data.data.reverseVIP then
+            curGameType:SwapVIPTeam()
         end
 
         if data.data.escapeDistance then
             entity:SetEscapeDistance(data.data.escapeDistance)
         end
-    else
-        entity:SetVIPTeam(curGameType.vipTeam)
     end
+    entity:SetVIPTeam(curGameType.vipTeam)
 end)

@@ -47,20 +47,15 @@ function GM:RegisterVIPEscort()
     function vipEscort:RoundStart()
         if SERVER then
             GAMEMODE:SetTimeLimit(self.timeLimit)
-            -- print("vip team", self.vipTeam)
             if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GetConVar("gc_default_rounds_per_map"):GetInt() * 0.5 then
                 GAMEMODE:SwapTeams(self.vipTeam, self.ambushTeam, vipEscort.teamSwapCallback, vipEscort.teamSwapCallback)
                 self.swappedTeams = true
-                -- print("vip team after swapping", self.vipTeam)
             end
-            -- timer(0, function()
-            -- print("vip team right before setting vip", self.vipTeam)
             local vipPlayers = team.GetPlayers(self.vipTeam)
             local vipIdx = math.random(1, #vipPlayers)
             vipPlayers[vipIdx].isVIP = true
             self.stopCountdown = false
             GAMEMODE:InitializeGameTypeEntities(self)
-            -- end)
         end
     end
 
@@ -150,8 +145,25 @@ function GM:RegisterVIPEscort()
         end
     end
 
-    GM:RegisterNewGametype(vipEscort)
+    -- Swaps the assigned red/blue teams if the map calls for it
+    function vipEscort:SwapVIPTeam()
+        local temp = self.vipTeam
+        self.vipTeam = self.ambushTeam
+        self.ambushTeam = temp
+    end
 
-    GM:AddObjectivePositionToGametype("vip_escort", "nt_isolation",
-        Vector(-4151.822, -2887.363, 214.317), "gc_vip_escape_point")
+    GM:RegisterNewGametype(vipEscort)
+    GM:AddObjectivePositionToGametype("vip_escort", "nt_isolation", Vector(1219.424, 2665.713, 93.224), "gc_vip_escape_point")
+    GM:AddObjectivePositionToGametype("vip_escort", "nt_isolation", Vector(-2519.902, 2936.052, 215.031), "gc_vip_escape_point")
+    -- 3 escape zones seems too much for a small map, but vip is surrounded, idk
+    -- GM:AddObjectivePositionToGametype("vip_escort", "nt_isolation", Vector(-4513.248, -944.515, 153.938), "gc_vip_escape_point")
+
+    -- only one escape seems difficult but we'll see
+    GM:AddObjectivePositionToGametype("vip_escort", "cs_siege_2010", Vector(-498.195, 2120.627, -56.163), "gc_vip_escape_point", {reverseVIP = true})
+
+    -- something stupid: toggle vip team once lol
+    GM:AddObjectivePositionToGametype("vip_escort", "nt_rise",
+            Vector(-514.183, 458.125, -71.968), "gc_vip_escape_point", {reverseVIP = true})
+    GM:AddObjectivePositionToGametype("vip_escort", "nt_rise",
+            Vector(729.067, 940.035, 80.031), "gc_vip_escape_point")
 end

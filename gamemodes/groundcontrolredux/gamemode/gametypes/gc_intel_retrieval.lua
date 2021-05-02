@@ -162,67 +162,6 @@ function GM:RegisterIntelRetrieval()
 
     GM:RegisterNewGametype(intelRetrieval)
 
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_assault",
-            Vector(6794.2886, 3867.2642, -575.0213), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_assault",
-            Vector(4907.146, 6381.4331, -871.9687), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
-
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_compound",
-            Vector(2303.8857, -710.6038, 31.016), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_compound",
-            Vector(2053.3057, -1677.0895, 56.0783), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_compound",
-            Vector(2119.7871, 2032.4009, 8.0313), "gc_intel_capture_point")
-
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_havana",
-            Vector(415.6184, 1283.9724, 281.7604), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_havana",
-            Vector(196.039, 807.587, 282.6608), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_havana",
-            Vector(-255.9446, -774.599, 0.0313), "gc_intel_capture_point")
-
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_militia",
-            Vector(171.7497, 754.8995, -115.9687), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_militia",
-            Vector(1287.92, 635.789, -120.620), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_militia",
-            Vector(489.6373, -2447.677, -169.529), "gc_intel_capture_point")
-
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_italy",
-            Vector(740.9838, 2303.0881, 168.4486), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_italy",
-            Vector(-382.8103, 1900.0341, -119.9687), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "cs_italy",
-            Vector(-697.3092, -1622.7435, -239.9687), "gc_intel_capture_point")
-
-    GM:AddObjectivePositionToGametype("intel_retrieval", "de_chateau",
-            Vector(99.3907, 919.5341, 24.0313), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "de_chateau",
-            Vector(2081.2983, 1444.7068, 36.0313), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "de_chateau",
-            Vector(1662.7606, -662.5977, -159.9687), "gc_intel_capture_point")
-
-    GM:AddObjectivePositionToGametype("intel_retrieval", "de_inferno",
-            Vector(-572.666, -435.3488, 228.9928), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "de_inferno",
-            Vector(-32.3297, 549.7234, 83.4212), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "de_inferno",
-            Vector(2377.4863, 2517.3298, 131.9956), "gc_intel_capture_point")
-
-    GM:AddObjectivePositionToGametype("intel_retrieval", "de_shanty_v3_fix",
-            Vector(497.7796, -1688.5574, 21.6237), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "de_shanty_v3_fix",
-            Vector(-203.0704, -1800.5228, 165.4134), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "de_shanty_v3_fix",
-            Vector(534.512, 19.6704, 6.9165), "gc_intel_capture_point")
-
-    GM:AddObjectivePositionToGametype("intel_retrieval", "gm_blackbrook_asylum",
-            Vector(784.7302, -224.303, 390.031), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "gm_blackbrook_asylum",
-            Vector(391.3977, 289.818939, 520.03125), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "gm_blackbrook_asylum",
-            Vector(-470.82025146484, 329.79114, 1.03125), "gc_intel_capture_point")
-
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_isolation",
             Vector(-668.997, -908.508, 347.031), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_isolation",
@@ -233,51 +172,86 @@ function GM:RegisterIntelRetrieval()
             Vector(-4151.822, -2887.363, 214.317), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
 
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_marketa",
-            Vector(-735.212, 1331.367, 35.031), "gc_intel_spawn_point")
+            Vector(-711.968, 356.306, 34.031), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_marketa",
-            Vector(684.374, 1265.75, 39.031), "gc_intel_spawn_point")
+            Vector(495.545, -200.91, 34.031), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_marketa",
-            Vector(318.746, -1410.498, 34.031), "gc_intel_capture_point")
-
-    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_redlight",
-            Vector(-272.03, 621.03, 96.03), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_redlight",
-            Vector(-657.96, -875.49, 104.03), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_redlight",
-            Vector(1591.913, -1402.049, 33.031), "gc_intel_capture_point")
+            Vector(433.071, 712.107, 219.031), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_marketa",
+            Vector(1010.148, -1968.728, 34.031), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_marketa",
+            Vector(1359.785, 1671.985, 210.193), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
 
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_rise",
-            Vector(75.829, 276.173, -847.968), "gc_intel_spawn_point")
+            Vector(1151.793, 176.499, -559.968), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_rise",
-            Vector(-343.012, 805.753, -559.968), "gc_intel_spawn_point")
+            Vector(99.725, -413.747, -559.968), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_rise",
-            Vector(311.216, -247.248, -216.879), "gc_intel_capture_point")
+            Vector(-334.771, 707.341, -528.951), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_rise",
+            Vector(-514.183, 458.125, -71.968), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_rise",
+            Vector(729.067, 940.035, 80.031), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
 
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_dusk",
-            Vector(357.424, 2568.138, -221.933), "gc_intel_spawn_point")
+            Vector(-246.661, 121.966, -127.968), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_dusk",
-            Vector(-31.3, 4883.031, -167.968), "gc_intel_spawn_point")
+            Vector(-465.048, 1632.92, -151.968), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_dusk",
-            Vector(-1773.096, 3429.306, -191.968), "gc_intel_capture_point")
+            Vector(-14.23, 4433.187, -228.798), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_dusk",
+            Vector(974.008, 2807.303, -247.145), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_dusk",
+            Vector(-123.526, 4964.61, -167.968), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_dusk",
+            Vector(-2107.822, 2904.274, -191.968), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_dusk",
+            Vector(2083.512, 4031.088, -122.888), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
 
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_skyline",
-            Vector(89.317, 148.282, -127.968), "gc_intel_spawn_point")
+            Vector(-1889.271, -1335.286, -6.968), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_skyline",
-            Vector(284.703, 1128.617, -120.968), "gc_intel_spawn_point")
+            Vector(-1514.379, 1410.057, -87.968), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_skyline",
-            Vector(-1357.663, 86.206, 220.031), "gc_intel_capture_point")
+            Vector(960.134, 1400.334, -126.968), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_skyline",
+            Vector(-2621.576, -156.134, 177.031), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_skyline",
+            Vector(1220.419, -1216.523, -127.968), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_skyline",
+            Vector(1496.701, 928.433, -127.968), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_skyline",
+            Vector(-4106.05, 180.471, -159.968), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_skyline",
+            Vector(-3556.096, -1164.421, -239.968), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
 
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_transit",
-            Vector(-617.042, 393.701, -113.002), "gc_intel_spawn_point")
+            Vector(-879.058, 275.746, -127.968), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_transit",
-            Vector(238.325, 384.474, -112.885), "gc_intel_spawn_point")
+            Vector(512.862, -10.079, 40.031), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_transit",
-            Vector(-334.29, -1388.189, 112.042), "gc_intel_capture_point")
+            Vector(-554.277, -421.518, -133.968), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_transit",
+            Vector(191.941, 632.141, -133.968), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_transit",
+            Vector(-387.427, 1168.738, -127.968), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_transit",
+            Vector(547.694, 1385.821, 32.031), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_transit",
+            Vector(-108.409, -1392.375, 112.031), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
 
-    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_shrine",
-            Vector(-568.914, 1925.868, 102.251), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_shrine",
-            Vector(832.32, 3529.435, 136.397), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_shrine",
-            Vector(-2469.47, 5674.688, 128.031), "gc_intel_capture_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_zaibatsu",
+            Vector(-1941.632, -576.81, 251.019), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_zaibatsu",
+            Vector(-1514.418, 239.218, 208.031), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_zaibatsu",
+            Vector(-1511.74, 195.88, 216.528), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_zaibatsu",
+            Vector(-1412.821, 37.955, -38.44), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_zaibatsu",
+            Vector(-678.772, 251.278, -23.471), "gc_intel_spawn_point")
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_zaibatsu",
+            Vector(-618.57, -1148.943, 460.031), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_zaibatsu",
+            Vector(-754.34, -1349.575, -39.968), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
 end
