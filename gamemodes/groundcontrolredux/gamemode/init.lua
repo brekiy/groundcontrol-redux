@@ -114,7 +114,7 @@ function GM:InitPostEntity()
 end
 
 function GM:EntityTakeDamage(target, dmgInfo)
-    dmgInfo:SetDamageForce(dmgInfo:GetDamageForce() * 0.5)
+    dmgInfo:SetDamageForce(dmgInfo:GetDamageForce() * 0.35)
 
     if target:IsPlayer() then
         local attacker = dmgInfo:GetAttacker()
@@ -153,7 +153,10 @@ function GM:EntityTakeDamage(target, dmgInfo)
         if !dmgInfo:IsFallDamage() then
             local inflictor = dmgInfo:GetInflictor()
 
-            if inflictor == attacker and inflictor != ply then -- if the inflictor matches the attacker, but it wasn't a suicide
+            -- if the inflictor matches the attacker, but it wasn't a suicide
+            -- wtf is ply here?
+            -- if inflictor == attacker and inflictor != ply then
+            if inflictor == attacker then
                 local wep = attacker.GetActiveWeapon and attacker:GetActiveWeapon()
 
                 if IsValid(wep) then -- and the attacker has a valid weapon
@@ -195,6 +198,6 @@ function AddDamageLogEntry(attacker, target, dmgInfo, wep, targetDied)
 end
 
 -- CSS fall damage approximation thanks to gmod wiki
-function GM:GetFallDamage( ply, speed )
+function GM:GetFallDamage(ply, speed)
     return math.max(0, math.ceil(0.2418 * speed - 141.75))
 end
