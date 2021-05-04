@@ -12,7 +12,7 @@ function ENT:Initialize()
 end
 
 -- the distance within which the contents of the box will be displayed
-ENT.displayDistance = 128
+ENT.displayDistance = 256
 
 function ENT:Think()
     self.inRange = LocalPlayer():GetPos():Distance(self:GetPos()) <= self.displayDistance
@@ -36,10 +36,12 @@ function ENT:drawHUD()
     local alpha = ply.hasDrugs and 0.4 or 1
 
     if self:GetDropped() then
-        text = team == gametype.swatTeam and self.CaptureText or self.RetrieveAndProtect
+        if self.inRange then
+            text = self.BasicText
+        else
+            text = team == gametype.swatTeam and self.CaptureText or self.RetrieveAndProtect
+        end
         alpha = alpha * (0.25 + 0.75 * math.flash(CurTime(), 1.5))
-    elseif self.inRange then
-        text = "Bag o' Drugs"
     else
         text = team == gametype.swatTeam and self.AttackAndCapture or self.ProtectText
     end

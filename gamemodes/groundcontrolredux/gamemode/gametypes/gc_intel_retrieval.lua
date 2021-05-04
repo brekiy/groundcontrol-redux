@@ -178,8 +178,8 @@ function GM:RegisterIntelRetrieval()
     GM:AddObjectivePositionToGametype("intel_retrieval", "de_prodigy", Vector(759.178, 576.998, -255.968), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "de_prodigy", Vector(1784.239, -1065.4, -287.968), "gc_intel_spawn_point")
     GM:AddObjectivePositionToGametype("intel_retrieval", "de_prodigy", Vector(1961.651, -23.339, -415.968), "gc_intel_spawn_point")
-    GM:AddObjectivePositionToGametype("intel_retrieval", "de_prodigy", Vector(-30.833, -459.437, -208.408), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
-    GM:AddObjectivePositionToGametype("intel_retrieval", "de_prodigy", Vector(3142.378, -310.023, -479.968), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "de_prodigy", Vector(1587.872, -1530.458, -479.968), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "de_prodigy", Vector(2169.519, 960.655, -383.968), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
 
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_isolation",
             Vector(-668.997, -908.508, 347.031), "gc_intel_spawn_point")

@@ -13,7 +13,6 @@ function ENT:Initialize()
 end
 
 -- the distance within which the contents of the box will be displayed
-ENT.displayDistance = 256
 ENT.upOffset = Vector(0, 0, 30)
 
 local white, black = Color(255, 255, 255, 255), Color(0, 0, 0, 255)
