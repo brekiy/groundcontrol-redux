@@ -161,9 +161,8 @@ function GM:RegisterVIPEscort()
     -- only one escape seems difficult but we'll see
     GM:AddObjectivePositionToGametype("vip_escort", "cs_siege_2010", Vector(-498.195, 2120.627, -56.163), "gc_vip_escape_point", {reverseVIP = true})
 
-    -- something stupid: toggle vip team once lol
     GM:AddObjectivePositionToGametype("vip_escort", "nt_rise",
-            Vector(-514.183, 458.125, -71.968), "gc_vip_escape_point", {reverseVIP = true})
+            Vector(-514.183, 458.125, -71.968), "gc_vip_escape_point")
     GM:AddObjectivePositionToGametype("vip_escort", "nt_rise",
             Vector(729.067, 940.035, 80.031), "gc_vip_escape_point")
 end

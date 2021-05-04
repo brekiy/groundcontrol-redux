@@ -211,6 +211,10 @@ function GM:RegisterIntelRetrieval()
             Vector(-514.183, 458.125, -71.968), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_rise",
             Vector(729.067, 940.035, 80.031), "gc_intel_capture_point", {capturerTeam = TEAM_BLUE})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_rise",
+            Vector(1862.929, 244.652, -1055.968), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
+    GM:AddObjectivePositionToGametype("intel_retrieval", "nt_rise",
+            Vector(-1434.110, 425.498, -799.968), "gc_intel_capture_point", {capturerTeam = TEAM_RED})
 
     GM:AddObjectivePositionToGametype("intel_retrieval", "nt_dusk",
             Vector(-246.661, 121.966, -127.968), "gc_intel_spawn_point")

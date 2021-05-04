@@ -15,18 +15,17 @@ function GM:RegisterStartingPoint(map, team, position, viewAngles, gametypes)
     local pointData = {position = position, viewAngles = viewAngles or zeroAngles}
     local target = self.StartingPoints[map][team]
 
-    -- if gametype == "all" then -- if we're adding this point to all gametypes, then iterate over all gametypes available and insert it
-    --     for name, data in pairs(self.GametypesByName) do
-    --         target[name] = target[name] or {}
-    --         table.insert(target[name], pointData)
-    --     end
-    -- else -- otherwise insert to a single point
-    --     target[gametype] = target[gametype] or {}
-    --     table.insert(target[gametype], pointData)
-    -- end
-    for _, gametype in pairs(gametypes) do
-        target[gametype] = target[gametype] or {}
-        table.insert(target[gametype], pointData)
+    -- if we're adding this point to all gametypes, then iterate over all gametypes available and insert it
+    if gametypes[1] == "all" then
+        for name, data in pairs(self.GametypesByName) do
+            target[name] = target[name] or {}
+            table.insert(target[name], pointData)
+        end
+    else -- otherwise insert to a single point
+        for _, gametype in pairs(gametypes) do
+            target[gametype] = target[gametype] or {}
+            table.insert(target[gametype], pointData)
+        end
     end
 end
 
