@@ -128,6 +128,7 @@ function PLAYER:giveLoadout(forceGive)
     if self:IsBot() then
         self:GiveGCArmor("vest", 2)
         self:GiveGCArmor("helmet", 1)
+        GiveBotRandomLoadout(self)
     elseif GAMEMODE:GetImaginaryLoadoutCost(plyObj) > self:GetCurrentLoadoutPoints() then
         self:GiveGCArmor("vest", 0)
         self:GiveGCArmor("helmet", 0)
@@ -137,6 +138,19 @@ function PLAYER:giveLoadout(forceGive)
         self:GiveGCArmor("helmet")
     end
     self:Give(GAMEMODE.KnifeWeaponClass)
+end
+
+function GiveBotRandomLoadout(bot)
+    -- Give primary, then give secondary
+    local pickedWeapon = GAMEMODE.PrimaryWeapons[math.random(1, #GAMEMODE.PrimaryWeapons)]
+    local givenWeapon = bot:Give(pickedWeapon.weaponClass)
+    bot:GiveAmmo(3 * givenWeapon.Primary.ClipSize_Orig, givenWeapon.Primary.Ammo)
+    givenWeapon:maxOutWeaponAmmo(givenWeapon.Primary.ClipSize_Orig)
+
+    pickedWeapon = GAMEMODE.SecondaryWeapons[math.random(1, #GAMEMODE.SecondaryWeapons)]
+    givenWeapon = bot:Give(pickedWeapon.weaponClass)
+    bot:GiveAmmo(3 * givenWeapon.Primary.ClipSize_Orig, givenWeapon.Primary.Ammo)
+    givenWeapon:maxOutWeaponAmmo(givenWeapon.Primary.ClipSize_Orig)
 end
 
 --[[
