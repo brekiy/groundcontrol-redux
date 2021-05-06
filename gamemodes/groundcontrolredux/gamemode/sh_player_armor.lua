@@ -214,7 +214,7 @@ local helmetVulkan = {
     protectionDelta = 0.0105,
     damageDecreasePenetrated = 0.05,
     durability = 15,
-    pointCost = 25,
+    pointCost = 20,
     icon = "ground_control/hud/armor/aa_helmet_vulkan",
     description = "Heavy composite helmet. Provides level III protection."
 }
