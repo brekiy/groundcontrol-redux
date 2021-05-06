@@ -17,7 +17,7 @@ function GM:RegisterVIPEscort()
     vipEscort.vipTeam = TEAM_RED
     vipEscort.ambushTeam = TEAM_BLUE
     vipEscort.stopCountdown = true
-    vipEscort.timeLimit = 255
+    vipEscort.timeLimit = 225
     vipEscort.swappedTeams = false
     vipEscort.objectiveEnts = {}
     vipEscort.objectiveCounter = 0
@@ -110,7 +110,7 @@ function GM:RegisterVIPEscort()
         end
     end
 
-    function vipEscort:PostPlayerDeath(ply) -- check for round over possibility
+    function vipEscort:PostPlayerDeath(ply)
         GAMEMODE:CheckRoundOverPossibility(ply:Team())
     end
 
