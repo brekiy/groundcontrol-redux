@@ -83,10 +83,9 @@ function GM:CheckRoundOverPossibility(teamId, ignoreDisplay)
         else
             self:EndRound(nil)
         end
-    end
-
-    if teamId and !ignoreDisplay then
-        self:CreateLastManStandingDisplay(teamId)
+        if teamId and !ignoreDisplay then
+            self:CreateLastManStandingDisplay(teamId)
+        end
     end
 end
 
@@ -104,6 +103,7 @@ function GM:EndRound(winningTeam)
     end
 
     hook.Call("GroundControlPreRoundEnded", nil, winningTeam)
+    self.RoundOver = true
 
     print("[GROUND CONTROL] ROUND HAS ENDED, WINNING TEAM ID: ", winningTeam)
     local lastRound = self.RoundsPlayed >= self.RoundsPerMap
@@ -150,7 +150,6 @@ function GM:EndRound(winningTeam)
         end
     end
 
-    self.RoundOver = true
 
     if lastRound then -- start a vote for the next map if possible
         if !canPickRandomMapAndGametype then
@@ -169,11 +168,6 @@ function GM:EndRound(winningTeam)
     hook.Call("GroundControlPostRoundEnded", nil, winningTeam)
 
     self.MVPTracker:resetAllTrackedIDs()
-
-    -- Get rid of all this stuff, some callback in Knife Kitty's base breaks when some weapons are lying around and round restarts
-    for key, ent in ipairs(ents.FindByClass("cw_dropped_weapon")) do
-        SafeRemoveEntity(ent)
-    end
 end
 
 function GM:startVoteMap()
