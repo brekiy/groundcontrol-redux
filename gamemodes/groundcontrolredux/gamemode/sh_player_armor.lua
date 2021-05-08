@@ -159,13 +159,13 @@ local helmetPasgt = {
     weight = 1.1,
     protection = 14,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.675,
+    damageDecrease = 0.69,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.05,
     durability = 10,
     pointCost = 5,
     icon = "ground_control/hud/armor/aa_helmet_spectra",
-    description = "Surplus kevlar helmet. Provides level IIIA protection."
+    description = "Surplus aramid helmet. Provides level IIIA protection."
 }
 GM:RegisterArmor(helmetPasgt)
 
@@ -193,13 +193,13 @@ local helmetOperator = {
     weight = 0.9,
     protection = 30,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.65,
+    damageDecrease = 0.675,
     protectionDelta = 0.01,
     damageDecreasePenetrated = 0.05,
     durability = 10,
     pointCost = 15,
     icon = "ground_control/hud/armor/aa_helmet_operator",
-    description = "Modern lightweight ballistic helmet with additional armor. Provides level III protection."
+    description = "Lightweight polyethylene helmet with additional armor. Provides level III protection."
 }
 GM:RegisterArmor(helmetOperator)
 

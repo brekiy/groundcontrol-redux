@@ -2,16 +2,16 @@ AddCSLuaFile()
 -- Weight/stamina cvars
 CreateConVar("gc_weight_min_level_speed_decrease", 7.5, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Weight (kg) at which sprinting begins to be impacted", 1)
 CreateConVar("gc_weight_sprint_penalty", 0.75, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Sprint speed penalty per kg over the threshold, walking affected at half", 0)
-CreateConVar("gc_weight_stamina_drain", 1.5, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Stamina drain factor for weight", 0)
+CreateConVar("gc_weight_stamina_drain", 2, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Stamina drain factor for weight", 0)
 CreateConVar("gc_stamina_drain_time", 0.25, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Time in seconds between each stamina tick", 0.1)
 CreateConVar("gc_stamina_regen_time", 0.35, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Time in seconds between each stamina tick", 0.1)
 CreateConVar("gc_stamina_run_impact_level", 80, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "% stamina where sprint speed starts to drop", 0.1)
-CreateConVar("gc_stamina_run_impact", 1.3, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "% stamina where sprint speed starts to drop", 0.1)
+CreateConVar("gc_stamina_run_impact", 1.3, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "low stamina sprint speed affector ", 0.1)
 CreateConVar("gc_stamina_aim_shake_factor", 0.025, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "aim shake factor when tired, set to 0 if you dont like it", 0)
 
 -- Movement cvars
-CreateConVar("gc_base_run_speed", 270, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base run speed", 170)
-CreateConVar("gc_base_walk_speed", 150, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base walk speed - if this gets too low, cw2 viewmodels start getting this really ugly jitter", 100)
+CreateConVar("gc_base_run_speed", 270, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base run speed", 200)
+CreateConVar("gc_base_walk_speed", 200, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "base walk speed - if this gets too low, cw2 viewmodels start getting this really ugly jitter", 100)
 
 -- Adrenaline cvars
 CreateConVar("gc_adrenaline_maxspeed_increase", 0.1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
