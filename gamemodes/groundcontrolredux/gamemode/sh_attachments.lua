@@ -21,7 +21,8 @@ GM.SecondaryAttachmentStrings = {}
 
 ]]--
 
-GM.attachmentPrices = {
+-- TODO: blah basic lazy table that i dont wanna refactor out
+local attachmentPrices = {
     am_416barrett = 1500,
     am_45lc = 1500,
     am_4borebs = 1500,
@@ -99,8 +100,8 @@ GM.attachmentPrices = {
     bg_nostock = 800, -- cheap, since it's a variant of the MP5
     bg_ots_extmag = 1000,
     bg_pkm_barrel = 800,
-    bg_pkm_bipod = 1000,
-    bg_pkm_bipod_on_pkp = 1000,
+    bg_pkm_bipod = 1500,
+    bg_pkm_bipod_on_pkp = 1500,
     bg_pkm_handle = 800,
     bg_pkp_100_mag = 1000,
     bg_pkp_nostock = 1000,
@@ -199,29 +200,31 @@ for i = 1, GM.MaxAttachments do
     table.insert(GM.SecondaryAttachmentStrings, GM.SecondaryAttachmentString .. i)
 end
 
-function GM:getFreeSlotCount()
-    return self.MaxAttachments - self.LockedAttachmentSlots
-end
 
-function GM:registerAttachment(data)
-    local attData = CustomizableWeaponry.registeredAttachmentsSKey[data.attachmentName]
-    attData.price = data.price
-    attData.unlockedByDefault = data.unlockedByDefault
-end
--- PrintTable(CustomizableWeaponry.registeredAttachmentsSKey)
-function GM:setAttachmentPrice(attachmentName, desiredPrice)
-    CustomizableWeaponry.registeredAttachmentsSKey[data.attachmentName].price = desiredPrice
-end
-
-for key, value in pairs(CustomizableWeaponry.registeredAttachmentsSKey) do -- iterate over the attachments
+for key, value in pairs(CustomizableWeaponry.registeredAttachmentsSKey) do
     if value.price == nil then -- check which ones don't have a price set on them, and set the default price (specifically a nil check, since if the price is 'false', it'll still get set to DefaultAttachmentPrice)
         value.price = GM.DefaultAttachmentPrice
     end
 end
 
-for attName, price in pairs(GM.attachmentPrices) do
+for attName, price in pairs(attachmentPrices) do
     local attData = CustomizableWeaponry.registeredAttachmentsSKey[attName]
     if attData != nil then attData.price = price end
+end
+
+function GM:getFreeSlotCount()
+    return self.MaxAttachments - self.LockedAttachmentSlots
+end
+
+function GM:RegisterAttachment(data)
+    local attData = CustomizableWeaponry.registeredAttachmentsSKey[data.attachmentName]
+    if !attData then return end
+    attData.price = data.price
+    attData.unlockedByDefault = data.unlockedByDefault
+end
+
+function GM:setAttachmentPrice(attachmentName, desiredPrice)
+    CustomizableWeaponry.registeredAttachmentsSKey[data.attachmentName].price = desiredPrice
 end
 
 local PLAYER = FindMetaTable("Player")
@@ -269,7 +272,7 @@ function PLAYER:setUnlockedAttachmentSlots(slotAmount)
     self.unlockedAttachmentSlots = slotAmount
 
     if SERVER then
-        self:sendUnlockedAttachmentSlots()
+        self:SendUnlockedAttachmentSlots()
     end
 end
 
@@ -284,9 +287,9 @@ function PLAYER:setExperience(exp)
         end
 
         self.experience = exp
-        self:checkForAttachmentSlotUnlock()
-        self:saveExperience()
-        self:sendExperience()
+        self:CheckForAttachmentSlotUnlock()
+        self:SaveExperience()
+        self:SendExperience()
     else
         self.experience = exp
     end

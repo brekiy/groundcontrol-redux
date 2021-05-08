@@ -14,60 +14,63 @@ GM.DefaultMusicFadeTime = 3
 GM.RoundStartTrackVolume = 0.5
 GM.RoundEndTrackVolume = 0.4
 
-function GM:createMusicObjects() -- prepares all the music objects necessary for the gamemode
+function GM:CreateMusicObjects() -- prepares all the music objects necessary for the gamemode
     for key, pathToSound in ipairs(self.RoundStartTracks) do
-        self:createMusicObject(pathToSound, self.RoundStartMusicObjects)
+        self:CreateMusicObject(pathToSound, self.RoundStartMusicObjects)
     end
 
     for key, pathToSound in ipairs(self.RoundEndTracks) do
-        self:createMusicObject(pathToSound, self.RoundEndMusicObjects)
+        self:CreateMusicObject(pathToSound, self.RoundEndMusicObjects)
     end
 
     for key, pathToSound in ipairs(self.LastManStandingTracks) do
-        self:createMusicObject(pathToSound, self.LastManStandingMusicObjects)
+        self:CreateMusicObject(pathToSound, self.LastManStandingMusicObjects)
     end
 end
 
-function GM:createMusicObject(pathToSound, outputTable)
+function GM:CreateMusicObject(pathToSound, outputTable)
     local soundObject = CreateSound(LocalPlayer(), pathToSound, CHAN_STATIC)
 
     if outputTable then
         outputTable[#outputTable + 1] = soundObject
     end
-
+    print("[GROUND CONTROL DEBUG] created music object", pathToSound)
     return soundObject
 end
 
-function GM:playMusic(object, shouldFadePrevious, volume)
+function GM:PlayMusic(object, shouldFadePrevious, volume)
     if self.currentMusicObject and self.currentMusicObject:IsPlaying() then
         if shouldFadePrevious then
-            self:fadeMusicOut(self.currentMusicObject, shouldFadePrevious)
+            self:FadeMusicOut(self.currentMusicObject, shouldFadePrevious)
         else
             self.currentMusicObject:Stop()
         end
     end
 
     self.currentMusicObject = object
-    self:replayMusic(object, volume)
+    self:ReplayMusic(object, volume)
 end
 
-function GM:replayMusic(object, volume)
+function GM:ReplayMusic(object, volume)
     object = object or self.currentMusicObject
     volume = volume or 1
-
-    object:Stop()
-    object:PlayEx(volume, 100)
+    if !object then
+        print("[GROUND CONTROL ERROR] missing music? skipping cl_music_handler:ReplayMusic()")
+    else
+        object:Stop()
+        object:PlayEx(volume, 100)
+    end
 end
 
-function GM:fadeMusicOut(object, fadeTime)
+function GM:FadeMusicOut(object, fadeTime)
     fadeTime = type(fadeTime) == "number" and fadeTime or self.DefaultMusicFadeTime
     object:FadeOut(fadeTime)
 end
 
-function GM:stopMusic(shouldFade)
+function GM:StopMusic(shouldFade)
     if self.currentMusicObject and self.currentMusicObject:IsPlaying() then
         if shouldFade then
-            self:fadeMusicOut(self.currentMusicObject, shouldFadePrevious)
+            self:FadeMusicOut(self.currentMusicObject, shouldFadePrevious)
         else
             self.currentMusicObject:Stop()
         end

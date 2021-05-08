@@ -3,7 +3,7 @@
 GM.ActivePlayerAmount = 0
 GM.PreviousPlayerRetrieve = 0
 
-function GM:getActivePlayerAmount()
+function GM:GetActivePlayerAmount()
     if CurTime() > self.PreviousPlayerRetrieve then
         self.PreviousPlayerRetrieve = CurTime() + 1
         self.ActivePlayerAmount = #player.GetAll()

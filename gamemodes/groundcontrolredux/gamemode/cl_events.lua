@@ -5,7 +5,7 @@ function GM:DisplayEvent(ply, data)
     local event = {}
     local addData = data.eventData
 
-    local eventData = self:getEventById(id)
+    local eventData = self:GetEventById(id)
     event.topText = eventData.display
     event.displayTime = 2
     event.alpha = 0
@@ -24,7 +24,7 @@ function GM:DisplayEvent(ply, data)
     end
 
     if eventData.tipId then
-        self.tipController:handleEvent(eventData.tipId)
+        self.tipController:HandleTipEvent(eventData.tipId)
     end
 
     table.insert(self.EventElements, event)
@@ -41,7 +41,7 @@ function GM:AddTextToEvent(eventData, text)
         eventData.bottomText = text
     end
 
-    eventData.bottomColor = self.HUDColors.green
+    eventData.bottomColor = self.HUD_COLORS.green
 end
 
 net.Receive("GC_EVENT", function(a, b)

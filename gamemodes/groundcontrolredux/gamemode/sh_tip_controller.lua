@@ -43,7 +43,7 @@ GM.tipController.genericTips = {
 if SERVER then
     local PLAYER = FindMetaTable("Player")
 
-    function PLAYER:sendTip(tipId)
+    function PLAYER:SendTip(tipId)
         net.Start("GC_TIP_EVENT")
         net.WriteString(tipId)
         net.Send(self)
@@ -53,7 +53,7 @@ end
 if CLIENT then
     file.verifyDataFolder("ground_control")
 
-    function GM.tipController:handleEvent(event)
+    function GM.tipController:HandleTipEvent(event)
         if CurTime() < self.nextTip then
             return false -- !ready to show next tip yet
         end
@@ -61,8 +61,8 @@ if CLIENT then
         local eventData = self.events[event]
 
         if eventData and (!self.shownEvents[event] or self.shownEvents[event] < eventData.times or eventData.times == -1) then
-                self:displayEvent(event)
-                self:saveShownEvents()
+                self:DisplayTipEvent(event)
+                self:SaveShownTips()
                 return true -- tip was shown
         end
 
@@ -71,7 +71,7 @@ if CLIENT then
 
     local questionMark = surface.GetTextureID("ground_control/hud/help")
 
-    function GM.tipController:displayEvent(event)
+    function GM.tipController:DisplayTipEvent(event)
         self.shownEvents[event] = math.min((self.shownEvents[event] or 0) + 1, 20)
         local eventData = self.events[event]
         local text = eventData.text
@@ -91,7 +91,7 @@ if CLIENT then
         self.displayHeight = height
     end
 
-    function GM.tipController:draw(w, h)
+    function GM.tipController:Draw(w, h)
         if CurTime() < self.displayTime then
             self.alpha = math.Approach(self.alpha, 1, FrameTime() * 3)
         else
@@ -100,7 +100,7 @@ if CLIENT then
 
         if self.alpha > 0 then
             if CurTime() < self.flashTime then
-                self.alpha = self.alpha * (0.6 + 0.4 * math.flash(CurTime(), 2))
+                self.alpha = self.alpha * (0.6 + 0.4 * math.flash(CurTime(), 1.5))
             end
 
             surface.SetDrawColor(0, 0, 0, 100 * self.alpha)
@@ -110,23 +110,23 @@ if CLIENT then
             surface.SetTexture(questionMark)
             surface.DrawTexturedRect(w * 0.5 - self.displayWidth * 0.5, h * 0.5 + 72, 16, 16)
 
-            local hudColors = GAMEMODE.HUDColors
+            local white, black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 
-            hudColors.white.a = 255 * self.alpha
-            hudColors.black.a = 255 * self.alpha
-                draw.ShadowText(self.displayText, self.displayFont, w * 0.5 + 20, h * 0.5 + 80, hudColors.white, hudColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            hudColors.white.a = 255
-            hudColors.black.a = 255
+            white.a = 255 * self.alpha
+            black.a = 255 * self.alpha
+            draw.ShadowText(self.displayText, self.displayFont, w * 0.5 + 20, h * 0.5 + 80, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            white.a = 255
+            black.a = 255
         end
     end
 
-    function GM.tipController:saveShownEvents()
+    function GM.tipController:SaveShownTips()
         local data = util.TableToJSON(self.shownEvents)
 
         file.Write(self.SAVE_DIRECTORY, data)
     end
 
-    function GM.tipController:loadShownEvents()
+    function GM.tipController:LoadShownTips()
         local readData = file.Read(self.SAVE_DIRECTORY, "DATA")
 
         if readData then
@@ -139,7 +139,7 @@ if CLIENT then
     end
 
     local function GC_TIP_EVENT(um)
-        GAMEMODE.tipController:handleEvent(um)
+        GAMEMODE.tipController:HandleTipEvent(um)
     end
     net.Receive("GC_TIP_EVENT", function (a, b)
         GC_TIP_EVENT(net.ReadString())

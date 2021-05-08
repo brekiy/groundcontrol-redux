@@ -11,13 +11,13 @@ function GM:PostPlayerDraw(ply)
     if ply.radioAlpha and ply:Alive() and ply.radioAlpha > 0 then
         local headBone = ply:LookupBone("ValveBiped.Bip01_Head1")
         local bonePos = ply:GetBonePosition(headBone)
-        self.HUDColors.white.a = ply.radioAlpha
+        self.HUD_COLORS.white.a = ply.radioAlpha
 
         local drawPos = bonePos
         drawPos.z = drawPos.z + 20
 
         render.SetMaterial(radioMaterial)
-        render.DrawSprite(drawPos, 16, 16, self.HUDColors.white)
-        self.HUDColors.white.a = 255
+        render.DrawSprite(drawPos, 16, 16, self.HUD_COLORS.white)
+        self.HUD_COLORS.white.a = 255
     end
 end

@@ -2,10 +2,22 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
-ENT.CaptureRange = 128
+ENT.captureDistance = 128
 
 function ENT:Initialize()
     self:SetNoDraw(true)
+    self.captureTeam = nil
+    self:SetCaptureDistance(self.captureDistance)
+end
+
+function ENT:SetCaptureDistance(distance)
+    self.captureDistance = distance
+    self:SetCaptureDistance(distance)
+end
+
+function ENT:SetCapturerTeam(team) -- the team that has to capture this point
+    self.capturerTeam = team
+    self:SetCapturerTeam(team)
 end
 
 function ENT:Think()
@@ -13,9 +25,9 @@ function ENT:Think()
         return
     end
 
-    for key, obj in ipairs(ents.FindInSphere(self:GetPos(), self.CaptureRange)) do
-        if obj:IsPlayer() and obj:Alive() and GAMEMODE.curGametype:attemptCaptureDrugs(obj, self) then
-            GAMEMODE:endRound(obj:Team())
+    for key, obj in ipairs(ents.FindInSphere(self:GetPos(), self.captureDistance)) do
+        if obj:IsPlayer() and obj:Alive() and GAMEMODE.curGametype:AttemptCaptureIntel(obj, self) then
+            GAMEMODE:EndRound(obj:Team())
         end
     end
 end

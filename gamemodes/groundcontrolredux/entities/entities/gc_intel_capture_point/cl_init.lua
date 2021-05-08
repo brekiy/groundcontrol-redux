@@ -3,7 +3,7 @@ include("shared.lua")
 local displayFont = "CW_HUD14"
 
 function ENT:Initialize()
-    GAMEMODE:addObjectiveEntity(self)
+    GAMEMODE:AddObjectiveEntity(self)
 end
 
 local white, black = Color(255, 255, 255, 255), Color(0, 0, 0, 255)
@@ -15,10 +15,11 @@ local point = surface.GetTextureID("ground_control/hud/point_of_interest")
 
 function ENT:drawHUD()
     local ply = LocalPlayer()
+    local sameTeam = ply:Team() == self:GetCapturerTeam()
+    if !sameTeam then return end
     local pos = nil
 
-    -- we know that this entity's position isn't going to be changed (it's a static ent)
-    -- so just get it's position once instead of spamming tables per each draw call
+    -- this is a static ent, get it's position once instead of spamming tables per each draw call
     if !self.ownPos then
         self.ownPos = self:GetPos()
         self.ownPos.z = self.ownPos.z + 32
@@ -33,9 +34,10 @@ function ENT:drawHUD()
     if ply.hasIntel then
         text = self.DeliverText
         skipVisCheck = true
-        alpha = alpha * (0.2 + 0.8 * math.flash(CurTime(), 2))
+        alpha = alpha * (0.2 + 0.8 * math.flash(CurTime(), 1.5))
     else
         text = self.CaptureText
+        alpha = 0.4
     end
 
     white.a = 255 * alpha

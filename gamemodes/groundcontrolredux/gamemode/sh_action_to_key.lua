@@ -15,7 +15,7 @@ if CLIENT then
 
     function GM:performAction(bind)
         local actionData = self.KeysToAction[bind]
-
+        local ply = LocalPlayer()
         if actionData then
             RunConsoleCommand(actionData.conCommand)
 
@@ -25,7 +25,6 @@ if CLIENT then
             end
         end
 
-        -- local ply = LocalPlayer()
 
         for key, data in ipairs(ply.gadgets) do
             if data.useKey == bind then

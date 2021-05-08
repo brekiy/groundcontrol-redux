@@ -3,13 +3,17 @@ AddCSLuaFile("cl_init.lua")
 include("shared.lua")
 
 ENT.captureDistance = 192
-ENT.captureAmount = 1
-ENT.captureTime = 0.25
-ENT.captureSpeedIncrease = 0.1
-ENT.maxSpeedIncrease = 0.5
-ENT.deCaptureTime = 1
-ENT.deCaptureAmount = 1
+-- Incrementing/decrementing progress will use the same time tick under the new formula
+ENT.captureTime = 1
+-- How much to decrement progress by
+ENT.deCaptureSpeed = 1
 ENT.roundOverOnCapture = true
+-- Hard cap on how fast capture can occur
+ENT.MAX_CAPTURERS = 4
+-- The starting factor added to the capture amount
+ENT.BASE_CAP_FACTOR = 0.6
+-- How often in seconds to cap
+ENT.CAPTURE_TICK = 1
 
 function ENT:Initialize()
     self:SetModel("models/error.mdl")
@@ -17,40 +21,32 @@ function ENT:Initialize()
 
     self.captureDelay = 0
     self.deCaptureDelay = 0
-    self.dt.CurCaptureTeam = 0
+    self:SetCurCaptureTeam(0)
 end
 
-function ENT:setCaptureDistance(distance)
+function ENT:SetCaptureDistance(distance)
     self.captureDistance = distance
 end
 
-function ENT:setCaptureSpeed(speed)
-    self.captureAmount = speed
+function ENT:CalcCaptureSpeed(numPly)
+    numPly = math.Clamp(numPly, 1, self.MAX_CAPTURERS)
+    return 1 + ((numPly - 1) * self.BASE_CAP_FACTOR) / math.pow(2, numPly - 2)
 end
 
-function ENT:setCaptureDuration(time) -- we increase CaptureProgress by captureAmount every captureTime
-    self.captureTime = time
-end
-
-function ENT:setCaptureSpeedInceasePerPlayer(speedIncrease) -- each player makes the capture go this % faster
-    self.captureSpeedIncrease = speedIncrease
-end
-
-function ENT:setMaxCaptureSpeedIncrease(max)
-    self.maxSpeedIncrease = max
-end
-
-function ENT:setRoundOverOnCapture(roundOver)
+function ENT:SetRoundOverOnCapture(roundOver)
     self.roundOverOnCapture = roundOver
 end
 
+function ENT:SetCaptureTime(time)
+    self.CAPTURE_TIME = time
+end
 function ENT:Think()
     if GAMEMODE.RoundOver then
         return
     end
 
-    if self.roundOverOnCapture and self.dt.CaptureProgress == 100 then
-        GAMEMODE:endRound(self.dt.CurCaptureTeam)
+    if self.roundOverOnCapture and self:GetCaptureProgress() >= self.CAPTURE_TIME then
+        GAMEMODE:EndRound(self:GetCurCaptureTeam())
         return
     end
 
@@ -79,7 +75,8 @@ function ENT:Think()
         end
     end
 
-    if redMembers > 0 and blueMembers > 0 then -- if both parties are available, nothing happens
+    -- don't calc capture progress if the point is being contested
+    if redMembers > 0 and blueMembers > 0 then
         return
     end
 
@@ -99,23 +96,24 @@ function ENT:Think()
             return
         end
 
-        local canCapture = desiredTeam == self.dt.CurCaptureTeam
-        local multiplier = math.max(1 - (capturingMembers - 1) * self.captureSpeedIncrease, self.maxSpeedIncrease)
+        local canCapture = desiredTeam == self:GetCurCaptureTeam()
+        self:SetCaptureSpeed(self:CalcCaptureSpeed(capturingMembers))
+        self.captureDelay = curTime + self.CAPTURE_TICK
+        self.deCaptureDelay = curTime + self.CAPTURE_TICK
 
-        self.captureDelay = curTime + self.captureTime * multiplier
-        self.deCaptureDelay = curTime + self.deCaptureTime
-
-        if canCapture then -- if we can capture, we do so
-            if self.dt.CurCaptureTeam == 0 then
-                self.dt.CurCaptureTeam = desiredTeam
+        if canCapture then
+            -- if we can capture, advance progress to 100
+            if self:GetCurCaptureTeam() == 0 then
+                self:SetCurCaptureTeam(desiredTeam)
             end
 
-            self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 100, self.captureAmount)
-        else -- if we don't, we first push the capture progress back
-            self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 0, self.captureAmount)
+            self:SetCaptureProgress(math.Approach(self:GetCaptureProgress(), self.CAPTURE_TIME, self:GetCaptureSpeed()))
+        else
+            -- else reduce enemy progress to 0 first
+            self:SetCaptureProgress(math.Approach(self:GetCaptureProgress(), 0, self:GetCaptureSpeed()))
 
-            if self.dt.CaptureProgress == 0 then
-                self.dt.CurCaptureTeam = desiredTeam
+            if self:GetCaptureProgress() == 0 then
+                self:SetCurCaptureTeam(desiredTeam)
             end
         end
     else
@@ -123,8 +121,8 @@ function ENT:Think()
             return
         end
 
-        self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 0, 1)
-        self.deCaptureDelay = curTime + self.deCaptureTime
+        self:SetCaptureProgress(math.Approach(self:GetCaptureProgress(), 0, self.deCaptureSpeed))
+        self.deCaptureDelay = curTime + self.CAPTURE_TICK
     end
 end
 

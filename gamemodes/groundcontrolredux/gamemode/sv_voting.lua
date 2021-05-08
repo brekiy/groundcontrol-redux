@@ -1,7 +1,7 @@
 AddCSLuaFile("cl_voting.lua")
 
 GM.VoteOptions = {}
-GM.VotedPlayers = {}
+-- GM.VotedPlayers = {}
 GM.PossibleVoteOptions = {}
 GM.VoteCallback = nil
 GM.VoteActive = false
@@ -110,10 +110,10 @@ end
 
 function GM:sendVoteData(target)
     net.Start("GC_VOTE")
-        net.WriteString(self.VoteTitle)
-        net.WriteFloat(self.VoteStartTime)
-        net.WriteFloat(self.VoteTime)
-        net.WriteTable(self.VoteOptions)
+    net.WriteString(self.VoteTitle)
+    net.WriteFloat(self.VoteStartTime)
+    net.WriteFloat(self.VoteTime)
+    net.WriteTable(self.VoteOptions)
     net.Send(target) -- send to each individually instead of player.GetAll(), etc. in case I want to expand on this system later on
 end
 

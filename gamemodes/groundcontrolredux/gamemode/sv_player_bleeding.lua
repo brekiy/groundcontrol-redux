@@ -15,8 +15,10 @@ function PLAYER:bleed(silentBleed)
     self:postBleed()
 
     if !silentBleed then
-        self:EmitSound("GC_BLEED")
+        self:EmitSound("GC_BLEED_SOUND")
     end
+    local plyTrace = util.GetPlayerTrace(self, Vector(0, 0, -1))
+    util.Decal("Blood", plyTrace.start, plyTrace.endpos, self)
 end
 
 function PLAYER:delayBleed(time)
@@ -29,7 +31,9 @@ function PLAYER:postBleed()
         self:Kill()
 
         if IsValid(self.bleedInflictor) then -- reward whoever caused us to bleed
-            self.bleedInflictor:addCurrency(GAMEMODE.CashPerKill, GAMEMODE.ExpPerKill, "BLEED_OUT_KILL", ply)
+            self.bleedInflictor:AddCurrency("BLEED_OUT_KILL", self)
+            self.bleedInflictor:AddFrags(1)
+            GAMEMODE:TrackRoundMVP(self.bleedInflictor, "kills", 1)
             self.bleedInflictor = nil
         end
     end
@@ -42,10 +46,10 @@ function PLAYER:startBleeding(bleedInflictor)
         self.bleedInflictor = bleedInflictor -- the person that caused us to bleed
     end
 
-    self:setBleeding(true)
+    self:SetBleeding(true)
 end
 
-function PLAYER:sendBleedState()
+function PLAYER:SendBleedState()
     net.Start("GC_BLEEDSTATE")
     net.WriteBool(self.bleeding)
     net.Send(self)
@@ -58,7 +62,7 @@ function PLAYER:attemptBandage()
 
     local target = self:getBandageTarget()
 
-    if self:canBandage(target) then
+    if self:CanBandage(target) then
         target:bandage(self)
     end
 end
@@ -71,9 +75,9 @@ function PLAYER:bandage(bandagedBy)
     bandagedBy = bandagedBy or self
 
     bandagedBy:useBandage()
-    bandagedBy:EmitSound("GC_BANDAGE")
+    bandagedBy:EmitSound("GC_BANDAGE_SOUND")
     bandagedBy:sendBandages()
-    bandagedBy:calculateWeight()
+    bandagedBy:CalculateWeight()
 
     local wep = bandagedBy:GetActiveWeapon()
 
@@ -81,11 +85,11 @@ function PLAYER:bandage(bandagedBy)
         wep:setGlobalDelay(GAMEMODE.BandageTime + 0.3, true, CW_ACTION, GAMEMODE.BandageTime)
     end
 
-    self:setBleeding(false)
+    self:SetBleeding(false)
 
     if bandagedBy != self then
-        bandagedBy:addCurrency(GAMEMODE.CashPerBandage, GAMEMODE.ExpPerBandage, "TEAMMATE_BANDAGED")
-        GAMEMODE:trackRoundMVP(bandagedBy, "bandaging", 1)
+        bandagedBy:AddCurrency("TEAMMATE_BANDAGED")
+        GAMEMODE:TrackRoundMVP(bandagedBy, "bandaging", 1)
     end
 
     self:restoreHealth(bandagedBy.healAmount)

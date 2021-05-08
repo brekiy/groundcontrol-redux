@@ -18,7 +18,7 @@ end
 GM.Armor = {}
 GM.ArmorById = {}
 
-function GM:registerArmor(data)
+function GM:RegisterArmor(data)
     self.Armor[data.category] = self.Armor[data.category] or {}
     table.insert(self.Armor[data.category], data)
 
@@ -30,11 +30,11 @@ function GM:registerArmor(data)
     end
 end
 
-function GM:getArmorData(armorId, category)
+function GM:GetArmorData(armorId, category)
     return self.Armor[category][armorId]
 end
 
-function GM:prepareArmorPiece(ply, armorId, category)
+function GM:PrepareArmorPiece(ply, armorId, category)
     local armorPiece = self.Armor[category]
 
     if !armorPiece or !armorPiece[armorId] then
@@ -47,12 +47,12 @@ function GM:prepareArmorPiece(ply, armorId, category)
     ply.armor[category] = armorObject
 end
 
-function GM:getArmorWeight(category, id)
+function GM:GetArmorWeight(category, id)
     local data = self.Armor[category][id]
     return data and data.weight or 0
 end
 
-function GM:getArmorCost(category, id)
+function GM:GetArmorCost(category, id)
     local data = self.Armor[category][id]
     return data and data.pointCost or 1
 end
@@ -83,36 +83,36 @@ end
 local vestPaca = {
     category = "vest",
     id = "vest_paca",
-    displayName = "PACA Low Visibility Carrier",
+    displayName = "PACA Low-Vis Carrier",
     weight = 1.7,
     protection = 10,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    damageDecrease = 0.75,
-    protectionDelta = 0.0075,
-    damageDecreasePenetrated = 0.15,
+    damageDecrease = 0.69, -- hehe
+    protectionDelta = 0.0085,
+    damageDecreasePenetrated = 0.1,
     durability = 30,
-    pointCost = 4,
+    pointCost = 5,
     icon = "ground_control/hud/armor/aa_vest_dyneema",
     description = "Minimalist carrier with level II soft panels."
 }
-GM:registerArmor(vestPaca)
+GM:RegisterArmor(vestPaca)
 
 local vestIba = {
     category = "vest",
     id = "vest_iba",
     displayName = "Interceptor Body Armor",
-    weight = 11,
+    weight = 12,
     protection = 30,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
-    damageDecrease = 0.775,
-    protectionDelta = 0.01,
-    damageDecreasePenetrated = 0.15,
-    durability = 60,
-    pointCost = 14,
+    damageDecrease = 0.725,
+    protectionDelta = 0.009,
+    damageDecreasePenetrated = 0.1,
+    durability = 40,
+    pointCost = 15,
     icon = "ground_control/hud/armor/aa_vest_spectra",
     description = "Surplus soft armor with level III rifle plates."
 }
-GM:registerArmor(vestIba)
+GM:RegisterArmor(vestIba)
 
 local vestPc = {
     category = "vest",
@@ -121,32 +121,32 @@ local vestPc = {
     weight = 8.5,
     protection = 40,
     protectionAreas = {[HITGROUP_CHEST] = true},
-    damageDecrease = 0.775,
+    damageDecrease = 0.725,
     protectionDelta = 0.01,
-    damageDecreasePenetrated = 0.15,
-    durability = 40,
+    damageDecreasePenetrated = 0.1,
+    durability = 30,
     pointCost = 20,
     icon = "ground_control/hud/armor/aa_vest_lbx",
     description = "Modern lightweight plate carrier with level IV rifle plates."
 }
-GM:registerArmor(vestPc)
+GM:RegisterArmor(vestPc)
 
 local vestRatnik = {
     category = "vest",
     id = "vest_ratnik",
     displayName = "6B45 Body Armor",
-    weight = 18,
+    weight = 19,
     protection = 40,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true},
-    damageDecrease = 0.775,
+    damageDecrease = 0.725,
     protectionDelta = 0.01,
-    damageDecreasePenetrated = 0.15,
-    durability = 70,
-    pointCost = 30,
+    damageDecreasePenetrated = 0.1,
+    durability = 50,
+    pointCost = 40,
     icon = "ground_control/hud/armor/aa_vest_ratnik",
     description = "Body armor with level IV rifle plates and additional soft protection."
 }
-GM:registerArmor(vestRatnik)
+GM:RegisterArmor(vestRatnik)
 
 
 -- Helmets
@@ -159,15 +159,15 @@ local helmetPasgt = {
     weight = 1.1,
     protection = 14,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.8,
+    damageDecrease = 0.69,
     protectionDelta = 0.01,
-    damageDecreasePenetrated = 0.15,
+    damageDecreasePenetrated = 0.05,
     durability = 10,
-    pointCost = 6,
+    pointCost = 5,
     icon = "ground_control/hud/armor/aa_helmet_spectra",
-    description = "Surplus kevlar helmet. Provides level IIIA protection."
+    description = "Surplus aramid helmet. Provides level IIIA protection."
 }
-GM:registerArmor(helmetPasgt)
+GM:RegisterArmor(helmetPasgt)
 
 local helmetAltyn = {
     category = "helmet",
@@ -176,15 +176,15 @@ local helmetAltyn = {
     weight = 4,
     protection = 14,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.8,
-    protectionDelta = 0.01,
-    damageDecreasePenetrated = 0.15,
+    damageDecrease = 0.7,
+    protectionDelta = 0.0115,
+    damageDecreasePenetrated = 0.05,
     durability = 20,
     pointCost = 10,
     icon = "ground_control/hud/armor/aa_helmet_altyn",
-    description = "Heavy titanium helmet. Provides level IIIA protection."
+    description = "Heavy titanium helmet with faceshield. Provides level IIIA protection."
 }
-GM:registerArmor(helmetAltyn)
+GM:RegisterArmor(helmetAltyn)
 
 local helmetOperator = {
     category = "helmet",
@@ -193,46 +193,46 @@ local helmetOperator = {
     weight = 0.9,
     protection = 30,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.8,
+    damageDecrease = 0.675,
     protectionDelta = 0.01,
-    damageDecreasePenetrated = 0.15,
+    damageDecreasePenetrated = 0.05,
     durability = 10,
-    pointCost = 14,
+    pointCost = 15,
     icon = "ground_control/hud/armor/aa_helmet_operator",
-    description = "Modern lightweight ballistic helmet with additional armor. Provides level III protection."
+    description = "Lightweight polyethylene helmet with additional armor. Provides level III protection."
 }
-GM:registerArmor(helmetOperator)
+GM:RegisterArmor(helmetOperator)
 
 local helmetVulkan = {
     category = "helmet",
     id = "helmet_vulkan",
     displayName = "Vulkan-5",
     weight = 4.5,
-    protection = 40,
+    protection = 30,
     protectionAreas = {[HITGROUP_HEAD] = true},
-    damageDecrease = 0.8,
-    protectionDelta = 0.01,
-    damageDecreasePenetrated = 0.15,
-    durability = 20,
+    damageDecrease = 0.7,
+    protectionDelta = 0.0105,
+    damageDecreasePenetrated = 0.05,
+    durability = 15,
     pointCost = 20,
     icon = "ground_control/hud/armor/aa_helmet_vulkan",
-    description = "Heavy composite helmet. Provides level IV protection."
+    description = "Heavy composite helmet. Provides level III protection."
 }
-GM:registerArmor(helmetVulkan)
+GM:RegisterArmor(helmetVulkan)
 
 local PLAYER = FindMetaTable("Player")
 
 -- Set the armor on the client side. Why? idk
-function PLAYER:setArmorPiece(armorData, category)
+function PLAYER:SetArmorPiece(armorData, category)
     if CLIENT then
-        self:resetArmorData(armorData.category)
-        self:setupArmorPiece(armorData, category)
+        self:ResetArmorData(armorData.category)
+        self:SetupArmorPiece(armorData, category)
         self.armor[category] = armorData
     end
 end
 
 -- Clear the armor attribute for a given category
-function PLAYER:resetArmorData(category)
+function PLAYER:ResetArmorData(category)
     self.armor = self.armor or {}
     if self.armor[category] then
         self.armor[category] = nil
@@ -240,26 +240,26 @@ function PLAYER:resetArmorData(category)
 end
 
 -- Clear all of the player's tracked armor
-function PLAYER:resetTrackedArmor()
+function PLAYER:ResetTrackedArmor()
     self.armor = self.armor or {}
     table.Empty(self.armor)
 end
 
 -- Force resets the player to have no armor
-function PLAYER:resetAllArmor()
-    self:giveArmor("vest", 0)
-    self:giveArmor("helmet", 0)
+function PLAYER:ResetAllArmor()
+    self:GiveGCArmor("vest", 0)
+    self:GiveGCArmor("helmet", 0)
 end
 
-function PLAYER:getDesiredVest()
+function PLAYER:GetDesiredVest()
     return tonumber(self:GetInfoNum("gc_armor_vest", 1))
 end
 
-function PLAYER:getDesiredHelmet()
+function PLAYER:GetDesiredHelmet()
     return tonumber(self:GetInfoNum("gc_armor_helmet", 1))
 end
 
-function PLAYER:getTotalArmorPieces()
+function PLAYER:GetTotalArmorPieces()
     local combinedArmor = {}
     if self.armor then
         for k,v in pairs(self.armor) do

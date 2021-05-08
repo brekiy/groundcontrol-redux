@@ -8,21 +8,24 @@ GM.TeamBlueFallbackSpawnPoints = {"info_player_terrorist", "info_player_combine"
 
 local zeroAngles = Angle(0, 0, 0)
 
-function GM:registerStartingPoint(map, team, position, viewAngles, gametype)
+function GM:RegisterStartingPoint(map, team, position, viewAngles, gametypes)
     self.StartingPoints[map] = self.StartingPoints[map] or {}
     self.StartingPoints[map][team] = self.StartingPoints[map][team] or {}
 
     local pointData = {position = position, viewAngles = viewAngles or zeroAngles}
     local target = self.StartingPoints[map][team]
 
-    if gametype == "all" then -- if we're adding this point to all gametypes, then iterate over all gametypes available and insert it
+    -- if we're adding this point to all gametypes, then iterate over all gametypes available and insert it
+    if gametypes[1] == "all" then
         for name, data in pairs(self.GametypesByName) do
             target[name] = target[name] or {}
             table.insert(target[name], pointData)
         end
     else -- otherwise insert to a single point
-        target[gametype] = target[gametype] or {}
-        table.insert(target[gametype], pointData)
+        for _, gametype in pairs(gametypes) do
+            target[gametype] = target[gametype] or {}
+            table.insert(target[gametype], pointData)
+        end
     end
 end
 
@@ -70,15 +73,12 @@ function GM:setupStartingPoints(targetTeam, entityClass, positionList)
     if !positionList then -- if we weren't given a specific position list, get the registered points for this specific map + team
         local list = self.StartingPoints[self.CurrentMap]
 
-        if list then
-            list = list[team]
-
-            if list then
-                if list[self.curGametype.name] then
-                    positionList = list[self.curGametype.name]
-                else
-                    positionList = list
-                end
+        if list and list[targetTeam] then
+            list = list[targetTeam]
+            if list[self.curGametype.name] then
+                positionList = list[self.curGametype.name]
+            else
+                positionList = list
             end
         end
     end
@@ -128,8 +128,8 @@ end
 function GM:pickValidStartingPoint(ply)
     local team = ply:Team()
 
-    if self.curGametype.adjustSpawnpoint then
-        team = self.curGametype:adjustSpawnpoint(ply, team) or team
+    if self.curGametype.AdjustSpawnpoint then
+        team = self.curGametype:AdjustSpawnpoint(ply, team) or team
     end
 
     if self.curGametype.invertSpawnpoints then

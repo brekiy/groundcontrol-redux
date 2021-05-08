@@ -7,15 +7,17 @@ ENT.timeToPenalize = 10
 
 ENT.Base = "gc_offlimits_area"
 
+-- Unfinished
 function ENT:SetupDataTables()
-    self:DTVar("Bool", 0, "inverseFunctioning") -- whether the entity should function in reverse (too far = get back here)
-    self:DTVar("Int", 0, "targetTeam")
+    -- whether the entity should function in reverse (too far = get back here)
+    self:NetworkVar("Bool", 0, "InverseFunctioning")
+    self:NetworkVar("Int", 0, "TargetTeam")
 
     self:NetworkVar("Vector", 0, "AABBMin")
     self:NetworkVar("Vector", 1, "AABBMax")
 end
 
-function ENT:setAABB(vec1, vec2)
+function ENT:SetAABB(vec1, vec2)
     local vecMin = Vector(math.min(vec1.x, vec2.x), math.min(vec1.y, vec2.y), math.min(vec1.z, vec2.z))
     local vecMax = Vector(math.max(vec1.x, vec2.x), math.max(vec1.y, vec2.y), math.max(vec1.z, vec2.z))
 
@@ -23,7 +25,7 @@ function ENT:setAABB(vec1, vec2)
     self:SetAABBMax(vecMax)
 end
 
-function ENT:isWithinCaptureAABB(pos)
+function ENT:IsWithinCaptureAABB(pos)
     local min, max = self:GetAABBMin(), self:GetAABBMax()
     pos.z = pos.z + 32
 
@@ -34,7 +36,7 @@ function ENT:isWithinCaptureAABB(pos)
     return false
 end
 
-function ENT:canPenalizePlayer(ply, ownPos)
+function ENT:CanPenalizePlayer(ply, ownPos)
     if GAMEMODE.RoundOver then
         return false
     end
@@ -43,13 +45,13 @@ function ENT:canPenalizePlayer(ply, ownPos)
         return false
     end
 
-    if self.dt.targetTeam != 0 and self.dt.targetTeam != ply:Team() then
+    if self:GetTargetTeam() != 0 and self:GetTargetTeam() != ply:Team() then
         return false
     end
 
-    if self.dt.inverseFunctioning then
-        return !self:isWithinCaptureAABB(ply:GetPos())
+    if self:GetInverseFunctioning() then
+        return !self:IsWithinCaptureAABB(ply:GetPos())
     end
 
-    return self:isWithinCaptureAABB(ply:GetPos())
+    return self:IsWithinCaptureAABB(ply:GetPos())
 end

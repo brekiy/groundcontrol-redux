@@ -49,7 +49,7 @@ function GM:cycleWeaponSelection(offset)
     end
 
     if self:showWeaponSelection(self.lastWeaponSelectIndex) then
-        self:hideRadio()
+        self:HideRadio()
     end
 end
 
@@ -122,10 +122,11 @@ function GM:drawWeaponSelection(w, h, curTime)
         end
 
         local startY = h * 0.5 - totalHeight * 0.5
-        local startW = 50
+        -- local startW = 50
+        local startW = ScrW() - self.weaponSelectionElementWidth - 50
 
-        local backColor = self.HUDColors.black
-        local frontColor = self.HUDColors.white
+        local backColor = self.HUD_COLORS.black
+        local frontColor = self.HUD_COLORS.white
         backColor.a = 255 * self.weaponSelectionAlpha
         frontColor.a = 255 * self.weaponSelectionAlpha
 
@@ -154,36 +155,37 @@ function GM:drawWeaponSelection(w, h, curTime)
                 startY = startY + 5
                 surface.DrawRect(startW, drawY, self.weaponSelectionElementWidth, drawH)
 
-                local ammoCountColor = self.HUDColors.white
+                local ammoCountColor = self.HUD_COLORS.white
 
-                if weaponObj:isLowOnTotalAmmo() then
-                    ammoCountColor = self.HUDColors.red
+                if GCCheckLowTotalAmmo(weaponObj) then
+                    ammoCountColor = self.HUD_COLORS.red
                 end
 
                 if isTargetWeapon then
-                    draw.ShadowText(weaponObj.PrintName, "CW_HUD20", startW + 5, drawY + 57, self.HUDColors.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-                    draw.ShadowText("[" .. i .. "]", "CW_HUD20", self.weaponSelectionElementWidth + startW - 5, drawY + 57, self.HUDColors.white, backColor, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+                    draw.ShadowText(weaponObj.PrintName, "CW_HUD20", startW + 5, drawY + 57, self.HUD_COLORS.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    draw.ShadowText("[" .. i .. "]", "CW_HUD20", self.weaponSelectionElementWidth + startW - 5, drawY + 57, self.HUD_COLORS.white, backColor, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
 
                     if weaponObj.IconLetter then
-                        draw.ShadowText(weaponObj.IconLetter, "GroundControl_SelectIcons", startW + 5, drawY + 5, self.HUDColors.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        draw.ShadowText(weaponObj.IconLetter, "GroundControl_SelectIcons", startW + 5, drawY + 5, self.HUD_COLORS.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     elseif weaponObj.SelectIcon then
-                        surface.SetDrawColor(0, 0, 0, 255 * self.weaponSelectionAlpha)
-                        surface.SetTexture(weaponObj.SelectIcon)
-                        surface.DrawTexturedRect(startW + 5, drawY - 10, 80, 80)
-
+                        -- surface.SetDrawColor(0, 0, 0, 255 * self.weaponSelectionAlpha)
                         surface.SetDrawColor(255, 255, 255, 255 * self.weaponSelectionAlpha)
-                        surface.DrawTexturedRect(startW + 4, drawY - 11, 80, 80)
+                        surface.SetTexture(weaponObj.SelectIcon)
+                        surface.DrawTexturedRect(startW + 5, drawY, self.weaponSelectionElementWidth * 0.5, self.weaponSelectionElementHeight * 1.1)
+
+                        -- surface.SetDrawColor(255, 255, 255, 255 * self.weaponSelectionAlpha)
+                        -- surface.DrawTexturedRect(startW + 4, drawY - 6, 100, 65)
                     end
 
                     if usesAmmo then
-                        draw.ShadowText(weaponObj:getMagCapacity() .. " / " .. weaponObj:getReserveAmmoText(), "CW_HUD20", startW + 5, drawY + 77, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        draw.ShadowText(GCGetMagCapacity(weaponObj) .. " / " .. weaponObj:GetOwner():GetAmmoCount(weaponObj.Primary.Ammo), "CW_HUD20", startW + 5, drawY + 77, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     end
                 else
-                    draw.ShadowText(weaponObj.PrintName, "CW_HUD20", startW + 5, drawY + 3, self.HUDColors.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-                    draw.ShadowText("[" .. i .. "]", "CW_HUD20", self.weaponSelectionElementWidth + startW - 5, drawY + 3, self.HUDColors.white, backColor, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+                    draw.ShadowText(weaponObj.PrintName, "CW_HUD20", startW + 5, drawY + 3, self.HUD_COLORS.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    draw.ShadowText("[" .. i .. "]", "CW_HUD20", self.weaponSelectionElementWidth + startW - 5, drawY + 3, self.HUD_COLORS.white, backColor, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
 
                     if usesAmmo then
-                        draw.ShadowText(weaponObj:getMagCapacity() .. " / " .. weaponObj:getReserveAmmoText(), "CW_HUD20", startW + 5, drawY + 23, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                        draw.ShadowText(GCGetMagCapacity(weaponObj) .. " / " .. weaponObj:GetOwner():GetAmmoCount(weaponObj.Primary.Ammo), "CW_HUD20", startW + 5, drawY + 23, ammoCountColor, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                     end
                 end
             end

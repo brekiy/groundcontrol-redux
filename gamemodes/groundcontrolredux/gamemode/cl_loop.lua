@@ -31,7 +31,7 @@ function GM:Think()
 
             adrenalineData.soundTime = curTime + delay
             ply:EmitSound("ground_control/player/hbeat.mp3", volume, pitch)
-            self.tipController:handleEvent("HIGH_ADRENALINE")
+            self.tipController:HandleTipEvent("HIGH_ADRENALINE")
         end
 
         if ply.stamina <= GetConVar("gc_stamina_run_impact_level"):GetInt() then
@@ -40,8 +40,9 @@ function GM:Think()
             if curTime > staminaData.soundTime then
                 local lastStamina = self.lastStamina
                 self.lastStamina = ply.stamina
-
-                if ply.stamina < lastStamina then -- if we're gaining stamina or it remains the same, then we will begin decreasing the sound of the breathing so that it's !super annoying when you are low on health
+                -- if we're gaining stamina or it remains the same, 
+                -- then we will begin decreasing the sound of the breathing so that it's not super annoying when you are low on health
+                if ply.stamina < lastStamina then
                     self.breatheSoundChangeUp = math.Approach(self.breatheSoundChangeUp, self.breatheSoundChangeMax, self.breatheSoundChange)
                     self.breatheSoundChangeDown = math.Approach(self.breatheSoundChangeDown, 0, self.breatheSoundChange)
 
@@ -67,7 +68,7 @@ function GM:Think()
         self.RadioSelection.active = false
     end
 
-    if self.curGametype and self.curGametype.think then
-        self.curGametype:think()
+    if self.curGametype and self.curGametype.Think then
+        self.curGametype:Think()
     end
 end

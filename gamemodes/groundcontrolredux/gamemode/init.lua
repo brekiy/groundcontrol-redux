@@ -6,7 +6,7 @@
 
 GM.AutoUpdateConVars = {}
 
-function GM:registerAutoUpdateConVar(cvarName, onChangedCallback)
+function GM:RegisterAutoUpdateConVar(cvarName, onChangedCallback)
     self.AutoUpdateConVars[cvarName] = onChangedCallback
 
     cvars.AddChangeCallback(cvarName, onChangedCallback)
@@ -76,7 +76,7 @@ include("sv_net_strings.lua")
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
-AddCSLuaFile("cl_player.lua")
+-- AddCSLuaFile("cl_player.lua")
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_loop.lua")
 AddCSLuaFile("cl_view.lua")
@@ -100,21 +100,21 @@ CustomizableWeaponry.canDropWeapon = false -- don't let the players be able to d
 
 function GM:InitPostEntity()
     self:postInitEntity()
-    self:setGametype(self:getGametypeFromConVar())
-    self:autoRemoveEntities()
-    self:runMapStartCallback()
+    self:SetGametype(self:GetGametypeFromConVar())
+    self:AutoRemoveEntities()
+    self:RunMapStartCallback()
 
     timer.Simple(1, function()
         self:resetStartingPoints()
     end)
 
-    self:verifyAutoDownloadMap()
+    self:VerifyAutoDownloadMap()
 
     self:performOnChangedCvarCallbacks()
 end
 
 function GM:EntityTakeDamage(target, dmgInfo)
-    dmgInfo:SetDamageForce(dmgInfo:GetDamageForce() * 0.5)
+    dmgInfo:SetDamageForce(dmgInfo:GetDamageForce() * 0.35)
 
     if target:IsPlayer() then
         local attacker = dmgInfo:GetAttacker()
@@ -125,6 +125,7 @@ function GM:EntityTakeDamage(target, dmgInfo)
 
                 if IsValid(owner) and owner:IsPlayer() then
                     attacker = owner -- use the 'owner' as the attacker
+                    print("attacker is owner ", attacker:Nick())
                 end
             end
 
@@ -150,7 +151,19 @@ function GM:EntityTakeDamage(target, dmgInfo)
             end
         end
         if !dmgInfo:IsFallDamage() then
-            AddDamageLogEntry(attacker, target, dmgInfo, false)
+            local inflictor = dmgInfo:GetInflictor()
+
+            -- if the inflictor matches the attacker, but it wasn't a suicide
+            -- wtf is ply here?
+            -- if inflictor == attacker and inflictor != ply then
+            if inflictor == attacker then
+                local wep = attacker.GetActiveWeapon and attacker:GetActiveWeapon()
+
+                if IsValid(wep) then -- and the attacker has a valid weapon
+                    inflictor = wep -- we assume that the inflictor should be the weapon
+                end
+            end
+            AddDamageLogEntry(attacker, target, dmgInfo, inflictor:GetClass(), false)
         end
     end
 end
@@ -161,33 +174,30 @@ function GM:PlayerDeathSound()
 end
 
 -- wip
-function AddDamageLogEntry(attacker, target, dmgInfo, targetDied)
+function AddDamageLogEntry(attacker, target, dmgInfo, wep, targetDied)
     local entryText = nil
     local targetNick = target:Nick()
-    -- local inflictor = dmgInfo:GetInflictor()
-    local attackerWep = nil
     local attackerNick = nil
     if attacker and attacker:IsPlayer() then
         attackerNick = attacker:Nick()
-        attackerWep = attacker:GetActiveWeapon():GetClass()
     end
     if targetDied then
         if attacker and attacker:IsPlayer() and attacker != target then
             if attacker:Team() == target:Team() then
-                entryText = Format("KILL: %s teamkilled %s with %s", attackerNick, targetNick, attackerWep)
+                entryText = Format("KILL: %s teamkilled %s with %s", attackerNick, targetNick, wep)
             else
-                entryText = Format("KILL: %s killed %s with %s", attackerNick, targetNick, attackerWep)
+                entryText = Format("KILL: %s killed %s with %s", attackerNick, targetNick, wep)
             end
         else
             entryText = Format("DEATH: %s bled out", targetNick)
         end
     elseif attacker and attacker:IsPlayer() then
-        entryText = Format("HIT: %s shot %s with %s (%f dmg)", attackerNick, targetNick, attackerWep, dmgInfo:GetDamage())
+        entryText = Format("HIT: %s shot %s with %s (%f dmg)", attackerNick, targetNick, wep, dmgInfo:GetDamage())
     end
     table.insert(GAMEMODE.DamageLog, entryText)
 end
 
 -- CSS fall damage approximation thanks to gmod wiki
-function GM:GetFallDamage( ply, speed )
+function GM:GetFallDamage(ply, speed)
     return math.max(0, math.ceil(0.2418 * speed - 141.75))
 end

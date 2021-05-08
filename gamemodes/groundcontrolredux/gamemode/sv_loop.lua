@@ -1,6 +1,6 @@
 function GM:Think()
-    if self.curGametype.think then
-        self.curGametype:think()
+    if self.curGametype.Think then
+        self.curGametype:Think()
     end
 
     local curTime = CurTime()
@@ -10,8 +10,8 @@ function GM:Think()
     for key, ply in pairs(player.GetAll()) do
         if ply:Alive() and ply:Team() != TEAM_SPECTATOR and ply:Team() != TEAM_UNASSIGNED then
             if ply:OnGround() then
-                ply.curMaxStamina = ply:getMaxStamina()
-                local maxStamina = math.min(ply.curMaxStamina, self.MinStaminaFromSprinting)
+                -- ply.curMaxStamina = ply:GetMaxStamina()
+                -- local maxStamina = math.min(ply.curMaxStamina, self.MinStaminaFromSprinting)
                 local walkSpeed, velocity = ply:GetWalkSpeed(), ply:GetVelocity()
 
                 velocity.z = 0
@@ -20,11 +20,11 @@ function GM:Think()
                 -- should only drain stamina when our current stamina is lower than our max stamina
                 if ply.stamina > self.MinStaminaFromSprinting and length >= walkSpeed * 1.15 then
                     if curTime > ply.staminaDrainTime then
-                        ply:drainStamina()
+                        ply:DrainStamina()
                     end
                 else
-                    if ply.stamina < 100 and curTime > ply.staminaRegenTime then
-                        ply:regenStamina()
+                    if ply.stamina < ply:GetMaxStamina() and curTime > ply.staminaRegenTime then
+                        ply:RegenStamina()
                     end
                 end
             end
@@ -34,16 +34,16 @@ function GM:Think()
                     ply:bleed()
                 end
 
-                ply:delayHealthRegen()
-                ply:increaseAdrenalineDuration(1, 1)
+                ply:DelayHealthRegen()
+                ply:IncreaseAdrenalineDuration(1, 1)
             else
                 if ply.regenPool > 0 and curTime > ply.regenDelay then
-                    ply:regenHealth()
+                    ply:RegenHealth()
                 end
             end
 
             if ply.adrenalineIncreaseSpeed != 1 and curTime > ply.adrenalineSpeedHold then
-                ply.adrenalineIncreaseSpeed = math.Approach(ply.adrenalineIncreaseSpeed, 1, self.AdrenalineIncreaseSpeedFadeOutSpeed * frameTime)
+                ply.adrenalineIncreaseSpeed = math.Approach(ply.adrenalineIncreaseSpeed, 1, self.ADRENALINE_MOVEAFFECTOR_FADE_OUT_SPEED * frameTime)
             end
 
             self:attemptRestoreMovementSpeed(ply)
@@ -52,17 +52,17 @@ function GM:Think()
 
             if ply.adrenalineDuration == 0 then
                 if ply.adrenaline > 0 then
-                    ply:setAdrenaline(ply.adrenaline - frameTime * self.AdrenalineFadeOutSpeed)
+                    ply:SetAdrenaline(ply.adrenaline - frameTime * self.ADRENALINE_FADE_OUT_SPEED)
                 end
             else
-                ply:setAdrenaline(ply.adrenaline + self.AdrenalineFadeInPerSec * frameTime * ply.adrenalineIncreaseSpeed)
+                ply:SetAdrenaline(ply.adrenaline + self.AdrenalineFadeInPerSec * frameTime * ply.adrenalineIncreaseSpeed)
             end
 
             for traitKey, traitConfig in ipairs(ply.currentTraits) do
                 local traitData = traits[traitConfig[1]][traitConfig[2]]
 
                 if traitData.think then
-                    traitData:think(ply, curTime)
+                    traitData:Think(ply, curTime)
                 end
             end
         end

@@ -34,13 +34,13 @@ GM.FOOTSTEP_VOLUME_LEVELS = {
     [GM.FOOTSTEP_LOUDNESS.HIGH] = 0.95 -- running with >15kg
 }
 
-MAT_LADDER = -100 -- there is no MAT_LADDER enumeration, and because I'm too lazy to check for enumeration ids that aren't used I will use -100, oh god
+-- special enumerations that don't have values listed in the wiki
+MAT_LADDER = -100
 MAT_GRAVEL = -101
 MAT_CARPET = -102
 MAT_WOODPANEL = -103
 
--- map the default sounds to a material ID, way cheaper than traces, but also hacky as shit
--- whoever wrote the PlayerFootstep hook but thought it's a good idea to not provide the material ID of the surface that the player stepped on is a fucking retard
+-- map the default sounds to a material ID, cheaper/hackier than traces
 GM.DEFAULT_FOOTSTEP_TO_MATERIAL = {
     ["player/footsteps/wood1.wav"] = MAT_WOOD,
     ["player/footsteps/wood2.wav"] = MAT_WOOD,
@@ -110,113 +110,76 @@ GM.NOISE_PER_KILOGRAM = 1.25
 GM.SNEAKWALK_VELOCITY_CUTOFF = 105 -- if the player is walking slower than this, he is considered to be sneak-walking
 
 -- key is surface ID, value is table with sounds, filled automatically
-GM.SURFACE_FOOTSTEP_SOUNDS = {
-}
+GM.SURFACE_FOOTSTEP_SOUNDS = {}
 
 -- the sounds to play when walking on a surface that does !have a footstep sound registered to it
-GM.FALLBACK_FOOTSTEP_SOUNDS = {}
+GM.FALLBACK_FOOTSTEP_SOUND = nil
 
 GM.FOOTSTEP_PITCH_START = 95
 GM.FOOTSTEP_PITCH_END = 105
 
-function GM:registerWalkSound(materialID, desiredSounds, baseName, channel)
-    channel = channel or CHAN_BODY
-
-    local targetList = nil
+-- Map a precached sound to a material ID.
+function GM:RegisterWalkSound(materialID, desiredSound)
+    -- local targetList = nil
 
     if materialID then
-        self.SURFACE_FOOTSTEP_SOUNDS[materialID] = self.SURFACE_FOOTSTEP_SOUNDS[materialID] or {}
-        targetList = self.SURFACE_FOOTSTEP_SOUNDS[materialID]
+        self.SURFACE_FOOTSTEP_SOUNDS[materialID] = desiredSound
+        -- targetList = self.SURFACE_FOOTSTEP_SOUNDS[materialID]
     else
-        targetList = self.FALLBACK_FOOTSTEP_SOUNDS
+        self.FALLBACK_FOOTSTEP_SOUNDS = desiredSound
     end
-
-    table.insert(targetList, desiredSounds)
+    -- table.insert(targetList, desiredSounds)
 end
 
-GM:registerWalkSound(nil, {"ground_control/footsteps/concrete1.wav", "ground_control/footsteps/concrete2.wav", "ground_control/footsteps/concrete3.wav", "ground_control/footsteps/concrete4.wav"}, "GC_FALLBACK_WALK_SOUNDS")
-GM:registerWalkSound(MAT_WOOD, {"ground_control/footsteps/wood1.wav", "ground_control/footsteps/wood2.wav", "ground_control/footsteps/wood3.wav", "ground_control/footsteps/wood4.wav"}, "GC_WALK_WOOD")
-GM:registerWalkSound(MAT_GRASS, {"ground_control/footsteps/grass1.wav", "ground_control/footsteps/grass2.wav", "ground_control/footsteps/grass3.wav", "ground_control/footsteps/grass4.wav"}, "GC_WALK_GRASS")
-GM:registerWalkSound(MAT_SLOSH, {"ground_control/footsteps/slosh1.wav", "ground_control/footsteps/slosh2.wav", "ground_control/footsteps/slosh3.wav", "ground_control/footsteps/slosh4.wav"}, "GC_WALK_SLOSH")
-GM:registerWalkSound(MAT_METAL, {"ground_control/footsteps/metal1.wav", "ground_control/footsteps/metal2.wav", "ground_control/footsteps/metal3.wav", "ground_control/footsteps/metal4.wav"}, "GC_WALK_METAL")
-GM:registerWalkSound(MAT_LADDER, {"ground_control/footsteps/ladder1.wav", "ground_control/footsteps/ladder2.wav", "ground_control/footsteps/ladder3.wav", "ground_control/footsteps/ladder4.wav"}, "GC_WALK_LADDER")
-GM:registerWalkSound(MAT_GRAVEL, {"ground_control/footsteps/gravel1.wav", "ground_control/footsteps/gravel2.wav", "ground_control/footsteps/gravel3.wav", "ground_control/footsteps/gravel4.wav"}, "GC_WALK_GRAVEL")
-GM:registerWalkSound(MAT_SNOW, {"ground_control/footsteps/snow1.wav", "ground_control/footsteps/snow2.wav", "ground_control/footsteps/snow3.wav", "ground_control/footsteps/snow4.wav"}, "GC_WALK_SNOW")
-GM:registerWalkSound(MAT_DIRT, {"ground_control/footsteps/dirt1.wav", "ground_control/footsteps/dirt2.wav", "ground_control/footsteps/dirt3.wav", "ground_control/footsteps/dirt4.wav"}, "GC_WALK_DIRT")
-GM:registerWalkSound(MAT_WOODPANEL, {"ground_control/footsteps/woodpanel1.wav", "ground_control/footsteps/woodpanel2.wav", "ground_control/footsteps/woodpanel3.wav", "ground_control/footsteps/woodpanel4.wav"}, "GC_WALK_WOODPANEL")
+GM:RegisterWalkSound(nil, "GC_FALLBACK_WALK_SOUNDS")
+GM:RegisterWalkSound(MAT_CONCRETE, "GC_WALK_CONCRETE")
+GM:RegisterWalkSound(MAT_WOOD, "GC_WALK_WOOD")
+GM:RegisterWalkSound(MAT_GRASS, "GC_WALK_GRASS")
+GM:RegisterWalkSound(MAT_SLOSH, "GC_WALK_SLOSH")
+GM:RegisterWalkSound(MAT_METAL, "GC_WALK_METAL")
+GM:RegisterWalkSound(MAT_LADDER, "GC_WALK_LADDER")
+GM:RegisterWalkSound(MAT_GRAVEL, "GC_WALK_GRAVEL")
+GM:RegisterWalkSound(MAT_SNOW, "GC_WALK_SNOW")
+GM:RegisterWalkSound(MAT_DIRT, "GC_WALK_DIRT")
+GM:RegisterWalkSound(MAT_WOODPANEL, "GC_WALK_WOODPANEL")
 
-function GM:getWalkSound(materialID, loudnessLevel)
-    local sounds = self.SURFACE_FOOTSTEP_SOUNDS[materialID]
+function GM:GetWalkSound(materialID, loudnessLevel)
+    local sound = self.SURFACE_FOOTSTEP_SOUNDS[materialID]
 
-    if sounds then
-        return sounds[math.random(1, #sounds)]
+    if sound then
+        return sound
     end
 
-    local targetList = self.FALLBACK_FOOTSTEP_SOUNDS
-
-    return targetList[math.random(1, #targetList)]
+    return self.FALLBACK_FOOTSTEP_SOUND
 end
 
-function GM:PlayerFootstep(ply, position, foot, sound, volume, filter)
+function GM:PlayerFootstep(ply, position, foot, snd, volume, filter)
     if !ply:Alive() then
         return
     end
 
-    -- don't try to play the sounds clientside if the person running is !the localplayer
-    if CLIENT and ply != LocalPlayer() then
-        return true
-    end
     local materialID = MAT_CONCRETE
-    if self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound] != nil then
-        materialID = self.DEFAULT_FOOTSTEP_TO_MATERIAL[sound]
+    if self.DEFAULT_FOOTSTEP_TO_MATERIAL[snd] != nil then
+        materialID = self.DEFAULT_FOOTSTEP_TO_MATERIAL[snd]
     end
-    local loudnessID, noiseLevel = self:getLoudnessLevel(ply)
-    self:playFootstepSound(ply, loudnessID, materialID)
+    local loudnessID, noiseLevel = self:GetLoudnessLevel(ply)
+    local stepSound = self:GetWalkSound(materialID, loudnessID)
+
+    -- if SERVER then
+        ply:EmitSound(stepSound, self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END), self.FOOTSTEP_VOLUME_LEVELS[loudnessID], CHAN_BODY)
+    -- elseif SERVER then
+    --     sound.Play(stepSound, ply:GetPos(), self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END), self.FOOTSTEP_VOLUME_LEVELS[loudnessID])
+    -- end
 
     -- suppress default sounds
     return true
 end
 
-function GM:playFootstepSound(ply, loudnessID, materialID)
-    if CLIENT then
-        local sound = self:getWalkSound(materialID, loudnessID)
-        sound = sound[math.random(1, #sound)]
-
-        -- for some very strange reason, if I register the sounds via sound.Add, and then play it back via ply:EmitSound I get really weird stutters
-        -- I assume that I am not the only one with this issue, so just to be safe, I am going to be playing them using another method
-        -- this method, on the other hand, does not cause stutters, so I have no idea wtf is going on
-        EmitSound(sound, ply:GetPos(), ply:EntIndex(), CHAN_AUTO, self.FOOTSTEP_VOLUME_LEVELS[loudnessID], self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], 0, math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END))
-    else -- in the case of a server we send a usermessage to everyone to play the sound
-        net.Start("GC_FOOTSTEP")
-        net.WriteEntity(ply)
-        net.WriteInt(loudnessID, 16)
-        net.WriteInt(materialID, 16)
-        net.Broadcast()
-    end
-end
-
--- network the footsteps
-if CLIENT then
-    net.Receive("GC_FOOTSTEP", function(a, b)
-        local object = net.ReadEntity()
-
-        -- if the footstep sound belongs to us, don't play it, because we've already played it on our own
-        if !IsValid(object) or object == LocalPlayer() then
-            return
-        end
-
-        local loudnessID = net.ReadInt(16)
-        local materialID = net.ReadInt(16)
-
-        GAMEMODE:playFootstepSound(object, loudnessID, materialID)
-    end)
-end
-
-function GM:getLoudnessLevel(ply)
+function GM:GetLoudnessLevel(ply)
     local noiseLevel = self.BASE_NOISE_LEVEL
 
     if CLIENT then -- on the client we will re-calculate the weight, because it's more accurate that way
-        noiseLevel = noiseLevel + ply:calculateWeight() * self.NOISE_PER_KILOGRAM
+        noiseLevel = noiseLevel + ply:CalculateWeight() * self.NOISE_PER_KILOGRAM
     else -- on the server we will use the pre-calculated weight value, because the server knows more than the client about his weight values
         noiseLevel = noiseLevel + ply.weight * self.NOISE_PER_KILOGRAM
     end
@@ -253,8 +216,8 @@ end
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:getWeightFootstepNoiseAffector(weight)
-    weight = weight or self.weight or self:calculateWeight()
+function PLAYER:GetWeightFootstepNoiseAffector(weight)
+    weight = weight or self.weight or self:CalculateWeight()
 
     return weight * GAMEMODE.NOISE_PER_KILOGRAM
 end

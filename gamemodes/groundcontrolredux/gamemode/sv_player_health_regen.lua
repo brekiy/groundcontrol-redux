@@ -1,39 +1,39 @@
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:resetHealthRegenData()
+function PLAYER:ResetHealthRegenData()
     self.regenPool = 0
     self.regenDelay = 0
     self.sentHPRegenHint = false
 
-    self:setStatusEffect("healing", false)
+    self:SetStatusEffect("healing", false)
 end
 
-function PLAYER:addHealthRegen(amount)
+function PLAYER:AddHealthRegen(amount)
     self.regenPool = self.regenPool + amount
-    self:setStatusEffect("healing", true)
+    self:SetStatusEffect("healing", true)
 end
 
-function PLAYER:delayHealthRegen()
+function PLAYER:DelayHealthRegen()
     self.regenDelay = CurTime() + GetConVar("gc_health_regen_time"):GetFloat()
 end
 
-function PLAYER:regenHealth()
-    if self:Health() >= GAMEMODE.MaxHealth then
+function PLAYER:RegenHealth()
+    if self:Health() >= GAMEMODE.MAX_HEALTH then
         self.regenPool = 0
-        self:setStatusEffect("healing", false)
+        self:SetStatusEffect("healing", false)
         return
     end
 
     self.regenPool = self.regenPool - 1
     self:SetHealth(self:Health() + 1)
-    self:delayHealthRegen()
+    self:DelayHealthRegen()
 
     -- if we run out of the regen pool, then notify the player's status effect display that we're !healing anymore
     if self.regenPool == 0 then
-        self:setStatusEffect("healing", false)
+        self:SetStatusEffect("healing", false)
     end
 
     if !self.sentHPRegenHint then
-        self:sendTip("HEALTH_REGEN")
+        self:SendTip("HEALTH_REGEN")
     end
 end

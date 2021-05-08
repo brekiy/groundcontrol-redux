@@ -12,6 +12,7 @@ function PLAYER:resetSpectateData()
 end
 
 -- take a bool whether to go back or not
+-- TODO (brekiy): actually make the bool work
 function PLAYER:spectateNext(goBack)
     local wasFound = false
     local alivePlayers = 0
@@ -31,7 +32,7 @@ function PLAYER:spectateNext(goBack)
         if ply:Alive() then
             if !self.spectatedPlayers[ply] then
                 self.spectatedPlayers[ply] = true
-                self:setSpectateTarget(ply)
+                self:SetSpectateTarget(ply)
                 wasFound = true
 
                 break

@@ -39,6 +39,79 @@ function team.GetLivingPlayers(teamID)
     return total
 end
 
+function AddFile(File, dir)
+    local fileSide = string.lower(string.Left(File , 3))
+
+    if SERVER and fileSide == "sv_" then
+        include(dir .. File)
+        print("[AUTOLOAD] SV INCLUDE: " .. File)
+    elseif fileSide == "sh_" then
+        if SERVER then
+            AddCSLuaFile(dir .. File)
+            print("[AUTOLOAD] SH ADDCS: " .. File)
+        end
+        include(dir .. File)
+        print("[AUTOLOAD] SH INCLUDE: " .. File)
+    elseif fileSide == "cl_" then
+        if SERVER then
+            AddCSLuaFile(dir .. File)
+            print("[AUTOLOAD] CL ADDCS: " .. File)
+        elseif CLIENT then
+            include(dir .. File)
+            print("[AUTOLOAD] CL INCLUDE: " .. File)
+        end
+    end
+end
+
+-- Lifted from the Gmod wiki with some extra params to
+-- specify the filesearch path and prepend a wildcard.
+function IncludeDir(dir, path)
+    dir = dir .. "/"
+    local findDir = "gamemodes/groundcontrolredux/gamemode/" .. dir
+    local File, Directory = file.Find(findDir .. "*", path)
+    for k, v in ipairs(File) do
+        print("[AUTOLOAD] FILE: " .. v)
+        if string.EndsWith(v, ".lua") then
+            AddFile(v, dir)
+        end
+    end
+
+    for k, v in ipairs(Directory) do
+        print("[AUTOLOAD] Directory: " .. v)
+        IncludeDir(dir .. v, path)
+    end
+
+end
+
+-- Lifted pretty much from CW2.0
+function GCCheckLowTotalAmmo(wep)
+    if wep:GetOwner():GetAmmoCount(wep.Primary.Ammo) + wep:Clip1() <= wep.Primary.ClipSize * 2 then
+        return true
+    end
+
+    return false
+end
+
+function GCGetMagCapacity(wep)
+    local mag = wep:Clip1()
+    local magCap = wep:GetMaxClip1()
+    if mag > magCap then
+        return magCap .. " + " .. mag - magCap
+    end
+
+    return mag
+end
+
+function GM:GetWeaponData(id, isPrimary)
+    if isPrimary then
+        return GAMEMODE.PrimaryWeapons[id]
+    elseif isPrimary != nil and !isPrimary then
+        return GAMEMODE.SecondaryWeapons[id]
+    else
+        return GAMEMODE.TertiaryWeapons[id]
+    end
+end
+
 if CLIENT then
     draw.VERTICAL = 1
     draw.HORIZONTAL = 2

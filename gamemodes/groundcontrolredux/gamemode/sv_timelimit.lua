@@ -1,13 +1,13 @@
 AddCSLuaFile("cl_timelimit.lua")
 include("sh_timelimit.lua")
 
-function GM:setTimeLimit(time)
+function GM:SetTimeLimit(time)
     self.TimeLimit = time
     self.RoundStart = CurTime()
     self.RoundTime = CurTime() + time
 end
 
-function GM:sendTimeLimit(target)
+function GM:SendTimeLimit(target)
     if !self.TimeLimit then
         return
     end
@@ -18,10 +18,10 @@ function GM:sendTimeLimit(target)
     net.Send(target)
 end
 
-function GM:hasTimeLimit()
+function GM:HasTimeLimit()
     return self.TimeLimit != nil
 end
 
-function GM:hasTimeRunOut()
+function GM:HasTimeRunOut()
     return CurTime() >= self.RoundTime
 end

@@ -30,9 +30,9 @@ function GM:setVotes(title, startTime, voteDuration, data)
     self.VoteTitle = title
     self.VoteOptions = data
     self.VoteTextWidth = math.max(self:getWidestVoteText() + 10, self.BaseVotePanelWidth)
-
+    LocalPlayer().voted = false
     self:hideWeaponSelection()
-    self:hideRadio()
+    self:HideRadio()
 end
 
 function GM:drawVotePanel()
@@ -50,13 +50,13 @@ function GM:drawVotePanel()
             surface.SetDrawColor(0, 0, 0, 150)
             surface.DrawRect(50, midY - halfOptions - 20, self.VoteTextWidth, totalOptions * self.VoteOptionSpacing + 20)
 
-            self.HUDColors.white.a, self.HUDColors.black.a = 255, 255
+            self.HUD_COLORS.white.a, self.HUD_COLORS.black.a = 255, 255
 
-            draw.ShadowText(self:getVoteTitle(), self.VoteFont, 55, curY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            draw.ShadowText(self:getVoteTitle(), self.VoteFont, 55, curY, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             curY = curY + self.VoteOptionSpacing
 
             for key, data in ipairs(self.VoteOptions) do
-                draw.ShadowText(self:getVoteText(key, data), self.VoteFont, 55, curY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                draw.ShadowText(self:getVoteText(key, data), self.VoteFont, 55, curY, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                 curY = curY + self.VoteOptionSpacing
             end
 
@@ -68,9 +68,9 @@ function GM:drawVotePanel()
         surface.SetDrawColor(0, 0, 0, 150)
         surface.DrawRect(50, midY - 12, 250, 24)
 
-        self.HUDColors.white.a, self.HUDColors.black.a = 255, 255
+        self.HUD_COLORS.white.a, self.HUD_COLORS.black.a = 255, 255
 
-        draw.ShadowText("A vote will begin soon.", "CW_HUD24", 55, midY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.ShadowText("A vote will begin soon.", "CW_HUD24", 55, midY, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
     return false
@@ -116,8 +116,15 @@ end
 function GM:attemptVote(selection)
     if self:canVote() and self.VoteOptions[selection] then
         RunConsoleCommand("gc_vote", selection)
+        LocalPlayer().voted = true
         return true
     end
 
     return false
+end
+
+function GM:DidPlyVote(ply)
+    local result = ply.voted
+    if result == nil then result = false end
+    return result
 end

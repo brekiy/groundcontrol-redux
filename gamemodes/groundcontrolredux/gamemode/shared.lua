@@ -1,7 +1,7 @@
 include("sh_sounds.lua")
 include("sh_convars.lua")
 
-GM.Version = "v1.5.4"
+GM.Version = "v2.0.0"
 
 GM.Name     = "Ground Control Redux"
 GM.Author     = "brekiy"
@@ -21,16 +21,16 @@ GM.PreparationTime = 0
 GM.StaminaPerJump = 5
 GM.StaminaPerJumpBaselineNoWeightPenalty = 5 -- if our weight does not exceed this much we don't get an extra stamina drain penalty from jumping
 GM.StaminaPerJumpWeightIncrease = 0.8 -- per each kilogram we will drain this much extra stamina when our weight exceeds StaminaPerJumpBaselineNoWeightPenalty
-GM.NotOnGroundRecoilMultiplier = 1.5
-GM.NotOnGroundSpreadMultiplier = 4
+GM.AIR_RECOIL_MULT = 1.5
+GM.AIR_SPREAD_MULT = 2
 GM.JumpStaminaRegenDelay = 1
-GM.MaxHealth = 100
+GM.MAX_HEALTH = 100
 GM.VotePrepTime = 5
 GM.VoteTime = GM.VotePrepTime + 20
 GM.HeavyLandingVelocity = 500
 GM.HeavyLandingVelocityToWeight = 0.03 -- multiply velocity by this much, if the final value exceeds our weight, then it is considered a heavy landing and will make extra noise
 GM.CurMap = string.lower(game.GetMap())
--- GM.VotedPlayers = {}
+GM.VotedPlayers = {}
 
 GM.RoundOverAction = {
     NEW_ROUND = 1,
@@ -56,9 +56,9 @@ GM.FORCE_FREE_AIM = false
 -- so to make things fair, I am forcing complex telescopics
 GM.FORCE_COMPLEX_TELESCOPICS = true
 
-GM.SidewaysSprintSpeedAffector = 0.1 -- if we're sprinting sideways + forward, we take a small hit to our movement speed
-GM.OnlySidewaysSprintSpeedAffector = 0.25 -- if we're sprinting only sideways (not forward + sideways), then we take a big hit to our movement speed
-GM.BackwardsSprintSpeedAffector = 0.25 -- if we're sprinting backwards, we take a big hit to our movement speed
+GM.SIDEWAYS_SPRINT_MULT = 0.1 -- if we're sprinting sideways + forward, we take a small hit to our movement speed
+GM.STRAFE_SPRINT_MULT = 0.25 -- if we're sprinting only sideways (not forward + sideways), then we take a big hit to our movement speed
+GM.BACKWARDS_SPRINT_MULT = 0.25 -- if we're sprinting backwards, we take a big hit to our movement speed
 
 GM.MaxLadderMovementSpeed = 20 -- how fast should the player move when using a ladder
 
@@ -68,7 +68,8 @@ CustomizableWeaponry.canOpenInteractionMenu = true
 CustomizableWeaponry.customizationEnabled = true
 CustomizableWeaponry.useAttachmentPossessionSystem = true
 CustomizableWeaponry.playSoundsOnInteract = true
-CustomizableWeaponry.physicalBulletsEnabled = false -- physical bullets for cw 2.0, unfortunately
+-- physical bullets for cw 2.0 they were kinda broken with vanilla ground control, idk about now
+CustomizableWeaponry.physicalBulletsEnabled = GetConVar("gc_cw2_phys_bullets"):GetBool()
 CustomizableWeaponry.suppressOnSpawnAttachments = true
 -- Override this from the weapon base to toss our special ground control frag grenade
 function CustomizableWeaponry.quickGrenade:createThrownGrenade(player)
@@ -105,11 +106,11 @@ CustomizableWeaponry.ITEM_PACKS_TOP_COLOR = Color(0, 0, 0, 230)
 FULL_INIT = true
 
 CustomizableWeaponry.callbacks:addNew("calculateAccuracy", "GroundControl_calculateAccuracy", function(self)
-    local hipMod, aimMod = self:GetOwner():getAdrenalineAccuracyModifiers()
+    local hipMod, aimMod = self:GetOwner():GetAdrenalineAccuracyModifiers()
     local hipMult, aimMult, maxSpread = 1, 1, 1
 
     if !self:GetOwner():OnGround() then
-        local mult = GAMEMODE.NotOnGroundSpreadMultiplier
+        local mult = GAMEMODE.AIR_SPREAD_MULT
         hipMult, aimMult, maxSpread = mult, mult, mult -- if we aren't on the ground, we get a huge spread increase
     end
 
@@ -121,7 +122,7 @@ end)
 
 CustomizableWeaponry.callbacks:addNew("calculateRecoil", "GroundControl_calculateRecoil", function(self, modifier)
     if !self:GetOwner():OnGround() then
-        modifier = modifier * GAMEMODE.NotOnGroundRecoilMultiplier -- if we aren't on the ground, we get a huge recoil increase
+        modifier = modifier * GAMEMODE.AIR_RECOIL_MULT -- if we aren't on the ground, we get a huge recoil increase
     end
 
     return modifier
@@ -158,11 +159,11 @@ CustomizableWeaponry.callbacks:addNew("preventAttachment", "GroundControl_preven
 end)
 
 CustomizableWeaponry.callbacks:addNew("disableInteractionMenu", "GroundControl_disableInteractionMenu", function(self)
-    if GAMEMODE.curGametype.canHaveAttachments and !GAMEMODE.curGametype:canHaveAttachments(self:GetOwner()) then
+    if GAMEMODE.curGametype.CanHaveAttachments and !GAMEMODE.curGametype:CanHaveAttachments(self:GetOwner()) then
         return true
     end
 
-    return !GAMEMODE:isPreparationPeriod()
+    return !GAMEMODE:IsPreparationPeriod()
 end)
 
 if CLIENT then
@@ -270,10 +271,10 @@ if CLIENT then
                 for i = 1, availableSlots do
                     local x = baseX + (i - 1) * overallSize
 
-                    draw.ShadowText("Slot " .. i, GAMEMODE.AttachmentSlotDisplayFont, x + GAMEMODE.attachmentSlotDisplaySize - 5, baseY + GAMEMODE.attachmentSlotDisplaySize, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+                    draw.ShadowText("Slot " .. i, GAMEMODE.AttachmentSlotDisplayFont, x + GAMEMODE.attachmentSlotDisplaySize - 5, baseY + GAMEMODE.attachmentSlotDisplaySize, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
                 end
 
-                draw.ShadowText("Used slots " .. curPos - 1 .. "/" .. availableSlots , GAMEMODE.AttachmentSlotDisplayFont, ScrW() * 0.5, baseY + GAMEMODE.attachmentSlotDisplaySize + 20, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+                draw.ShadowText("Used slots " .. curPos - 1 .. "/" .. availableSlots , GAMEMODE.AttachmentSlotDisplayFont, ScrW() * 0.5, baseY + GAMEMODE.attachmentSlotDisplaySize + 20, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
             end
         end
     end)
@@ -284,14 +285,15 @@ hook.Add("CW20HasAttachment", "GroundControl.CW20HasAttachment", function(ply, a
 end)
 
 hook.Add("AdjustMouseSensitivity", "GCR OverrideAimSens", function(wpnSens)
-    -- This code was taken straight from the base - override it to stop scopes and attachments from slowing your sens to a crawl
+    -- This code was taken straight from the base - we override it to stop scopes and attachments from slowing your sens to a crawl
     local ply = LocalPlayer()
     if ply and ply:Alive() then
         local plyWep = ply:GetActiveWeapon()
         local plyWepTable = plyWep:GetTable()
         if plyWep and plyWepTable then
             local sensitivity = 1
-            local mod = math.Clamp(plyWepTable.OverallMouseSens or 1, 0.1, 1) -- !lower than 10% and !higher than 100% (in case someone uses atts that increase handling)
+            -- aim sens between 10-100% (in case someone uses atts that increase handling)
+            local mod = math.Clamp(plyWepTable.OverallMouseSens or 1, 0.1, 1)
             local freeAimMod = 1
 
             if plyWep.freeAimOn and !plyWep.dt.BipodDeployed then
@@ -325,7 +327,7 @@ end)
 
 if SERVER then
     CustomizableWeaponry.callbacks:addNew("finalizePhysicalBullet", "GroundControl_finalizePhysicalBullet", function(self, bulletStruct)
-        bulletStruct.penetrationValue = GAMEMODE:getAmmoPen(self.Primary.Ammo, self.penMod)
+        bulletStruct.penetrationValue = GAMEMODE:GetAmmoPen(self.Primary.Ammo, self.penMod)
     end)
 end
 
@@ -336,10 +338,10 @@ function GM:OnPlayerHitGround(ply)
 
     local vel = ply:GetVelocity()
     local len = vel:Length()
-    local weightCorrelation = math.max(0, self.MaxWeight - len * self.HeavyLandingVelocityToWeight)
+    local weightCorrelation = math.max(0, self.MAX_WEIGHT - len * self.HeavyLandingVelocityToWeight)
 
     if ply.weight >= weightCorrelation then
-        ply:EmitSound("npc/combine_soldier/gear" .. math.random(3, 6) .. ".wav", 70, math.random(95, 105))
+        ply:EmitSound("npc/combine_soldier/gear" .. math.random(3, 6) .. ".wav", 70, math.random(95, 105), 1, CHAN_BODY)
     end
 end
 
@@ -367,7 +369,7 @@ function GM:PlayerStepSoundTime(ply, iType, bWalking)
     return steptime
 end
 
-function GM:isPreparationPeriod()
+function GM:IsPreparationPeriod()
     return CurTime() < self.PreparationTime
 end
 
@@ -394,13 +396,14 @@ function GM:Move(ply, moveData)
     end
 
     if SERVER then
+        -- sure way to get whether the player jumped (ply:KeyDown(IN_JUMP) can be bypassed by simply running the command)
         local jumpDown = ply:GetCurrentCommand():KeyDown(IN_JUMP)
         local onGround = ply:OnGround()
 
-        if jumpDown then -- sure way to get whether the player jumped (ply:KeyDown(IN_JUMP) can be bypassed by simply running the command, !by pressing the key bound to the jump key)
+        if jumpDown then
             if onGround and ply.hasReleasedJumpKey then
-                ply:setStamina(ply.stamina - ply:getJumpStaminaDrain()) -- fuck your bunnyhopping
-                ply:delayStaminaRegen(self.JumpStaminaRegenDelay)
+                ply:SetStamina(ply.stamina - ply:GetJumpStaminaDrain()) -- fuck your bunnyhopping
+                ply:DelayStaminaRegen(self.JumpStaminaRegenDelay)
                 ply.hasReleasedJumpKey = false
                 --ply:EmitSound()
             end
@@ -413,10 +416,10 @@ function GM:Move(ply, moveData)
 
     ws, rs = ply:GetWalkSpeed(), ply:GetRunSpeed()
     -- for some reason the value returned by GetMaxSpeed is equivalent to player's run speed - 30
-    local adrenalineModifier = 1 + ply:getRunSpeedAdrenalineModifier()
+    local adrenalineModifier = 1 + ply:GetRunSpeedAdrenalineModifier()
     -- not sure what this dtfloat is but we'll copy it to walkspeed to be safe
-    local runSpeed = (GetConVar("gc_base_run_speed"):GetInt() - ply:getStaminaRunSpeedModifier() - ply:getWeightRunSpeedModifier()) * adrenalineModifier * ply:GetDTFloat(0)
-    local walkSpeed = (GetConVar("gc_base_walk_speed"):GetInt() - ply:getWeightRunSpeedModifier() * 0.1) * adrenalineModifier * ply:GetDTFloat(0)
+    local runSpeed = (GetConVar("gc_base_run_speed"):GetInt() - ply:GetStaminaRunSpeedModifier() - ply:GetWeightRunSpeedModifier()) * adrenalineModifier * ply:GetDTFloat(0)
+    local walkSpeed = (GetConVar("gc_base_walk_speed"):GetInt() - ply:GetWeightRunSpeedModifier() * 0.1) * adrenalineModifier * ply:GetDTFloat(0)
     ply:SetWalkSpeed(walkSpeed)
     ply:SetRunSpeed(runSpeed)
 
@@ -425,14 +428,14 @@ function GM:Move(ply, moveData)
 
         if ply:KeyDown(IN_MOVELEFT) or ply:KeyDown(IN_MOVERIGHT) then
             if ply:KeyDown(IN_FORWARD) then
-                finalMult = finalMult - self.SidewaysSprintSpeedAffector
+                finalMult = finalMult - self.SIDEWAYS_SPRINT_MULT
             else
-                finalMult = finalMult - self.OnlySidewaysSprintSpeedAffector
+                finalMult = finalMult - self.STRAFE_SPRINT_MULT
             end
         end
 
         if ply:KeyDown(IN_BACK) then
-            finalMult = finalMult - self.BackwardsSprintSpeedAffector
+            finalMult = finalMult - self.BACKWARDS_SPRINT_MULT
         end
 
         local finalRunSpeed = math.max(math.min(moveData:GetMaxSpeed(), runSpeed) * finalMult, walkSpeed)
@@ -444,11 +447,11 @@ end
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:resetSpawnData()
+function PLAYER:ResetSpawnData()
     self.spawnWait = 0
 end
 
-function PLAYER:setSpectateTarget(target)
+function PLAYER:SetSpectateTarget(target)
     self.currentSpectateEntity = target
 
     if SERVER then
@@ -459,15 +462,4 @@ function PLAYER:setSpectateTarget(target)
         net.WriteEntity(target)
         net.Send(self)
     end
-end
-
-function AccessorFuncDT(tbl, varname, name)
-   tbl["Get" .. name] = function(s) return s.dt and s.dt[varname] end
-   tbl["Set" .. name] = function(s, v) if s.dt then s.dt[varname] = v end end
-end
-
-function GM:didPlyVote(ply)
-    local result = self.VotedPlayers[ply:SteamID64()]
-    if result == nil then result = false end
-    return result
 end

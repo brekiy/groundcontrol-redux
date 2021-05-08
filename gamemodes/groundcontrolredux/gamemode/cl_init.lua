@@ -12,7 +12,7 @@ include("cl_hud.lua")
 include("cl_weapon_selection_hud.lua")
 include("cl_loop.lua")
 include("cl_view.lua")
-include("cl_player.lua")
+-- include("cl_player.lua")
 include("sh_action_to_key.lua")
 include("sh_keybind.lua")
 include("sh_player_adrenaline.lua")
@@ -63,9 +63,9 @@ function GM:InitPostEntity()
     local ply = LocalPlayer()
     ply.cash = ply.cash or 0
     ply:spawn()
-    ply:resetGadgetData()
+    ply:ResetGadgetData()
     ply:resetAttachmentData()
-    ply:resetTraitData()
+    ply:ResetTraitData()
 
     self:postInitEntity()
 
@@ -73,19 +73,19 @@ function GM:InitPostEntity()
     ply:SetHullDuck(self.DuckHullMin, self.DuckHullMax)
     ply:SetViewOffsetDucked(self.ViewOffsetDucked)
 
-    self.tipController:loadShownEvents()
+    self.tipController:LoadShownTips()
 end
 
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:spawn()
     local ply = LocalPlayer()
-    ply:updateLoadoutPoints()
-    ply:resetBleedData()
-    ply:resetAdrenalineData()
-    ply:resetStaminaData()
-    ply:resetWeightData()
-    GAMEMODE:removeAllStatusEffects()
+    ply:UpdateLoadoutPoints()
+    ply:ResetBleedData()
+    ply:ResetAdrenalineData()
+    ply:ResetStaminaData()
+    ply:ResetWeightData()
+    GAMEMODE:RemoveAllStatusEffects()
 
     RunConsoleCommand("cw_freeaim_autocenter", 1)
     RunConsoleCommand("cw_freeaim_autocenter_time", 0.650000)
@@ -95,7 +95,7 @@ function PLAYER:spawn()
 
     timer.Simple(1, function()
         for key, tipId in ipairs(GAMEMODE.tipController.genericTips) do
-            local result = GAMEMODE.tipController:handleEvent(tipId)
+            local result = GAMEMODE.tipController:HandleTipEvent(tipId)
 
             if result == false or result == true then
                 break
@@ -104,22 +104,24 @@ function PLAYER:spawn()
     end)
 end
 
-function GM:roundPreparation(preparationTime) -- called upon the start of a new round
-    self:resetAllStatusEffects()
+-- called upon the start of a new round
+function GM:RoundPreparation(preparationTime)
+    self:ResetAllStatusEffects()
     LocalPlayer():spawn()
     self:createRoundPreparationDisplay(preparationTime)
-    self:destroyMVPPanel()
+    self:DestroyMVPPanel()
 end
 
-function GM:resetRoundData() -- called upon the end of a round
-    self:resetTimeLimit()
+-- called upon the end of a round
+function GM:ResetRoundData()
+    self:ResetTimeLimit()
 
-    if GAMEMODE.curGametype.resetRoundData then
-        GAMEMODE.curGametype:resetRoundData()
+    if GAMEMODE.curGametype.ResetRoundData then
+        GAMEMODE.curGametype:ResetRoundData()
     end
 end
 
-function GM:clearObjectiveEntities()
+function GM:ClearObjectiveEntities()
     table.Empty(self.ObjectiveEntities)
 end
 
@@ -132,11 +134,11 @@ end
 function GM:onLocalPlayerDied(data)
     local ply = LocalPlayer()
 
-    self:removeAllStatusEffects()
-    ply:resetBleedData()
-    ply:resetAdrenalineData()
-    ply:resetStaminaData()
-    ply:resetWeightData()
+    self:RemoveAllStatusEffects()
+    ply:ResetBleedData()
+    ply:ResetAdrenalineData()
+    ply:ResetStaminaData()
+    ply:ResetWeightData()
 end
 
 -- 'data' is the same data from entity_killed, this is called when a player that dies
@@ -144,15 +146,15 @@ function GM:onPlayerDied(ply, data)
     if ply == LocalPlayer() then
         self:onLocalPlayerDied()
     else
-        ply:resetStatusEffects()
+        ply:ResetStatusEffects()
     end
 end
 
-function GM:addObjectiveEntity(obj)
+function GM:AddObjectiveEntity(obj)
     table.insert(self.ObjectiveEntities, obj)
 end
 
-function GM:removeObjectiveEntity(obj)
+function GM:RemoveObjectiveEntity(obj)
     for key, otherObj in ipairs(self.ObjectiveEntities) do
         if obj == otherObj then
             table.remove(self.ObjectiveEntities, key)
@@ -165,11 +167,11 @@ function GM:clearDrawEntities()
     table.Empty(self.DrawEntities)
 end
 
-function GM:addDrawEntity(obj)
+function GM:AddDrawEntity(obj)
     table.insert(self.DrawEntities, obj)
 end
 
-function GM:removeDrawEntity(obj)
+function GM:RemoveDrawEntity(obj)
     for key, otherObj in ipairs(self.DrawEntities) do
         if obj == otherObj then
             table.remove(self.DrawEntities, key)
@@ -190,7 +192,7 @@ function GM:resetVisualStamina()
     data.soundTime = 0
 end
 
-function GM:setLoadoutAvailabilityInfo(position, maxDuration)
+function GM:SetLoadoutAvailabilityInfo(position, maxDuration)
     self.loadoutPosition = position
     self.loadoutDuration = maxDuration
 end
@@ -198,7 +200,7 @@ end
 function GM:handlePlayerRadioPress(ply, bind, pressed)
     if bind == "+attack2" then
         if self.RadioSelection.selectedCategory == 0 then
-            self:toggleRadio()
+            self:ToggleRadio()
         else
             self.RadioSelection.selectedCategory = 0
         end
@@ -242,9 +244,9 @@ function GM:PlayerBindPress(ply, bind, pressed)
             elseif bind == "undo" then
                 RunConsoleCommand("use", self.KnifeWeaponClass)
             end
-            -- if bind:find("slot") then print(self:isVoteActive(), self:didPlyVote(ply)) end
-            -- if !self:isVoteActive() or (self:isVoteActive() and self:didPlyVote(ply)) then
-            if !self:isVoteActive() then
+            -- if bind:find("slot") then print(self:isVoteActive(), self:DidPlyVote(ply)) end
+            -- if !self:isVoteActive() or (self:isVoteActive() and self:DidPlyVote(ply)) then
+            if !self:isVoteActive() or (self:isVoteActive() and self:DidPlyVote(ply)) then
                 if self.RadioSelection.active then
                     return self:handlePlayerRadioPress(ply, bind, pressed)
                 elseif bind:find("slot") then
@@ -293,7 +295,7 @@ end
 
 CustomizableWeaponry.callbacks:addNew("deployWeapon", "GroundControl_deployWeapon", function(self)
     if self.SpeedDec >= 20 then
-        GAMEMODE.tipController:handleEvent("FASTER_MOVEMENT")
+        GAMEMODE.tipController:HandleTipEvent("FASTER_MOVEMENT")
     end
 end)
 
@@ -301,7 +303,7 @@ CustomizableWeaponry.callbacks:addNew("postAttachAttachment", "GroundControl_pos
     local attachmentName = self.Attachments[attCategory].atts[self.Attachments[attCategory].last]
 
     if self.BackupSights and self.BackupSights[attachmentName] then
-        GAMEMODE.tipController:handleEvent("BACKUP_SIGHTS")
+        GAMEMODE.tipController:HandleTipEvent("BACKUP_SIGHTS")
     end
 end)
 

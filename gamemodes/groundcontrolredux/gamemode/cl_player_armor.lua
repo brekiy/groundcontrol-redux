@@ -2,13 +2,13 @@ net.Receive("GC_ARMOR", function(a, b)
     local newArmor = net.ReadTable()
     local category = net.ReadString()
 
-    LocalPlayer():resetArmorData(category)
-    LocalPlayer():setArmorPiece(newArmor, category)
+    LocalPlayer():ResetArmorData(category)
+    LocalPlayer():SetArmorPiece(newArmor, category)
     -- attachArmorPM(LocalPlayer())
 end)
 
 net.Receive("GC_ARMOR_HEALTH_UPDATE", function(a, b)
-    LocalPlayer():updateArmorPiece(net.ReadString(), net.ReadFloat())
+    LocalPlayer():UpdateArmorPiece(net.ReadString(), net.ReadFloat())
 end)
 
 -- experimental dumb stuff
@@ -32,13 +32,13 @@ end)
 --     end
 -- end
 
-function GM:drawArmor(ply, baseX, baseY)
+function GM:DrawHUDArmor(ply, baseX, baseY)
     local offset = 0
     local spacing = 60
     if ply.armor and !table.IsEmpty(ply.armor) then
         local curTime = CurTime()
         local frameTime = FrameTime()
-        local white, black = self.HUDColors.white, self.HUDColors.black
+        local white, black = self.HUD_COLORS.white, self.HUD_COLORS.black
         for key, armorPiece in SortedPairs(ply.armor) do
             if !table.IsEmpty(armorPiece) then
                 local curPos = baseX + offset
@@ -79,27 +79,27 @@ local PLAYER = FindMetaTable("Player")
 PLAYER._armorFlashTime = 0.3
 PLAYER._armorFlashRedAmount = 255
 
-function PLAYER:updateArmorPiece(category, newHealth)
+function PLAYER:UpdateArmorPiece(category, newHealth)
     if !self.armor or !self.armor[category] then return end
     local armorData = self.armor[category]
     local oldHealth = armorData.health
     armorData.health = newHealth
 
     if newHealth < oldHealth then
-        self:flashArmorPiece(armorData)
+        self:FlashArmorPiece(armorData)
     end
     if newHealth <= 0 then
-        self:resetArmorData(category)
+        self:ResetArmorData(category)
     end
 end
 
-function PLAYER:flashArmorPiece(armorData)
+function PLAYER:FlashArmorPiece(armorData)
     armorData.red = self._armorFlashRedAmount
     armorData.colorHold = CurTime() + self._armorFlashTime
 end
 
-function PLAYER:setupArmorPiece(data, category)
-    local armorData = GAMEMODE:getArmorData(data.id, category)
+function PLAYER:SetupArmorPiece(data, category)
+    local armorData = GAMEMODE:GetArmorData(data.id, category)
     data.red = 0
     data.colorHold = 0
     data.alpha = 1

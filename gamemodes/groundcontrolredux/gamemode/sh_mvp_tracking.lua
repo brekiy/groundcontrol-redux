@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-GM.MVPsToShow = 3 -- how many MVP things to show (if available)
+GM.MVP_SLOTS = 3 -- how many MVP things to show (if available)
 
 mvpTracker = {}
 mvpTracker.mtindex = {__index = mvpTracker}
@@ -51,7 +51,7 @@ if CLIENT then
         self.mvpPanel = panel
     end
 
-    function GM:destroyMVPPanel()
+    function GM:DestroyMVPPanel()
         if self.mvpPanel and self.mvpPanel:IsValid() then -- remove any previous MVP panels
             self.mvpPanel:Remove()
             self.mvpPanel = nil
@@ -59,7 +59,7 @@ if CLIENT then
     end
 
     function mvpTracker:createMVPDisplayFromList(list)
-        GAMEMODE:destroyMVPPanel()
+        GAMEMODE:DestroyMVPPanel()
 
         local panelHeight = GAMEMODE.MVPPanelBaseHeight + (GAMEMODE.SizePerMVPEntry + GAMEMODE.SpacingBetweenMVPEntries) * #list
 
@@ -102,9 +102,9 @@ function mvpTracker:sendMVPList()
 end
 
 function mvpTracker:removeInvalidPlayers()
-    for player, data in pairs(self.trackedIDs) do
-        if !IsValid(player) then
-            self.trackedIDs[player] = nil
+    for ply, data in pairs(self.trackedIDs) do
+        if !IsValid(ply) then
+            self.trackedIDs[ply] = nil
         end
     end
 end
@@ -127,7 +127,7 @@ function mvpTracker:buildMVPList()
     table.sort(list, sortByWeight)
 
     -- remove any redundant ones
-    for i = GAMEMODE.MVPsToShow + 1, #list do
+    for i = GAMEMODE.MVP_SLOTS + 1, #list do
         list[i] = nil
     end
 
@@ -140,28 +140,28 @@ function mvpTracker:getMostEntriesForID(id)
     local mvp = nil
     local data = mvpTracker.registeredDataByID[id]
 
-    for player, subList in pairs(self.trackedIDs) do
+    for ply, subList in pairs(self.trackedIDs) do
         local entries = subList[id]
 
         if entries and (!data.minimum or (data.minimum and entries >= data.minimum)) and (entries > highest) then
             highest = entries
-            mvp = player
+            mvp = ply
         end
     end
 
     return highest, mvp
 end
 
-function mvpTracker:getIDEntries(player, id)
-    if self.trackedIDs[player] then
-        return self.trackedIDs[player][id] or 0
+function mvpTracker:getIDEntries(ply, id)
+    if self.trackedIDs[ply] then
+        return self.trackedIDs[ply][id] or 0
     end
 
     return 0
 end
 
-function mvpTracker:getIDWeight(player, id)
-    return self.registeredDataByID[id].weight * self:getIDEntries(player, id)
+function mvpTracker:getIDWeight(ply, id)
+    return self.registeredDataByID[id].weight * self:getIDEntries(ply, id)
 end
 
 mvpTracker.registerData({
@@ -180,7 +180,7 @@ mvpTracker.registerData({
 
 mvpTracker.registerData({
     id = "headshots",
-    name = "Head Hunter",
+    name = "Boom, Headshot",
     text = "Most kills",
     formatText = function(self, amount)
         if amount == 1 then
@@ -216,7 +216,7 @@ mvpTracker.registerData({
 
 mvpTracker.registerData({
     id = "bandaging",
-    name = "Walking Bandage",
+    name = "Field Medic",
     minimum = 2,
     text = "Most team bandaging",
     formatText = function(self, amount)
@@ -227,13 +227,35 @@ mvpTracker.registerData({
 
 mvpTracker.registerData({
     id = "resupply",
-    name = "Walking Ammobox",
+    name = "Ammo Mule",
     minimum = 40,
     text = "Most team resupplies",
     formatText = function(self, amount)
         return amount .. " rounds given"
     end,
     weight = 2
+})
+
+-- mvpTracker.registerData({
+--     id = "pistol_kills",
+--     name = "Hard Boiled",
+--     minimum = 2,
+--     text = "Most kills",
+--     formatText = function(self, amount)
+--         return amount .. " sidearm kills"
+--     end,
+--     weight = 100
+-- })
+
+mvpTracker.registerData({
+    id = "objective",
+    name = "Play the fucking objective",
+    minimum = 1,
+    text = "Most objectives achieved",
+    formatText = function(self, amount)
+        return amount .. " objectives"
+    end,
+    weight = 150
 })
 
 net.Receive("GC_MVP", function(a, b)

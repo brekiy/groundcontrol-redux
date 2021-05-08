@@ -2,7 +2,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
-ENT.ExplodeRadius = 384
+ENT.ExplodeRadius = 300
 ENT.ExplodeDamage = 100
 ENT.Model = "models/weapons/w_cw_fraggrenade_thrown.mdl"
 

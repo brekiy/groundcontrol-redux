@@ -1,5 +1,9 @@
 include("sv_gcbot_names.lua")
-print("loading gc bot stuff wip")
+
+concommand.Add("gc_print_cur_weapon", function(ply, com, args)
+    PrintTable(weapons.Get(ply:GetActiveWeapon():GetClass()))
+end)
+
 concommand.Add("gc_bot_add", function(ply, com, args)
     createGCBot()
 end)
@@ -8,9 +12,9 @@ function createGCBot()
     local bot = player.CreateNextBot(getBotName())
 end
 local Meta = FindMetaTable("Player")
-local nav = navmesh.GetAllNavAreas()
+local navareas = navmesh.GetAllNavAreas()
 local sniperSpots = {}
-for key, value in pairs(nav) do
+for key, value in pairs(navareas) do
     local spots = value:GetExposedSpots()
     for spotKey, spotValue in pairs(spots) do
         sniperSpots[#sniperSpots + 1] = spotValue
@@ -53,7 +57,7 @@ end)
 -- end)
 
 hook.Add("StartCommand", "StartCommandExample", function( ply, cmd )
-    if ( !ply:IsBot() or !ply:Alive() ) then return end
+    if (!ply:IsBot() or !ply:Alive() or engine.ActiveGamemode() != "groundcontrolredux") then return end
 
     if ply.nav:IsValid() == false then
         ply.nav = ents.Create("gc_nextbot")
@@ -113,7 +117,7 @@ end)
 
 function Meta:FollowPath(cmd, goal, speed, turnspeed, stopatdist, nosee)
     local see = !nosee
-    -- local nav = self.nav
+    local nav = self.nav
     nav.PosGen = goal
     if nav.P == nil then return end
     local bot = self

@@ -54,7 +54,7 @@ end
 
 function GM:toggleLoadoutMenu()
     if LocalPlayer():Team() == TEAM_SPECTATOR or LocalPlayer():Team() == TEAM_UNASSIGNED then
-        self:openTeamSelection()
+        self:OpenTeamSelection()
         return
     end
 
@@ -123,14 +123,14 @@ function GM:toggleLoadoutMenu()
     bandageText:SetFont("CW_HUD20")
     bandageText:SetText("Bandages")
     bandageText:SetPos(560, 30)
-    bandageText:SetTextColor(self.HUDColors.white)
+    bandageText:SetTextColor(self.HUD_COLORS.white)
     bandageText:SizeToContents()
 
     local bandageWang = vgui.Create("GCNumberWang", panel)
     bandageWang:SetPos(640, 30)
     bandageWang:SetSize(50, 20)
-    bandageWang:SetMin(self.MinBandages)
-    bandageWang:SetMax(self.MaxBandages)
+    bandageWang:SetMin(self.MIN_BANDAGES)
+    bandageWang:SetMax(self.MAX_BANDAGES)
     bandageWang:SetConVar("gc_bandages")
     bandageWang:SetNumeric(true)
 
@@ -138,14 +138,14 @@ function GM:toggleLoadoutMenu()
     ammoText:SetFont("CW_HUD20")
     ammoText:SetText("Spare ammo")
     ammoText:SetPos(542, 70)
-    ammoText:SetTextColor(self.HUDColors.white)
+    ammoText:SetTextColor(self.HUD_COLORS.white)
     ammoText:SizeToContents()
 
     local ammoWang = vgui.Create("GCNumberWang", panel)
     ammoWang:SetPos(640, 70)
     ammoWang:SetSize(50, 20)
-    ammoWang:SetMin(self.MinSpareAmmo)
-    ammoWang:SetMax(self.MaxSpareAmmo)
+    ammoWang:SetMin(self.MIN_SPARE_AMMO)
+    ammoWang:SetMax(self.MAX_SPARE_AMMO)
     ammoWang:SetConVar("gc_spare_ammo")
     ammoWang:SetNumeric(true)
 
@@ -214,6 +214,7 @@ function GM:toggleLoadoutMenu()
     local curPos = 0
     local curX = 0
 
+    -- Todo: optimize this
     for key, data in ipairs(self.PrimaryWeapons) do
         local modelPanel = vgui.Create("GCWeaponPanel", basePanel)
         modelPanel:SetPos(curX, curPos)

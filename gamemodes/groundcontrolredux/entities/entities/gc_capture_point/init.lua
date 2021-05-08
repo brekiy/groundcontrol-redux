@@ -3,14 +3,19 @@ AddCSLuaFile("cl_init.lua")
 include("shared.lua")
 
 ENT.captureDistance = 192
-ENT.captureAmount = 1
-ENT.captureTime = 0.25
-ENT.captureSpeedIncrease = 0.25
-ENT.maxSpeedIncrease = 0.5
-ENT.deCaptureTime = 1
-ENT.deCaptureAmount = 1
-ENT.roundWinTime = 5 -- seconds until round win if: 1. time has run out + the person was capturing a point and suddenly left the capture range
+-- Incrementing/decrementing progress will use the same time tick under the new formula
+ENT.captureTime = 1
+-- How much to decrement progress by
+ENT.deCaptureSpeed = 1
+-- seconds until round win if: 1. time has run out + the person was capturing a point and suddenly left the capture range
+ENT.roundWinTime = 5
 ENT.roundOverOnCapture = true
+-- Hard cap on how fast capture can occur
+ENT.MAX_CAPTURERS = 4
+-- The starting factor added to the capture amount
+ENT.BASE_CAP_FACTOR = 0.6
+-- How often in seconds to cap
+ENT.CAPTURE_TICK = 1
 
 function ENT:Initialize()
     self:SetModel("models/error.mdl")
@@ -18,47 +23,26 @@ function ENT:Initialize()
 
     self.captureDelay = 0
     self.deCaptureDelay = 0
-    self.defenderTeam = nil
     self.winDelay = 0
+    self.ownPos = self:GetPos()
 
-    self:setCaptureDistance(self.captureDistance)
+    self:SetCaptureDistance(self.captureDistance)
 
-    local gametype = GAMEMODE:getGametype()
-    gametype:assignPointID(self)
+    local gametype = GAMEMODE:GetGametype()
+    gametype:AssignPointID(self)
 end
 
-function ENT:setCapturerTeam(team) -- the team that has to capture this point
-    self.capturerTeam = team
-    self.dt.CapturerTeam = team
+function ENT:CalcCaptureSpeed(numPly)
+    numPly = math.Clamp(numPly, 1, self.MAX_CAPTURERS)
+    return 1 + ((numPly - 1) * self.BASE_CAP_FACTOR) / math.pow(2, numPly - 2)
 end
 
-function ENT:setDefenderTeam(team)
-    self.defenderTeam = team
-end
-
-function ENT:setCaptureDistance(distance)
-    self.captureDistance = distance
-    self.dt.CaptureDistance = distance
-end
-
-function ENT:setCaptureSpeed(speed)
-    self.captureAmount = speed
-end
-
-function ENT:setCaptureDuration(time) -- we increase CaptureProgress by captureAmount every captureTime
-    self.captureTime = time
-end
-
-function ENT:setCaptureSpeedInceasePerPlayer(speedIncrease) -- each player makes the capture go this % faster
-    self.captureSpeedIncrease = speedIncrease
-end
-
-function ENT:setMaxCaptureSpeedIncrease(max)
-    self.maxSpeedIncrease = max
-end
-
-function ENT:setRoundOverOnCapture(roundOver)
+function ENT:SetRoundOverOnCapture(roundOver)
     self.roundOverOnCapture = roundOver
+end
+
+function ENT:SetCaptureTime(time)
+    self.CAPTURE_TIME = time
 end
 
 function ENT:Think()
@@ -66,54 +50,47 @@ function ENT:Think()
         return
     end
 
-    if self.roundOverOnCapture and self.dt.CaptureProgress == 100 then
-        GAMEMODE:endRound(self.capturerTeam)
+    if self.roundOverOnCapture and self:GetCaptureProgress() >= self.CAPTURE_TIME then
+        for key, ply in ipairs(team.GetPlayers(self:GetCapturerTeam())) do
+            if ply:Alive() and ply:GetPos():Distance(self.ownPos) <= self.captureDistance then
+                GAMEMODE:TrackRoundMVP(ply, "objective", 1)
+            end
+        end
+        GAMEMODE:EndRound(self:GetCapturerTeam())
         return
     end
 
     local curTime = CurTime()
     local defendingPlayers = 0
 
-    local ownPos = self:GetPos()
-
-    for key, ply in ipairs(team.GetPlayers(self.defenderTeam)) do
-        if ply:Alive() then
-            local dist = ply:GetPos():Distance(ownPos)
-
-            if dist <= self.captureDistance then
-                defendingPlayers = defendingPlayers + 1
-            end
+    for key, ply in ipairs(team.GetPlayers(self:GetDefenderTeam())) do
+        if ply:Alive() and ply:GetPos():Distance(self.ownPos) <= self.captureDistance then
+            defendingPlayers = defendingPlayers + 1
         end
     end
 
     local capturingPlayers = 0
 
     if defendingPlayers == 0 then
-        for key, ply in ipairs(team.GetPlayers(self.capturerTeam)) do
-            if ply:Alive() then
-                local dist = ply:GetPos():Distance(ownPos)
-
-                if dist <= self.captureDistance then
-                    capturingPlayers = capturingPlayers + 1
-                end
+        for key, ply in ipairs(team.GetPlayers(self:GetCapturerTeam())) do
+            if ply:Alive() and ply:GetPos():Distance(self.ownPos) <= self.captureDistance then
+                capturingPlayers = capturingPlayers + 1
             end
         end
     end
 
     if capturingPlayers > 0 then
         if curTime > self.captureDelay then
-            local multiplier = math.max(1 - (capturingPlayers - 1) * self.captureSpeedIncrease, self.maxSpeedIncrease)
-
-            self.dt.CaptureSpeed = self.captureTime * multiplier / self.captureTime
-            self.captureDelay = curTime + self.captureTime * multiplier
-            self.deCaptureDelay = curTime + self.deCaptureTime
+            self:SetCaptureSpeed(self:CalcCaptureSpeed(capturingPlayers))
+            self.captureDelay = curTime + self.CAPTURE_TICK
+            self.deCaptureDelay = curTime + self.CAPTURE_TICK
             self.winDelay = curTime + self.roundWinTime
-            self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 100, self.captureAmount)
+            self:SetCaptureProgress(math.Approach(self:GetCaptureProgress(), self.CAPTURE_TIME, self:GetCaptureSpeed()))
         end
     else
         if curTime > self.deCaptureDelay then
-            self.dt.CaptureProgress = math.Approach(self.dt.CaptureProgress, 0, 1)
-            self.deCaptureDelay = curTime + self.deCaptureTime
+            self:SetCaptureProgress(math.Approach(self:GetCaptureProgress(), 0, self.deCaptureSpeed))
+            self.deCaptureDelay = curTime + self.CAPTURE_TICK
         end
     end
 end

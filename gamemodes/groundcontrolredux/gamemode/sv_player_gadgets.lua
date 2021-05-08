@@ -2,7 +2,7 @@ include("sh_player_gadgets.lua")
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:useGadget(gadgetId)
+function PLAYER:UseGadget(gadgetId)
     local gadget = self.gadgets[gadgetId]
 
     if !gadget then
@@ -32,8 +32,8 @@ function PLAYER:setSpareAmmo(amount)
         return
     end
 
-    amount = math.Clamp(amount, 0, GAMEMODE.MaxSpareAmmo)
-    self:addGadget(self:prepareGadget("spareammo", amount))
+    amount = math.Clamp(amount, 0, GAMEMODE.MAX_SPARE_AMMO)
+    self:AddGadget(self:prepareGadget("spareammo", amount))
 end
 
 function PLAYER:giveGadgets()
@@ -72,5 +72,5 @@ concommand.Add("gc_use_gadget", function(ply, com, args)
     end
 
     gadgetId = tonumber(gadgetId)
-    ply:useGadget(gadgetId)
+    ply:UseGadget(gadgetId)
 end)

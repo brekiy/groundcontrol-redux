@@ -1,4 +1,4 @@
-function GM:balanceTeams(deadOnly)
+function GM:BalanceTeams(deadOnly)
     local teamRed, teamBlue = team.GetPlayers(TEAM_RED), team.GetPlayers(TEAM_BLUE)
     local redCount, blueCount = #teamRed, #teamBlue
 
@@ -9,11 +9,11 @@ function GM:balanceTeams(deadOnly)
         local targetTeam = countDifference > 0 and TEAM_BLUE or TEAM_RED -- team we'll be swapping players into
         local targetPlayers = targetTeam == TEAM_BLUE and teamRed or teamBlue -- team we'll be swapping players out of
 
-        self:balanceTeam(targetPlayers, targetTeam, distance, deadOnly)
+        self:BalanceTeam(targetPlayers, targetTeam, distance, deadOnly)
     end
 end
 
-function GM:balanceTeam(playerList, targetTeam, amount, deadOnly)
+function GM:BalanceTeam(playerList, targetTeam, amount, deadOnly)
     local swapAmount = math.floor(amount / 2) -- for every 2 players we switch 1 person to the enemy team
 
     if deadOnly then

@@ -5,30 +5,30 @@ net.Receive("GC_BLEEDSTATE", function(a, b)
     local isBleeding = net.ReadBool()
 
     if isBleeding then
-        GAMEMODE.tipController:handleEvent("BEGIN_BLEEDING")
-        GAMEMODE:showStatusEffect("bleeding")
+        GAMEMODE.tipController:HandleTipEvent("BEGIN_BLEEDING")
+        GAMEMODE:ShowStatusEffect("bleeding")
     else
-        GAMEMODE.tipController:handleEvent("STOPPED_BLEEDING")
-        GAMEMODE:removeStatusEffect("bleeding")
+        GAMEMODE.tipController:HandleTipEvent("STOPPED_BLEEDING")
+        GAMEMODE:RemoveStatusEffect("bleeding")
     end
 
-    LocalPlayer():setBleeding(isBleeding)
+    LocalPlayer():SetBleeding(isBleeding)
 end)
 
 net.Receive("GC_BANDAGES", function(a, b)
-    LocalPlayer():setBandages(net.ReadInt(8))
+    LocalPlayer():SetBandages(net.ReadInt(8))
 end)
 
 net.Receive("GC_ADRENALINE", function(a, b)
-    LocalPlayer():setAdrenaline(net.ReadFloat())
+    LocalPlayer():SetAdrenaline(net.ReadFloat())
 end)
 
 net.Receive("GC_STAMINA", function(a, b)
-    LocalPlayer():setStamina(net.ReadFloat())
+    LocalPlayer():SetStamina(net.ReadFloat())
 end)
 
 net.Receive("GC_RETRYTEAMSELECTION", function(a, b)
-    GAMEMODE:openTeamSelection(true)
+    GAMEMODE:OpenTeamSelection(true)
 end)
 
 net.Receive("GC_TEAM_SELECTION_SUCCESS", function(a, b)
@@ -36,12 +36,12 @@ net.Receive("GC_TEAM_SELECTION_SUCCESS", function(a, b)
 end)
 
 net.Receive("GC_CASH", function(a, b)
-    LocalPlayer():setCash(net.ReadInt(32))
+    LocalPlayer():SetCash(net.ReadInt(32))
 end)
 
 net.Receive("GC_NOT_ENOUGH_CASH", function(a, b)
     local required = net.ReadInt(32)
-    chat.AddText(GAMEMODE.HUDColors.white, "Not enough cash! You need ", GAMEMODE.HUDColors.blue, tostring(required) .. "$", GAMEMODE.HUDColors.white, " whereas you have ", GAMEMODE.HUDColors.blue, tostring(LocalPlayer().cash) .. "$")
+    chat.AddText(GAMEMODE.HUD_COLORS.white, "Not enough cash! You need ", GAMEMODE.HUD_COLORS.blue, tostring(required) .. "$", GAMEMODE.HUD_COLORS.white, " whereas you have ", GAMEMODE.HUD_COLORS.blue, tostring(LocalPlayer().cash) .. "$")
     surface.PlaySound("buttons/combine_button7.wav")
 end)
 
@@ -49,21 +49,21 @@ net.Receive("GC_ROUND_OVER", function(a, b)
     local winningTeam = net.ReadInt(8)
     local actionType = net.ReadInt(8)
 
-    GAMEMODE:resetRoundData()
+    GAMEMODE:ResetRoundData()
     GAMEMODE:createRoundOverDisplay(winningTeam, actionType)
 end)
 
 net.Receive("GC_GAME_BEGIN", function(a, b)
-    GAMEMODE:resetRoundData()
+    GAMEMODE:ResetRoundData()
     GAMEMODE:createRoundOverDisplay(nil)
 end)
 
 net.Receive("GC_ROUND_PREPARATION", function(a, b)
-    GAMEMODE:roundPreparation(net.ReadFloat())
+    GAMEMODE:RoundPreparation(net.ReadFloat())
 end)
 
 net.Receive("GC_SPECTATE_TARGET", function(a, b)
-    LocalPlayer():setSpectateTarget(net.ReadEntity())
+    LocalPlayer():SetSpectateTarget(net.ReadEntity())
 end)
 
 net.Receive("GC_NEW_ROUND", function(a, b)
@@ -79,7 +79,7 @@ net.Receive("GC_EXPERIENCE", function(a, b)
 end)
 
 net.Receive("GC_LAST_MAN_STANDING", function(a, b)
-    GAMEMODE:createLastManStandingDisplay()
+    GAMEMODE:CreateLastManStandingDisplay()
 end)
 
 net.Receive("GC_NOTIFICATION", function(a, b)
@@ -87,7 +87,7 @@ net.Receive("GC_NOTIFICATION", function(a, b)
 end)
 
 net.Receive("GC_GAMETYPE", function(a, b)
-    GAMEMODE:setGametype(net.ReadInt(16))
+    GAMEMODE:SetGametype(net.ReadInt(16))
 end)
 
 net.Receive("GC_AUTOBALANCED_TO_TEAM", function(a, b)
@@ -178,27 +178,27 @@ end)
 net.Receive("GC_CARRIED_DRUGS_POSITION", function(a, b)
 -- we're being sent 3 individual floats because vectors are compressed and that results in inaccuracy
     local x, y, z = net.ReadFloat(), net.ReadFloat(), net.ReadFloat()
-    GAMEMODE:AddMarker(Vector(x, y, z), "Taken drugs", GAMEMODE.HUDColors.red, GAMEMODE.curGametype.bugMarkerDuration)
+    GAMEMODE:AddMarker(Vector(x, y, z), "Taken drugs", GAMEMODE.HUD_COLORS.red, GAMEMODE.curGametype.bugMarkerDuration)
 end)
 
 net.Receive("GC_STATUS_EFFECT", function()
     local statusEffect = net.ReadString()
     local state = net.ReadBool()
     if state then
-        GAMEMODE:showStatusEffect(statusEffect)
+        GAMEMODE:ShowStatusEffect(statusEffect)
     else
-        GAMEMODE:removeStatusEffect(statusEffect)
+        GAMEMODE:RemoveStatusEffect(statusEffect)
     end
 end)
 
 net.Receive("GC_RESET_STATUS_EFFECTS", function(a, b)
-    GAMEMODE:removeAllStatusEffects()
+    GAMEMODE:RemoveAllStatusEffects()
 end)
 
 net.Receive("GC_LOADOUTPOSITION", function(a, b)
     local vector = net.ReadVector()
     local duration = net.ReadFloat()
-    GAMEMODE:setLoadoutAvailabilityInfo(vector, duration)
+    GAMEMODE:SetLoadoutAvailabilityInfo(vector, duration)
 end)
 
 net.Receive("GC_KILLED_BY", function(a, b)
@@ -211,5 +211,57 @@ net.Receive("GC_KILLED_BY", function(a, b)
 end)
 
 net.Receive("GC_UPDATE_LOADOUT_LIMIT", function(a, b)
-    LocalPlayer():updateLoadoutPoints()
+    LocalPlayer():UpdateLoadoutPoints()
+end)
+
+net.Receive("GC_GOT_INTEL", function(a, b)
+    if GAMEMODE.teamSwitchPopup then
+        GAMEMODE.teamSwitchPopup:Remove()
+        GAMEMODE.teamSwitchPopup = nil
+    end
+
+    local bottomText = "Now deliver it to the secure point!"
+
+    local popup = vgui.Create("GCGenericPopup")
+    popup:SetSize(330, 50)
+    popup:SetText("You picked up the intel!", bottomText)
+    popup:SetExistTime(7)
+    popup:Center()
+
+    local x, y = popup:GetPos()
+    popup:SetPos(x, y - 140)
+
+    GAMEMODE.teamSwitchPopup = popup
+
+    LocalPlayer().hasIntel = true
+end)
+
+net.Receive("GC_INTEL_REMOVED", function(a, b)
+    LocalPlayer().hasIntel = false
+end)
+
+net.Receive("GC_SET_VIP", function(a, b)
+    local isVIP = net.ReadBool()
+    if isVIP then
+        if GAMEMODE.teamSwitchPopup then
+            GAMEMODE.teamSwitchPopup:Remove()
+            GAMEMODE.teamSwitchPopup = nil
+        end
+
+        local popup = vgui.Create("GCGenericPopup")
+        popup:SetSize(330, 50)
+        popup:SetText("You are the VIP!", "Stay close to your bodyguards and escape!")
+        popup:SetExistTime(7)
+        popup:Center()
+
+        local x, y = popup:GetPos()
+        popup:SetPos(x, y - 140)
+
+        GAMEMODE.teamSwitchPopup = popup
+    end
+    LocalPlayer().isVIP = isVIP
+end)
+
+net.Receive("GC_START_LOADOUT_EXPENSIVE", function(a, b)
+    chat.AddText(GAMEMODE.HUD_COLORS.limeYellow, "Your previous loadout was too expensive and has been stripped down for this round.")
 end)

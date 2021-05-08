@@ -4,11 +4,11 @@ GM.StartingCashAmount = 0
 
 local PLAYER = FindMetaTable("Player")
 
-function PLAYER:saveCash()
+function PLAYER:SaveCash()
     self:SetPData("GroundControlCash", self.cash)
 end
 
-function PLAYER:loadCash()
+function PLAYER:LoadCash()
     local cashAmount = self:GetPData("GroundControlCash") or GAMEMODE.StartingCashAmount
     self.cash = tonumber(cashAmount)
 end

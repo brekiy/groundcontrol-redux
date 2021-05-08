@@ -1,36 +1,9 @@
-GM.CashPerKill = 50
-GM.ExpPerKill = 20
-
 GM.CashPerAssist = 50 -- depends on damage dealt, if you dealt 99.9% damage, you'll get 50$
 GM.ExpPerAssist = 40
-
-GM.CashPerSave = 25 -- every time we "save" someone (aka we kill a target that was about to kill one of our guys), we get this much money
-GM.ExpPerSave = 40
-
-GM.CashPerMateHelp = 15 -- every time we "help a teammate" (aka we kill a target who was recently firing at our teammate), we get this much money
-GM.ExpPerMateHelp = 30
-
-GM.CashPerCloseCall = 15 -- every time we kill our assailant and have less or equal to MinHealthForCloseCall, we get this much money
-GM.ExpPerCloseCall = 10
-
-GM.CashPerHeadshot = 10
-GM.ExpPerHeadshot = 5
-
-GM.CashPerBandage = 20 -- we get this much money when we bandage our teammate
-GM.ExpPerBandage = 25
-
-GM.CashPerResupply = 15 -- we get this much money when we resupply someone's ammo
-GM.ExpPerResupply = 20
 
 GM.MinHealthForCloseCall = 25
 GM.MinHealthForSave = 25
 GM.SaveEventTimeWindow = 5
-
-GM.CashPerOneManArmy = 15
-GM.ExpPerOneManArmy = 10
-
-GM.CashPerTeamKill = -50
-GM.ExpPerTeamKill = -80
 
 GM.SendCurrencyAmount = {cash = nil, exp = nil}
 
@@ -41,32 +14,32 @@ CreateConVar("gc_proximity_voicechat_directional", 0, {FCVAR_ARCHIVE, FCVAR_NOTI
 CreateConVar("gc_invincibility_time_period", 3, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- how long should the player be invincible for after spawning (for anti spawn killing in gametypes like urban warfare)
 CreateConVar("gc_team_damage", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- how long should the player be invincible for after spawning (for anti spawn killing in gametypes like urban warfare)
 
-GM:registerAutoUpdateConVar("gc_proximity_voicechat", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_proximity_voicechat", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.proximityVoiceChat = newValue >= 1
 end)
 
-GM:registerAutoUpdateConVar("gc_proximity_voicechat_distance", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_proximity_voicechat_distance", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.proximityVoiceChatDistance = newValue
 end)
 
-GM:registerAutoUpdateConVar("gc_proximity_voicechat_global", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_proximity_voicechat_global", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.proximityVoiceChatGlobal = newValue >= 1
 end)
 
-GM:registerAutoUpdateConVar("gc_proximity_voicechat_directional", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_proximity_voicechat_directional", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.proximityVoiceChatDirectional3D = newValue >= 1
 end)
 
-GM:registerAutoUpdateConVar("gc_invincibility_time_period", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_invincibility_time_period", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.postSpawnInvincibilityTimePeriod = newValue or 3
 end)
 
-GM:registerAutoUpdateConVar("gc_team_damage", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_team_damage", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
     GAMEMODE.noTeamDamage = newValue <= 0
 end)
@@ -74,21 +47,21 @@ end)
 local PLAYER = FindMetaTable("Player")
 
 function GM:PlayerInitialSpawn(ply)
-    ply:resetSpawnData()
+    ply:ResetSpawnData()
 
     ply:SetTeam(TEAM_SPECTATOR)
     ply:KillSilent()
     ply:resetSpectateData()
 
-    ply:loadAttachments()
-    ply:loadCash()
-    ply:loadExperience()
-    ply:loadUnlockedAttachmentSlots()
-    ply:loadTraits()
+    ply:LoadAttachments()
+    ply:LoadCash()
+    ply:LoadExperience()
+    ply:LoadUnlockedAttachmentSlots()
+    ply:LoadTraits()
     ply.lastDataRequest = 0
     ply.invincibilityPeriod = 0
     ply:SetNWInt("GC_SCORE", 0)
-    ply:resetLoadoutPoints()
+    ply:ResetLoadoutPoints()
     ply:SetDTFloat(0, 1) -- movement speed multiplier
     ply:SetDTFloat(1, 0) -- delay for movement speed multiplier reset
     ply.attackedBy = {}
@@ -96,11 +69,11 @@ function GM:PlayerInitialSpawn(ply)
     ply:initLastKillData()
 
     self:checkVoteStatus(ply)
-    self:sendTimeLimit(ply)
-    ply:sendGameType()
+    self:SendTimeLimit(ply)
+    ply:SendGameType()
 
-    if self.curGametype.playerInitialSpawn then
-        self.curGametype:playerInitialSpawn(ply)
+    if self.curGametype.PlayerInitialSpawn then
+        self.curGametype:PlayerInitialSpawn(ply)
     end
 end
 
@@ -121,24 +94,24 @@ function GM:PlayerSpawn(ply)
     ply.currentTraits = ply.currentTraits and table.Empty(ply.currentTraits) or {}
     ply.armor = {}
     ply:UnSpectate()
-    ply:sendAttachments()
+    ply:SendAttachments()
     ply:SetHealth(100)
     ply:SetMaxHealth(100)
     ply:SetJumpPower(190)
     ply:SetWalkSpeed(GetConVar("gc_base_walk_speed"):GetInt())
     ply:SetRunSpeed(GetConVar("gc_base_run_speed"):GetInt())
     ply:resetSpectateData()
-    ply:resetSpawnData()
-    ply:resetBleedData()
-    ply:resetAdrenalineData()
-    ply:resetStaminaData()
-    ply:resetWeightData()
+    ply:ResetSpawnData()
+    ply:ResetBleedData()
+    ply:ResetAdrenalineData()
+    ply:ResetStaminaData()
+    ply:ResetWeightData()
     ply:resetRadioData()
     ply:resetRecentVictimData()
-    ply:resetTrackedArmor()
-    ply:resetHealthRegenData()
-    ply:updateLoadoutPoints()
-    ply:setBandages(ply:getDesiredBandageCount())
+    ply:ResetTrackedArmor()
+    ply:ResetHealthRegenData()
+    ply:UpdateLoadoutPoints()
+    ply:SetBandages(ply:GetDesiredBandageCount())
     ply:SetCanZoom(false)
     ply:resetLastKillData()
     ply:SetCrouchedWalkSpeed(self.CrouchedWalkSpeed)
@@ -151,8 +124,8 @@ function GM:PlayerSpawn(ply)
     table.Empty(ply.attackedBy)
     ply:SetHullDuck(self.DuckHullMin, self.DuckHullMax)
     ply:SetViewOffsetDucked(self.ViewOffsetDucked)
-    ply:resetStatusEffects()
-    ply:resetKillcountData()
+    ply:ResetStatusEffects()
+    ply:ResetKillcountData()
 
     local desiredVoice = nil
 
@@ -169,7 +142,7 @@ function GM:PlayerSpawn(ply)
     end
 
     if !desiredVoice then
-        if !self:attemptSetMemeRadio(ply) then
+        if !self:AttemptSetMemeRadio(ply) then
             desiredVoice = ply:GetInfoNum("gc_desired_voice", 0)
 
             if !desiredVoice or desiredVoice == 0 then
@@ -193,13 +166,14 @@ function GM:PlayerSpawn(ply)
     self:positionPlayerOnMap(ply)
 
     ply:giveLoadout()
-    self:sendTimeLimit(ply)
+    self:SendTimeLimit(ply)
 
-    if self.curGametype.playerSpawn then
-        self.curGametype:playerSpawn(ply)
+    if self.curGametype.PlayerSpawn then
+        self.curGametype:PlayerSpawn(ply)
     end
 
-    -- ply:Give(self.KnifeWeaponClass)
+    ply:SetupHands()
+    ply:Give(self.KnifeWeaponClass)
 
     return true
 end
@@ -207,7 +181,6 @@ end
 function GM:DoPlayerDeath(ply, attacker, dmgInfo)
     ply:dropWeaponNicely(nil, VectorRand() * 20, VectorRand() * 200)
     ply:EmitSound("GC_DEATH_SOUND")
-
     if IsValid(attacker) and attacker:IsPlayer() then
         if attacker:Team() != ply:Team() then
             attacker.lastKillData.position = ply:GetPos()
@@ -215,22 +188,22 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
 
             attacker:AddFrags(1)
             ply:AddDeaths(1)
-            attacker:addCurrency(self.CashPerKill, self.ExpPerKill, "ENEMY_KILLED", ply)
-            self:trackRoundMVP(attacker, "kills", 1)
+            attacker:AddCurrency("ENEMY_KILLED", ply)
+            self:TrackRoundMVP(attacker, "kills", 1)
             attacker:checkForTeammateSave(ply)
-            attacker:increaseKillcount(ply)
+            attacker:IncreaseKillcount(ply)
 
             if ply:LastHitGroup() == HITGROUP_HEAD then
-                attacker:addCurrency(self.CashPerHeadshot, self.ExpPerHeadshot, "HEADSHOT")
-                self:trackRoundMVP(attacker, "headshots", 1)
+                attacker:AddCurrency("HEADSHOT")
+                self:TrackRoundMVP(attacker, "headshots", 1)
             end
 
             if self:countLivingPlayers(attacker:Team()) == 1 then
-                attacker:addCurrency(self.CashPerOneManArmy, self.ExpPerOneManArmy, "ONE_MAN_ARMY")
+                attacker:AddCurrency("ONE_MAN_ARMY")
             end
         else
             if ply != attacker then
-                attacker:addCurrency(self.CashPerTeamKill, self.ExpPerTeamKill, "TEAMKILL", ply)
+                attacker:AddCurrency("TEAMKILL", ply)
             end
         end
 
@@ -241,6 +214,9 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
 
             if IsValid(wep) then -- and the attacker has a valid weapon
                 inflictor = wep -- we assume that the inflictor should be the weapon
+                -- if wep.isPrimary != nil and !wep.isPrimary then
+                --     self:TrackRoundMVP(attacker, "pistol_kills", 1)
+                -- end
             end
         end
 
@@ -265,15 +241,15 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
             for obj, damageAmount in pairs(ply.attackedBy) do -- iterate over all players that attacked us and give them assist money
                 if IsValid(obj) and ply != attacker and obj != attacker then
                     local percentage = damageAmount / ply:GetMaxHealth()
-                    obj:addCurrency(math.ceil(percentage * self.CashPerAssist), math.ceil(percentage * self.ExpPerAssist), "KILL_ASSIST")
+                    obj:AddCurrency("KILL_ASSIST", nil, math.ceil(percentage * self.CashPerAssist), math.ceil(percentage * self.ExpPerAssist))
                 end
             end
         end
-        AddDamageLogEntry(attacker, ply, dmgInfo, true)
+        AddDamageLogEntry(attacker, ply, dmgInfo, inflictor:GetClass(), true)
     end
 
-    if self.curGametype.playerDeath then
-        self.curGametype:playerDeath(ply, attacker, dmginfo)
+    if self.curGametype.GCPlayerDeath then
+        self.curGametype:GCPlayerDeath(ply, attacker, dmgInfo)
     end
 
     ply.spawnWait = CurTime() + 5
@@ -309,7 +285,8 @@ function GM:PlayerCanHearPlayersVoice(listener, talker)
     if self.proximityVoiceChat then
         local tooFar = listener:GetPos():Distance(talker:GetPos()) > self.proximityVoiceChatDistance
 
-        if self.proximityVoiceChatGlobal then -- if global proximity chat is on, we check whether we're close enough to anyone, and if we are too far - disable voice
+        if self.proximityVoiceChatGlobal then
+            -- if global proximity chat is on, we check whether we're close enough to anyone, and if we are too far - disable voice
             if tooFar then
                 return false
             end
@@ -352,10 +329,10 @@ function GM:PlayerCanSeePlayersChat(text, teamOnly, listener, talker)
 end
 
 function GM:PostPlayerDeath(ply)
-    --self:checkRoundOverPossibility()
+    --self:CheckRoundOverPossibility()
 
-    if ply:Team() != TEAM_SPECTATOR and self.curGametype.postPlayerDeath then
-        self.curGametype:postPlayerDeath(ply)
+    if ply:Team() != TEAM_SPECTATOR and self.curGametype.PostPlayerDeath then
+        self.curGametype:PostPlayerDeath(ply)
     end
 
     ply:delaySpectate(self.DeadPeriodTime)
@@ -363,20 +340,22 @@ end
 
 GM.HitgroupDamageModifiers = {
     [HITGROUP_HEAD] = 3.5,
-    [HITGROUP_CHEST] = 1.15,
-    [HITGROUP_STOMACH] = 0.7,
+    [HITGROUP_CHEST] = 1,
+    [HITGROUP_STOMACH] = 0.65,
     [HITGROUP_LEFTARM] = 0.45,
     [HITGROUP_RIGHTARM] = 0.45,
     [HITGROUP_LEFTLEG] = 0.55,
     [HITGROUP_RIGHTLEG] = 0.55
 }
 
-GM.DropPrimaryHitgroup = { -- clear hitbox indexes in this table if you don't want players to drop their primary weapons when they get hit in their arms
+-- clear hitbox indexes in this table if you don't want players to drop their primary weapons when they get hit in their arms
+GM.DropPrimaryHitgroup = {
     [HITGROUP_LEFTARM] = true,
     [HITGROUP_RIGHTARM] = true
 }
 
-GM.DropPrimarySustainedDamage = 40 -- how much arm damage the player has to sustain in order to drop the weapon
+-- how much arm damage the player has to sustain in order to drop the weapon
+GM.DropPrimarySustainedDamage = 40
 
 
 function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
@@ -399,9 +378,8 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
         return
     end
 
-    ply:setStamina(ply.stamina - damage)
-    ply:suppress(4, 0.25)
-
+    ply:SetStamina(ply.stamina - damage)
+    ply:Suppress(4, 0.25)
     if IsValid(attacker) and attacker:IsPlayer() then
         local penValue = nil
 
@@ -412,10 +390,11 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
             local wep = attacker:GetActiveWeapon()
 
             if wep then
-                penValue = GAMEMODE:getAmmoPen(wep.Primary.Ammo, wep.penMod)
+                penValue = GAMEMODE:GetAmmoPen(wep.Primary.Ammo, wep.penMod)
             end
         end
 
+        -- Pass the unscaled damage into the armor damage calc
         if attacker:Team() != ply:Team() then
             dmgInfo:ScaleDamage(GetConVar("gc_damage_multiplier"):GetFloat())
             attacker:storeRecentVictim(ply)
@@ -442,7 +421,7 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
     end
 
     if differentTeam then
-        GAMEMODE:trackRoundMVP(attacker, "damage", dmgInfo:GetDamage())
+        GAMEMODE:TrackRoundMVP(attacker, "damage", dmgInfo:GetDamage())
     end
 
     local traits = GAMEMODE.Traits
@@ -478,7 +457,7 @@ function GM:PlayerDeathThink(ply)
     if self.curGametype.canSpawn then
         return self.curGametype:canSpawn(ply)
     else
-        if #player.GetAll() < 2 and ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_JUMP) then
+        if #player.GetAll() < 2 and (ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_JUMP)) then
             ply:Spawn()
             return true
         end
@@ -497,12 +476,12 @@ function GM:PlayerDeathThink(ply)
 end
 
 function GM:PlayerDisconnected(ply)
-    --self:checkRoundOverPossibility()
-    if self.curGametype.playerDisconnected then
-        self.curGametype:playerDisconnected(ply)
+    --self:CheckRoundOverPossibility()
+    if self.curGametype.PlayerDisconnected then
+        self.curGametype:PlayerDisconnected(ply)
     end
 
-    self:removePlayerObjectFromReportedDeadList(ply)
+    self:RemovePlayerFromReportedDeadList(ply)
 
     for key, plyObj in pairs(team.GetPlayers(ply:Team())) do
         if plyObj.currentSpectateEntity == self then
@@ -516,31 +495,38 @@ function PLAYER:crippleArm()
 
     if IsValid(wep) and wep.CW20Weapon and wep.isPrimaryWeapon and !wep.dropsDisabled then
         self:dropWeaponNicely(wep, VectorRand() * 20, VectorRand() * 200)
-        self:sendTip("DROPPED_WEAPON")
+        self:SendTip("DROPPED_WEAPON")
 
         -- only send the status effect if we weren't crippled before
         if !self.crippledArm then
-            self:setStatusEffect("crippled_arm", true)
+            self:SetStatusEffect("crippled_arm", true)
         end
     end
 
     self.crippledArm = true
-    self:setWeight(self:calculateWeight())
+    self:SetWeight(self:CalculateWeight())
 end
 
 function PLAYER:dropWeaponNicely(wepObj, velocity, angleVelocity) -- velocity and angleVelocity is optional
     wepObj = wepObj or self:GetActiveWeapon()
 
     if IsValid(wepObj) and wepObj.dropsDisabled then
-            return
+        return
     end
+    -- TODO (brekiy): make this more general for other bases in the future
+    local testPhysObj = ents.Create("cw_dropped_weapon")
+    testPhysObj:setWeapon(wepObj)
+    if testPhysObj:GetPhysicsObject() then
+        local pos = self:EyePos()
+        local ang = self:EyeAngles()
 
-    local pos = self:EyePos()
-    local ang = self:EyeAngles()
+        pos = pos + ang:Right() * 6 + ang:Forward() * 40 - ang:Up() * 5
 
-    pos = pos + ang:Right() * 6 + ang:Forward() * 40 - ang:Up() * 5
-
-    CustomizableWeaponry:dropWeapon(self, wepObj, velocity, angleVelocity, pos, ang)
+        CustomizableWeaponry:dropWeapon(self, wepObj, velocity, angleVelocity, pos, ang)
+    else
+        CustomizableWeaponry:dropWeapon(self)
+    end
+    testPhysObj:Remove()
 end
 
 function PLAYER:storeAttacker(attacker, dmgInfo)
@@ -578,23 +564,26 @@ function PLAYER:checkForTeammateSave(victim)
         if victimObj != self and victimObj:Health() > 0 then
             if CurTime() < recentVictim.timeWindow then
                 if victimObj:Health() <= GAMEMODE.MinHealthForSave then
-                    self:addCurrency(GAMEMODE.CashPerSave, GAMEMODE.ExpPerSave, "TEAMMATE_SAVED")
+                    self:AddCurrency("TEAMMATE_SAVED")
                 else
-                    self:addCurrency(GAMEMODE.CashPerMateHelp, GAMEMODE.ExpPerMateHelp, "TEAMMATE_HELPED")
+                    self:AddCurrency("TEAMMATE_HELPED")
                 end
             end
         else
             if self:Health() <= GAMEMODE.MinHealthForCloseCall and self:Alive() then
-                self:addCurrency(GAMEMODE.CashPerCloseCall, GAMEMODE.ExpPerCloseCall, "CLOSE_CALL")
+                self:AddCurrency("CLOSE_CALL")
             end
         end
     end
 end
 
-function PLAYER:addCurrency(cash, exp, event, entity)
+function PLAYER:AddCurrency(event, entity, cash, exp)
+    local eventData = GAMEMODE:GetEventByName(event)
+    cash = cash or eventData.cash
+    exp = exp or eventData.exp
     if exp and cash then
-        self:addCash(cash)
-        self:addExperience(exp)
+        self:AddCash(cash)
+        self:AddExperience(exp)
 
         GAMEMODE.SendCurrencyAmount.exp = exp
         GAMEMODE.SendCurrencyAmount.cash = cash
@@ -610,11 +599,11 @@ function PLAYER:addCurrency(cash, exp, event, entity)
     end
 
     if exp then
-        self:addExperience(exp, event)
+        self:AddExperience(exp, event)
     end
 
     if cash then
-        self:addCash(cash, event)
+        self:AddCash(cash, event)
     end
 end
 
@@ -623,10 +612,10 @@ function PLAYER:restoreHealth(amount)
 end
 
 function PLAYER:sendPlayerData()
-    self:sendCash()
-    self:sendExperience()
-    self:sendAttachments()
-    self:sendUnlockedAttachmentSlots()
+    self:SendCash()
+    self:SendExperience()
+    self:SendAttachments()
+    self:SendUnlockedAttachmentSlots()
     self:sendTraits()
 end
 
@@ -634,7 +623,7 @@ function PLAYER:setSpawnPoint(vec)
     self.spawnPoint = vec
 
     if GAMEMODE.LoadoutSelectTime then
-        if GAMEMODE.curGametype.canReceiveLoadout and !GAMEMODE.curGametype:canReceiveLoadout(self) then
+        if GAMEMODE.curGametype.CanReceiveLoadout and !GAMEMODE.curGametype:CanReceiveLoadout(self) then
             return
         end
 
@@ -645,7 +634,7 @@ function PLAYER:setSpawnPoint(vec)
     end
 end
 
-function PLAYER:sendStatusEffect(id, state)
+function PLAYER:SendStatusEffect(id, state)
     net.Start("GC_STATUS_EFFECT")
     net.WriteString(id)
     net.WriteBool(state)
@@ -671,6 +660,16 @@ function PLAYER:setInvincibilityPeriod(time) -- used for anti-spawncamp systems
     self.invincibilityPeriod = CurTime() + time
 end
 
+function GM:PlayerSetHandsModel(ply, ent)
+    local simplemodel = player_manager.TranslateToPlayerModelName(ply:GetModel())
+    local info = player_manager.TranslatePlayerHands(simplemodel)
+    if info then
+       ent:SetModel(info.model)
+       ent:SetSkin(info.skin)
+       ent:SetBodyGroups(info.body)
+    end
+ end
+
 concommand.Add("gc_request_data", function(ply, com, args)
     if CurTime() < ply.lastDataRequest then
         return
@@ -684,7 +683,7 @@ end)
 concommand.Add("gc_assignbotstoteam", function(ply)
     for key, value in pairs(player.GetBots()) do
         value:SetTeam(math.random(TEAM_RED, TEAM_BLUE))
-        value:resetTrackedArmor()
+        value:ResetTrackedArmor()
         value:Spawn()
     end
 end)
@@ -694,7 +693,7 @@ hook.Add("CW20_PickedUpCW20Weapon", "GC_CW20_PickedUpCW20Weapon", function(ply, 
         if wepObj != newWeaponObject and wepObj.Slot == newWeaponObject.Slot then
             ply:dropWeaponNicely(wepObj)
             ply.canPickupWeapon = false -- prevent weapon pickups until we finish assigning attachments to the weapon
-            ply:sendTip("PICKUP_WEAPON")
+            ply:SendTip("PICKUP_WEAPON")
         end
     end
 end)
