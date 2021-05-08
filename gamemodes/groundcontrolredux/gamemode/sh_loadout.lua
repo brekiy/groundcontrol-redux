@@ -273,6 +273,9 @@ function GM:postInitEntity()
         if GetConVar("gc_use_cw2_kk_btk"):GetBool() then
             self:RegisterWepsCW2KKBTK()
         end
+        if GetConVar("gc_use_cw2_kk_doi"):GetBool() then
+            self:RegisterWepsCW2KKDOI()
+        end
         if GetConVar("gc_use_cw2_soap"):GetBool() then
             self:RegisterWepsCW2Soap()
         end

@@ -133,7 +133,7 @@ function GM:RegisterWepsCW2KKDOI()
         weight = 4.5,
         pointCost = 14,
     }
-    self:RegisterPrimaryWeapon(m1a1)
+    self:RegisterPrimaryWeapon(m1a1_tommy)
 
     local m3 = {
         weaponClass = "cw_kk_ins2_doi_m3",
