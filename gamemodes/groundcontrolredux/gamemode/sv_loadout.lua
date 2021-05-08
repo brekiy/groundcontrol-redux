@@ -41,8 +41,6 @@ function PLAYER:giveLoadout(forceGive)
     self:ApplyTraits()
 
     if self:IsBot() then
-        self:GiveGCArmor("vest", 2)
-        self:GiveGCArmor("helmet", 1)
         GiveBotRandomLoadout(self)
         self:SetWeight(self:CalculateWeight())
     elseif GAMEMODE:GetImaginaryLoadoutCost(self) > self:GetCurrentLoadoutPoints() then
@@ -75,7 +73,6 @@ function PLAYER:giveLoadout(forceGive)
 
     primaryMags = self:AdjustMagCount(primaryData, primaryMags)
     secondaryMags = self:AdjustMagCount(secondaryData, secondaryMags)
-
 
     timer.Simple(0.3, function()
         if !IsValid(self) or !self:Alive() then
@@ -154,6 +151,9 @@ function GiveBotRandomLoadout(bot)
     givenWeapon = bot:Give(pickedWeapon.weaponClass)
     bot:GiveAmmo(3 * givenWeapon.Primary.ClipSize_Orig, givenWeapon.Primary.Ammo)
     givenWeapon:maxOutWeaponAmmo(givenWeapon.Primary.ClipSize_Orig)
+
+    bot:GiveGCArmor("vest", 2)
+    bot:GiveGCArmor("helmet", 1)
 end
 
 --[[

@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-function GAMEMODE:RegisterCW2AttsKK()
+function GM:RegisterAttsCW2KK()
     -- Attachments (only register stuff that isn't going to be left at default 2k price)
     -- idk why but knifekitty made these colorways reduce recoil lol
     local kk_ins2_cstm_glock_atts = {
