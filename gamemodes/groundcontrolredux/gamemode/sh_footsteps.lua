@@ -126,7 +126,7 @@ function GM:RegisterWalkSound(materialID, desiredSound)
         self.SURFACE_FOOTSTEP_SOUNDS[materialID] = desiredSound
         -- targetList = self.SURFACE_FOOTSTEP_SOUNDS[materialID]
     else
-        self.FALLBACK_FOOTSTEP_SOUNDS = desiredSound
+        self.FALLBACK_FOOTSTEP_SOUND = desiredSound
     end
     -- table.insert(targetList, desiredSounds)
 end
@@ -166,7 +166,7 @@ function GM:PlayerFootstep(ply, position, foot, snd, volume, filter)
     local stepSound = self:GetWalkSound(materialID, loudnessID)
 
     -- if SERVER then
-        ply:EmitSound(stepSound, self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END), self.FOOTSTEP_VOLUME_LEVELS[loudnessID], CHAN_BODY)
+    ply:EmitSound(stepSound, self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END), self.FOOTSTEP_VOLUME_LEVELS[loudnessID], CHAN_BODY)
     -- elseif SERVER then
     --     sound.Play(stepSound, ply:GetPos(), self.FOOTSTEP_LOUDNESS_LEVELS[loudnessID], math.random(self.FOOTSTEP_PITCH_START, self.FOOTSTEP_PITCH_END), self.FOOTSTEP_VOLUME_LEVELS[loudnessID])
     -- end
