@@ -1,6 +1,7 @@
 # Ground Control Redux
 ---
 This is my personal fork of the Ground Control gamemode for Garry's Mod. It'll have a few updates to it.
+
 Ground Control Redux can be found on the Steam workshop [here](https://steamcommunity.com/sharedfiles/filedetails/?id=2034529088).
 
 ## Expanded Features:
