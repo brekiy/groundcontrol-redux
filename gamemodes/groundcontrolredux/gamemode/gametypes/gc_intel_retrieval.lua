@@ -13,6 +13,7 @@ function GM:RegisterIntelRetrieval()
     intelRetrieval.prettyName = "Intel Retrieval"
     intelRetrieval.timeLimit = 195
     intelRetrieval.stopCountdown = true
+    intelRetrieval.swappedTeams = false
     intelRetrieval.objectiveEnts = {}
     intelRetrieval.objectiveCounter = 0
     intelRetrieval.objectives = {}
@@ -27,6 +28,12 @@ function GM:RegisterIntelRetrieval()
         if CLIENT then
             RunConsoleCommand("gc_team_selection")
         end
+    end
+
+    function intelRetrieval.teamSwapCallback(player)
+        net.Start("GC_NEW_TEAM")
+        net.WriteInt(player:Team(), 16)
+        net.Send(player)
     end
 
     function intelRetrieval:PickupIntel(intelEnt, ply)
@@ -128,6 +135,10 @@ function GM:RegisterIntelRetrieval()
 
     function intelRetrieval:RoundStart()
         if SERVER then
+            if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GetConVar("gc_default_rounds_per_map"):GetInt() * 0.5 then
+                GAMEMODE:SwapTeams(TEAM_RED, TEAM_BLUE, intelRetrieval.teamSwapCallback, intelRetrieval.teamSwapCallback)
+                self.swappedTeams = true
+            end
             GAMEMODE:SetTimeLimit(self.timeLimit)
             self.stopCountdown = false
             GAMEMODE:InitializeGameTypeEntities(self)

@@ -48,7 +48,6 @@ function GM:RegisterRush()
 
     function oneSideRush:RoundStart()
         if SERVER then
-            -- if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GAMEMODE.RoundsPerMap * 0.5 then
             if !self.swappedTeams and GAMEMODE.RoundsPlayed >= GetConVar("gc_default_rounds_per_map"):GetInt() * 0.5 then
                 GAMEMODE:SwapTeams(self.attackerTeam, self.defenderTeam, oneSideRush.teamSwapCallback, oneSideRush.teamSwapCallback)
                 self.swappedTeams = true
@@ -56,8 +55,6 @@ function GM:RegisterRush()
 
             GAMEMODE:SetTimeLimit(self.timeLimit)
 
-        --     self.realAttackerTeam = self.attackerTeam
-        --     self.realDefenderTeam = self.defenderTeam
             table.Empty(self.objectiveEnts)
             self.stopCountdown = false
 
