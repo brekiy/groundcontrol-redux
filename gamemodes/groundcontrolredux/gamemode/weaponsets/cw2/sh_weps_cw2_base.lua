@@ -83,6 +83,14 @@ function GM:RegisterWepsCW2Base()
     }
     GAMEMODE:RegisterPrimaryWeapon(ump45)
 
+    local mp9 = {
+        weaponClass = "cw_mp9_official",
+        weight = 1.4,
+        pointCost = 16,
+        penMod = 1.1
+    }
+    GAMEMODE:RegisterPrimaryWeapon(mp9)
+
     -- heavy weapons
     local m249 = {
         weaponClass = "cw_m249_official",
@@ -99,6 +107,20 @@ function GM:RegisterWepsCW2Base()
         pointCost = 14
     }
     GAMEMODE:RegisterPrimaryWeapon(m3super90)
+
+    local m1014 = {
+        weaponClass = "cw_xm1014_official",
+        weight = 3.82,
+        pointCost = 15,
+    }
+    GAMEMODE:RegisterPrimaryWeapon(m1014)
+
+    local saiga12 = {
+        weaponClass = "cw_saiga12k_official",
+        weight = 3.6,
+        pointCost = 15,
+    }
+    GAMEMODE:RegisterPrimaryWeapon(saiga12)
 
     local serbushorty = {
         weaponClass = "cw_shorty",

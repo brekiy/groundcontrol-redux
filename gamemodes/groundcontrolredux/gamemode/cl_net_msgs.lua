@@ -261,3 +261,7 @@ net.Receive("GC_SET_VIP", function(a, b)
     end
     LocalPlayer().isVIP = isVIP
 end)
+
+net.Receive("GC_START_LOADOUT_EXPENSIVE", function(a, b)
+    chat.AddText(GAMEMODE.HUD_COLORS.limeYellow, "Your previous loadout was too expensive and has been stripped down for this round.")
+end)

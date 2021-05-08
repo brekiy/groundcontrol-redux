@@ -122,7 +122,7 @@ function GM:applyWeaponDataToWeaponClass(weaponData, primaryWeapon, slot)
     -- elseif weaponData.Base == "arccw_base" then
     --     wepClass.Damage = self:parseArcCWWeapon(weaponData)
     -- else
-    --     wepClass.Damage = weaponData.damage or wepClass.Damage
+    wepClass.Damage = weaponData.damage or wepClass.Damage
     -- end
 
     weaponData.weaponObject = wepClass

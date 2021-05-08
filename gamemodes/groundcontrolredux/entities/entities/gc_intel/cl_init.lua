@@ -19,7 +19,7 @@ function ENT:drawHUD()
     -- update position every beep time
     if !LocalPlayer().hasIntel and self.NextBeepTime < CurTime() then
         local pos = self:GetPos()
-        local text = "Last known intel location" -- self:GetDropped() and "Intel" or "Intel carrier"
+        local text = "Intel location" -- self:GetDropped() and "Intel" or "Intel carrier"
         local alpha = 1
         alpha = alpha * (0.2 + 0.8 * math.flash(CurTime(), 1.5))
         local screen = pos:ToScreen()

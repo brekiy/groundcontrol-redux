@@ -39,17 +39,18 @@ function ENT:Use(activator, caller)
         self:SetMoveType(MOVETYPE_NONE)
         self:SetSolid(SOLID_NONE)
         self:SetDropped(false)
-        local bone = activator:LookupBone("ValveBiped.Bip01_Spine2")
-        if bone then
-            local pos, ang = activator:GetBonePosition(bone)
-            pos = pos - ang:Up() * Vector(0, 0, 10) + ang:Forward() * Vector(-7, -15, 0)
-            self:SetPos(pos)
-            self:SetAngles(ang)
-        else
-            local pos = activator:GetPos()
-            pos.z = pos.z + 50
-            self:SetPos(pos)
-        end
+        self:SetModelScale(0.1)
+        -- local bone = activator:LookupBone("ValveBiped.Bip01_Spine2")
+        -- if bone then
+        --     local pos, ang = activator:GetBonePosition(bone)
+        --     pos = pos - ang:Up() * Vector(0, 0, 10) + ang:Forward() * Vector(-7, -15, 0)
+        --     self:SetPos(pos)
+        --     self:SetAngles(ang)
+        -- else
+        --     local pos = activator:GetPos()
+        --     pos.z = pos.z + 50
+        --     self:SetPos(pos)
+        -- end
         self:SetParent(activator)
 
     end
@@ -74,7 +75,7 @@ function ENT:Drop()
     self:SetSolid(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetDropped(true)
-
+    self:SetModelScale(1)
     -- physics push
     local phys = self:GetPhysicsObject()
     if IsValid(phys) then

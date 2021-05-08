@@ -1,6 +1,8 @@
 GM.AllFrames = {}
 local PLAYER = FindMetaTable("Player")
 CreateClientConVar("gc_pretty_loadout_icons", 1, true, false)
+-- this will take effect each map reload
+GM.LoadWepModels = GetConVar("gc_pretty_loadout_icons"):GetBool()
 
 function PLAYER:ComplainAboutLoadout(objName)
     chat.AddText(GAMEMODE.HUD_COLORS.limeYellow, "Not enough points for " .. objName .. "!\nGet good and increase your requisition allowance.")
@@ -316,7 +318,7 @@ function gcModelPanel:Paint()
     surface.SetDrawColor(r, g, b, a)
     surface.DrawRect(1, 1, w - 2, h - 2)
 
-    if IsValid(self.Entity) and self.Entity.shouldDraw and GetConVar("gc_pretty_loadout_icons"):GetBool() then
+    if IsValid(self.Entity) and self.Entity.shouldDraw and GAMEMODE.LoadWepModels then
         local x, y = self:LocalToScreen( 0, 0 )
 
         self:LayoutEntity(self.Entity)
@@ -350,27 +352,29 @@ function gcModelPanel:Paint()
     end
 end
 
--- function gcModelPanel:Draw2D(w, h)
--- end
+function gcModelPanel:Draw2D(w, h)
+end
 
 function gcModelPanel:SetDistance()
-    self.Entity.shouldDraw = true
+    if self.Entity then
+        self.Entity.shouldDraw = true
 
-    mdl = self.Entity:GetModel()
+        mdl = self.Entity:GetModel()
 
-    if self.modelReang[mdl] then
-        self.Entity:SetAngles(self.modelReang[mdl])
+        if self.modelReang[mdl] then
+            self.Entity:SetAngles(self.modelReang[mdl])
+        end
+
+        if self.modelRepos[mdl] then
+            self.Entity:SetPos(self.modelRepos[mdl])
+        else
+            self.Entity:SetPos(Vector(-6, 13.5, -1))
+        end
+
+        self:SetCamPos(Vector(0, 35, 0))
+        self:SetLookAt(Vector(0, 0, 0))
+        self:SetFOV(90)
     end
-
-    if self.modelRepos[mdl] then
-        self.Entity:SetPos(self.modelRepos[mdl])
-    else
-        self.Entity:SetPos(Vector(-6, 13.5, -1))
-    end
-
-    self:SetCamPos(Vector(0, 35, 0))
-    self:SetLookAt(Vector(0, 0, 0))
-    self:SetFOV(90)
 end
 
 function gcModelPanel:LayoutEntity()
@@ -386,8 +390,11 @@ function gcWeaponPanel:SetWeapon(weaponTable, id)
     local weaponData = weaponTable[id].weaponObject
 
     if weaponData then
-        self:SetModel(weaponData.WorldModel)
-        self:SetDistance()
+        -- Too much of a performance hit. Lock it behind a client convar
+        if GAMEMODE.LoadWepModels then
+            self:SetModel(weaponData.WorldModel)
+            self:SetDistance()
+        end
         self.IconLetter = weaponData.IconLetter
         self.SelectIcon = weaponData.SelectIcon
     end
@@ -502,7 +509,7 @@ function gcWeaponPanel:PaintOver()
 
     cam.IgnoreZ(true)
 
-    if !GetConVar("gc_pretty_loadout_icons"):GetBool() then
+    if !GAMEMODE.LoadWepModels then
         if self.IconLetter then
             draw.ShadowText(self.IconLetter, "GroundControl_SelectIcons", w * 0.1, h * 0.1, GAMEMODE.HUD_COLORS.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
         elseif self.SelectIcon then
@@ -735,12 +742,15 @@ function curWeaponPanel:UpdateWeapon(wepId)
     end
 
     self.weaponID = wepId
-    self:SetModel(self.weaponData.weaponObject.WorldModel)
-    self:SetDistance()
+    if GAMEMODE.LoadWepModels then
+        self:SetModel(self.weaponData.weaponObject.WorldModel)
+        self:SetDistance()
+        self.Entity.shouldDraw = true
+    end
+
     self.IconLetter = self.weaponData.weaponObject.IconLetter
     self.SelectIcon = self.weaponData.weaponObject.SelectIcon
     self.weaponStats:SetWeapon(self.weaponID, self.isPrimary)
-    self.Entity.shouldDraw = true
     self.acknowledged = false
 
     self:UpdateAvailableAttachments()
