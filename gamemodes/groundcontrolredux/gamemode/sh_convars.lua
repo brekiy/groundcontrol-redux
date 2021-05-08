@@ -42,6 +42,7 @@ CreateConVar("gc_use_cw2_spy", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED
 CreateConVar("gc_use_cw2_kk_ins2", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's ins2 weps")
 CreateConVar("gc_use_cw2_kk_ext", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's extra weps")
 CreateConVar("gc_use_cw2_kk_btk", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's btk weps")
+CreateConVar("gc_use_cw2_kk_doi", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's doi weps")
 CreateConVar("gc_use_cw2_khris", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable khris' extra weps")
 CreateConVar("gc_use_cw2_soap", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable soap's extra weps")
 CreateConVar("gc_use_cw2_misc", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable misc extra cw weps")

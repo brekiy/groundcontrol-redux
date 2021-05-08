@@ -19,6 +19,7 @@ function GM:RegisterVIPEscort()
     vipEscort.stopCountdown = true
     vipEscort.timeLimit = 225
     vipEscort.swappedTeams = false
+    vipEscort.reversedVIP = false
     vipEscort.objectiveEnts = {}
     vipEscort.objectiveCounter = 0
     vipEscort.objectives = {}
@@ -51,11 +52,11 @@ function GM:RegisterVIPEscort()
                 GAMEMODE:SwapTeams(self.vipTeam, self.ambushTeam, vipEscort.teamSwapCallback, vipEscort.teamSwapCallback)
                 self.swappedTeams = true
             end
+            GAMEMODE:InitializeGameTypeEntities(self)
             local vipPlayers = team.GetPlayers(self.vipTeam)
             local vipIdx = math.random(1, #vipPlayers)
             vipPlayers[vipIdx].isVIP = true
             self.stopCountdown = false
-            GAMEMODE:InitializeGameTypeEntities(self)
         end
     end
 
@@ -147,9 +148,12 @@ function GM:RegisterVIPEscort()
 
     -- Swaps the assigned red/blue teams if the map calls for it
     function vipEscort:SwapVIPTeam()
-        local temp = self.vipTeam
-        self.vipTeam = self.ambushTeam
-        self.ambushTeam = temp
+        if !self.reversedVip then
+            local temp = self.vipTeam
+            self.vipTeam = self.ambushTeam
+            self.ambushTeam = temp
+            self.reversedVip = true
+        end
     end
 
     GM:RegisterNewGametype(vipEscort)
