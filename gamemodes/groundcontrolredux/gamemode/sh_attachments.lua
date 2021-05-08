@@ -21,7 +21,8 @@ GM.SecondaryAttachmentStrings = {}
 
 ]]--
 
-GM.attachmentPrices = {
+-- TODO: blah basic lazy table that i dont wanna refactor out
+local attachmentPrices = {
     am_416barrett = 1500,
     am_45lc = 1500,
     am_4borebs = 1500,
@@ -99,8 +100,8 @@ GM.attachmentPrices = {
     bg_nostock = 800, -- cheap, since it's a variant of the MP5
     bg_ots_extmag = 1000,
     bg_pkm_barrel = 800,
-    bg_pkm_bipod = 1000,
-    bg_pkm_bipod_on_pkp = 1000,
+    bg_pkm_bipod = 1500,
+    bg_pkm_bipod_on_pkp = 1500,
     bg_pkm_handle = 800,
     bg_pkp_100_mag = 1000,
     bg_pkp_nostock = 1000,
@@ -206,7 +207,7 @@ for key, value in pairs(CustomizableWeaponry.registeredAttachmentsSKey) do
     end
 end
 
-for attName, price in pairs(GM.attachmentPrices) do
+for attName, price in pairs(attachmentPrices) do
     local attData = CustomizableWeaponry.registeredAttachmentsSKey[attName]
     if attData != nil then attData.price = price end
 end
@@ -215,8 +216,9 @@ function GM:getFreeSlotCount()
     return self.MaxAttachments - self.LockedAttachmentSlots
 end
 
-function GM:registerAttachment(data)
+function GM:RegisterAttachment(data)
     local attData = CustomizableWeaponry.registeredAttachmentsSKey[data.attachmentName]
+    if !attData then return end
     attData.price = data.price
     attData.unlockedByDefault = data.unlockedByDefault
 end

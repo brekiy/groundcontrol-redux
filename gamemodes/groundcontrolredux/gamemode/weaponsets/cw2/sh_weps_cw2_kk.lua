@@ -218,4 +218,3 @@ function GM:RegisterWepsCW2KK()
     }
     self:RegisterSecondaryWeapon(p2a1)
 end
-

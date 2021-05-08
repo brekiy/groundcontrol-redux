@@ -14,35 +14,8 @@ GM.DefaultSpareAmmoCount = 0
 GM.MaxPrimaryMags = 5
 GM.MaxSecondaryMags = 5
 
--- if GetConVar("gc_use_cw2_weps"):GetBool() then
-    -- if GetConVar("gc_use_cw2_spy"):GetBool() then
-    --     include("weaponsets/cw2/sh_weps_cw2_base.lua")
-    -- end
-    -- if GetConVar("gc_use_cw2_khris"):GetBool() then
-    --     include("weaponsets/cw2/sh_weps_cw2_khris.lua")
-    -- end
-    -- if GetConVar("gc_use_cw2_misc"):GetBool() then
-    --     include("weaponsets/cw2/sh_weps_cw2_misc.lua")
-    -- end
-    -- if GetConVar("gc_use_cw2_kk_ins2"):GetBool() then
-    --     include("weaponsets/cw2/sh_weps_cw2_kk.lua")
-    -- end
-    -- if GetConVar("gc_use_cw2_kk_ext"):GetBool() then
-    --     include("weaponsets/cw2/sh_weps_cw2_ext.lua")
-    -- end
-    -- if GetConVar("gc_use_cw2_kk_btk"):GetBool() then
-    --     include("weaponsets/cw2/sh_weps_cw2_btk.lua")
-    -- end
-    -- if GetConVar("gc_use_cw2_soap"):GetBool() then
-    --     include("weaponsets/cw2/sh_weps_cw2_soap.lua")
-    -- end
--- end
--- if GetConVar("gc_use_tfa_weps"):GetBool() then
---     include("weaponsets/tfa/sh_weps_tfa_ins2.lua")
--- end
 IncludeDir("weaponsets", "THIRDPARTY")
 IncludeDir("weaponsets", "WORKSHOP")
--- include("weaponsets/sh_weps_calibers.lua")
 
 if CLIENT then
     include("cl_loadout.lua")
@@ -304,6 +277,7 @@ function GM:postInitEntity()
             self:RegisterWepsCW2Soap()
         end
     end
+    self:RegisterAttsCW2KK()
     self:RegisterCalibers()
     hook.Call("GroundControlPostInitEntity", nil)
 
