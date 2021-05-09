@@ -15,7 +15,7 @@ function GM:RegisterUrbanWarfare()
     urbanwarfare.waveWinReward = {cash = 50, exp = 50}
 
     if SERVER then
-        urbanwarfare.mapRotation = GM:GetMapRotation("urbanwarfare_maps")
+        urbanwarfare.mapRotation = GM:GetMapRotation("urban_warfare_maps")
     end
 
     function urbanwarfare:AssignPointID(point)
