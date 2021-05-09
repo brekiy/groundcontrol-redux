@@ -2,7 +2,7 @@ AddCSLuaFile()
 
 function GM:RegisterUrbanWarfare()
     local urbanwarfare = {}
-    urbanwarfare.name = "urbanwarfare"
+    urbanwarfare.name = "urban_warfare"
     urbanwarfare.prettyName = "Urban Warfare"
     urbanwarfare.timeLimit = 315
     urbanwarfare.waveTimeLimit = 135
