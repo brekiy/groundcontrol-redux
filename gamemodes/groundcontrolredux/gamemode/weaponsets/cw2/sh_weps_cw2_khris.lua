@@ -202,7 +202,7 @@ function GM:RegisterWepsCW2Khris()
 
     local deagle = {
         weaponClass = "khr_deagle",
-        weight = 1.998,
+        weight = 2,
         pointCost = 10
     }
     self:RegisterSecondaryWeapon(deagle)

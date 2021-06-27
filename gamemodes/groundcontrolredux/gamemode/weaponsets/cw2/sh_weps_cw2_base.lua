@@ -131,7 +131,6 @@ function GM:RegisterWepsCW2Base()
 
     -- sniper rifles
     local l115 = {
-        -- weaponClass = "gc_cw_l115",
         weaponClass = "cw_l115",
         weight = 6.5,
         pointCost = 38
@@ -141,7 +140,7 @@ function GM:RegisterWepsCW2Base()
     -- handguns
     local deagle = {
         weaponClass = "cw_deagle",
-        weight = 1.998,
+        weight = 2,
         pointCost = 10
     }
     GAMEMODE:RegisterSecondaryWeapon(deagle)
@@ -193,7 +192,7 @@ function GM:RegisterWepsCW2Base()
         },
         pointCost = 3
     }
-    self:registerTertiaryWeapon(flash)
+    self:RegisterTertiaryWeapon(flash)
 
     local smoke = {
         weaponClass = "gc_cw_smoke_grenade",
@@ -207,7 +206,7 @@ function GM:RegisterWepsCW2Base()
         },
         pointCost = 3
     }
-    self:registerTertiaryWeapon(smoke)
+    self:RegisterTertiaryWeapon(smoke)
 
     local spareGrenade = {
         weaponClass = "gc_cw_frag_grenade",
@@ -226,5 +225,5 @@ function GM:RegisterWepsCW2Base()
         ply:GiveAmmo(self.amountToGive, "Frag Grenades")
     end
 
-    self:registerTertiaryWeapon(spareGrenade)
+    self:RegisterTertiaryWeapon(spareGrenade)
 end

@@ -317,7 +317,7 @@ function GM:RegisterWepsCW2Soap()
         weaponClass = "cw_kk_ins2_sv98g",
         weight = 5.8,
         pointCost = 35,
-        penMod = 1.25
+        penMod = 1.1
     }
     self:RegisterPrimaryWeapon(sv98g)
 
@@ -325,7 +325,7 @@ function GM:RegisterWepsCW2Soap()
         weaponClass = "cw_kk_ins2_svd",
         weight = 4,
         pointCost = 36,
-        penMod = 1.25
+        penMod = 1.1
     }
     self:RegisterPrimaryWeapon(svd)
 
@@ -333,7 +333,7 @@ function GM:RegisterWepsCW2Soap()
         weaponClass = "cw_kk_ins2_svu",
         weight = 4.4,
         pointCost = 37,
-        penMod = 1.25
+        penMod = 1.1
     }
     self:RegisterPrimaryWeapon(svu)
 
@@ -356,7 +356,7 @@ function GM:RegisterWepsCW2Soap()
         weaponClass = "cw_kk_ins2_mp5a4",
         weight = 2.5,
         pointCost = 15,
-        penMod = 1.5
+        penMod = 1.2
     }
     self:RegisterPrimaryWeapon(mp5a4)
 
@@ -549,7 +549,7 @@ function GM:RegisterWepsCW2Soap()
 
     local deagle = {
         weaponClass = "cw_kk_ins2_deagle",
-        weight = 1.998,
+        weight = 2,
         pointCost = 10
     }
     self:RegisterSecondaryWeapon(deagle)
