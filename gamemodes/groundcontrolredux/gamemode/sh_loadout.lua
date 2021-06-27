@@ -253,6 +253,10 @@ function GM:postInitEntity()
     wepObj.dropsDisabled = true
     wepObj.isKnife = true
     wepObj.pointCost = 0
+    -- MP9, remove the meme ammo type
+    local mp9Wep = weapons.GetStored("cw_mp9_official")
+    table.Exclude(mp9Wep.Attachments["+reload"].atts, "am_ultramegamatchammo")
+
     -- Load all allowed weapon packs and registered ammo
     -- there's probably a better way to do this...
     if GetConVar("gc_use_cw2_weps"):GetBool() then
