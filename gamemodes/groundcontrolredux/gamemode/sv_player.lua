@@ -361,19 +361,21 @@ GM.DropPrimarySustainedDamage = 40
 function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
     local attacker = dmgInfo:GetAttacker()
     local damage = dmgInfo:GetDamage()
-    local differentTeam
+    local differentTeam = nil
+    local attackerIsValid = IsValid(attacker)
 
-    if attacker:IsPlayer() then
+    if attackerIsValid and attacker:IsPlayer() then
         differentTeam = attacker:Team() != ply:Team()
     end
 
+    -- player is still invincible after spawning, remove any damage done and don't do anything
     if attacker != ply and attacker:IsPlayer() and CurTime() < ply.invincibilityPeriod then
-        -- player is still invincible after spawning, remove any damage done and don't do anything
         dmgInfo:ScaleDamage(0)
         return
     end
 
-    if !differentTeam and ((self.noTeamDamage and attacker != ply) or self.RoundOver) then -- disable all team damage if the server is configged that way
+    -- disable all team damage if the server is configured that way
+    if attackerIsValid and !differentTeam and ((self.noTeamDamage and attacker != ply) or self.RoundOver) then
         dmgInfo:ScaleDamage(0)
         return
     end
