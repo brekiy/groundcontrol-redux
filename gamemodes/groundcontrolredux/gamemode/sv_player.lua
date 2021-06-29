@@ -258,7 +258,7 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
 end
 
 function GM:disableCustomizationMenu()
-    for key, ply in ipairs(player.GetAll()) do
+    for key, ply in ipairs(self.currentPlayerList) do
         local wep = ply:GetActiveWeapon()
 
         if IsValid(wep) and wep.CW20Weapon and wep.dt.State == CW_CUSTOMIZE then
@@ -460,7 +460,7 @@ function GM:PlayerDeathThink(ply)
     if self.curGametype.canSpawn then
         return self.curGametype:canSpawn(ply)
     else
-        if #player.GetAll() < 2 and (ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_JUMP)) then
+        if #self.currentPlayerList < 2 and (ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_JUMP)) then
             ply:Spawn()
             return true
         end

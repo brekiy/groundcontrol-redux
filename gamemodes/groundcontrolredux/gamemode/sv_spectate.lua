@@ -21,7 +21,7 @@ function PLAYER:spectateNext(goBack)
     local myTeam = self:Team()
 
     if myTeam == TEAM_SPECTATOR then
-        teamPlayers = player.GetAll()
+        teamPlayers = GM.currentPlayerList
     else
         teamPlayers = team.GetPlayers(self:Team())
     end
