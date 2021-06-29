@@ -80,7 +80,7 @@ function GM:pickSendTargets(targets)
         if self.VoteTeamTargets then
             targets = team.GetPlayers(self.VoteTeamTargets)
         else
-            targets = self.currentPlayerList
+            targets = self.CurrentPlayerList
         end
     end
 
@@ -114,7 +114,7 @@ function GM:sendVoteData(target)
     net.WriteFloat(self.VoteStartTime)
     net.WriteFloat(self.VoteTime)
     net.WriteTable(self.VoteOptions)
-    net.Send(target) -- send to each individually instead of self.currentPlayerList, etc. in case I want to expand on this system later on
+    net.Send(target) -- send to each individually instead of self.CurrentPlayerList, etc. in case I want to expand on this system later on
 end
 
 function GM:sendVoteDataUpdateToTargets(targets, index)

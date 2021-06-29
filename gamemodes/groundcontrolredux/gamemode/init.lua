@@ -5,6 +5,7 @@
 ]]--
 
 GM.AutoUpdateConVars = {}
+GM.CurrentPlayerList = {}
 
 function GM:RegisterAutoUpdateConVar(cvarName, onChangedCallback)
     self.AutoUpdateConVars[cvarName] = onChangedCallback

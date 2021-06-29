@@ -985,7 +985,7 @@ function weightBar:Paint()
 
     local ply = LocalPlayer()
     local curWeight = GAMEMODE:CalculateImaginaryWeight(ply)
-    local weightPercentage = curWeight / GAMEMODE.MAX_WEIGHT
+    local weightPercentage = math.min(1, curWeight / GAMEMODE.MAX_WEIGHT)
 
     surface.SetDrawColor(213, 213, 213, 255)
     surface.DrawRect(2, 2, (w - 4) * weightPercentage, h - 4)
