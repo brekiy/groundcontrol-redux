@@ -150,23 +150,29 @@ medic.maxLevel = 5
 medic.basePrice = 1000
 medic.pricePerLevel = 500
 medic.healthRestorePerLevel = 1
+medic.healthRestorePerLevelMates = 2
 medic.description = {
     {t = "You've undergone extensive medical training to treat wounds efficiently.", c = GM.HUD_COLORS.white},
     {t = "You can restore health when bandaging yourself or team mates.", c = GM.HUD_COLORS.white},
     {t = "Each level increases health restored by %s point.", c = GM.HUD_COLORS.green, formatFunc = function(textToFormat) return string.format(textToFormat, medic.healthRestorePerLevel) end},
     {
-        t = "Current health restore amount: +CURRENT%",
+        t = "Current health restore amount: +CURRENT% (+MATES% when healing team mates)",
         c = GM.HUD_COLORS.green,
-        formatFunc = function(textToFormat) return string.easyformatbykeys(textToFormat, "CURRENT", math.Round(medic.healthRestorePerLevel * (LocalPlayer().traits[medic.id] or 0))) end
+        formatFunc = function(textToFormat)
+            local level = LocalPlayer().traits[medic.id] or 0
+
+            return string.easyformatbykeys(textToFormat, "CURRENT", math.Round(medic.healthRestorePerLevel * level), "MATES", math.Round(medic.healthRestorePerLevelMates * level)) end
     }
 }
 
 function medic:onSpawn(player, currentLevel)
     player.healAmount = self.healthRestorePerLevel * currentLevel
+    player.healAmountAlly = self.healthRestorePerLevelMates * currentLevel
 end
 
 function medic:remove(player, currentLevel)
     player.healAmount = 0
+    player.healAmountAlly = 0
 end
 
 GM:RegisterTrait(medic)

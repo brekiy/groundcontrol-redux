@@ -90,9 +90,10 @@ function PLAYER:bandage(bandagedBy)
     if bandagedBy != self then
         bandagedBy:AddCurrency("TEAMMATE_BANDAGED")
         GAMEMODE:TrackRoundMVP(bandagedBy, "bandaging", 1)
+        self:restoreHealth(bandagedBy.healAmountAlly)
+    else
+        self:restoreHealth(bandagedBy.healAmount)
     end
-
-    self:restoreHealth(bandagedBy.healAmount)
 end
 
 function PLAYER:sendBandages()

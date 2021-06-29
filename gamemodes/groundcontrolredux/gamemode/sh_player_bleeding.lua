@@ -86,6 +86,7 @@ function PLAYER:ResetBleedData()
     self.bleedInflictor = nil
     self.bleedHealthDrainTime = 0
     self.healAmount = 0
+    self.healAmountAlly = 0
 end
 
 function PLAYER:GetDesiredBandageCount()
