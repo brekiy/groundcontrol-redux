@@ -12,7 +12,7 @@ CreateConVar("gc_proximity_voicechat_distance", 256, {FCVAR_ARCHIVE, FCVAR_NOTIF
 CreateConVar("gc_proximity_voicechat_global", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- if set to 1, everybody, including your team mates and your enemies, will only hear each other within the distance specified by gc_proximity_voicechat_distance
 CreateConVar("gc_proximity_voicechat_directional", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- if set to 1, voice chat will be directional 3d sound (as described in the gmod wiki)
 CreateConVar("gc_invincibility_time_period", 3, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- how long should the player be invincible for after spawning (for anti spawn killing in gametypes like urban warfare)
-CreateConVar("gc_team_damage", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- how long should the player be invincible for after spawning (for anti spawn killing in gametypes like urban warfare)
+CreateConVar("gc_team_damage", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- friendly fire enable
 
 GM:RegisterAutoUpdateConVar("gc_proximity_voicechat", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
@@ -376,8 +376,13 @@ function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
     end
 
     -- disable all team damage if the server is configured that way
-    if attackerIsValid and !differentTeam and ((self.noTeamDamage and attacker != ply) or self.RoundOver) then
-        dmgInfo:ScaleDamage(0)
+    if attackerIsValid and !differentTeam and attacker != ply then
+        if self.noTeamDamage or self.RoundOver then
+            dmgInfo:ScaleDamage(0)
+        else
+            dmgInfo:ScaleDamage(GetConVar("gc_team_damage_scale"):GetFloat())
+        end
+
         return
     end
 
