@@ -156,7 +156,7 @@ function GM:EndRound(winningTeam)
 
 
     if lastRound then -- start a vote for the next map if possible
-        if !canPickRandomMapAndGametype then
+        if !canPickRandomMapAndGametype and !self.nextVotedMap then
             self:startVoteMap()
         end
     else

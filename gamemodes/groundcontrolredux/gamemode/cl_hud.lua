@@ -169,7 +169,7 @@ function GM:HUDPaint()
 
     self.tipController:Draw(scrW, scrH)
 
-    if !self:drawVotePanel() then
+    if !self:drawVotePanel() or self:DidPlyVote(ply) then
         self:DrawRadioDisplay(frameTime)
     end
 
