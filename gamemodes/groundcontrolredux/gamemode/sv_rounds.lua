@@ -140,7 +140,11 @@ function GM:EndRound(winningTeam)
 
     if canRestart then
         timer.Simple(self.RoundRestartTime, function()
-            self:RestartRound()
+            if self.nextVotedMap then
+                game.ConsoleCommand("changelevel " .. self.nextVotedMap .. "\n")
+            else
+                self:restartRound()
+            end
         end)
     else
         if canPickRandomMapAndGametype then
@@ -177,8 +181,12 @@ function GM:startVoteMap()
 
         self:setupCurrentVote("Vote for the next map", mapList, player.GetAll(), self.MaxMapsPerPick, true, nil, function()
             local highestOption, _ = self:getHighestVote()
+            self.nextVotedMap = highestOption.option
+            local mapText = "Will switch to '" .. self.nextVotedMap .. "' at the end of this round."
 
-            game.ConsoleCommand("changelevel " .. highestOption.option .. "\n")
+            for key, ply in ipairs(player.GetAll()) do
+                ply:ChatPrint(mapText)
+            end
         end, self.VoteMapVoteID)
 
         hook.Call("GroundControlMapVoteStarted", nil, mapList, self.VoteID)

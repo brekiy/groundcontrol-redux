@@ -79,6 +79,7 @@ end
 
 function GM:PlayerAuthed(ply, steamID, uniqueID)
     self:verifyPunishment(ply)
+    self:updateCurrentPlayerList()
 end
 
 local ZeroVector = Vector(0, 0, 0)
@@ -478,7 +479,6 @@ function GM:PlayerDeathThink(ply)
 end
 
 function GM:PlayerDisconnected(ply)
-    --self:CheckRoundOverPossibility()
     if self.curGametype.PlayerDisconnected then
         self.curGametype:PlayerDisconnected(ply)
     end
@@ -490,6 +490,8 @@ function GM:PlayerDisconnected(ply)
             plyObj:attemptSpectate()
         end
     end
+
+    self:updateCurrentPlayerList(ply)
 end
 
 function PLAYER:crippleArm()
@@ -707,3 +709,11 @@ end)
 hook.Add("CW20_PreventCWWeaponPickup", "GC_CW20_PreventCWWeaponPickup", function(wepObj, ply)
     return !ply.canPickupWeapon or (ply.sustainedArmDamage >= GAMEMODE.DropPrimarySustainedDamage and weapons.GetStored(wepObj:GetWepClass()).isPrimaryWeapon)
 end)
+
+function GM:updateCurrentPlayerList(exclude)
+    self.currentPlayerList = player.GetAll()
+
+    if exclude then
+        table.Exclude(self.currentPlayerList, exclude)
+    end
+end
