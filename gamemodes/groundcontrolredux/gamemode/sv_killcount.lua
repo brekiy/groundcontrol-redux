@@ -82,10 +82,11 @@ function GM:RemovePlayerFromReportedDeadList(playerObject, key)
 end
 
 function GM:AddReportedDeadEnemy(playerObject)
-    local plyTeam = playerObject:Team()
-
-    table.insert(self.ReportedDeadEnemies[plyTeam], playerObject)
-    self.AlivePlayers[plyTeam] = self.AlivePlayers[plyTeam] - 1
+    if IsValid(playerObject) then
+        local targetTeam = playerObject:Team()
+        table.insert(self.ReportedDeadEnemies[targetTeam], playerObject)
+        self.AlivePlayers[targetTeam] = self.AlivePlayers[targetTeam] - 1
+    end
 end
 
 local PLAYER = FindMetaTable("Player")
