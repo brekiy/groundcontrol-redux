@@ -98,6 +98,14 @@ function GM:RegisterWepsCW2Base()
     }
     GAMEMODE:RegisterPrimaryWeapon(mp9)
 
+    local mp7 = {
+        weaponClass = "cw_mp7_official",
+        weight = 1.9,
+        pointCost = 19,
+    }
+
+    self:registerPrimaryWeapon(mp7)
+
     -- heavy weapons
     local m249 = {
         weaponClass = "cw_m249_official",

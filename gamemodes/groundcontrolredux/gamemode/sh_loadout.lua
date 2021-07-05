@@ -9,10 +9,10 @@ GM.DefaultPrimaryMagCount = 3
 GM.DefaultSecondaryMagCount = 3
 
 GM.DefaultSpareAmmoCount = 0
--- GM.MAX_SPARE_AMMOCount = 400
 
 GM.MaxPrimaryMags = 5
 GM.MaxSecondaryMags = 5
+GM.RemoveAttachments = {"am_ultramegamatchammo", "md_m203", "md_cmag_556_official"}
 
 IncludeDir("weaponsets", "THIRDPARTY")
 IncludeDir("weaponsets", "WORKSHOP")
@@ -253,9 +253,25 @@ function GM:postInitEntity()
     wepObj.dropsDisabled = true
     wepObj.isKnife = true
     wepObj.pointCost = 0
-    -- MP9, remove the meme ammo type
-    local mp9Wep = weapons.GetStored("cw_mp9_official")
-    table.Exclude(mp9Wep.Attachments["+reload"].atts, "am_ultramegamatchammo")
+
+    if self.RemoveAttachments then
+        -- remove M203 from all weapons
+        local wepList = weapons.GetList()
+
+        for i = 1, #wepList do
+            local className = wepList[i].ClassName
+            local data = weapons.GetStored(className)
+
+            if weapons.Get(className).CW20Weapon and data.Attachments then
+                for k, v in pairs(data.Attachments) do
+                    for idx = 1, #self.RemoveAttachments do
+                        table.Exclude(v.atts, self.RemoveAttachments[idx])
+                    end
+                end
+            end
+        end
+    end
+
 
     -- Load all allowed weapon packs and registered ammo
     -- there's probably a better way to do this...
