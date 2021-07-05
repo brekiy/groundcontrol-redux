@@ -6,6 +6,10 @@
 
 GM.AutoUpdateConVars = {}
 GM.CurrentPlayerList = {}
+GM.defaultDoorMoveSpeed = 200 -- the default door move speed to set
+
+CreateConVar("gc_door_move_speed", GM.defaultDoorMoveSpeed, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- time in seconds that a player can remain without any input before we kick him out
+
 
 function GM:RegisterAutoUpdateConVar(cvarName, onChangedCallback)
     self.AutoUpdateConVars[cvarName] = onChangedCallback
@@ -21,6 +25,25 @@ function GM:performOnChangedCvarCallbacks()
         callback(cvarName, finalValue, finalValue)
     end
 end
+
+GM:registerAutoUpdateConVar("gc_door_move_speed", function(cvarName, oldValue, newValue)
+    GAMEMODE:AdjustDoorSpeeds()
+end)
+
+GM.doorClasses = {"func_door_rotating", "prop_door_rotating"}
+
+function GM:AdjustDoorSpeeds()
+    local newSpeed = GetConVar("gc_door_move_speed"):GetString()
+
+    for i = 1, #self.doorClasses do
+        local class = self.doorClasses[i]
+
+        for key, obj in ipairs(ents.FindByClass(class)) do
+            obj:SetKeyValue("Speed", newSpeed)
+        end
+    end
+end
+
 
 include("sh_mixins.lua")
 

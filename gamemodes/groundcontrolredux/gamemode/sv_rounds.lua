@@ -257,6 +257,7 @@ function GM:RestartRound()
     self:dealWithTrashProps()
     self:AutoRemoveEntities()
     self:RunMapStartCallback()
+    self:AdjustDoorSpeeds()
 
     if self.curGametype.RoundStart then
         self.curGametype:RoundStart()

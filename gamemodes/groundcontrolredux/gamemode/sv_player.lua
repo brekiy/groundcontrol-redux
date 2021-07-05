@@ -500,21 +500,39 @@ function GM:PlayerDisconnected(ply)
 end
 
 function PLAYER:crippleArm()
-    local wep = self:GetActiveWeapon()
+    if self.crippledArm then
+        return
+    end
 
-    if IsValid(wep) and wep.CW20Weapon and wep.isPrimaryWeapon and !wep.dropsDisabled then
-        self:dropWeaponNicely(wep, VectorRand() * 20, VectorRand() * 200)
-        self:SendTip("DROPPED_WEAPON")
+    local wepDropped = false
 
-        -- only send the status effect if we weren't crippled before
-        if !self.crippledArm then
-            self:SetStatusEffect("crippled_arm", true)
+    -- iterate through all the weapons and make the person drop his primary wep when he gets creyoppled
+    for key, wep in ipairs(self:GetWeapons()) do
+        if IsValid(wep) and wep.CW20Weapon and wep.isPrimaryWeapon and !wep.dropsDisabled then
+            self:dropWeaponNicely(wep, VectorRand() * 20, VectorRand() * 200)
+            wepDropped = true
         end
     end
 
+    if wepDropped then
+        self:sendTip("DROPPED_WEAPON")
+    end
+
+    self:setStatusEffect("crippled_arm", true)
     self.crippledArm = true
     self:SetWeight(self:CalculateWeight())
 end
+
+function PLAYER:uncrippleArm()
+    if self.crippledArm then
+        self.crippledArm = false
+        self:setStatusEffect("crippled_arm", false)
+        return true
+    end
+
+    return false
+end
+
 
 function PLAYER:dropWeaponNicely(wepObj, velocity, angleVelocity) -- velocity and angleVelocity is optional
     wepObj = wepObj or self:GetActiveWeapon()

@@ -59,6 +59,13 @@ function GM:RegisterWepsCW2Base()
     }
     GAMEMODE:RegisterPrimaryWeapon(vss)
 
+    local famas = {
+        weaponClass = "cw_famasg2_official",
+        weight = 3.8,
+        pointCost = 27
+    }
+    GAMEMODE:RegisterPrimaryWeapon(famas)
+
     -- sub-machine guns/light carbines
     local mp5 = {
         weaponClass = "cw_mp5",
@@ -136,6 +143,16 @@ function GM:RegisterWepsCW2Base()
         pointCost = 38
     }
     GAMEMODE:RegisterPrimaryWeapon(l115)
+
+    local svd = {
+        weaponClass = "cw_svd_official",
+        weight = 4,
+        pointCost = 36,
+        penMod = 1.25
+    }
+
+    self:registerPrimaryWeapon(svd)
+
 
     -- handguns
     local deagle = {
