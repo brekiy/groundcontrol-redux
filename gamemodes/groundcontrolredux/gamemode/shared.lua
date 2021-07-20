@@ -414,7 +414,7 @@ function GM:Move(ply, moveData)
         end
     end
 
-    ws, rs = ply:GetWalkSpeed(), ply:GetRunSpeed()
+    -- local ws, rs = ply:GetWalkSpeed(), ply:GetRunSpeed()
     -- for some reason the value returned by GetMaxSpeed is equivalent to player's run speed - 30
     local adrenalineModifier = 1 + ply:GetRunSpeedAdrenalineModifier()
     -- not sure what this dtfloat is but we'll copy it to walkspeed to be safe
@@ -422,6 +422,7 @@ function GM:Move(ply, moveData)
     local walkSpeed = (GetConVar("gc_base_walk_speed"):GetInt() - ply:GetWeightRunSpeedModifier() * 0.1) * adrenalineModifier * ply:GetDTFloat(0)
     ply:SetWalkSpeed(walkSpeed)
     ply:SetRunSpeed(runSpeed)
+    --ply:attemptClimb(moveData)
 
     if ply:KeyDown(IN_SPEED) and !ply:Crouching() then
         local finalMult = 1

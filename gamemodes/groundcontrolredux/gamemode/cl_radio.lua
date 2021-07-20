@@ -76,7 +76,7 @@ end
 
 function GM:AddRadioTextToChat(text, sender, sound, voiceVariantData, commandData)
     if voiceVariantData.requiresSubtitles then
-        text = text .. " (" .. commandData.menuText .. ")"
+        text =  "(" .. commandData.menuText .. ") " .. text
     end
 
     chat.AddText(self.HUD_COLORS.blue, "(RADIO) ", sender, self.HUD_COLORS.white, ": ", text)
@@ -172,7 +172,10 @@ local function entity_killed(data)
     local victim = Entity(data.entindex_killed)
 
     if IsValid(victim) and victim:IsPlayer() then
-        victim:StopRadioSound()
+        if victim:Team() == LocalPlayer():Team() then
+            victim:stopRadioSound()
+        end
+
         GAMEMODE:onPlayerDied(victim, data)
     end
 end

@@ -76,6 +76,14 @@ function GM:InitPostEntity()
     self.tipController:LoadShownTips()
 end
 
+-- function GM:Tick()
+-- 	self.localPlayer = LocalPlayer()
+
+-- 	if self.localPlayer and IsValid(self.localPlayer) then
+-- 		self.localPlayerTeam = self.localPlayer:Team()
+-- 	end
+-- end
+
 local PLAYER = FindMetaTable("Player")
 
 function PLAYER:spawn()
@@ -244,8 +252,6 @@ function GM:PlayerBindPress(ply, bind, pressed)
             elseif bind == "undo" then
                 RunConsoleCommand("use", self.KnifeWeaponClass)
             end
-            -- if bind:find("slot") then print(self:isVoteActive(), self:DidPlyVote(ply)) end
-            -- if !self:isVoteActive() or (self:isVoteActive() and self:DidPlyVote(ply)) then
             if !self:isVoteActive() or (self:isVoteActive() and self:DidPlyVote(ply)) then
                 if self.RadioSelection.active then
                     return self:handlePlayerRadioPress(ply, bind, pressed)

@@ -84,15 +84,22 @@ function PLAYER:bandage(bandagedBy)
     if IsValid(wep) then
         wep:setGlobalDelay(GAMEMODE.BandageTime + 0.3, true, CW_ACTION, GAMEMODE.BandageTime)
     end
-
+    local wasBleeding = self.bleeding
     self:SetBleeding(false)
 
     if bandagedBy != self then
+        if bandagedBy.canUncrippleLimbs and self:uncrippleArm() then
+            bandagedBy:addCurrency(GAMEMODE.CashPerUncripple, GAMEMODE.ExpPerUncripple, "TEAMMATE_UNCRIPPLED")
+        end
+
         bandagedBy:AddCurrency("TEAMMATE_BANDAGED")
         GAMEMODE:TrackRoundMVP(bandagedBy, "bandaging", 1)
+        if wasBleeding then
+            self:restoreHealth(bandagedBy.healAmountAlly)
+        end
+    else
+        self:restoreHealth(bandagedBy.healAmount)
     end
-
-    self:restoreHealth(bandagedBy.healAmount)
 end
 
 function PLAYER:sendBandages()

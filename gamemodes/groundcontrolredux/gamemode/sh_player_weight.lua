@@ -30,7 +30,7 @@ function GM:CalculateImaginaryWeight(ply, withoutWeight, withWeight)
     secondaryMags = ply:AdjustMagCount(secondaryData, secondaryMags)
 
     if primaryData then
-        totalWeight = totalWeight + primaryData.weight -- take weapon weight into account
+        totalWeight = totalWeight + (primaryData.weight or 0) -- take weapon weight into account
         totalWeight = totalWeight + self:GetAmmoWeight(primaryData.weaponObject.Primary.Ammo, primaryData.weaponObject.Primary.ClipSize * (primaryMags + 1)) -- take ammo in weapon weight into account
     end
 

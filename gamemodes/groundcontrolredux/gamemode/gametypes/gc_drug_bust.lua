@@ -32,6 +32,9 @@ function GM:RegisterDrugBust()
     ghettoDrugBust.invertedSpawnpoints = {
         de_chateau = true
     }
+    ghettoDrugBust.timeLimitMap = {
+        cs_backalley2 = 255
+    }
     ghettoDrugBust.redTeamWeapons = {
         {weapon = "cw_ak74", chance = 3, mags = 1},
         {weapon = "cw_shorty", chance = 8, mags = 12},
@@ -247,7 +250,11 @@ function GM:RegisterDrugBust()
         if SERVER then
             local players = player.GetAll()
             local gearGuys = math.max(math.floor(#players / self.blueGuyPer), 1) -- aka the dudes who get the cool gear
-            GAMEMODE:SetTimeLimit(self.timeLimit)
+            if self.timeLimitMap[self.CurMap] then
+                GAMEMODE:setTimeLimit(self.timeLimitMap[self.CurMap])
+            else
+                GAMEMODE:setTimeLimit(self.timeLimit)
+            end
             self.stopCountdown = false
 
             for i = 1, gearGuys do
@@ -406,4 +413,11 @@ function GM:RegisterDrugBust()
             Vector(832.32, 3529.435, 136.397), "gc_drug_point")
     GM:AddObjectivePositionToGametype("ghettodrugbust", "nt_shrine",
             Vector(-2469.47, 5674.688, 128.031), "gc_drug_capture_point")
+
+    GM:addObjectivePositionToGametype("ghettodrugbust", "cs_backalley2",
+            Vector(2059.864014, -1114.874878, -79.413551), "gc_drug_point")
+    GM:addObjectivePositionToGametype("ghettodrugbust", "cs_backalley2",
+            Vector(2806.182373, -846.709045, 369.094177), "gc_drug_point")
+    GM:addObjectivePositionToGametype("ghettodrugbust", "cs_backalley2",
+            Vector(1729.624390, 905.680908, 0.031250), "gc_drug_capture_point")
 end

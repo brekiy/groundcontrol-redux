@@ -40,7 +40,7 @@ function GM:Think()
             if curTime > staminaData.soundTime then
                 local lastStamina = self.lastStamina
                 self.lastStamina = ply.stamina
-                -- if we're gaining stamina or it remains the same, 
+                -- if we're gaining stamina or it remains the same,
                 -- then we will begin decreasing the sound of the breathing so that it's not super annoying when you are low on health
                 if ply.stamina < lastStamina then
                     self.breatheSoundChangeUp = math.Approach(self.breatheSoundChangeUp, self.breatheSoundChangeMax, self.breatheSoundChange)

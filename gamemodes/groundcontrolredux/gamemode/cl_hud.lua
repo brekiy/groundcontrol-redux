@@ -7,18 +7,14 @@ local noDraw = {
     CHudDamageIndicator = true
 }
 
--- TODO: custom hud
-
--- use a separate hook, since otherwise GM:HUDPaint wouldn't work
-local function CW_HUDShouldDraw(n)
+-- TODO: custom hud?
+function GM:HUDShouldDraw(n)
     if noDraw[n] then
         return false
     end
 
     return true
 end
-
-hook.Add("HUDShouldDraw", "CW_HUDShouldDraw", CW_HUDShouldDraw)
 
 GM.Markers = {}
 
@@ -102,7 +98,7 @@ function GM:HUDPaint()
     local midX, midY = scrW * 0.5, scrH * 0.5
 
     if alive then
-        healthText = "HEALTH: " .. ply:Health() .. "%"
+        healthText = "HEALTH: " .. math.max(0, ply:Health()) .. "%"
 
         surface.SetFont(self.HealthDisplayFont)
         local xSize, ySize = surface.GetTextSize(healthText)
@@ -173,7 +169,7 @@ function GM:HUDPaint()
 
     self.tipController:Draw(scrW, scrH)
 
-    if !self:drawVotePanel() then
+    if !self:drawVotePanel() or self:DidPlyVote(ply) then
         self:DrawRadioDisplay(frameTime)
     end
 
@@ -266,8 +262,10 @@ function GM:HUDPaint()
     self.canTraceForBandaging = false
 
     for key, obj in ipairs(team.GetPlayers(ply:Team())) do
+    -- for key, obj in ipairs(self.teamPlayers) do
         -- only draw the player if we can see him, GMod has no clientside ways of checking whether the player is in PVS, check cl_render.lua for the second part of this
         if obj.withinPVS and obj != ply and obj:Alive() then
+        -- if obj != ply and obj:Alive() then
             local pos = obj:GetBonePosition(obj:LookupBone("ValveBiped.Bip01_Head1"))
 
             if pos:Distance(ourShootPos) <= teamMateMarkerDisplayDistance then
@@ -290,6 +288,10 @@ function GM:HUDPaint()
         end
 
         obj.withinPVS = false
+        -- clear the table each frame, since we don't know when more team mates will become present
+        -- this is a quick and dirty alternative to not calling team.GetPlayers every single frame
+        -- in order to reduce garbage collector pressure
+        -- self.teamPlayers[key] = nil
     end
 
     if alive then

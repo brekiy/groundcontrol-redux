@@ -7,7 +7,7 @@ function GM:Think()
     local frameTime = FrameTime()
     local traits = self.Traits
 
-    for key, ply in pairs(player.GetAll()) do
+    for key, ply in pairs(self.CurrentPlayerList) do
         if ply:Alive() and ply:Team() != TEAM_SPECTATOR and ply:Team() != TEAM_UNASSIGNED then
             if ply:OnGround() then
                 -- ply.curMaxStamina = ply:GetMaxStamina()

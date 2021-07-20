@@ -37,7 +37,7 @@ function PLAYER:getBandageTarget()
 end
 
 function PLAYER:CanBandage(target)
-    if !IsValid(target) or !self:Alive() then
+    if !IsValid(target) or !self:Alive() or target:Team() ~= self:Team() or self.bandages <= 0 then
         return false
     end
 
@@ -47,15 +47,17 @@ function PLAYER:CanBandage(target)
         return false
     end
 
-    if SERVER and !target.bleeding then
-        return false
+    if SERVER then
+        if !target.bleeding and !target.crippledArm then
+            return false
+        end
+    elseif CLIENT then
+        if !target:HasStatusEffect("bleeding") and !target:hasStatusEffect("crippled_arm") then
+            return false
+        end
     end
 
-    if CLIENT and !target:HasStatusEffect("bleeding") then
-        return false
-    end
-
-    return self.bandages > 0 and target:Team() == self:Team()
+    return true
 end
 
 function PLAYER:SetBleeding(bleeding)
@@ -86,6 +88,7 @@ function PLAYER:ResetBleedData()
     self.bleedInflictor = nil
     self.bleedHealthDrainTime = 0
     self.healAmount = 0
+    self.healAmountAlly = 0
 end
 
 function PLAYER:GetDesiredBandageCount()
