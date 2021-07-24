@@ -26,7 +26,7 @@ function GM:performOnChangedCvarCallbacks()
     end
 end
 
-GM:registerAutoUpdateConVar("gc_door_move_speed", function(cvarName, oldValue, newValue)
+GM:RegisterAutoUpdateConVar("gc_door_move_speed", function(cvarName, oldValue, newValue)
     GAMEMODE:AdjustDoorSpeeds()
 end)
 

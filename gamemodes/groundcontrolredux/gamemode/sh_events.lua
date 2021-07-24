@@ -50,7 +50,7 @@ GM:RegisterEvent("BLEED_OUT_KILL", "Enemy bled out", nil, 50, 20)
 GM:RegisterEvent("SECURED_INTEL", "Secured intel", nil, 100, 100)
 GM:RegisterEvent("KILLED_VIP", "Killed VIP", nil, 10, 5)
 GM:RegisterEvent("EXTRACT_VIP", "Extracted VIP", nil, 50, 50)
-GM:registerEvent("TEAMMATE_UNCRIPPLED", "Teammate uncrippled", nil, 20, 25)
+GM:RegisterEvent("TEAMMATE_UNCRIPPLED", "Teammate uncrippled", nil, 20, 25)
 
 GM.EventData = {}
 

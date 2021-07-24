@@ -35,7 +35,7 @@ GM:RegisterStatusEffect({
 
 -- add a status effect indicating that we're a medic
 -- this is so that other people see who the medics are, to promote being healed by a medic over just bandaging yourself
-GM:registerStatusEffect({
+GM:RegisterStatusEffect({
     id = "medic",
     icon = "ground_control/hud/status/healing",
     text = "MEDIC"

@@ -82,6 +82,11 @@ function GM:PlayerAuthed(ply, steamID, uniqueID)
     self:updateCurrentPlayerList()
 end
 
+function GM:PlayerConnect(name, ip)
+    -- cover bots joining
+    self:updateCurrentPlayerList()
+end
+
 local ZeroVector = Vector(0, 0, 0)
 
 function GM:PlayerSpawn(ply)
@@ -518,7 +523,7 @@ function PLAYER:crippleArm()
         self:sendTip("DROPPED_WEAPON")
     end
 
-    self:setStatusEffect("crippled_arm", true)
+    self:SetStatusEffect("crippled_arm", true)
     self.crippledArm = true
     self:SetWeight(self:CalculateWeight())
 end
@@ -526,7 +531,7 @@ end
 function PLAYER:uncrippleArm()
     if self.crippledArm then
         self.crippledArm = false
-        self:setStatusEffect("crippled_arm", false)
+        self:SetStatusEffect("crippled_arm", false)
         return true
     end
 
@@ -739,4 +744,6 @@ function GM:updateCurrentPlayerList(exclude)
     if exclude then
         table.Exclude(self.CurrentPlayerList, exclude)
     end
+    print("updated player list:")
+    PrintTable(self.CurrentPlayerList)
 end

@@ -173,7 +173,7 @@ local function entity_killed(data)
 
     if IsValid(victim) and victim:IsPlayer() then
         if victim:Team() == LocalPlayer():Team() then
-            victim:stopRadioSound()
+            victim:StopRadioSound()
         end
 
         GAMEMODE:onPlayerDied(victim, data)

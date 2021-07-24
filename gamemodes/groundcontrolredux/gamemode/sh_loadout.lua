@@ -279,6 +279,9 @@ function GM:postInitEntity()
         if GetConVar("gc_use_cw2_spy"):GetBool() then
             self:RegisterWepsCW2Base()
         end
+        if GetConVar("gc_use_cw2_spy_nades"):GetBool() then
+            self:RegisterWepsCW2BaseThrowables()
+        end
         if GetConVar("gc_use_cw2_khris"):GetBool() then
             self:RegisterWepsCW2Khris()
         end
@@ -303,8 +306,8 @@ function GM:postInitEntity()
         if GetConVar("gc_use_cw2_fas2"):GetBool() then
             self:RegisterWepsCW2FAS2()
         end
+        self:RegisterAttsCW2KK()
     end
-    self:RegisterAttsCW2KK()
     self:RegisterCalibers()
     hook.Call("GroundControlPostInitEntity", nil)
 

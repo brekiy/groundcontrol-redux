@@ -40,6 +40,7 @@ CreateConVar("gc_damage_multiplier", 1.55, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "damag
 CreateConVar("gc_team_damage_scale", 0.5, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "team damage multiplier")
 CreateConVar("gc_use_cw2_weps", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED})
 CreateConVar("gc_use_cw2_spy", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable spy's cw2 weps")
+CreateConVar("gc_use_cw2_spy_nades", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable spy's cw2 weps")
 CreateConVar("gc_use_cw2_kk_ins2", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's ins2 weps")
 CreateConVar("gc_use_cw2_kk_ext", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's extra weps")
 CreateConVar("gc_use_cw2_kk_btk", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's btk weps")

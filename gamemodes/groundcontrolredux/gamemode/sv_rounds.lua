@@ -143,7 +143,7 @@ function GM:EndRound(winningTeam)
             if self.nextVotedMap then
                 game.ConsoleCommand("changelevel " .. self.nextVotedMap .. "\n")
             else
-                self:restartRound()
+                self:RestartRound()
             end
         end)
     else
