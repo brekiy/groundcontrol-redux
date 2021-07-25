@@ -520,7 +520,7 @@ function PLAYER:crippleArm()
     end
 
     if wepDropped then
-        self:sendTip("DROPPED_WEAPON")
+        self:SendTip("DROPPED_WEAPON")
     end
 
     self:SetStatusEffect("crippled_arm", true)

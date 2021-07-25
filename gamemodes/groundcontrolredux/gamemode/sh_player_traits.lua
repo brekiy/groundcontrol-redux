@@ -170,7 +170,6 @@ function medic:onSpawn(player, currentLevel)
     player.healAmount = self.healthRestorePerLevel * currentLevel
     player.healAmountAlly = self.healthRestorePerLevelMates * currentLevel
     player.canUncrippleLimbs = true
-    print("yeah buddy we medic")
     player:SetStatusEffect("medic", true)
 end
 
@@ -191,8 +190,8 @@ willToLive.startLevel = 1
 willToLive.maxLevel = 5
 willToLive.basePrice = 1500
 willToLive.pricePerLevel = 1500
-willToLive.healthRestorePerLevel = 2
-willToLive.healthRestoreDelay = 6 -- time in seconds between each HP regen tick
+willToLive.healthRestorePerLevel = 1
+willToLive.healthRestoreDelay = 3 -- time in seconds between each HP regen tick
 willToLive.healthRestoreDelayOnDamage = 10 -- delay to apply after taking damage
 willToLive.description = {
     {t = "Your will to live is unmatched - you overcome pain and shock that would have had killed others.", c = GM.HUD_COLORS.white},
