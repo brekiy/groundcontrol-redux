@@ -244,35 +244,7 @@ function GM:GetAmmoPen(caliber, penMod)
     return math.Round(pen * penMod)
 end
 
--- this function gets called in InitPostEntity for both the client and server, this is where we register a bunch of stuff
-function GM:postInitEntity()
-
-    -- KNIFE, give it 0 weight and make it undroppable (can't shoot out of hand, can't drop when dying)
-    local wepObj = weapons.GetStored(self.KnifeWeaponClass)
-    wepObj.weight = 0
-    wepObj.dropsDisabled = true
-    wepObj.isKnife = true
-    wepObj.pointCost = 0
-
-    if self.RemoveAttachments then
-        -- remove M203 from all weapons
-        local wepList = weapons.GetList()
-
-        for i = 1, #wepList do
-            local className = wepList[i].ClassName
-            local data = weapons.GetStored(className)
-
-            if weapons.Get(className).CW20Weapon and data.Attachments then
-                for k, v in pairs(data.Attachments) do
-                    for idx = 1, #self.RemoveAttachments do
-                        table.Exclude(v.atts, self.RemoveAttachments[idx])
-                    end
-                end
-            end
-        end
-    end
-
-
+function GM:LoadWeaponSets()
     -- Load all allowed weapon packs and registered ammo
     -- there's probably a better way to do this...
     if GetConVar("gc_use_cw2_weps"):GetBool() then
@@ -308,6 +280,39 @@ function GM:postInitEntity()
         end
         self:RegisterAttsCW2KK()
     end
+    if GetConVar("gc_use_arccw_weps"):GetBool() then
+        print("hehe")
+    end
+end
+
+-- this function gets called in InitPostEntity for both the client and server, this is where we register a bunch of stuff
+function GM:postInitEntity()
+
+    -- KNIFE, give it 0 weight and make it undroppable (can't shoot out of hand, can't drop when dying)
+    local wepObj = weapons.GetStored(self.KnifeWeaponClass)
+    wepObj.weight = 0
+    wepObj.dropsDisabled = true
+    wepObj.isKnife = true
+    wepObj.pointCost = 0
+
+    if self.RemoveAttachments then
+        -- remove M203 from all weapons
+        local wepList = weapons.GetList()
+
+        for i = 1, #wepList do
+            local className = wepList[i].ClassName
+            local data = weapons.GetStored(className)
+
+            if weapons.Get(className).CW20Weapon and data.Attachments then
+                for k, v in pairs(data.Attachments) do
+                    for idx = 1, #self.RemoveAttachments do
+                        table.Exclude(v.atts, self.RemoveAttachments[idx])
+                    end
+                end
+            end
+        end
+    end
+    self:LoadWeaponSets()
     self:RegisterCalibers()
     hook.Call("GroundControlPostInitEntity", nil)
 

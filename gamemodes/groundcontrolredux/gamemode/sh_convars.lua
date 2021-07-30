@@ -50,6 +50,7 @@ CreateConVar("gc_use_cw2_soap", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATE
 CreateConVar("gc_use_cw2_misc", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable misc extra cw weps")
 CreateConVar("gc_use_cw2_fas2", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable fas2 cw weps")
 CreateConVar("gc_use_arccw_weps", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "wip non functional")
+CreateConVar("gc_use_arccw_fas2", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "wip non functional")
 CreateConVar("gc_use_tfa_weps", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "wip non functional")
 
 -- Gametype cvars

@@ -744,6 +744,6 @@ function GM:updateCurrentPlayerList(exclude)
     if exclude then
         table.Exclude(self.CurrentPlayerList, exclude)
     end
-    print("updated player list:")
+    print("[GROUND CONTROL REDUX] Updated player list:")
     PrintTable(self.CurrentPlayerList)
 end
