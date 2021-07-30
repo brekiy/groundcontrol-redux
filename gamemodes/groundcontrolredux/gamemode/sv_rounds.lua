@@ -248,6 +248,7 @@ function GM:startGameTypeVote()
 end
 
 function GM:RestartRound()
+    self:updateCurrentPlayerList() -- might not be needed for players, but is for bots
     if !self.curGametype.noTeamBalance then
         self:BalanceTeams()
     end
