@@ -41,6 +41,7 @@ local attachmentPrices = {
     am_slugrounds2k = 1500,
     am_slugroundsneo = 1500,
     am_sp7 = 1000, -- !free, optional part of PM
+    am_ultramegamatchammo = math.huge, -- !free, optional part of PM
     bg_3006extmag = 1500,
     bg_38 = 1250,
     bg_4inchsw29 = 1250,

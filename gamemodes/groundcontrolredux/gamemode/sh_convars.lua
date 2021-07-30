@@ -36,9 +36,11 @@ CreateConVar("gc_base_loadout_points", 40, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_R
 CreateConVar("gc_loadout_points_per_score", 0.005, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "loadout points awarded per score", 0)
 CreateConVar("gc_max_loadout_points", 100, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "max loadout points", 50)
 CreateConVar("gc_armor_damage_factor", 1.25, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "adjust rate at which armor takes damage")
-CreateConVar("gc_damage_multiplier", 1.55, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "bullet damage multiplier")
+CreateConVar("gc_damage_multiplier", 1.55, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "damage multiplier")
+CreateConVar("gc_team_damage_scale", 0.5, {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "team damage multiplier")
 CreateConVar("gc_use_cw2_weps", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED})
 CreateConVar("gc_use_cw2_spy", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable spy's cw2 weps")
+CreateConVar("gc_use_cw2_spy_nades", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable spy's cw2 weps")
 CreateConVar("gc_use_cw2_kk_ins2", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's ins2 weps")
 CreateConVar("gc_use_cw2_kk_ext", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's extra weps")
 CreateConVar("gc_use_cw2_kk_btk", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable knife kitty's btk weps")
@@ -48,6 +50,7 @@ CreateConVar("gc_use_cw2_soap", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATE
 CreateConVar("gc_use_cw2_misc", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable misc extra cw weps")
 CreateConVar("gc_use_cw2_fas2", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "enable fas2 cw weps")
 CreateConVar("gc_use_arccw_weps", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "wip non functional")
+CreateConVar("gc_use_arccw_fas2", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "wip non functional")
 CreateConVar("gc_use_tfa_weps", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED}, "wip non functional")
 
 -- Gametype cvars

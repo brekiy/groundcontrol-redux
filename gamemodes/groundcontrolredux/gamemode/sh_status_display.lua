@@ -33,6 +33,15 @@ GM:RegisterStatusEffect({
     dontSend = true
 })
 
+-- add a status effect indicating that we're a medic
+-- this is so that other people see who the medics are, to promote being healed by a medic over just bandaging yourself
+GM:RegisterStatusEffect({
+    id = "medic",
+    icon = "ground_control/hud/status/healing",
+    text = "MEDIC"
+})
+
+
 local PLAYER = FindMetaTable("Player")
 
 -- set status effects for display on other players (!yourself), to see what's going on with your friends

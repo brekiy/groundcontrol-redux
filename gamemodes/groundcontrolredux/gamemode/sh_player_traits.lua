@@ -150,23 +150,33 @@ medic.maxLevel = 5
 medic.basePrice = 1000
 medic.pricePerLevel = 500
 medic.healthRestorePerLevel = 1
+medic.healthRestorePerLevelMates = 2
 medic.description = {
     {t = "You've undergone extensive medical training to treat wounds efficiently.", c = GM.HUD_COLORS.white},
     {t = "You can restore health when bandaging yourself or team mates.", c = GM.HUD_COLORS.white},
     {t = "Each level increases health restored by %s point.", c = GM.HUD_COLORS.green, formatFunc = function(textToFormat) return string.format(textToFormat, medic.healthRestorePerLevel) end},
+    {t = "Can uncripple team mates.", c = GM.HUD_COLORS.green},
     {
-        t = "Current health restore amount: +CURRENT%",
+        t = "Current health restore amount: +CURRENT% (+MATES% when healing team mates)",
         c = GM.HUD_COLORS.green,
-        formatFunc = function(textToFormat) return string.easyformatbykeys(textToFormat, "CURRENT", math.Round(medic.healthRestorePerLevel * (LocalPlayer().traits[medic.id] or 0))) end
+        formatFunc = function(textToFormat)
+            local level = LocalPlayer().traits[medic.id] or 0
+
+            return string.easyformatbykeys(textToFormat, "CURRENT", math.Round(medic.healthRestorePerLevel * level), "MATES", math.Round(medic.healthRestorePerLevelMates * level)) end
     }
 }
 
 function medic:onSpawn(player, currentLevel)
     player.healAmount = self.healthRestorePerLevel * currentLevel
+    player.healAmountAlly = self.healthRestorePerLevelMates * currentLevel
+    player.canUncrippleLimbs = true
+    player:SetStatusEffect("medic", true)
 end
 
 function medic:remove(player, currentLevel)
     player.healAmount = 0
+    player.healAmountAlly = 0
+    player.canUncrippleLimbs = false
 end
 
 GM:RegisterTrait(medic)
@@ -180,8 +190,8 @@ willToLive.startLevel = 1
 willToLive.maxLevel = 5
 willToLive.basePrice = 1500
 willToLive.pricePerLevel = 1500
-willToLive.healthRestorePerLevel = 2
-willToLive.healthRestoreDelay = 6 -- time in seconds between each HP regen tick
+willToLive.healthRestorePerLevel = 1
+willToLive.healthRestoreDelay = 3 -- time in seconds between each HP regen tick
 willToLive.healthRestoreDelayOnDamage = 10 -- delay to apply after taking damage
 willToLive.description = {
     {t = "Your will to live is unmatched - you overcome pain and shock that would have had killed others.", c = GM.HUD_COLORS.white},

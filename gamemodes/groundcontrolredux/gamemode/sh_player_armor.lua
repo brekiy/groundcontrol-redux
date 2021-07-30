@@ -97,6 +97,23 @@ local vestPaca = {
 }
 GM:RegisterArmor(vestPaca)
 
+local vestPacaII = {
+    category = "vest",
+    id = "vest_paca",
+    displayName = "PACA II Low-Vis Carrier",
+    weight = 5,
+    protection = 15,
+    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
+    damageDecrease = 0.69, -- hehe
+    protectionDelta = 0.0085,
+    damageDecreasePenetrated = 0.1,
+    durability = 30,
+    pointCost = 10,
+    icon = "ground_control/hud/armor/aa_vest_dyneema",
+    description = "Minimalist carrier with level IIIA soft panels."
+}
+GM:RegisterArmor(vestPacaII)
+
 local vestIba = {
     category = "vest",
     id = "vest_iba",
@@ -105,8 +122,8 @@ local vestIba = {
     protection = 30,
     protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
     damageDecrease = 0.725,
-    protectionDelta = 0.009,
-    damageDecreasePenetrated = 0.1,
+    protectionDelta = 0.00875,
+    damageDecreasePenetrated = 0.15,
     durability = 40,
     pointCost = 15,
     icon = "ground_control/hud/armor/aa_vest_spectra",
@@ -122,10 +139,10 @@ local vestPc = {
     protection = 40,
     protectionAreas = {[HITGROUP_CHEST] = true},
     damageDecrease = 0.725,
-    protectionDelta = 0.01,
-    damageDecreasePenetrated = 0.1,
+    protectionDelta = 0.009,
+    damageDecreasePenetrated = 0.15,
     durability = 30,
-    pointCost = 20,
+    pointCost = 25,
     icon = "ground_control/hud/armor/aa_vest_lbx",
     description = "Modern lightweight plate carrier with level IV rifle plates."
 }
@@ -135,16 +152,16 @@ local vestRatnik = {
     category = "vest",
     id = "vest_ratnik",
     displayName = "6B45 Body Armor",
-    weight = 19,
+    weight = 16,
     protection = 40,
-    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true, [HITGROUP_LEFTARM] = true, [HITGROUP_RIGHTARM] = true},
+    protectionAreas = {[HITGROUP_CHEST] = true, [HITGROUP_STOMACH] = true},
     damageDecrease = 0.725,
-    protectionDelta = 0.01,
-    damageDecreasePenetrated = 0.1,
+    protectionDelta = 0.009,
+    damageDecreasePenetrated = 0.15,
     durability = 50,
     pointCost = 40,
     icon = "ground_control/hud/armor/aa_vest_ratnik",
-    description = "Body armor with level IV rifle plates and additional soft protection."
+    description = "Modern heavy plate carrier with level IV rifle plates."
 }
 GM:RegisterArmor(vestRatnik)
 
@@ -157,10 +174,10 @@ local helmetPasgt = {
     id = "helmet_pasgt",
     displayName = "PASGT Helmet",
     weight = 1.1,
-    protection = 14,
+    protection = 15,
     protectionAreas = {[HITGROUP_HEAD] = true},
     damageDecrease = 0.69,
-    protectionDelta = 0.01,
+    protectionDelta = 0.0125,
     damageDecreasePenetrated = 0.05,
     durability = 10,
     pointCost = 5,
@@ -174,10 +191,10 @@ local helmetAltyn = {
     id = "helmet_altyn",
     displayName = "Altyn",
     weight = 4,
-    protection = 14,
+    protection = 15,
     protectionAreas = {[HITGROUP_HEAD] = true},
     damageDecrease = 0.7,
-    protectionDelta = 0.0115,
+    protectionDelta = 0.015,
     damageDecreasePenetrated = 0.05,
     durability = 20,
     pointCost = 10,
@@ -194,7 +211,7 @@ local helmetOperator = {
     protection = 30,
     protectionAreas = {[HITGROUP_HEAD] = true},
     damageDecrease = 0.675,
-    protectionDelta = 0.01,
+    protectionDelta = 0.011,
     damageDecreasePenetrated = 0.05,
     durability = 10,
     pointCost = 15,
@@ -211,7 +228,7 @@ local helmetVulkan = {
     protection = 30,
     protectionAreas = {[HITGROUP_HEAD] = true},
     damageDecrease = 0.7,
-    protectionDelta = 0.0105,
+    protectionDelta = 0.0115,
     damageDecreasePenetrated = 0.05,
     durability = 15,
     pointCost = 20,
