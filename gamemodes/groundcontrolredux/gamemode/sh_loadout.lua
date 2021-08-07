@@ -279,6 +279,7 @@ function GM:LoadWeaponSets()
             self:RegisterWepsCW2FAS2()
         end
         self:RegisterAttsCW2KK()
+        self:RegisterAttsCW2FAS2()
     end
     if GetConVar("gc_use_arccw_weps"):GetBool() then
         print("hehe")
