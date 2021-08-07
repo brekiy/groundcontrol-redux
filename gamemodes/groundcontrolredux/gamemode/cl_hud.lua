@@ -485,7 +485,7 @@ GM.KilledByEntryBaseYPos = 26
 GM.KilledByBaseSize = 28
 GM.KilledByEntrySize = 52
 
-function GM:createKilledByDisplay(killerPlayer, entClassString)
+function GM:createKilledByDisplay(killerPlayer, entClassString, wasBleeding)
     if self.KilledByPanel and self.KilledByPanel:IsValid() then
         self.KilledByPanel:Remove()
         self.KilledByPanel = nil
@@ -508,7 +508,7 @@ function GM:createKilledByDisplay(killerPlayer, entClassString)
     local mvp = vgui.Create("GCKillerDisplay", panel)
     mvp:SetPos(2, self.KilledByEntryBaseYPos)
     mvp:SetSize(self.KilledByPanelWidth - 4, self.KilledByEntrySize)
-    mvp:SetKillData(killerPlayer, entClass or entClassString)
+    mvp:SetKillData(killerPlayer, entClass or entClassString, wasBleeding)
 
     timer.Simple(5, function()
         panel:Remove()

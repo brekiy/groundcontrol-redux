@@ -2369,7 +2369,7 @@ function gcKillerDisplay:Init()
 end
 
 -- should be called after setting the size
-function gcKillerDisplay:SetKillData(killer, inflictorData)
+function gcKillerDisplay:SetKillData(killer, inflictorData, wasBleeding)
     self.killer = killer
     self.playerText = killer:Nick()
     self.killerText = "Unknown death cause"
@@ -2378,7 +2378,7 @@ function gcKillerDisplay:SetKillData(killer, inflictorData)
         local lply = LocalPlayer()
 
         if killer == lply then
-            if self.bleedInflictor then
+            if wasBleeding then
                 self.killerText = "Bled out!"
             else
                 self.killerText = "Suicide!"

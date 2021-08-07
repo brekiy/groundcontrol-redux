@@ -204,9 +204,9 @@ end)
 net.Receive("GC_KILLED_BY", function(a, b)
     local killerPlayer = net.ReadEntity()
     local killerEntClass = net.ReadString() -- the sent inflictor is not an entity, but is instead the entity class
-
+    local wasBleeding = net.ReadBool()
     if IsValid(killerPlayer) and killerEntClass then
-        GAMEMODE:createKilledByDisplay(killerPlayer, killerEntClass)
+        GAMEMODE:createKilledByDisplay(killerPlayer, killerEntClass, wasBleeding)
     end
 end)
 

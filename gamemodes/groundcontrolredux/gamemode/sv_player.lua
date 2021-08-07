@@ -229,6 +229,7 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
         net.Start("GC_KILLED_BY")
         net.WriteEntity(attacker)
         net.WriteString(inflictor:GetClass())
+        net.WriteBool(ply.bleedInflictor != nil)
         net.Send(ply)
 
         local markedSpots = self.MarkedSpots[attacker:Team()]
