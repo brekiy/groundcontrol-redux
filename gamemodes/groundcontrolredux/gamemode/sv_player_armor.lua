@@ -52,8 +52,10 @@ function PLAYER:processArmorDamage(dmgInfo, penetrationValue, hitGroup, allowBle
                 Clamp the penetration delta stuff
                 and then further scale it by our armor damage factor.
             ]]--
+            -- local armorDamage = dmgInfo:GetDamage()
+            --         * (1 + math.Clamp(penetrationDelta / armorData.protection, -0.35, 0.15))
             local armorDamage = dmgInfo:GetDamage()
-                    * (1 + math.Clamp(penetrationDelta / armorData.protection, -0.35, 0.15))
+                    * (penetrationValue / armorData.protection)
                     * GetConVar("gc_armor_damage_factor"):GetFloat()
             self:TakeArmorDamage(armorPiece, armorDamage)
 
