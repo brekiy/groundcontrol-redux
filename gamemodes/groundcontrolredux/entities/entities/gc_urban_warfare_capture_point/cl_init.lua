@@ -44,7 +44,7 @@ function ENT:drawHUD()
     local ourTeam = ply:Team()
     local sameTeam = ourTeam == self:GetCapturerTeam()
     local r, g, b, a = self:GetProgressColor(sameTeam)
-    local percentage = self:GetCaptureProgress() / 100
+    local percentage = self:GetCaptureProgress() / self.CAPTURE_TIME
 
     if percentage > 0 then
         surface.SetDrawColor(r, g, b, a)
