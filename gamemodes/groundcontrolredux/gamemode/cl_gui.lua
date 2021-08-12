@@ -587,13 +587,21 @@ function curWeaponPanel:UpdateAvailableAttachments()
     -- get all these checks out the way
     if !self.weaponData then return end
     local weaponObject = self.weaponData.weaponObject
-    if !weaponObject.Attachments then return end
+    local attachments
+    if weaponObject.Base == "cw_base" then
+        if !weaponObject.Attachments then return end
+        attachments = weaponObject.Attachments
+    elseif weaponObject.Base == "arccw_base" then
+        -- PrintTable(weaponObject)
+        attachments = {}
+    else
+        return
+    end
 
     local ply = LocalPlayer()
     local ownedAttachments = ply.ownedAttachments
     local cash = ply.cash or 0
-
-    for categoryID, data in pairs(weaponObject.Attachments) do
+    for categoryID, data in pairs(attachments) do
         for key, attachmentID in ipairs(data.atts) do
             if CustomizableWeaponry.registeredAttachmentsSKey[attachmentID] then
                 local price = CustomizableWeaponry.registeredAttachmentsSKey[attachmentID].price

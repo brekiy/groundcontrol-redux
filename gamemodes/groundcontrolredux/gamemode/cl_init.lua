@@ -242,7 +242,10 @@ function GM:PlayerBindPress(ply, bind, pressed)
 
         local wep = ply:GetActiveWeapon()
 
-        if (IsValid(wep) and wep.CW20Weapon and wep.dt.State != CW_CUSTOMIZE) or !IsValid(wep) then
+        if (IsValid(wep) and
+            ((wep.CW20Weapon and wep.dt.State != CW_CUSTOMIZE)
+            or (wep.ArcCW and wep:GetState() != ArcCW.STATE_CUSTOMIZE))
+            or !IsValid(wep)) then
             if bind == self.TeamSelectionKey then
                 RunConsoleCommand("gc_team_selection")
             elseif bind == self.LoadoutMenuKey then

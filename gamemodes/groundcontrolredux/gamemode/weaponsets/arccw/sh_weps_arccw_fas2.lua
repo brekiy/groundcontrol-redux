@@ -2,26 +2,14 @@ AddCSLuaFile()
 
 -- WIP
 function GM:RegisterWepsARCCWFAS2()
-    local pkp = {
-        weaponClass = "cw_pkp",
-        weight = 8.7,
-        maxMags = 2,
-        pointCost = 38
-    }
-    self:RegisterPrimaryWeapon(pkp)
+    local ak47 = { weaponClass = "arccw_mifl_fas2_ak47", weight = 8.7, pointCost = 38 }
+    self:RegisterPrimaryWeapon(ak47)
 
-    local vz61 = {
-        weaponClass = "cw_vz61_kry",
-        weight = 1.3,
-        pointCost = 9
-    }
-    self:RegisterSecondaryWeapon(vz61)
-
-    local g18 = {
-        weaponClass = "cw_g18",
+    local mass26 = {
+        weaponClass = "arccw_fml_fas2_custom_mass26",
         weight = 0.92,
         pointCost = 10
     }
-    self:RegisterSecondaryWeapon(g18)
+    self:RegisterSecondaryWeapon(mass26)
 end
 

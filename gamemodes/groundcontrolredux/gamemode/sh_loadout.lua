@@ -204,12 +204,11 @@ function GM:FindBestWeapons(lookInto, output)
         wepObj.GCRecoil = wepObj.Recoil or 1
         if wepObj.Base == "tfa_gun_base" then
             wepObj = table.Merge(wepObj, self:parseTFAWeapon(wepObj))
-        elseif weaponData.Base == "arccw_base" then
+        elseif wepObj.ArcCw then
             wepObj = table.Merge(wepObj, self:parseArcCWWeapon(wepObj))
         end
         -- Handle edge cases where the SWEP creator didn't define this property explicitly
         if !wepObj.Shots then wepObj.Shots = 1 end
-
         output.damage = math.max(output.damage, wepObj.Damage * wepObj.Shots or 1)
         output.recoil = math.max(output.recoil, wepObj.GCRecoil)
         output.aimSpread = math.min(output.aimSpread, wepObj.AimSpread)
@@ -247,6 +246,7 @@ end
 function GM:LoadWeaponSets()
     -- Load all allowed weapon packs and registered ammo
     -- there's probably a better way to do this...
+    -- like through a menu or some shit
     if GetConVar("gc_use_cw2_weps"):GetBool() then
         if GetConVar("gc_use_cw2_spy"):GetBool() then
             self:RegisterWepsCW2Base()
@@ -282,7 +282,9 @@ function GM:LoadWeaponSets()
         self:RegisterAttsCW2FAS2()
     end
     if GetConVar("gc_use_arccw_weps"):GetBool() then
-        print("hehe")
+        if GetConVar("gc_use_arccw_fas2"):GetBool() then
+            self:RegisterWepsARCCWFAS2()
+        end
     end
 end
 

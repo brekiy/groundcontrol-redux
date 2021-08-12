@@ -212,9 +212,9 @@ function GM:RegisterDrugBust()
             -- if for some reason the chance roll failed and no weapon was chosen, we pick one at random
             pickedWeapon = pickedWeapon or self.redTeamWeapons[math.random(1, #self.redTeamWeapons)]
             local givenWeapon = ply:Give(pickedWeapon.weapon)
-
-            ply:GiveAmmo(pickedWeapon.mags * givenWeapon.Primary.ClipSize_Orig, givenWeapon.Primary.Ammo)
-            givenWeapon:maxOutWeaponAmmo(givenWeapon.Primary.ClipSize_Orig)
+            local magSize = GC_GetWeaponMagSize(givenWeapon)
+            ply:GiveAmmo(pickedWeapon.mags * magSize, givenWeapon.Primary.Ammo)
+            MaxOutWeaponAmmo(givenWeapon, magSize)
 
             if math.random(1, 100) <= ghettoDrugBust.grenadeChance then
                 ply:GiveAmmo(1, "Frag Grenades")

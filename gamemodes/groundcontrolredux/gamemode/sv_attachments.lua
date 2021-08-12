@@ -125,7 +125,9 @@ end
 
 function PLAYER:EquipAttachments(targetWeapon, data)
     -- and lastly, we load all the attachments via CW 2.0's attachment preset system
-    CustomizableWeaponry.preset.load(targetWeapon, data, "GroundControlPreset")
+    if targetWeapon.CW20Weapon then
+        CustomizableWeaponry.preset.load(targetWeapon, data, "GroundControlPreset")
+    end
 end
 
 function PLAYER:SendUnlockedAttachmentSlots()

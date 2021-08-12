@@ -92,8 +92,9 @@ function GM:RegisterVIPEscort()
             local pickedWeapon = GAMEMODE.SecondaryWeapons[math.random(1, #GAMEMODE.SecondaryWeapons)]
             local givenWeapon = ply:Give(pickedWeapon.weaponClass)
 
-            ply:GiveAmmo(3 * givenWeapon.Primary.ClipSize_Orig, givenWeapon.Primary.Ammo)
-            givenWeapon:maxOutWeaponAmmo(givenWeapon.Primary.ClipSize_Orig)
+            local magSize = GC_GetWeaponMagSize(givenWeapon)
+            ply:GiveAmmo(3 * magSize, givenWeapon.Primary.Ammo)
+            MaxOutWeaponAmmo(givenWeapon, magSize)
             ply:SetModel(self.vipModel)
             net.Start("GC_SET_VIP", ply)
             net.WriteBool(true)

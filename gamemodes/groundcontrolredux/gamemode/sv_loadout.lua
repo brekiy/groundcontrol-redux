@@ -105,14 +105,16 @@ function PLAYER:giveLoadout(forceGive)
         self:RemoveAllAmmo()
 
         if primaryWepObj then
+            local magSize = GC_GetWeaponMagSize(primaryWepObj)
             -- set the ammo after we've attached everything, since some attachments may modify mag size
-            self:GiveAmmo(primaryMags * primaryWepObj.Primary.ClipSize_Orig, primaryWepObj.Primary.Ammo)
-            primaryWepObj:maxOutWeaponAmmo(primaryWepObj.Primary.ClipSize_Orig) -- same for the magazine
+            self:GiveAmmo(primaryMags * magSize, primaryWepObj.Primary.Ammo)
+            MaxOutWeaponAmmo(primaryWepObj, magSize) -- same for the magazine
         end
 
         if secWepObj then
-            self:GiveAmmo(secondaryMags * secWepObj.Primary.ClipSize_Orig, secWepObj.Primary.Ammo)
-            secWepObj:maxOutWeaponAmmo(secWepObj.Primary.ClipSize_Orig)
+            local magSize = GC_GetWeaponMagSize(secWepObj)
+            self:GiveAmmo(secondaryMags * magSize, secWepObj.Primary.Ammo)
+            MaxOutWeaponAmmo(secWepObj, magSize)
         end
 
         self:GiveAmmo(1, "Frag Grenades")
@@ -140,17 +142,37 @@ function PLAYER:giveLoadout(forceGive)
     self:giveGadgets()
 end
 
+function MaxOutWeaponAmmo(weapon, magsize)
+    if weapon.Base == "cw_base" then
+        weapon:maxOutWeaponAmmo(magsize)
+    elseif weapon.Base == "arccw_base" then
+        weapon:SetClip1(magsize + weapon:GetChamberSize())
+    end
+end
+
+function GC_GetWeaponMagSize(weapon)
+    if weapon.CW20Weapon then
+        return weapon.Primary.ClipSize_Orig
+    elseif weapon.ArcCW then
+        return weapon.Primary.ClipSize
+    else
+        return 1
+    end
+end
+
 function GiveBotRandomLoadout(bot)
     -- Give primary, then give secondary
     local pickedWeapon = GAMEMODE.PrimaryWeapons[math.random(1, #GAMEMODE.PrimaryWeapons)]
     local givenWeapon = bot:Give(pickedWeapon.weaponClass)
-    bot:GiveAmmo(3 * givenWeapon.Primary.ClipSize_Orig, givenWeapon.Primary.Ammo)
-    givenWeapon:maxOutWeaponAmmo(givenWeapon.Primary.ClipSize_Orig)
+    local magSize = GC_GetWeaponMagSize(givenWeapon)
+    bot:GiveAmmo(3 * magSize, givenWeapon.Primary.Ammo)
+    MaxOutWeaponAmmo(givenWeapon, magSize)
 
     pickedWeapon = GAMEMODE.SecondaryWeapons[math.random(1, #GAMEMODE.SecondaryWeapons)]
     givenWeapon = bot:Give(pickedWeapon.weaponClass)
-    bot:GiveAmmo(3 * givenWeapon.Primary.ClipSize_Orig, givenWeapon.Primary.Ammo)
-    givenWeapon:maxOutWeaponAmmo(givenWeapon.Primary.ClipSize_Orig)
+    magSize = GC_GetWeaponMagSize(givenWeapon)
+    bot:GiveAmmo(3 * magSize, givenWeapon.Primary.Ammo)
+    MaxOutWeaponAmmo(givenWeapon, magSize)
 
     bot:GiveGCArmor("vest", 2)
     bot:GiveGCArmor("helmet", 1)
