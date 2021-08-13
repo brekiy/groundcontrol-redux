@@ -271,6 +271,9 @@ function GM:disableCustomizationMenu()
             wep.dt.State = CW_IDLE
         end
     end
+    if GetConVar("arccw_enable_customization") then
+        RunConsoleCommand("arccw_enable_customization", -1)
+    end
 end
 
 function GM:PlayerCanHearPlayersVoice(listener, talker)

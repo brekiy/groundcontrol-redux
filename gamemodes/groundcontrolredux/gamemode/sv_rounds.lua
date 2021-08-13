@@ -288,7 +288,9 @@ function GM:setupRoundPreparation()
     table.Empty(self.DamageLog)
     self.PreparationTime = CurTime() + self.RoundPreparationTime
     self:setupLoadoutSelectionTime()
-
+    if GetConVar("arccw_enable_customization") then
+        RunConsoleCommand("arccw_enable_customization", 1)
+    end
     timer.Simple(self.RoundPreparationTime, function()
         self:disableCustomizationMenu()
     end)

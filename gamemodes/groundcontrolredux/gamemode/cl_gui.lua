@@ -9,6 +9,49 @@ function PLAYER:ComplainAboutLoadout(objName)
     surface.PlaySound("buttons/combine_button7.wav")
 end
 
+function GC_ArcCWGetAttsForSlot(slot, wep)
+    local ret = {}
+    for id, atttbl in pairs(ArcCW.AttachmentTable) do
+
+        if atttbl.Hidden or atttbl.Blacklisted or atttbl.AdminOnly or ArcCW.AttachmentBlacklistTable[id] then continue end
+        if wep.RejectAttachments and wep.RejectAttachments[id] then continue end
+        if isstring(atttbl.Slot) and slot != atttbl.Slot then continue
+        elseif istable(atttbl.Slot) then
+            local compat = false
+            for _, v in pairs(atttbl.Slot) do
+                if v == slot then
+                    compat = true
+                    break
+                end
+            end
+            if !compat then continue end
+        end
+        -- PrintTable(atttbl)
+        table.insert(ret, atttbl)
+    end
+
+    return ret
+end
+
+function GC_GetWeaponAttachments(weapon)
+    if weapons.IsBasedOn(weapon.ClassName, "cw_base") then
+        return weapon.Attachments
+    elseif weapons.IsBasedOn(weapon.ClassName, "arccw_base") then
+        local attachments = {}
+        local weaponEnt = weapons.GetStored(weapon.ClassName)
+        -- ugly hack lmao
+        weaponEnt.GetOwner = function() return LocalPlayer() end
+        weaponEnt.GetClass = function() return weapon.ClassName end
+        weaponEnt.GetIsShotgun = function() return false end -- placeholder
+        for i, slot in pairs(weaponEnt.Attachments) do
+            if slot.Hidden then continue end
+            local atts = GC_ArcCWGetAttsForSlot(weaponEnt.Attachments[i].Slot, weaponEnt)
+            attachments[i] = {header = slot.PrintName, atts = atts}
+        end
+        return attachments
+    end
+end
+
 function GM:addFrame(frame)
     table.insert(self.AllFrames, frame)
 end
@@ -586,32 +629,31 @@ function curWeaponPanel:UpdateAvailableAttachments()
     table.Empty(self.availableAttachments)
     -- get all these checks out the way
     if !self.weaponData then return end
-    local weaponObject = self.weaponData.weaponObject
-    local attachments
-    if weaponObject.Base == "cw_base" then
-        if !weaponObject.Attachments then return end
-        attachments = weaponObject.Attachments
-    elseif weaponObject.Base == "arccw_base" then
-        -- PrintTable(weaponObject)
-        attachments = {}
+    local weapon = self.weaponData.weaponObject
+    local ply = LocalPlayer()
+    local ownedAttachments = ply.ownedAttachments
+    local cash = ply.cash or 0
+    local attachments = GC_GetWeaponAttachments(weapon)
+
+    if weapons.IsBasedOn(weapon.ClassName, "cw_base") then
+        if attachments then return end
+        for categoryID, data in pairs(attachments) do
+            for key, attachmentID in ipairs(data.atts) do
+                if CustomizableWeaponry.registeredAttachmentsSKey[attachmentID] then
+                    local price = CustomizableWeaponry.registeredAttachmentsSKey[attachmentID].price
+
+                    if !ownedAttachments[attachmentID] and price and cash >= price then
+                        self.availableAttachments[#self.availableAttachments + 1] = attachmentID
+                    end
+                end
+            end
+        end
+    elseif weapons.IsBasedOn(weapon.ClassName, "arccw_base") then
+        print("aehauhe")
     else
         return
     end
 
-    local ply = LocalPlayer()
-    local ownedAttachments = ply.ownedAttachments
-    local cash = ply.cash or 0
-    for categoryID, data in pairs(attachments) do
-        for key, attachmentID in ipairs(data.atts) do
-            if CustomizableWeaponry.registeredAttachmentsSKey[attachmentID] then
-                local price = CustomizableWeaponry.registeredAttachmentsSKey[attachmentID].price
-
-                if !ownedAttachments[attachmentID] and price and cash >= price then
-                    self.availableAttachments[#self.availableAttachments + 1] = attachmentID
-                end
-            end
-        end
-    end
 end
 
 function curWeaponPanel:setRandomColorOffset(offset)
@@ -794,7 +836,8 @@ function curWeaponPanel:OnMousePressed(bind)
             GAMEMODE:loadWeaponLoadout(self.weaponData.weaponObject)
 
             GAMEMODE:closeLoadoutMenu()
-
+            local attachments = GC_GetWeaponAttachments(wepClass)
+            -- PrintTable(attachments)
             local frame = vgui.Create("GCFrame")
             frame:SetTitle(self.weaponData.weaponObject.PrintName .. " - customization")
             frame:SetDraggable(false, false)
@@ -809,7 +852,7 @@ function curWeaponPanel:OnMousePressed(bind)
             local elementYGap = 30
             local maxWidth = 350
 
-            for category, data in pairs(wepClass.Attachments) do
+            for category, data in pairs(attachments) do
                 curXPos = 5
 
                 local label = vgui.Create("DLabel", frame)

@@ -204,7 +204,7 @@ function GM:FindBestWeapons(lookInto, output)
         wepObj.GCRecoil = wepObj.Recoil or 1
         if wepObj.Base == "tfa_gun_base" then
             wepObj = table.Merge(wepObj, self:parseTFAWeapon(wepObj))
-        elseif wepObj.ArcCw then
+        elseif wepObj.ArcCW then
             wepObj = table.Merge(wepObj, self:parseArcCWWeapon(wepObj))
         end
         -- Handle edge cases where the SWEP creator didn't define this property explicitly

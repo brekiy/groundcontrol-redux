@@ -71,6 +71,10 @@ CustomizableWeaponry.playSoundsOnInteract = true
 -- physical bullets for cw 2.0 they were kinda broken with vanilla ground control, idk about now
 CustomizableWeaponry.physicalBulletsEnabled = GetConVar("gc_cw2_phys_bullets"):GetBool()
 CustomizableWeaponry.suppressOnSpawnAttachments = true
+-- :)
+if GetConVar("arccw_enable_customization") then
+    RunConsoleCommand("arccw_enable_customization", -1)
+end
 -- Override this from the weapon base to toss our special ground control frag grenade
 function CustomizableWeaponry.quickGrenade:createThrownGrenade(player)
     local pos = player:GetShootPos()
