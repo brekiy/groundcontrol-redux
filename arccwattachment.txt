@@ -1,0 +1,35 @@
+example
+
+Add_BarrelLength	=	-8
+AutoStats	=	true
+Desc_Cons:
+		1	=	con.fas2.ubgl
+Desc_Pros:
+		1	=	pro.fas2.xs
+Description	=	The most compact comrade around.
+GivesFlags:
+		1	=	ubgl_no
+ID	=	18
+Icon	=	Material [0001010entities/arccw_mifl_fas2_ak_hg_xs]
+LHIK	=	true
+LHIK_Priority	=	-2
+Model	=	models/weapons/arccw/mifl_atts/fas2/grip_m4x.mdl
+ModelOffset	=	-5.000000 -4.500000 -1.000000
+Mult_AccuracyMOA	=	2
+Mult_DrawSpeeed	=	1.5
+Mult_HipDispersion	=	1.5
+Mult_HolsterSpeed	=	1.5
+Mult_MoveDispersion	=	3
+Mult_MoveSpeed	=	1.15
+Mult_RPM	=	1.3
+Mult_Range	=	0.5
+Mult_Recoil	=	2
+Mult_ReloadTime	=	0.9
+Mult_ShootPitch	=	1.5
+Mult_SightTime	=	0.5
+Mult_SightedMoveSpeed	=	1.3
+Override_ShootWhileSprint	=	true
+PrintName	=	No Handguard
+ShortName	=	mifl_fas2_ak_hg_xs
+Slot	=	mifl_fas2_ak_hg
+SortOrder	=	-10

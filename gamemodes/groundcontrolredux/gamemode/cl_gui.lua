@@ -26,8 +26,7 @@ function GC_ArcCWGetAttsForSlot(slot, wep)
             end
             if !compat then continue end
         end
-        -- PrintTable(atttbl)
-        table.insert(ret, atttbl)
+        table.insert(ret, id)
     end
 
     return ret
@@ -636,7 +635,6 @@ function curWeaponPanel:UpdateAvailableAttachments()
     local attachments = GC_GetWeaponAttachments(weapon)
 
     if weapons.IsBasedOn(weapon.ClassName, "cw_base") then
-        if attachments then return end
         for categoryID, data in pairs(attachments) do
             for key, attachmentID in ipairs(data.atts) do
                 if CustomizableWeaponry.registeredAttachmentsSKey[attachmentID] then
@@ -837,7 +835,6 @@ function curWeaponPanel:OnMousePressed(bind)
 
             GAMEMODE:closeLoadoutMenu()
             local attachments = GC_GetWeaponAttachments(wepClass)
-            -- PrintTable(attachments)
             local frame = vgui.Create("GCFrame")
             frame:SetTitle(self.weaponData.weaponObject.PrintName .. " - customization")
             frame:SetDraggable(false, false)
@@ -1116,11 +1113,13 @@ end
 
 function attachmentSelection:GetBackgroundColor()
     if self.isLocked then
-        return 255, 104, 104, 255
+        --return 255, 104, 104, 255
+        return GAMEMODE.HUD_COLORS.red:Unpack()
     end
 
     if !self:CanAttachSpecificAttachmnent() then
-        return 255, 255, 125, 255
+        -- return 255, 255, 125, 255
+        return GAMEMODE.HUD_COLORS.limeYellow:Unpack()
     end
 
     local cvarTable = self.isPrimary and GAMEMODE.PrimaryAttachmentStrings or GAMEMODE.SecondaryAttachmentStrings
@@ -1181,11 +1180,16 @@ function attachmentSelection:Paint()
 end
 
 function attachmentSelection:createInfoBox()
+    local isCWAtt = CustomizableWeaponry.registeredAttachmentsSKey[self.attachmentName] != nil
     if self.attachmentData and !IsValid(self.descBox) then
         local w, h = self:GetSize()
         local x, y = self:LocalToScreen(0, 0)
         self.descBox = vgui.Create("GCGenericDescbox")
-        self.descBox:InsertText(self.attachmentData.displayName, "CW_HUD28", 0)
+        if isCWAtt then
+            self.descBox:InsertText(self.attachmentData.displayName, "CW_HUD28", 0)
+        else
+            self.descBox:InsertText(self.attachmentData.PrintName, "CW_HUD28", 0)
+        end
         self.descBox:SetDrawOnTop(true)
 
         if self:IsLocked() then
@@ -1235,8 +1239,11 @@ function attachmentSelection:createInfoBox()
                 self.descBox:InsertText("Right-click to un-assign attachment.", "CW_HUD20", 10)
             end
         end
-
-        self.descBox:SetText(self.attachmentData.description)
+        if isCWAtt then
+            self.descBox:SetText(self.attachmentData.description)
+        else
+            self.descBox:InsertText(self.attachmentData.Description)
+        end
 
         local _, newHeight = self.descBox:GetSize()
 
@@ -1315,7 +1322,7 @@ function attachmentSelection:OpenAttachmentAssignmentMenu()
 
     for key, cvarName in ipairs(cvarNames) do
         local assignSlot = vgui.Create("GCAttachmentAssignment", slotFrame)
-        assignSlot:SetConVar(cvarName)
+        assignSlot:SetConVar(cvarName, self.weaponData)
         assignSlot:SetSlot(key)
         assignSlot:SetPos(5 + curW, 30)
         assignSlot:SetDesiredAttachment(self.attachmentName, self.weaponData)
@@ -1339,9 +1346,9 @@ end
 
 function attachmentSelection:SetAttachment(attName, weaponData, isPrimary)
     self.attachmentName = attName
-    self.attachmentData = CustomizableWeaponry.registeredAttachmentsSKey[attName]
+    self.attachmentData = weapons.IsBasedOn(weaponData.weaponObject.ClassName, "cw_base") and CustomizableWeaponry.registeredAttachmentsSKey[attName]
+        or ArcCW.AttachmentTable[attName]
     self.weaponData = weaponData
-
     if isPrimary != nil then
         self.isPrimary = isPrimary
     end
@@ -1424,10 +1431,10 @@ function attachmentAssignment:Init()
 
 end
 
-function attachmentAssignment:SetConVar(cvar)
+function attachmentAssignment:SetConVar(cvar, weaponData)
     self.cvarName = cvar
 
-    self:SetAttachment(GetConVar(self.cvarName):GetString())
+    self:SetAttachment(GetConVar(self.cvarName):GetString(), weaponData)
 end
 
 function attachmentAssignment:SetSlotID(id)

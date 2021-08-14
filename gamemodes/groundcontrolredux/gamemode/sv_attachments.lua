@@ -57,7 +57,7 @@ function PLAYER:UpdateNumericAttachmentsTable(fillWith)
 end
 
 function PLAYER:UnlockAttachment(attachmentName, isFree)
-    local attachmentData = CustomizableWeaponry.registeredAttachmentsSKey[attachmentName]
+    local attachmentData = CustomizableWeaponry.registeredAttachmentsSKey[attachmentName] or ArcCW.AttachmentTable[attachmentName]
     local price = nil
 
     if isFree then

@@ -208,8 +208,16 @@ for key, value in pairs(CustomizableWeaponry.registeredAttachmentsSKey) do
     end
 end
 
+for key, value in pairs(ArcCW.AttachmentTable) do
+    if value.price == nil then -- check which ones don't have a price set on them, and set the default price (specifically a nil check, since if the price is 'false', it'll still get set to DefaultAttachmentPrice)
+        value.price = GM.DefaultAttachmentPrice
+    end
+end
+
 for attName, price in pairs(attachmentPrices) do
     local attData = CustomizableWeaponry.registeredAttachmentsSKey[attName]
+    if attData != nil then attData.price = price end
+    attData = ArcCW.AttachmentTable[attName]
     if attData != nil then attData.price = price end
 end
 

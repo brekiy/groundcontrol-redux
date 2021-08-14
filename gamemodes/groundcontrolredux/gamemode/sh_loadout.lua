@@ -202,9 +202,10 @@ function GM:FindBestWeapons(lookInto, output)
         local wepObj = weaponData.weaponObject
         -- We need a separate field otherwise TFA breaks
         wepObj.GCRecoil = wepObj.Recoil or 1
-        if wepObj.Base == "tfa_gun_base" then
-            wepObj = table.Merge(wepObj, self:parseTFAWeapon(wepObj))
-        elseif wepObj.ArcCW then
+        -- if wepObj.Base == "tfa_gun_base" then
+            -- wepObj = table.Merge(wepObj, self:parseTFAWeapon(wepObj))
+        if weapons.IsBasedOn(wepObj.ClassName, "arccw_base") then
+            -- sucks but 
             wepObj = table.Merge(wepObj, self:parseArcCWWeapon(wepObj))
         end
         -- Handle edge cases where the SWEP creator didn't define this property explicitly
