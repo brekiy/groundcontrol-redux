@@ -112,8 +112,6 @@ function ENT:drawHUD()
         end
     end
 
-    GAMEMODE.HUD_COLORS.white.a, GAMEMODE.HUD_COLORS.black.a = 255, 255
-
     surface.SetDrawColor(0, 0, 0, 150)
     surface.DrawRect(midX - 50, 10, 100, 30)
 

@@ -15,7 +15,7 @@ end
 -- the distance within which the contents of the box will be displayed
 ENT.upOffset = Vector(0, 0, 30)
 
-local white, black = Color(255, 255, 255, 255), Color(0, 0, 0, 255)
+local white, black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 local horizontalBoundary, verticalBoundary = 75, 75
 local point = surface.GetTextureID("ground_control/hud/point_of_interest")
 
