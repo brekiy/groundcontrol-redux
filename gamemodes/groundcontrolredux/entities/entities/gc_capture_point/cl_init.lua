@@ -78,7 +78,8 @@ function ENT:drawHUD()
 
         white.a = 255 * alpha
         black.a = 255 * alpha
-        draw.ShadowText((sameTeam and "Capture " or "Protect ") .. self.PointName[self:GetPointID()], "CW_HUD14", coords.x, coords.y - 16, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.ShadowText((sameTeam and "Capture " or "Protect ") .. self.PointName[self:GetPointID()], "CW_HUD14",
+                coords.x, coords.y - 16, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         white.a = 255
         black.a = 255
     end
@@ -86,7 +87,8 @@ function ENT:drawHUD()
     if ply:Alive() and ply:GetPos():Distance(pos) <= self:GetCaptureDistance() then
         local midY = y * 0.5 + 150
         local desiredText = sameTeam and self.captureText or self.defendText
-        draw.ShadowText(desiredText .. self.PointName[self:GetPointID()], "CW_HUD24", midX, midY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.ShadowText(desiredText .. self.PointName[self:GetPointID()], "CW_HUD24",
+                midX, midY, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         surface.SetDrawColor(0, 0, 0, 255)
         surface.DrawOutlinedRect(midX - self.capBarWidth * 0.5, midY + 15, self.capBarWidth, self.capBarHeight)
@@ -97,6 +99,10 @@ function ENT:drawHUD()
         surface.SetDrawColor(r, g, b, 255)
         surface.DrawRect(midX + 2 - self.capBarWidth * 0.5, midY + 17, (self.capBarWidth - 4) * percentage, self.capBarHeight - 4)
 
-        draw.ShadowText("SPEED: x" .. math.Round(self:GetCaptureSpeed(), 2), "CW_HUD24", midX, midY + self.capBarHeight + draw.GetFontHeight("CW_HUD24") + 5, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        if self:GetCaptureSpeed() != 0 then
+            draw.ShadowText("SPEED: x" .. math.Round(self:GetCaptureSpeed(), 2), "CW_HUD24",
+                    midX, midY + self.capBarHeight + draw.GetFontHeight("CW_HUD24") + 5,
+                    white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
     end
 end

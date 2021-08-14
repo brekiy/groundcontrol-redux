@@ -51,7 +51,7 @@ end
 -- this is the default round over check, for gametypes with no player respawns
 function GM:CheckRoundOverPossibility(teamId, ignoreDisplay)
     if !self.RoundOver then
-        local allPlayers = player.GetAll()
+        local allPlayers = self.CurrentPlayerList
 
         if #allPlayers < 2 then -- don't do anything if we only have 2 players
             if allPlayers == 0 then -- if everyone disconnected, reset rounds played
@@ -129,7 +129,7 @@ function GM:EndRound(winningTeam)
         net.Start("GC_ROUND_OVER")
         net.WriteInt(winningTeam, 8)
         net.WriteInt(actionToSend, 8)
-        net.Send(player.GetAll())
+        net.Send(self.CurrentPlayerList)
     end
 
     self.MVPTracker:sendMVPList()
@@ -140,7 +140,11 @@ function GM:EndRound(winningTeam)
 
     if canRestart then
         timer.Simple(self.RoundRestartTime, function()
-            self:RestartRound()
+            if self.nextVotedMap then
+                game.ConsoleCommand("changelevel " .. self.nextVotedMap .. "\n")
+            else
+                self:RestartRound()
+            end
         end)
     else
         if canPickRandomMapAndGametype then
@@ -152,7 +156,7 @@ function GM:EndRound(winningTeam)
 
 
     if lastRound then -- start a vote for the next map if possible
-        if !canPickRandomMapAndGametype then
+        if !canPickRandomMapAndGametype and !self.nextVotedMap then
             self:startVoteMap()
         end
     else
@@ -175,10 +179,14 @@ function GM:startVoteMap()
         local _, data = self:GetGametypeFromConVar()
         local mapList = self:FilterExistingMaps(data.mapRotation)
 
-        self:setupCurrentVote("Vote for the next map", mapList, player.GetAll(), self.MaxMapsPerPick, true, nil, function()
+        self:setupCurrentVote("Vote for the next map", mapList, self.CurrentPlayerList, self.MaxMapsPerPick, true, nil, function()
             local highestOption, _ = self:getHighestVote()
+            self.nextVotedMap = highestOption.option
+            local mapText = "Will switch to '" .. self.nextVotedMap .. "' at the end of this round."
 
-            game.ConsoleCommand("changelevel " .. highestOption.option .. "\n")
+            for key, ply in ipairs(self.CurrentPlayerList) do
+                ply:ChatPrint(mapText)
+            end
         end, self.VoteMapVoteID)
 
         hook.Call("GroundControlMapVoteStarted", nil, mapList, self.VoteID)
@@ -230,7 +238,7 @@ function GM:startGameTypeVote()
         end
     end
 
-    self:setupCurrentVote("Vote for next game type", possibilities, player.GetAll(), self.MaxGameTypesPerPick, false, nil, function()
+    self:setupCurrentVote("Vote for next game type", possibilities, self.CurrentPlayerList, self.MaxGameTypesPerPick, false, nil, function()
         local highestOption, _ = self:getHighestVote()
 
         self:SetGametypeCVarByPrettyName(highestOption.option)
@@ -240,6 +248,7 @@ function GM:startGameTypeVote()
 end
 
 function GM:RestartRound()
+    self:updateCurrentPlayerList() -- might not be needed for players, but is for bots
     if !self.curGametype.noTeamBalance then
         self:BalanceTeams()
     end
@@ -249,6 +258,7 @@ function GM:RestartRound()
     self:dealWithTrashProps()
     self:AutoRemoveEntities()
     self:RunMapStartCallback()
+    self:AdjustDoorSpeeds()
 
     if self.curGametype.RoundStart then
         self.curGametype:RoundStart()
@@ -256,7 +266,7 @@ function GM:RestartRound()
 
     self:setupRoundPreparation()
 
-    for key, obj in pairs(player.GetAll()) do
+    for key, obj in pairs(self.CurrentPlayerList) do
         obj:Spawn()
     end
 

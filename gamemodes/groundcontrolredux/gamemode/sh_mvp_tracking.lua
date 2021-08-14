@@ -97,7 +97,7 @@ function mvpTracker:sendMVPList()
     if #list > 0 then
         net.Start("GC_MVP")
             net.WriteTable(list)
-        net.Send(player.GetAll())
+        net.Send(GAMEMODE.CurrentPlayerList)
     end
 end
 

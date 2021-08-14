@@ -6,7 +6,7 @@ function ENT:Initialize()
     GAMEMODE:AddObjectiveEntity(self)
 end
 
-local white, black = Color(255, 255, 255, 255), Color(0, 0, 0, 255)
+local white, black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 ENT.EscapeText = "Escape point"
 ENT.DeliverText = "Deliver VIP"
 ENT.PreventText = "Guard"

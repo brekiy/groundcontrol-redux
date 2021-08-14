@@ -94,4 +94,21 @@ function GM:AutoRemoveEntities()
             end
         end
     end
+    -- just to be safe - iterate over all the spawn points and remove them if their contents are anything but CONTENTS_EMPTY
+    self:removeBlockedSpawnPoints("info_player_counterterrorist")
+    self:removeBlockedSpawnPoints("info_player_terrorist")
+end
+
+function GM:removeBlockedSpawnPoints(class)
+    local entList = ents.FindByClass(class)
+
+    -- reverse loop just in case
+    for i = #entList, 1, -1 do
+        local obj = entList[i]
+
+        -- something blocking the spawn point? GET RID OF IT!!!
+        if bit.band(util.PointContents(obj:GetPos()), CONTENTS_SOLID) ~= 0 then
+            obj:Remove()
+        end
+    end
 end

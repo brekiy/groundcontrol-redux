@@ -5,7 +5,7 @@ GM.tipController.shownEvents = {}
 GM.tipController.events = { -- key is event name
     BEGIN_BLEEDING = {times = 3, text = "Being shot in an unprotected area will cause bleeding. Press Q_MENU_KEY to bandage yourself.", formatFunc = function(text) return string.gsub(text, "Q_MENU_KEY", GAMEMODE:getKeyBind("+menu")) end},
     STOPPED_BLEEDING = {times = 3, text = "Applying a bandage won't restore health, be careful around gunfire."},
-    PICKUP_WEAPON = {times = 3, text = "Picking up weapons won't transmit the owner's ammo, and you can !carry more than 2 weapons at a time."},
+    PICKUP_WEAPON = {times = 3, text = "Picking up weapons won't transmit the owner's ammo, and you can carry more than 2 weapons at a time."},
     DROPPED_WEAPON = {times = 3, text = "Taking too much damage to the arms will make you drop your primary and be unable to use them."}, -- for when we lose a lot of health via hits to the arm(s) and we lose our primary
     RADIO_USED = {times = 3, text = "Radios can be used for quick communication and marking enemy positions. Press C_MENU_KEY to open the radio menu.", formatFunc = function(text) return string.gsub(text, "C_MENU_KEY", GAMEMODE:getKeyBind("+menu_context")) end},
     KILLED_ENEMY = {times = 3, text = "Make sure to report enemy deaths using the radio, it marks the death area and gives you a cash and experience bonus."},

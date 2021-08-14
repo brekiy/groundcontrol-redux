@@ -48,7 +48,7 @@ function GM:RemoveAllStatusEffects() -- on self
 end
 
 GM.BaseStatusEffectX = GM.BaseHUDX
-GM.BaseStatusEffectY = 190
+GM.BaseStatusEffectY = 220
 
 function GM:DrawStatusEffects(w, h)
     local xPos = self.BaseStatusEffectX

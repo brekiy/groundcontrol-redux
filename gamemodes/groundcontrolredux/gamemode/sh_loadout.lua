@@ -9,10 +9,10 @@ GM.DefaultPrimaryMagCount = 3
 GM.DefaultSecondaryMagCount = 3
 
 GM.DefaultSpareAmmoCount = 0
--- GM.MAX_SPARE_AMMOCount = 400
 
 GM.MaxPrimaryMags = 5
 GM.MaxSecondaryMags = 5
+GM.RemoveAttachments = {"am_ultramegamatchammo", "md_m203", "md_cmag_556_official"}
 
 IncludeDir("weaponsets", "THIRDPARTY")
 IncludeDir("weaponsets", "WORKSHOP")
@@ -80,7 +80,7 @@ function checkWeaponExists(weaponClassname)
 end
 
 -- Should work just fine for TFA and ArcCW
-function GM:applyWeaponDataToWeaponClass(weaponData, primaryWeapon, slot)
+function GM:ApplyWeaponDataToWeaponClass(weaponData, primaryWeapon, slot)
     local wepClass = weapons.GetStored(weaponData.weaponClass)
 
     wepClass.weight = weaponData.weight -- apply weight to the weapon class
@@ -116,7 +116,7 @@ function GM:RegisterPrimaryWeapon(weaponData)
     if checkWeaponExists(weaponData.weaponClass) then
         weaponData.id = weaponData.id or weaponData.weaponClass
         self.RegisteredWeaponData[weaponData.id] = weaponData
-        self:applyWeaponDataToWeaponClass(weaponData, true, 0)
+        self:ApplyWeaponDataToWeaponClass(weaponData, true, 0)
         self.PrimaryWeapons[#self.PrimaryWeapons + 1] = weaponData
     end
 end
@@ -125,16 +125,16 @@ function GM:RegisterSecondaryWeapon(weaponData)
     if checkWeaponExists(weaponData.weaponClass) then
         weaponData.id = weaponData.id or weaponData.weaponClass
         self.RegisteredWeaponData[weaponData.id] = weaponData
-        self:applyWeaponDataToWeaponClass(weaponData, false, 1)
+        self:ApplyWeaponDataToWeaponClass(weaponData, false, 1)
         self.SecondaryWeapons[#self.SecondaryWeapons + 1] = weaponData
     end
 end
 
-function GM:registerTertiaryWeapon(weaponData)
+function GM:RegisterTertiaryWeapon(weaponData)
     if checkWeaponExists(weaponData.weaponClass) then
         weaponData.id = weaponData.id or weaponData.weaponClass
         self.RegisteredWeaponData[weaponData.id] = weaponData
-        self:applyWeaponDataToWeaponClass(weaponData, false, 2)
+        self:ApplyWeaponDataToWeaponClass(weaponData, false, 2)
         weapons.GetStored(weaponData.weaponClass).isTertiaryWeapon = true
         self.TertiaryWeapons[#self.TertiaryWeapons + 1] = weaponData
     end
@@ -244,19 +244,15 @@ function GM:GetAmmoPen(caliber, penMod)
     return math.Round(pen * penMod)
 end
 
--- this function gets called in InitPostEntity for both the client and server, this is where we register a bunch of stuff
-function GM:postInitEntity()
-
-    -- KNIFE, give it 0 weight and make it undroppable (can't shoot out of hand, can't drop when dying)
-    local wepObj = weapons.GetStored(self.KnifeWeaponClass)
-    wepObj.weight = 0
-    wepObj.dropsDisabled = true
-    wepObj.isKnife = true
-    wepObj.pointCost = 0
+function GM:LoadWeaponSets()
     -- Load all allowed weapon packs and registered ammo
+    -- there's probably a better way to do this...
     if GetConVar("gc_use_cw2_weps"):GetBool() then
         if GetConVar("gc_use_cw2_spy"):GetBool() then
             self:RegisterWepsCW2Base()
+        end
+        if GetConVar("gc_use_cw2_spy_nades"):GetBool() then
+            self:RegisterWepsCW2BaseThrowables()
         end
         if GetConVar("gc_use_cw2_khris"):GetBool() then
             self:RegisterWepsCW2Khris()
@@ -279,8 +275,45 @@ function GM:postInitEntity()
         if GetConVar("gc_use_cw2_soap"):GetBool() then
             self:RegisterWepsCW2Soap()
         end
+        if GetConVar("gc_use_cw2_fas2"):GetBool() then
+            self:RegisterWepsCW2FAS2()
+        end
+        self:RegisterAttsCW2KK()
+        self:RegisterAttsCW2FAS2()
     end
-    self:RegisterAttsCW2KK()
+    if GetConVar("gc_use_arccw_weps"):GetBool() then
+        print("hehe")
+    end
+end
+
+-- this function gets called in InitPostEntity for both the client and server, this is where we register a bunch of stuff
+function GM:postInitEntity()
+
+    -- KNIFE, give it 0 weight and make it undroppable (can't shoot out of hand, can't drop when dying)
+    local wepObj = weapons.GetStored(self.KnifeWeaponClass)
+    wepObj.weight = 0
+    wepObj.dropsDisabled = true
+    wepObj.isKnife = true
+    wepObj.pointCost = 0
+
+    if self.RemoveAttachments then
+        -- remove M203 from all weapons
+        local wepList = weapons.GetList()
+
+        for i = 1, #wepList do
+            local className = wepList[i].ClassName
+            local data = weapons.GetStored(className)
+
+            if weapons.Get(className).CW20Weapon and data.Attachments then
+                for k, v in pairs(data.Attachments) do
+                    for idx = 1, #self.RemoveAttachments do
+                        table.Exclude(v.atts, self.RemoveAttachments[idx])
+                    end
+                end
+            end
+        end
+    end
+    self:LoadWeaponSets()
     self:RegisterCalibers()
     hook.Call("GroundControlPostInitEntity", nil)
 

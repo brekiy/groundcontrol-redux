@@ -44,7 +44,7 @@ function ENT:drawHUD()
     local ourTeam = ply:Team()
     local sameTeam = ourTeam == self:GetCapturerTeam()
     local r, g, b, a = self:GetProgressColor(sameTeam)
-    local percentage = self:GetCaptureProgress() / 100
+    local percentage = self:GetCaptureProgress() / self.CAPTURE_TIME
 
     if percentage > 0 then
         surface.SetDrawColor(r, g, b, a)
@@ -56,7 +56,8 @@ function ENT:drawHUD()
     white.a = 255
     black.a = 255
 
-    draw.ShadowText(self.PointName[self:GetPointID()], "CW_HUD24", hudPos + self.topSize * 0.5, 50 + self.topSize * 0.5, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.ShadowText(self.PointName[self:GetPointID()], "CW_HUD24",
+            hudPos + self.topSize * 0.5, 50 + self.topSize * 0.5, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     local pos = self:GetPos()
     pos.z = pos.z + 32
@@ -79,7 +80,8 @@ function ENT:drawHUD()
 
         white.a = 255 * alpha
         black.a = 255 * alpha
-        draw.ShadowText("Capture " .. self.PointName[self:GetPointID()], "CW_HUD14", coords.x, coords.y - 16, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.ShadowText("Capture " .. self.PointName[self:GetPointID()], "CW_HUD14",
+                coords.x, coords.y - 16, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         white.a = 255
         black.a = 255
     end
@@ -104,16 +106,17 @@ function ENT:drawHUD()
 
         surface.SetDrawColor(r, g, b, 255)
         surface.DrawRect(midX + 2 - self.capBarWidth * 0.5, midY + 17, (self.capBarWidth - 4) * percentage, self.capBarHeight - 4)
-
-        draw.ShadowText("SPEED: x" .. math.Round(self:GetCaptureSpeed(), 2), "CW_HUD24", midX, midY + self.capBarHeight + draw.GetFontHeight("CW_HUD24") + 5, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        if self:GetCaptureSpeed() != 0 then
+            draw.ShadowText("SPEED: x" .. math.Round(self:GetCaptureSpeed(), 2), "CW_HUD24",
+                    midX, midY + self.capBarHeight + draw.GetFontHeight("CW_HUD24") + 5, white, black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
     end
-
-    GAMEMODE.HUD_COLORS.white.a, GAMEMODE.HUD_COLORS.black.a = 255, 255
 
     surface.SetDrawColor(0, 0, 0, 150)
     surface.DrawRect(midX - 50, 10, 100, 30)
 
-    draw.ShadowText(string.ToMinutesSeconds(math.max(self:GetWaveTimeLimit() - CurTime(), 0)), "CW_HUD28", midX, 25, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.ShadowText(string.ToMinutesSeconds(math.max(self:GetWaveTimeLimit() - CurTime(), 0)), "CW_HUD28",
+            midX, 25, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     local ourTickets, enemyTickets = 0, 0
 
@@ -145,6 +148,8 @@ function ENT:drawHUD()
     surface.SetDrawColor(255, 117, 99, 255)
     surface.DrawRect(midX + 59, baseY + 2, enemyPerc, 16)
 
-    draw.ShadowText("US: " .. ourTickets, "CW_HUD20", midX - 60, 25, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
-    draw.ShadowText("ENEMY: " .. enemyTickets, "CW_HUD20", midX + 62, 25, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.ShadowText("US: " .. ourTickets, "CW_HUD20", midX - 60, 25,
+            GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black,1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    draw.ShadowText("ENEMY: " .. enemyTickets, "CW_HUD20", midX + 62, 25,
+            GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end

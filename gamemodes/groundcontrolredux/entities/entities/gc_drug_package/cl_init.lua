@@ -18,7 +18,7 @@ function ENT:Think()
     self.inRange = LocalPlayer():GetPos():Distance(self:GetPos()) <= self.displayDistance
 end
 
-local white, black = Color(255, 255, 255, 255), Color(0, 0, 0, 255)
+local white, black = GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black
 local displayFont = "CW_HUD14"
 local horizontalBoundary, verticalBoundary = 75, 75
 local point = surface.GetTextureID("ground_control/hud/point_of_interest")

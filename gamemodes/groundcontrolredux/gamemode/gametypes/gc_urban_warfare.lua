@@ -15,7 +15,7 @@ function GM:RegisterUrbanWarfare()
     urbanwarfare.waveWinReward = {cash = 50, exp = 50}
 
     if SERVER then
-        urbanwarfare.mapRotation = GM:GetMapRotation("urbanwarfare_maps")
+        urbanwarfare.mapRotation = GM:GetMapRotation("urban_warfare_maps")
     end
 
     function urbanwarfare:AssignPointID(point)
@@ -63,6 +63,7 @@ function GM:RegisterUrbanWarfare()
         local bypass = false
         local players = team.GetPlayers(teamID)
 
+        -- get the number of living players on our team if the enemy team captured the point
         if capturer and capturer != teamID then
             local alive = 0
 
@@ -72,24 +73,28 @@ function GM:RegisterUrbanWarfare()
                 end
             end
 
-            -- if the enemy team captured the point and noone died on the loser team, then that teams will lose tickets equivalent to the amount of players in their team
+            -- if our entire team was alive and the point was captured, we lose tickets equivalent to the total team size
+            -- penalizes teams that let the point get capped uncontested
             bypass = alive == #players
         end
 
         local lostTickets = 0
-
-        for key, ply in ipairs(players) do
-            if !isFree or bypass then
-                self.capturePoint:drainTicket(teamID)
-                lostTickets = lostTickets + 1
-            end
-
-            if !ply:Alive() then
-                ply:Spawn()
-            end
-
-            if capturer == teamID then
-                ply:AddCurrency("WAVE_WON", self.waveWinReward.cash, self.waveWinReward.exp)
+        local teamHasTickets = self.capturePoint:GetTeamTickets(teamID) > 0
+        if bypass then
+            -- skip the spawn loop and just drain all tickets, we lost the point and everyone's alive
+            lostTickets = #players
+        else
+            for key, ply in ipairs(players) do
+                if teamHasTickets and !ply:Alive() then
+                    ply:Spawn()
+                    if !isFree then
+                        self.capturePoint:drainTicket(teamID)
+                        lostTickets = lostTickets + 1
+                    end
+                end
+                if capturer == teamID then
+                    ply:AddCurrency("WAVE_WON", self.waveWinReward.cash, self.waveWinReward.exp)
+                end
             end
         end
 

@@ -178,7 +178,7 @@ function GM:RegisterWepsCW2KK()
 
     local m9 = {
         weaponClass = "cw_kk_ins2_m9",
-        weight = 0.970,
+        weight = 0.97,
         pointCost = 7,
     }
     self:RegisterSecondaryWeapon(m9)

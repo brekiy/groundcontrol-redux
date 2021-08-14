@@ -59,6 +59,13 @@ function GM:RegisterWepsCW2Base()
     }
     GAMEMODE:RegisterPrimaryWeapon(vss)
 
+    local famas = {
+        weaponClass = "cw_famasg2_official",
+        weight = 3.8,
+        pointCost = 27
+    }
+    GAMEMODE:RegisterPrimaryWeapon(famas)
+
     -- sub-machine guns/light carbines
     local mp5 = {
         weaponClass = "cw_mp5",
@@ -90,6 +97,14 @@ function GM:RegisterWepsCW2Base()
         penMod = 1.1
     }
     GAMEMODE:RegisterPrimaryWeapon(mp9)
+
+    local mp7 = {
+        weaponClass = "cw_mp7_official",
+        weight = 1.9,
+        pointCost = 19,
+    }
+
+    self:RegisterPrimaryWeapon(mp7)
 
     -- heavy weapons
     local m249 = {
@@ -131,17 +146,26 @@ function GM:RegisterWepsCW2Base()
 
     -- sniper rifles
     local l115 = {
-        -- weaponClass = "gc_cw_l115",
         weaponClass = "cw_l115",
         weight = 6.5,
         pointCost = 38
     }
     GAMEMODE:RegisterPrimaryWeapon(l115)
 
+    local svd = {
+        weaponClass = "cw_svd_official",
+        weight = 4,
+        pointCost = 36,
+        penMod = 1.25
+    }
+
+    self:RegisterPrimaryWeapon(svd)
+
+
     -- handguns
     local deagle = {
         weaponClass = "cw_deagle",
-        weight = 1.998,
+        weight = 2,
         pointCost = 10
     }
     GAMEMODE:RegisterSecondaryWeapon(deagle)
@@ -180,51 +204,4 @@ function GM:RegisterWepsCW2Base()
         pointCost = 4
     }
     GAMEMODE:RegisterSecondaryWeapon(makarov)
-
-    local flash = {
-        weaponClass = "gc_cw_flash_grenade",
-        weight = 0.5,
-        startAmmo = 2,
-        hideMagIcon = true, -- whether the mag icon and text should be hidden in the UI for this weapon
-        description = {
-            {t = "Flashbang", font = "CW_HUD24", c = Color(255, 255, 255, 255)},
-            {t = "Blinds nearby enemies facing the grenade upon detonation.", font = "CW_HUD20", c = Color(255, 255, 255, 255)},
-            {t = "2x grenades.", font = "CW_HUD20", c = Color(255, 255, 255, 255)}
-        },
-        pointCost = 3
-    }
-    self:registerTertiaryWeapon(flash)
-
-    local smoke = {
-        weaponClass = "gc_cw_smoke_grenade",
-        weight = 0.5,
-        startAmmo = 2,
-        hideMagIcon = true,
-        description = {
-            {t = "Smoke grenade", font = "CW_HUD24", c = Color(255, 255, 255, 255)},
-            {t = "Provides a smoke screen to deter enemies from advancing or pushing through.", font = "CW_HUD20", c = Color(255, 255, 255, 255)},
-            {t = "2x grenades.", font = "CW_HUD20", c = Color(255, 255, 255, 255)}
-        },
-        pointCost = 3
-    }
-    self:registerTertiaryWeapon(smoke)
-
-    local spareGrenade = {
-        weaponClass = "gc_cw_frag_grenade",
-        weight = 0.5,
-        amountToGive = 1,
-        skipWeaponGive = true,
-        hideMagIcon = true,
-        description = {
-            {t = "Spare frag grenade", font = "CW_HUD24", c = Color(255, 255, 255, 255)},
-            {t = "Allows for a second frag grenade to be thrown.", font = "CW_HUD20", c = Color(255, 255, 255, 255)}
-        },
-        pointCost = 5
-    }
-
-    function spareGrenade:postGive(ply)
-        ply:GiveAmmo(self.amountToGive, "Frag Grenades")
-    end
-
-    self:registerTertiaryWeapon(spareGrenade)
 end

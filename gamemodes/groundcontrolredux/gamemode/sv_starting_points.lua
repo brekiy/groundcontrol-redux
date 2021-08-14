@@ -1,7 +1,6 @@
 GM.StartingPoints = GM.StartingPoints or {}
 GM.ValidStartingPoints = GM.ValidStartingPoints or {}
 GM.LastPickedStartPoint = {}
-GM.InverseStartingPoints = {} -- key is map name, value is bool
 
 GM.TeamRedFallbackSpawnPoints = {"info_player_counterterrorist", "info_player_rebel"}
 GM.TeamBlueFallbackSpawnPoints = {"info_player_terrorist", "info_player_combine"}
@@ -110,11 +109,6 @@ function GM:prepareSpawnPointData(position, angle)
     return {pos = position, ang = angle, used = false}
 end
 
--- call this function to invert spawnpoints for the teams
-function GM:registerInverseMapSpawnpoints(mapName)
-    self.InverseStartingPoints[mapName] = true
-end
-
 function GM:positionPlayerOnMap(ply)
     local pointData = self:pickValidStartingPoint(ply)
 
@@ -133,11 +127,7 @@ function GM:pickValidStartingPoint(ply)
     end
 
     if self.curGametype.invertSpawnpoints then
-        team = self.OpposingTeam[team]
-    end
-
-    if self.InverseStartingPoints[self.CurMap] then
-        team = self.OpposingTeam[team]
+        team = GM.OpposingTeam[team]
     end
 
     local pointTable = self.ValidStartingPoints[team]

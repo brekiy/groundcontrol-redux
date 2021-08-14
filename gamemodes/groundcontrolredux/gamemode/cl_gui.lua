@@ -396,7 +396,12 @@ function gcWeaponPanel:SetWeapon(weaponTable, id)
             self:SetDistance()
         end
         self.IconLetter = weaponData.IconLetter
-        self.SelectIcon = weaponData.SelectIcon
+        if weaponData.SelectIcon then
+            self.SelectIcon = weaponData.SelectIcon
+        else
+            -- See if there's an appropriate icon
+            self.SelectIcon = surface.GetTextureID("vgui/inventory/" .. weaponData.ClassName)
+        end
     end
 end
 
@@ -513,13 +518,9 @@ function gcWeaponPanel:PaintOver()
         if self.IconLetter then
             draw.ShadowText(self.IconLetter, "GroundControl_SelectIcons", w * 0.1, h * 0.1, GAMEMODE.HUD_COLORS.white, backColor, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
         elseif self.SelectIcon then
-            -- surface.SetDrawColor(0, 0, 0, 255)
             surface.SetDrawColor(255, 255, 255, 255)
             surface.SetTexture(self.SelectIcon)
             surface.DrawTexturedRect(w * 0.125, h * 0.125, w * 0.75, h * 0.75)
-
-            -- surface.SetDrawColor(255, 255, 255, 255)
-            -- surface.DrawTexturedRect(w * 0.2, h * 0.15, 100, 64)
         end
     end
 
@@ -749,7 +750,12 @@ function curWeaponPanel:UpdateWeapon(wepId)
     end
 
     self.IconLetter = self.weaponData.weaponObject.IconLetter
-    self.SelectIcon = self.weaponData.weaponObject.SelectIcon
+    if self.weaponData.weaponObject.SelectIcon then
+        self.SelectIcon = self.weaponData.weaponObject.SelectIcon
+    else
+        -- See if there's an appropriate icon
+        self.SelectIcon = surface.GetTextureID("vgui/inventory/" .. self.weaponData.weaponObject.ClassName)
+    end
     self.weaponStats:SetWeapon(self.weaponID, self.isPrimary)
     self.acknowledged = false
 
@@ -985,7 +991,7 @@ function weightBar:Paint()
 
     local ply = LocalPlayer()
     local curWeight = GAMEMODE:CalculateImaginaryWeight(ply)
-    local weightPercentage = curWeight / GAMEMODE.MAX_WEIGHT
+    local weightPercentage = math.min(1, curWeight / GAMEMODE.MAX_WEIGHT)
 
     surface.SetDrawColor(213, 213, 213, 255)
     surface.DrawRect(2, 2, (w - 4) * weightPercentage, h - 4)
@@ -2363,7 +2369,7 @@ function gcKillerDisplay:Init()
 end
 
 -- should be called after setting the size
-function gcKillerDisplay:SetKillData(killer, inflictorData)
+function gcKillerDisplay:SetKillData(killer, inflictorData, wasBleeding)
     self.killer = killer
     self.playerText = killer:Nick()
     self.killerText = "Unknown death cause"
@@ -2372,7 +2378,7 @@ function gcKillerDisplay:SetKillData(killer, inflictorData)
         local lply = LocalPlayer()
 
         if killer == lply then
-            if self.bleedInflictor then
+            if wasBleeding then
                 self.killerText = "Bled out!"
             else
                 self.killerText = "Suicide!"

@@ -90,7 +90,7 @@ function GM:RegisterWepsCW2KKBTK()
         weaponClass = "cw_kk_ins2_nam_svd",
         weight = 4,
         pointCost = 36,
-        penMod = 1.25
+        penMod = 1.1
     }
     self:RegisterPrimaryWeapon(svd)
 

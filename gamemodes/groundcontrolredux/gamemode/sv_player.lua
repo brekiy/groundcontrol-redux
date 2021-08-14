@@ -12,7 +12,7 @@ CreateConVar("gc_proximity_voicechat_distance", 256, {FCVAR_ARCHIVE, FCVAR_NOTIF
 CreateConVar("gc_proximity_voicechat_global", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- if set to 1, everybody, including your team mates and your enemies, will only hear each other within the distance specified by gc_proximity_voicechat_distance
 CreateConVar("gc_proximity_voicechat_directional", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- if set to 1, voice chat will be directional 3d sound (as described in the gmod wiki)
 CreateConVar("gc_invincibility_time_period", 3, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- how long should the player be invincible for after spawning (for anti spawn killing in gametypes like urban warfare)
-CreateConVar("gc_team_damage", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- how long should the player be invincible for after spawning (for anti spawn killing in gametypes like urban warfare)
+CreateConVar("gc_team_damage", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- friendly fire enable
 
 GM:RegisterAutoUpdateConVar("gc_proximity_voicechat", function(cvarName, oldValue, newValue)
     newValue = tonumber(newValue)
@@ -79,6 +79,12 @@ end
 
 function GM:PlayerAuthed(ply, steamID, uniqueID)
     self:verifyPunishment(ply)
+    self:updateCurrentPlayerList()
+end
+
+function GM:PlayerConnect(name, ip)
+    -- cover bots joining
+    self:updateCurrentPlayerList()
 end
 
 local ZeroVector = Vector(0, 0, 0)
@@ -223,6 +229,7 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
         net.Start("GC_KILLED_BY")
         net.WriteEntity(attacker)
         net.WriteString(inflictor:GetClass())
+        net.WriteBool(ply.bleedInflictor != nil)
         net.Send(ply)
 
         local markedSpots = self.MarkedSpots[attacker:Team()]
@@ -257,7 +264,7 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
 end
 
 function GM:disableCustomizationMenu()
-    for key, ply in ipairs(player.GetAll()) do
+    for key, ply in ipairs(self.CurrentPlayerList) do
         local wep = ply:GetActiveWeapon()
 
         if IsValid(wep) and wep.CW20Weapon and wep.dt.State == CW_CUSTOMIZE then
@@ -361,20 +368,27 @@ GM.DropPrimarySustainedDamage = 40
 function GM:ScalePlayerDamage(ply, hitGroup, dmgInfo)
     local attacker = dmgInfo:GetAttacker()
     local damage = dmgInfo:GetDamage()
-    local differentTeam
+    local differentTeam = nil
+    local attackerIsValid = IsValid(attacker)
 
-    if attacker:IsPlayer() then
+    if attackerIsValid and attacker:IsPlayer() then
         differentTeam = attacker:Team() != ply:Team()
     end
 
+    -- player is still invincible after spawning, remove any damage done and don't do anything
     if attacker != ply and attacker:IsPlayer() and CurTime() < ply.invincibilityPeriod then
-        -- player is still invincible after spawning, remove any damage done and don't do anything
         dmgInfo:ScaleDamage(0)
         return
     end
 
-    if !differentTeam and ((self.noTeamDamage and attacker != ply) or self.RoundOver) then -- disable all team damage if the server is configged that way
-        dmgInfo:ScaleDamage(0)
+    -- disable all team damage if the server is configured that way
+    if attackerIsValid and !differentTeam and attacker != ply then
+        if self.noTeamDamage or self.RoundOver then
+            dmgInfo:ScaleDamage(0)
+        else
+            dmgInfo:ScaleDamage(GetConVar("gc_team_damage_scale"):GetFloat())
+        end
+
         return
     end
 
@@ -457,7 +471,7 @@ function GM:PlayerDeathThink(ply)
     if self.curGametype.canSpawn then
         return self.curGametype:canSpawn(ply)
     else
-        if #player.GetAll() < 2 and (ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_JUMP)) then
+        if #self.CurrentPlayerList < 2 and (ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_JUMP)) then
             ply:Spawn()
             return true
         end
@@ -476,7 +490,6 @@ function GM:PlayerDeathThink(ply)
 end
 
 function GM:PlayerDisconnected(ply)
-    --self:CheckRoundOverPossibility()
     if self.curGametype.PlayerDisconnected then
         self.curGametype:PlayerDisconnected(ply)
     end
@@ -488,24 +501,44 @@ function GM:PlayerDisconnected(ply)
             plyObj:attemptSpectate()
         end
     end
+
+    self:updateCurrentPlayerList(ply)
 end
 
 function PLAYER:crippleArm()
-    local wep = self:GetActiveWeapon()
+    if self.crippledArm then
+        return
+    end
 
-    if IsValid(wep) and wep.CW20Weapon and wep.isPrimaryWeapon and !wep.dropsDisabled then
-        self:dropWeaponNicely(wep, VectorRand() * 20, VectorRand() * 200)
-        self:SendTip("DROPPED_WEAPON")
+    local wepDropped = false
 
-        -- only send the status effect if we weren't crippled before
-        if !self.crippledArm then
-            self:SetStatusEffect("crippled_arm", true)
+    -- iterate through all the weapons and make the person drop his primary wep when he gets creyoppled
+    for key, wep in ipairs(self:GetWeapons()) do
+        if IsValid(wep) and wep.CW20Weapon and wep.isPrimaryWeapon and !wep.dropsDisabled then
+            self:dropWeaponNicely(wep, VectorRand() * 20, VectorRand() * 200)
+            wepDropped = true
         end
     end
 
+    if wepDropped then
+        self:SendTip("DROPPED_WEAPON")
+    end
+
+    self:SetStatusEffect("crippled_arm", true)
     self.crippledArm = true
     self:SetWeight(self:CalculateWeight())
 end
+
+function PLAYER:uncrippleArm()
+    if self.crippledArm then
+        self.crippledArm = false
+        self:SetStatusEffect("crippled_arm", false)
+        return true
+    end
+
+    return false
+end
+
 
 function PLAYER:dropWeaponNicely(wepObj, velocity, angleVelocity) -- velocity and angleVelocity is optional
     wepObj = wepObj or self:GetActiveWeapon()
@@ -705,3 +738,13 @@ end)
 hook.Add("CW20_PreventCWWeaponPickup", "GC_CW20_PreventCWWeaponPickup", function(wepObj, ply)
     return !ply.canPickupWeapon or (ply.sustainedArmDamage >= GAMEMODE.DropPrimarySustainedDamage and weapons.GetStored(wepObj:GetWepClass()).isPrimaryWeapon)
 end)
+
+function GM:updateCurrentPlayerList(exclude)
+    self.CurrentPlayerList = player.GetAll()
+
+    if exclude then
+        table.Exclude(self.CurrentPlayerList, exclude)
+    end
+    print("[GROUND CONTROL REDUX] Updated player list:")
+    PrintTable(self.CurrentPlayerList)
+end
