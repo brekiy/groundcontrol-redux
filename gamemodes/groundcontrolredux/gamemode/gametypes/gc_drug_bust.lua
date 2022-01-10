@@ -251,9 +251,9 @@ function GM:RegisterDrugBust()
             local players = player.GetAll()
             local gearGuys = math.max(math.floor(#players / self.blueGuyPer), 1) -- aka the dudes who get the cool gear
             if self.timeLimitMap[self.CurMap] then
-                GAMEMODE:setTimeLimit(self.timeLimitMap[self.CurMap])
+                GAMEMODE:SetTimeLimit(self.timeLimitMap[self.CurMap])
             else
-                GAMEMODE:setTimeLimit(self.timeLimit)
+                GAMEMODE:SetTimeLimit(self.timeLimit)
             end
             self.stopCountdown = false
 
