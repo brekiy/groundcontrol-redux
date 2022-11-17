@@ -235,9 +235,9 @@ function GM:PlayerBindPress(ply, bind, pressed)
                 RunConsoleCommand("gc_spectate_next", false)
             -- elseif bind == "+attack2" then
             --     RunConsoleCommand("gc_spectate_next", true)
-            elseif bind == "+jump" then
-                RunConsoleCommand("gc_spectate_perspective")
-            end
+            -- elseif bind == "+jump" then
+            --     RunConsoleCommand("gc_spectate_perspective")
+            -- end
         end
 
         local wep = ply:GetActiveWeapon()
