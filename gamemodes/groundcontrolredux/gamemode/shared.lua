@@ -1,7 +1,7 @@
 include("sh_sounds.lua")
 include("sh_convars.lua")
 
-GM.Version = "v2.0.0"
+GM.Version = "v2.1.5"
 
 GM.Name     = "Ground Control Redux"
 GM.Author     = "brekiy"
