@@ -3,138 +3,94 @@ AddCSLuaFile()
 function GM:RegisterAttsCW2KK()
     -- Attachments (only register stuff that isn't going to be left at default 2k price)
     -- idk why but knifekitty made these colorways reduce recoil lol
-    local kk_ins2_cstm_glock_atts = {
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_cstm_glock_atts",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_cstm_glock_atts)
-
-    local kk_ins2_cstm_scar_skin = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_cstm_scar_skin",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_cstm_scar_skin)
-
-    local kk_ins2_aimpoint = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_aimpoint",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_aimpoint)
-
-    local kk_ins2_anpeq15 = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_anpeq15",
         price = 1500,
-    }
-    self:RegisterAttachment(kk_ins2_anpeq15)
-
-    local kk_ins2_bipod = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_bipod",
         price = 1500,
-    }
-    self:RegisterAttachment(kk_ins2_bipod)
-
-    local kk_ins2_bs = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_bs",
         price = 0,
-    }
-    self:RegisterAttachment(kk_ins2_bs)
-
-    local kk_ins2_cstm_acog = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_cstm_acog",
         price = 1500,
-    }
-    self:RegisterAttachment(kk_ins2_cstm_acog)
-
-    local kk_ins2_cstm_barska = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_cstm_barska",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_cstm_barska)
-
-    local kk_ins2_cstm_cmore = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_cstm_cmore",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_cstm_cmore)
-
-    local kk_ins2_cstm_compm4s = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_cstm_compm4s",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_cstm_compm4s)
-
-    local kk_ins2_cstm_eotechxps = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_cstm_eotechxps",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_cstm_eotechxps)
-
-    local kk_ins2_cstm_microt1 = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_cstm_microt1",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_cstm_microt1)
-
-    local kk_ins2_cstm_pgo7 = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_cstm_pgo7",
         price = 1250,
-    }
-    self:RegisterAttachment(kk_ins2_cstm_pgo7)
-
-    local kk_ins2_cstm_sureshot = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_cstm_sureshot",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_cstm_sureshot)
-
-    local kk_ins2_cstm_susat = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_cstm_susat",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_cstm_susat)
-
-    local kk_ins2_elcan = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_elcan",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_elcan)
-
-    local kk_ins2_eotech = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_eotech",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_eotech)
-
-    -- why bother with a light? gamemode gives you one... unless...
-    local kk_ins2_flashlight_v6 = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_flashlight_v6",
         price = 0,
-    }
-    self:RegisterAttachment(kk_ins2_flashlight_v6)
-
-    local kk_ins2_fl_kombo = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_fl_kombo",
         price = 1500,
-    }
-    self:RegisterAttachment(kk_ins2_fl_kombo)
-
-    local kk_ins2_fnfal_skins = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_fnfal_skins",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_fnfal_skins)
-
-    local kk_ins2_galil_sar = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_galil_sar",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_galil_sar)
-
-    local kk_ins2_gl_gp25 = {
+    })
+    self:RegisterAttachment({
         attachmentName = "kk_ins2_gl_gp25",
         price = 1000,
-    }
-    self:RegisterAttachment(kk_ins2_gl_gp25)
+    })
 
     local kk_ins2_gl_m203 = {
         attachmentName = "kk_ins2_gl_m203",
