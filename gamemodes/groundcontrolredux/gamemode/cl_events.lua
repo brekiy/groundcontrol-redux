@@ -1,4 +1,5 @@
 GM.EventElements = {}
+GM.eventSoundTime = 0
 
 function GM:DisplayEvent(ply, data)
     local id = data.eventId
@@ -7,7 +8,7 @@ function GM:DisplayEvent(ply, data)
 
     local eventData = self:GetEventById(id)
     event.topText = eventData.display
-    event.displayTime = 2
+    event.displayTime = 2 + math.min(3, #self.EventElements) * 0.5
     event.alpha = 0
     event.yOffset = 50
     event.positive = add
