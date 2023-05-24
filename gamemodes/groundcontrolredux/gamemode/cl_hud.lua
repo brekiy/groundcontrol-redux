@@ -7,7 +7,6 @@ local noDraw = {
     CHudDamageIndicator = true
 }
 
--- TODO: custom hud?
 function GM:HUDShouldDraw(n)
     if noDraw[n] then
         return false
@@ -38,7 +37,7 @@ GM.HUD_COLORS = {
     limeYellow = Color(220, 255, 165, 255),
     brass = Color(181, 166, 66, 255),
     ecru = Color(194, 178, 128, 255),
-    bittersweet = Color(255, 100, 100, 100) -- a crayola orange hue apparently
+    bittersweet = Color(255, 100, 100, 100)
 }
 
 GM.Vignette = surface.GetTextureID("ground_control/hud/vignette")
@@ -46,15 +45,25 @@ GM.MarkerTexture = surface.GetTextureID("ground_control/hud/marker")
 GM.LoadoutAvailableTexture = surface.GetTextureID("ground_control/hud/purchase_available")
 GM.WholeScreenAlpha = 0
 GM.teamMateMarkerDisplayDistance = 256
+GM.markerTime = 0
+GM.markerSpeed = 6
 
-local traceData = {}
+GM.traceResultOutput = {}
+
+local traceData = { output = GM.traceResultOutput }
 -- ignores transparent stuff
 traceData.mask = bit.bor(CONTENTS_SOLID, CONTENTS_OPAQUE, CONTENTS_MOVEABLE, CONTENTS_DEBRIS, CONTENTS_MONSTER, CONTENTS_HITBOX, 402653442, CONTENTS_WATER)
 
-GM.BaseHUDX = 50
+GM.BaseHUDX = 80
+GM.eventElemDisplayCount = 6
+GM.eventSoundDelay = 1
+GM.teamPlayers = {}
+
+local gradient = surface.GetTextureID("cw2/gui/gradient")
 
 function GM:HUDPaint()
     local ply = LocalPlayer()
+    local wep = ply:GetActiveWeapon()
     local scrW, scrH = ScrW(), ScrH()
 
     local healthText = nil
@@ -77,13 +86,13 @@ function GM:HUDPaint()
         local targetAlpha = 0
 
         if alive and ply.bleeding then
-            if curTime > bleedData.lastPulse then
-                bleedData.lastPulse = curTime + bleedData.pulseInterval
+            if bleedData.lastPulse > math.pi * 2 then
+                bleedData.lastPulse = 0
             else
-                if curTime + bleedData.pulseInterval * 0.66 > bleedData.lastPulse then
-                    targetAlpha = bleedData.targetAlpha
-                end
+                bleedData.lastPulse = bleedData.lastPulse + frameTime * (bleedData.pulseSpeed + ply.bleedGrade * bleedData.pulsePerGrade)
             end
+
+            targetAlpha = bleedData.targetAlpha + bleedData.alphaPerGrade * ply.bleedGrade * math.abs(math.sin(bleedData.lastPulse))
         end
 
         bleedData.alpha = math.Approach(bleedData.alpha, targetAlpha, frameTime * bleedData.approachRate)
@@ -98,64 +107,90 @@ function GM:HUDPaint()
     local midX, midY = scrW * 0.5, scrH * 0.5
 
     if alive then
-        healthText = "HEALTH: " .. math.max(0, ply:Health()) .. "%"
+        healthText = math.max(0, ply:Health()) .. "% HEALTH"
 
         surface.SetFont(self.HealthDisplayFont)
         local xSize, ySize = surface.GetTextSize(healthText)
 
         surface.SetFont(self.BandageDisplayFont)
-        local bandageText = "BANDAGES: x" .. (ply.bandages or 0)
+        local bandageText = (ply.bandages or 0) .. "x BANDAGES"
         local bandageX = surface.GetTextSize(bandageText)
 
-        local staminaText = "STAMINA: " .. (math.Round(ply.stamina, 0)) .. "%"
+        local staminaText = (math.Round(ply.stamina, 0)) .. "% STAMINA"
         local staminaX = surface.GetTextSize(staminaText)
 
         xSize = math.max(bandageX, xSize, staminaX) -- get the biggest text size for the semi-transparent rectangle
 
-        -- local overallTextHeight = ySize - 7 + 32
+        local bandageOff = 32
+        local staminaOff = 64
+        local baseOffset = 82
+        local textX = self.BaseHUDX + 5
         local overallTextHeight = ySize - 7 + 64
         surface.SetDrawColor(0, 0, 0, 150)
-        surface.DrawRect(50, scrH - 100 - overallTextHeight, xSize + 10, ySize - 7 + 64) -- original 32
+        local underW = xSize + 10
+        -- surface.DrawRect(50, scrH - 100 - overallTextHeight, xSize + 10, ySize - 7 + 64) -- original 32
+        surface.DrawRect(scrW - self.BaseHUDX - underW, scrH - 100 - overallTextHeight, xSize + 10, overallTextHeight)
 
-        draw.ShadowText(healthText, self.HealthDisplayFont, 55, scrH - 82 - overallTextHeight, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(bandageText, self.BandageDisplayFont, 55, scrH - 82 + 32 - overallTextHeight, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-        draw.ShadowText(staminaText, self.BandageDisplayFont, 55, scrH - 82 + 64 - overallTextHeight, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.ShadowText(healthText, self.HealthDisplayFont, scrW - textX, scrH - baseOffset - overallTextHeight, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_RIGHTT, TEXT_ALIGN_CENTER)
+        draw.ShadowText(bandageText, self.BandageDisplayFont, scrW - textX, scrH - baseOffset + bandageOff - overallTextHeight, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw.ShadowText(staminaText, self.BandageDisplayFont, scrW - textX, scrH - baseOffset + staminaOff - overallTextHeight, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
-        local offset = 60
+        local baseX = scrW - 145
+        local offset = 90
         local baseY = scrH - 50
-        offset = offset + self:DrawHUDArmor(ply, offset, baseY)
+        baseX = baseX + self:DrawHUDArmor(ply, baseX, baseY)
 
         for key, data in ipairs(ply.gadgets) do
-            local posX, posY = offset, baseY
+            local posX, posY = baseX, baseY
             data:draw(posX, posY)
 
-            offset = offset + key * 60
+            baseX = baseX + key * offset
         end
 
-        local removeIndex = 1
+        if #self.Markers > 0 then
+            local removeIndex = 1
 
-        for i = 1, #self.Markers do
-            local data = self.Markers[removeIndex]
+            local midX, midY = scrW * 0.5, scrH * 0.5
+            local maxXOff, maxYOff = scrW * 0.4, scrH * 0.4
+            local scaledSize = 12
+            local scaledYOff = 16
+            local scaledXOff = 6
+            local scaledXOffText = 3
 
-            if curTime > data.displayTime then
-                table.remove(self.Markers, removeIndex)
+            if self.markerTime > math.pi * 2 then
+                self.markerTime = math.pi
             else
-                local coords = data.position:ToScreen()
+                self.markerTime = self.markerTime + frameTime * self.markerSpeed
+            end
 
-                if coords.visible then
+            local markerValue = math.abs(math.sin(self.markerTime))
+            local markerAlphaValue = 0.5 + 0.5 * markerValue
+            local markerYOffset = markerValue * 6
+            for i = 1, #self.Markers do
+                local data = self.Markers[removeIndex]
+
+                if curTime > data.displayTime then
+                    table.remove(self.Markers, removeIndex)
+                else
+                    local coords = data.position:ToScreen()
+                    local ang = math.atan2(coords.y - midY, coords.x - midX)
+                    local cos, sin = math.cos(ang), math.sin(ang)
+
+                    local cX, cY = math.min(midX + maxXOff, math.max(midX - maxXOff, coords.x)), math.min(scrH - 180, math.max(midY - maxYOff, coords.y))
+
                     local dist = math.Distance(coords.x, coords.y, midX, midY)
-                    local alpha = math.Clamp(dist, 30, 255)
+                    local alpha = math.Clamp(dist, 30 * markerAlphaValue, 255 * markerAlphaValue)
 
                     surface.SetDrawColor(data.color.r, data.color.g, data.color.b, alpha)
                     surface.SetTexture(self.MarkerTexture)
-                    surface.DrawTexturedRect(coords.x - 6, coords.y - 16, 12, 12)
+                    surface.DrawTexturedRect(cX - scaledXOff, cY - scaledYOff - markerYOffset, scaledSize, scaledSize)
 
-                    self.HUD_COLORS.white.a = alpha
-                    self.HUD_COLORS.black.a = alpha
-                    draw.ShadowText(data.text, "CW_HUD14", coords.x - 3, coords.y, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    self.HUDColors.white.a = alpha
+                    self.HUDColors.black.a = alpha
+                    draw.ShadowText(data.text, self.MarkerFont, cX - scaledXOffText, cY, self.HUDColors.white, self.HUDColors.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+                    removeIndex = removeIndex + 1
                 end
-
-                removeIndex = removeIndex + 1
             end
         end
 
@@ -169,54 +204,76 @@ function GM:HUDPaint()
 
     self.tipController:Draw(scrW, scrH)
 
-    if !self:drawVotePanel() or self:DidPlyVote(ply) then
-        self:DrawRadioDisplay(frameTime)
+    if not self:isVoteBlocking() then
+        self:drawRadioDisplay(frameTime)
     end
 
-    local firstElement = self.EventElements[1]
+    self:drawVotePanel()
 
-    if firstElement then
-        if !firstElement.displayed then
-            surface.PlaySound("ground_control/misc/notify.mp3")
-            firstElement.displayed = true
+    local elems = self.EventElements
+    local cnt = #elems
+
+    self.eventSoundTime = math.max(0, self.eventSoundTime - frameTime)
+
+    if cnt > 0 then
+        local iterRange = math.min(self.eventElemDisplayCount, cnt)
+        local rIdx = 1
+        local elemYSpace = _S(20)
+        local textXOff = _S(2)
+
+        for i = 1, iterRange do
+            local yPos = _S(75) + elemYSpace * rIdx
+            local elemData = elems[rIdx]
+
+            if not elemData.displayed then
+                if self.eventSoundTime <= 0 then
+                    surface.PlaySound("ground_control/misc/notify.mp3")
+                    elemData.displayed = true
+                    self.eventSoundTime = self.eventSoundDelay
+                else
+                    elemData.displayed = true
+                end
+            end
         end
-
-        local curAlpha = firstElement.alpha
+        local curAlpha = elemData.alpha
 
         self.HUD_COLORS.white.a = curAlpha * 255
         self.HUD_COLORS.black.a = curAlpha * 255
 
-        draw.ShadowText(firstElement.topText, "CW_HUD20", midX, midY + 100 + firstElement.yOffset, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.ShadowText(elemData.topText, "CW_HUD20", midX - textXOff, midY + yPos + elemData.yOffset, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
-        if firstElement.bottomText then
+        if elemData.bottomText then
             local targetColor = nil
 
-            if firstElement.positive then
+            if elemData.positive then
                 targetColor = self.HUD_COLORS.green
             else
                 targetColor = self.HUD_COLORS.red
             end
 
             targetColor.a = curAlpha * 255
-            draw.ShadowText(firstElement.bottomText, "CW_HUD16", midX, midY + 120 + firstElement.yOffset, targetColor, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.ShadowText(elemData.bottomText, "CW_HUD16", midX + textXOff, midY + yPos + elemData.yOffset, targetColor, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             targetColor.a = 255
+        end
+
+        elemData.yOffset = Lerp(frameTime * 10, elemData.yOffset, 0)
+        elemData.displayTime = elemData.displayTime - frameTime
+
+        if elemData.displayTime <= 0 then
+            elemData.alpha = math.Approach(elemData.alpha, 0, frameTime * 7)
+
+            if elemData.alpha == 0 then
+                table.remove(self.EventElements, 1)
+            else
+                rIdx = rIdx + 1
+            end
+        else
+            elemData.alpha = Lerp(frameTime * 20, elemData.alpha, 1)
+            rIdx = rIdx + 1
         end
 
         self.HUD_COLORS.white.a = 255
         self.HUD_COLORS.black.a = 255
-
-        firstElement.yOffset = Lerp(frameTime * 20, firstElement.yOffset, 0)
-        firstElement.displayTime = firstElement.displayTime - frameTime
-
-        if firstElement.displayTime <= 0 then
-            firstElement.alpha = math.Approach(firstElement.alpha, 0, frameTime * 10)
-
-            if firstElement.alpha == 0 then
-                table.remove(self.EventElements, 1)
-            end
-        else
-            firstElement.alpha = Lerp(frameTime * 20, firstElement.alpha, 1)
-        end
     end
 
     if self.DeadState == 1 then
@@ -231,18 +288,21 @@ function GM:HUDPaint()
     end
 
     if self.DeadState == 3 then
+        local barHeight = 50
         surface.SetDrawColor(0, 0, 0, 255)
-        surface.DrawRect(0, 0, scrW, 50)
-        surface.DrawRect(0, scrH - 50, scrW, 50)
+        surface.DrawRect(0, 0, scrW, barHeight)
+        surface.DrawRect(0, scrH - barHeight, scrW, barHeight)
 
         if IsValid(ply.currentSpectateEntity) then
-            draw.ShadowText("Spectating " .. ply.currentSpectateEntity:Nick(), "CW_HUD20", midX, scrH - 35, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.ShadowText("Spectating " .. ply.currentSpectateEntity:Nick(), self.SpectateFont, midX, scrH - 35, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
 
-        draw.ShadowText(self:getKeyBind(self.TeamSelectionKey) .. " - team selection menu", "CW_HUD24", 5, 55, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.ShadowText(self:getKeyBind(self.LoadoutMenuKey) .. " - loadout menu", "CW_HUD24", 5, 80, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.ShadowText(self:getKeyBind(self.RadioMenuKey) .. " - voice selection menu", "CW_HUD24", 5, 105, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
-        draw.ShadowText(self:getKeyBind("+attack") .. " - next spectate target", "CW_HUD24", 5, 140, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.ShadowText(self:getKeyBind("+attack") .. " - change spectate target", self.DeadFont, midX, ScrH - 15, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        local xOff = 5
+
+        draw.ShadowText(self:getKeyBind(self.TeamSelectionKey) .. " - team selection menu", self.KeyBindsFont, xOff, 55, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.ShadowText(self:getKeyBind(self.LoadoutMenuKey) .. " - loadout menu", self.KeyBindsFont, xOff, 80, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+        draw.ShadowText(self:getKeyBind(self.RadioMenuKey) .. " - voice selection menu", self.KeyBindsFont, xOff, 105, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
         -- draw.ShadowText(self:getKeyBind("+attack2") .. " - previous spectate target", "CW_HUD24", 5, 165, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
         -- draw.ShadowText(self:getKeyBind("+jump") .. " - switch spectate perspective", "CW_HUD24", 5, 190, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
@@ -261,11 +321,10 @@ function GM:HUDPaint()
 
     self.canTraceForBandaging = false
 
-    for key, obj in ipairs(team.GetPlayers(ply:Team())) do
-    -- for key, obj in ipairs(self.teamPlayers) do
+    -- instead of blasting team.GetPlayers every frame, just use the table that gets filled in cl_render.lua
+    for key, obj in ipairs(self.teamPlayers) do
         -- only draw the player if we can see him, GMod has no clientside ways of checking whether the player is in PVS, check cl_render.lua for the second part of this
-        if obj.withinPVS and obj != ply and obj:Alive() then
-        -- if obj != ply and obj:Alive() then
+        if obj != ply and obj:Alive() then
             local pos = obj:GetBonePosition(obj:LookupBone("ValveBiped.Bip01_Head1"))
 
             if pos:Distance(ourShootPos) <= teamMateMarkerDisplayDistance then
@@ -287,24 +346,32 @@ function GM:HUDPaint()
             end
         end
 
-        obj.withinPVS = false
+
         -- clear the table each frame, since we don't know when more team mates will become present
         -- this is a quick and dirty alternative to not calling team.GetPlayers every single frame
         -- in order to reduce garbage collector pressure
-        -- self.teamPlayers[key] = nil
+        self.teamPlayers[key] = nil
     end
 
     if alive then
-        if ply.bleeding then
-            draw.ShadowText(self:getKeyBind(self:getActionKey("bandage")) .. " - apply bandage", self.ActionDisplayFont, scrW * 0.5, scrH * 0.5 + 50, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        else
-            if self.canTraceForBandaging then -- only trace for bandage validity if we have drawn the marker of another player
-                local bandageTarget = ply:getBandageTarget()
+        if IsValid(wep) and wep:GetClass() != self.MedkitClass then
+            if ply.bleeding then
+                draw.ShadowText(self:getKeyBind(self:getActionKey("bandage")) .. " - switch to medkit", self.ActionDisplayFont, scrW * 0.5, scrH * 0.5 + 50, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            else
+                if self.canTraceForBandaging then -- only trace for bandage validity if we have drawn the marker of another player
+                    local bandageTarget = ply:getBandageTarget()
 
-                if bandageTarget then
-                    draw.ShadowText(string.easyformatbykeys("KEY - bandage PLAYER", "KEY", self:getKeyBind(self:getActionKey("bandage")), "PLAYER", bandageTarget:Nick()), self.ActionDisplayFont, scrW * 0.5, scrH * 0.5 + 50, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    if bandageTarget then
+                        draw.ShadowText(string.easyformatbykeys("KEY - equip medkit to heal PLAYER", "KEY", self:getKeyBind(self:getActionKey("bandage")), "PLAYER", bandageTarget:Nick()), self.ActionDisplayFont, scrW * 0.5, scrH * 0.5 + 50, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    end
                 end
             end
+        end
+
+        local trace = ply:GetEyeTrace()
+
+        if trace.Entity and trace.Entity:IsPlayer() and trace.Entity:EyePos():Distance(EyePos()) <= self.StatusEffectsPlayerDist then
+            trace.Entity:drawStatusEffectsText()
         end
     end
 
@@ -353,8 +420,8 @@ function GM:drawLoadoutAvailability(w, h)
 
             self.HUD_COLORS.white.a, self.HUD_COLORS.black.a = 255 * alpha, 255 * alpha
 
-            draw.ShadowText(self:getKeyBind(self.LoadoutMenuKey) .. " - LOADOUT", "CW_HUD20", w - self.LoadoutElementSize * 0.5 - self.LoadoutElementSizeSpacing, h * 0.5 + self.LoadoutElementSize * 0.5, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            draw.ShadowText(os.date("%M:%S", delta), "CW_HUD20", w - self.LoadoutElementSize * 0.5 - self.LoadoutElementSizeSpacing, h * 0.5 + self.LoadoutElementSize * 0.5 + 20, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.ShadowText(self:getKeyBind(self.LoadoutMenuKey) .. " - LOADOUT", self.AttachmentSlotDisplayFont, w - self.LoadoutElementSize * 0.5 - self.LoadoutElementSizeSpacing, h * 0.5 + self.LoadoutElementSize * 0.5, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            draw.ShadowText(os.date("%M:%S", delta), self.AttachmentSlotDisplayFont, w - self.LoadoutElementSize * 0.5 - self.LoadoutElementSizeSpacing, h * 0.5 + self.LoadoutElementSize * 0.5 + 20, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
     end
 
@@ -362,27 +429,32 @@ function GM:drawLoadoutAvailability(w, h)
 end
 
 function GM:drawPlayerMarker(pos, obj, midX, midY)
-    pos.z = pos.z + 8
-
     local coords = pos:ToScreen()
-    surface.SetTexture(self.MarkerTexture)
 
     if coords.visible then
+        pos.z = pos.z + 8
+        surface.SetTexture(self.MarkerTexture)
+        local nickXOff = 4
+        local nickYOff = 10
+        local nameDorito = 8
         local dist = math.Distance(coords.x, coords.y, midX, midY)
         local alpha = math.Clamp(dist, 30, 255)
 
         self.HUD_COLORS.white.a = alpha
         self.HUD_COLORS.black.a = alpha
 
-        draw.ShadowText(obj:Nick(), "CW_HUD14", coords.x + 4, coords.y - 10, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.ShadowText(obj:Nick(), self.MarketFont, coords.x + nickXOff, coords.y - nickYOff, self.HUD_COLORS.white, self.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         local healthColor = 1 - (obj:Health() / 100)
         surface.SetDrawColor(200 + healthColor * 255, 255 - healthColor * 155, 200 - healthColor * 100, alpha)
-        surface.DrawTexturedRect(coords.x, coords.y, 8, 8)
+        surface.DrawTexturedRect(coords.x, coords.y, nameDorito, nameDorito)
 
         if obj.statusEffects then
             local statusEffects = GAMEMODE.StatusEffects
-            local xPos = coords.x + 13
+            local statEffXOff = 13
+            local xPos = coords.x + statEffXOff
+            local oneOff = 1
+            local size = 10
 
             for key, statusEffectID in ipairs(obj.statusEffects.numeric) do
                 local data = statusEffects[statusEffectID]
@@ -390,15 +462,16 @@ function GM:drawPlayerMarker(pos, obj, midX, midY)
                 surface.SetTexture(data.texture)
 
                 surface.SetDrawColor(0, 0, 0, 255)
-                surface.DrawTexturedRect(xPos, coords.y, 10, 10)
+                surface.DrawTexturedRect(xPos, coords.y, size, size)
 
                 surface.SetDrawColor(255, 255, 255, 255)
-                surface.DrawTexturedRect(xPos - 1, coords.y - 1, 10, 10)
+                surface.DrawTexturedRect(xPos - oneOff, coords.y - oneOff, size, size)
 
-                xPos = xPos + 13
+                xPos = xPos + statEffXOff
             end
 
-            if obj.statusEffects.map.bleeding then -- if the target is bleeding and we can draw his coords, we can then run a trace to check whether we can bandage him
+            -- if the target is bleeding and we can draw his coords, we can then run a trace to check whether we can bandage him
+            if obj.statusEffects.map.bleeding or obj.statusEffects.map.crippled_arm then
                 self.canTraceForBandaging = true
             end
         end
@@ -406,8 +479,10 @@ function GM:drawPlayerMarker(pos, obj, midX, midY)
 end
 
 function GM:createRoundOverDisplay(winTeam, actionType)
+    self.roundOverTime = CurTime() + GAMEMODE.RoundRestartTime - 1
+
     local popup = vgui.Create("GCRoundOver")
-    popup:SetSize(310, 50)
+    popup:SetSize(350, 50)
     popup:SetRestartTime(GAMEMODE.RoundRestartTime)
 
     if winTeam then
@@ -417,8 +492,18 @@ function GM:createRoundOverDisplay(winTeam, actionType)
             popup:SetBottomText("Switching to a random map & gametype in ")
         end
 
-        if winTeam == LocalPlayer():Team() then
-            self:PlayMusic(self.RoundEndMusicObjects[math.random(1, #self.RoundEndMusicObjects)], nil, self.RoundEndTrackVolume)
+        local retVal
+
+        if self.curGametype.modulateRoundEndMusic then
+            retVal = self.curGametype:modulateRoundEndMusic(winTeam)
+        end
+
+        if retVal then
+            self:playMusic(retVal, nil, self.RoundEndTrackVolume)
+        else
+            if winTeam == LocalPlayer():Team() then
+                self:PlayMusic(self.RoundEndMusicObjects[math.random(1, #self.RoundEndMusicObjects)], nil, self.RoundEndTrackVolume)
+            end
         end
     else
         popup:SetTopText("New match start")
@@ -454,7 +539,18 @@ function GM:createRoundPreparationDisplay(preparationTime)
     result:SetPos(x, y - 200)
 
     self.PreparationTime = preparationTime
-    self:PlayMusic(self.RoundStartMusicObjects[math.random(1, #self.RoundStartMusicObjects)], nil, self.RoundStartTrackVolume)
+
+    local retVal
+
+    if self.curGametype.modulateRoundStartMusic then
+        retVal = self.curGametype:modulateRoundStartMusic()
+    end
+
+    if retVal then
+        self:playMusic(retVal, nil, self.RoundStartTrackVolume)
+    else
+        self:playMusic(self.RoundStartMusicObjects[math.random(1, #self.RoundStartMusicObjects)], nil, self.RoundStartTrackVolume)
+    end
 
     if self.curGametype.RoundStart then
         self.curGametype:RoundStart()
@@ -495,7 +591,7 @@ function GM:createKilledByDisplay(killerPlayer, entClassString, wasBleeding)
 
     local baseHeight = self.KilledByEntrySize + self.KilledByBaseSize
     local panel = vgui.Create("GCPanel")
-    panel:SetFont("CW_HUD20")
+    panel:SetFont("GC_HUD20")
     panel:SetText("Killed by")
     panel:SetSize(self.KilledByPanelWidth, baseHeight)
     panel:CenterHorizontal()
