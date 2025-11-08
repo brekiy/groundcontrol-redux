@@ -55,7 +55,7 @@ function GM:RegisterRush()
 
             GAMEMODE:SetTimeLimit(self.timeLimit)
 
-            table.Empty(self.objectiveEnts)
+            self.objectiveEnts = {}
             self.stopCountdown = false
 
             GAMEMODE:InitializeGameTypeEntities(self)
@@ -73,7 +73,7 @@ function GM:RegisterRush()
     end
 
     function oneSideRush:OnRoundEnded(winTeam)
-        table.Empty(self.objectiveEnts)
+        self.objectiveEnts = {}
         self.stopCountdown = true
         self.objectiveCounter = 0
     end

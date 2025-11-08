@@ -86,7 +86,7 @@ function GM:registerAssault()
             self.realAttackerTeam = self.attackerTeam
             self.realDefenderTeam = self.defenderTeam
 
-            table.Empty(self.objectiveEnts)
+            self.objectiveEnts = {}
             self.stopCountdown = false
 
             GAMEMODE:InitializeGameTypeEntities(self)
@@ -94,7 +94,7 @@ function GM:registerAssault()
     end
 
     function assault:OnRoundEnded(winTeam)
-        table.Empty(self.objectiveEnts)
+        self.objectiveEnts = {}
         self.stopCountdown = true
         self.objectiveCounter = 0
     end

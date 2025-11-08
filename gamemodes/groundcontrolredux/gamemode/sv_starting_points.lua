@@ -30,7 +30,7 @@ end
 
 function GM:clearStartingPoints()
     for key, value in pairs(self.ValidStartingPoints) do
-        table.Empty(value)
+        value = {}
     end
 end
 

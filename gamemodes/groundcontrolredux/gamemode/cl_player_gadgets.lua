@@ -1,9 +1,9 @@
 net.Receive("GC_GADGETS", function(a, b)
     local ply = LocalPlayer()
 
-    table.Empty(ply.gadgets)
+    ply.gadgets = {}
 
-    for key, value in pairs(net.ReadTable()) do
+    for _, value in ipairs(net.ReadTable()) do
         ply:AddGadget(value)
     end
 end)

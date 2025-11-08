@@ -3,12 +3,10 @@ local PLAYER = FindMetaTable("Player")
 GM.SpectateablePlayers = {}
 
 function PLAYER:resetSpectateData()
-    self.spectatedPlayers = self.spectatedPlayers or {}
+    self.spectatedPlayers = {}
     self.spectateDelay = 0
     self.currentSpectateEntity = nil
     self.spectatedCamera = self.spectatedCamera or OBS_MODE_CHASE
-
-    table.Empty(self.spectatedPlayers)
 end
 
 -- take a bool whether to go back or not

@@ -583,11 +583,18 @@ function curWeaponPanel:Show()
 end
 
 function curWeaponPanel:UpdateAvailableAttachments()
-    table.Empty(self.availableAttachments)
+    self.availableAttachments = {}
+
     -- get all these checks out the way
-    if !self.weaponData then return end
+    if !self.weaponData then
+        return
+    end
+
     local weaponObject = self.weaponData.weaponObject
-    if !weaponObject.Attachments then return end
+
+    if !weaponObject.Attachments then
+        return
+    end
 
     local ply = LocalPlayer()
     local ownedAttachments = ply.ownedAttachments

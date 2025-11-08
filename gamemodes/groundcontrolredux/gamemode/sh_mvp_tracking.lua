@@ -25,7 +25,7 @@ function mvpTracker:init()
 end
 
 function mvpTracker:resetAllTrackedIDs()
-    table.Empty(self.trackedIDs)
+    self.trackedIDs = {}
 end
 
 function mvpTracker:trackID(player, id, amount)
