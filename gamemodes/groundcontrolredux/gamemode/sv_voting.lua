@@ -80,7 +80,7 @@ function GM:pickSendTargets(targets)
         if self.VoteTeamTargets then
             targets = team.GetPlayers(self.VoteTeamTargets)
         else
-            targets = self.CurrentPlayerList
+            targets = player.GetAll()
         end
     end
 

@@ -21,14 +21,14 @@ function PLAYER:spectateNext(goBack)
     local myTeam = self:Team()
 
     if myTeam == TEAM_SPECTATOR then
-        teamPlayers = GAMEMODE.CurrentPlayerList
+        teamPlayers = select(2, player.Iterator())
     else
         teamPlayers = team.GetPlayers(self:Team())
     end
 
     -- local teamPlayerCount = #teamPlayers
     -- PrintTable(self.spectatedPlayers)
-    for key, ply in ipairs(teamPlayers) do
+    for _, ply in ipairs(teamPlayers) do
         if ply:Alive() then
             if !self.spectatedPlayers[ply] then
                 self.spectatedPlayers[ply] = true

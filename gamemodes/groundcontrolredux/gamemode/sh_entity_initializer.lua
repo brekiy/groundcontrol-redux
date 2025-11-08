@@ -80,7 +80,7 @@ GM.entityInitializer:RegisterEntityInitializeCallback("gc_urban_warfare_capture_
     local ticketAmount = nil
 
     if curGameType.ticketsPerPlayer then
-        ticketAmount = math.Round(#GAMEMODE.CurrentPlayerList * curGameType.ticketsPerPlayer)
+        ticketAmount = math.Round(player.GetCount() * curGameType.ticketsPerPlayer)
     else
         ticketAmount = curGameType.startingTickets
     end
