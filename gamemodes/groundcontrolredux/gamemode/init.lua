@@ -112,7 +112,6 @@ AddCSLuaFile("cl_music_handler.lua")
 AddCSLuaFile("cl_render.lua")
 AddCSLuaFile("cl_voice_selection.lua")
 AddCSLuaFile("cl_weapon_selection_hud.lua")
-AddCSLuaFile("cl_player_counting.lua")
 AddCSLuaFile("cl_config.lua")
 AddCSLuaFile("cl_killcount.lua")
 

@@ -103,7 +103,7 @@ function GM:RegisterVIPEscort()
 
     function vipEscort:OnRoundEnded(winTeam)
         self.stopCountdown = true
-        for k, ply in pairs(player.GetAll()) do
+        for _, ply in player.Iterator() do
             ply.isVIP = false
             net.Start("GC_SET_VIP", ply)
             net.WriteBool(false)
@@ -116,7 +116,7 @@ function GM:RegisterVIPEscort()
     end
 
     function vipEscort:PlayerInitialSpawn(ply)
-        if GAMEMODE.RoundsPlayed == 0 and #player.GetAll() >= 2 then
+        if GAMEMODE.RoundsPlayed == 0 and player.GetCount() >= 2 then
             GAMEMODE:EndRound(nil)
         end
     end

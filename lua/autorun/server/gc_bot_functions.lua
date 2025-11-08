@@ -77,7 +77,7 @@ hook.Add("StartCommand", "StartCommandExample", function( ply, cmd )
     -- Bot has no enemy, try to find one
     if ( !IsValid( ply.target ) ) then
         -- Scan through all players and select one !dead
-        for id, pl in pairs( player.GetAll() ) do
+        for _, pl in player.Iterator() do
             -- Don't select dead players or self as enemies
             if ( !pl:Alive() or pl == ply or pl:Team() == ply:Team() ) then continue end
             ply.target = pl

@@ -11,7 +11,7 @@ GM.SmallScaleApproachRate = 2
 
 -- FIXME (brekiy): seems like it makes more sense to be a server only function
 function GM:ResetAllStatusEffects() -- on absolutely everyone (ie on round end)
-    for key, ply in ipairs(player.GetAll()) do -- on other players
+    for _, ply in player.Iterator() do -- on other players
         ply:ResetStatusEffects()
     end
 
@@ -23,7 +23,7 @@ function GM:ShowStatusEffect(id) -- on self
         return
     end
 
-    for key, effect in ipairs(self.ActiveStatusEffects) do
+    for _, effect in ipairs(self.ActiveStatusEffects) do
         if effect.id == id then
             effect.removed = false
             return
@@ -34,7 +34,7 @@ function GM:ShowStatusEffect(id) -- on self
 end
 
 function GM:RemoveStatusEffect(id) -- on self
-    for key, effect in ipairs(self.ActiveStatusEffects) do
+    for _, effect in ipairs(self.ActiveStatusEffects) do
         if effect.id == id then
             effect.removed = true
         end

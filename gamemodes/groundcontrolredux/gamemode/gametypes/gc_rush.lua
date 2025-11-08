@@ -92,7 +92,7 @@ function GM:RegisterRush()
 
     -- dunno why this wasn't defined initially...
     function oneSideRush:PlayerInitialSpawn(ply)
-        if GAMEMODE.RoundsPlayed == 0 and #player.GetAll() >= 2 then
+        if GAMEMODE.RoundsPlayed == 0 and player.GetCount() >= 2 then
             GAMEMODE:EndRound(nil)
         end
     end

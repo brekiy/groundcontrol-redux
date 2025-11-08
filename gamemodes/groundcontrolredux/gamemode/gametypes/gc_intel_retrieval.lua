@@ -74,7 +74,7 @@ function GM:RegisterIntelRetrieval()
     end
 
     function intelRetrieval:ResetRoundData()
-        for key, ply in ipairs(player.GetAll()) do
+        for _, ply in player.Iterator() do
             ply.hasIntel = false
             if ply.intel then
                 ply.intel:Remove()
@@ -124,7 +124,7 @@ function GM:RegisterIntelRetrieval()
     end
 
     function intelRetrieval:PlayerInitialSpawn(ply)
-        if GAMEMODE.RoundsPlayed == 0 and #player.GetAll() >= 2 then
+        if GAMEMODE.RoundsPlayed == 0 and player.GetCount() >= 2 then
             GAMEMODE:EndRound(nil)
         end
     end
@@ -156,7 +156,7 @@ function GM:RegisterIntelRetrieval()
     end
 
     function intelRetrieval:DeadDraw(w, h)
-        if GAMEMODE:GetActivePlayerAmount() < 2 then
+        if player.GetCount() < 2 then
             draw.ShadowText("This gametype requires at least 2 players, waiting for more people...",
                     "CW_HUD20", w * 0.5, 15, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1,
                     TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)

@@ -19,12 +19,12 @@ function ENT:Think()
     local targets = nil
 
     if self:GetTargetTeam() == 0 then
-        targets = player.GetAll()
+        targets = select(2, player.Iterator())
     else
         targets = team.GetPlayers(self:GetTargetTeam())
     end
 
-    for key, ply in ipairs(targets) do
+    for _, ply in ipairs(targets) do
         if self:canPenalizePlayer(ply, ownPos) then
             if !ply.penalizeTime then
                 ply.penalizeTime = curTime + self.timeToPenalize
