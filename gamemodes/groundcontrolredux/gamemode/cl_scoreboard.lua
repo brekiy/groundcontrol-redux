@@ -154,9 +154,10 @@ function gcScoreboardTitleBar:Paint(w, h)
     draw.ShadowText("SCORE", CW_HUD16, PADDING + 310, vertCenter, colors.ColorWhite, colors.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
     draw.ShadowText("PING", CW_HUD16, PADDING + 370, vertCenter, colors.ColorWhite, colors.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
-    if LocalPlayer():Team() == self.Team then
-        draw.ShadowText(string.format(ALIVE_FORMAT, GAMEMODE.AlivePlayers[self.Team] or 0), CW_HUD16, PADDING + 140, vertCenter, colors.ColorWhite, colors.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-    end
+    -- GM.AlivePlayers seems to be broken in some way (afxnatic)
+    -- if LocalPlayer():Team() == self.Team then
+    --     draw.ShadowText(string.format(ALIVE_FORMAT, GAMEMODE.AlivePlayers[self.Team] or 0), CW_HUD16, PADDING + 140, vertCenter, colors.ColorWhite, colors.ColorBlack, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    -- end
 
     return true
 end
