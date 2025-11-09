@@ -112,13 +112,15 @@ function gcScoreboardTeamColumn:Paint(w, h)
 end
 
 function gcScoreboardTeamColumn:PerformLayout(w, h)
+    local rHeight = math.floor(h * ROW_HEIGHT_RATIO)
+
     if IsValid(self.TitleBar) then
-        self.TitleBar:SetSize(w, h * ROW_HEIGHT_RATIO)
+        self.TitleBar:SetSize(w, rHeight)
     end
 
     for index, row in ipairs(self.PlayerRows) do
-        row:SetSize(w, h * ROW_HEIGHT_RATIO)
-        row:SetPos(0, (h * ROW_HEIGHT_RATIO) * index)
+        row:SetSize(w, rHeight)
+        row:SetPos(0, rHeight * index)
     end
 end
 
