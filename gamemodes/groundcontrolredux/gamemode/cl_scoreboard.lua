@@ -183,7 +183,8 @@ function gcScoreboardPlayer:Paint(w, h)
     local colors = GAMEMODE.ScoreboardColors
 
     if self.Player == lp then
-        draw.LinearGradient(0, 0, w, h, colors.ColorGray1, colors.ColorGray2, draw.VERTICAL)
+        -- HACK: If we provide 0 for our starting Y-coordinate, there's an annoying 1-pixel gap above the player panel.
+        draw.LinearGradient(0, -1, w, h, colors.ColorGray1, colors.ColorGray2, draw.VERTICAL)
     else
         surface.SetDrawColor(TEAM_GRADIENTS[self.Team]:Unpack())
         surface.DrawRect(0, 0, w, h)
