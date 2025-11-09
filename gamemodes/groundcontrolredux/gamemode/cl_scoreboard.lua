@@ -3,7 +3,7 @@ function GM:SortPlayers(teamEnum)
     local sorted = {}
 
     for _, player1 in ipairs(players) do
-        local score1, nick1, d1 = player1:GetNWInt("GC_SCORE"), player1:Name(), player1:Deaths()
+        local score1, nick1, deaths1 = player1:GetNWInt("GC_SCORE"), player1:Name(), player1:Deaths()
         local slot = #players
 
         for _, player2 in ipairs(players) do
