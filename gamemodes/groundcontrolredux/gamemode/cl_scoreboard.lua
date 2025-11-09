@@ -109,10 +109,6 @@ function gcScoreboardTeamColumn:Update()
 end
 
 function gcScoreboardTeamColumn:Paint(w, h)
-    surface.SetDrawColor(self.Team == TEAM_RED and 255 or 0, 0, self.Team == TEAM_BLUE and 255 or 0, 50)
-    surface.DrawRect(0, 0, w, h)
-
-    return true
 end
 
 function gcScoreboardTeamColumn:PerformLayout(w, h)
