@@ -172,6 +172,11 @@ function gcScoreboardPlayer:Init()
     self.TextColor = Color(255, 255, 255, 255)
 end
 
+local TEAM_GRADIENTS = {
+    [TEAM_RED] = Color(255, 143, 91, 150),
+    [TEAM_BLUE] = Color(40, 66, 124, 150)
+}
+
 function gcScoreboardPlayer:Paint(w, h)
     local lp = LocalPlayer()
     local n = self.Player:Nick()
@@ -180,7 +185,7 @@ function gcScoreboardPlayer:Paint(w, h)
     if self.Player == lp then
         draw.LinearGradient(0, 0, w, h, colors.ColorGray1, colors.ColorGray2, draw.VERTICAL)
     else
-        surface.SetDrawColor(255, 143, 91, 150)
+        surface.SetDrawColor(TEAM_GRADIENTS[self.Team]:Unpack())
         surface.DrawRect(0, 0, w, h)
     end
 
