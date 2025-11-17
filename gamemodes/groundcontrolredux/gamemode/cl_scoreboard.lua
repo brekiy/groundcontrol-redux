@@ -179,6 +179,10 @@ local TEAM_GRADIENTS = {
 }
 
 function gcScoreboardPlayer:Paint(w, h)
+    if not IsValid(self.Player) then
+        return true
+    end
+
     local lp = LocalPlayer()
     local n = self.Player:Nick()
     local colors = GAMEMODE.ScoreboardColors
