@@ -34,7 +34,8 @@ function GM:SetGametypeCVarByPrettyName(targetName)
     local key, _ = self:GetGametypeFromConVar(targetName)
 
     if key then
-        self:ChangeGametype(key)
+        -- (afxnatic): We let the convar callback handle changing gametype, as it calls the exact same function
+        -- self:ChangeGametype(key)
         game.ConsoleCommand("gc_gametype " .. key .. "\n")
 
         return true
