@@ -32,7 +32,7 @@ function GM:RegisterRush()
         local curTime = CurTime()
 
         for key, obj in ipairs(self.objectiveEnts) do
-            if obj.winDelay > curTime then
+            if obj.winDelay and obj.winDelay > curTime then
                 return false
             end
         end
@@ -64,12 +64,8 @@ function GM:RegisterRush()
 
     function oneSideRush:Think()
         if !self.stopCountdown and GAMEMODE:HasTimeRunOut() and self:ArePointsFree() then
-                GAMEMODE:EndRound(self.realDefenderTeam)
+            GAMEMODE:EndRound(self.defenderTeam)
         end
-    end
-
-    function oneSideRush:OnTimeRanOut()
-        GAMEMODE:EndRound(self.defenderTeam)
     end
 
     function oneSideRush:OnRoundEnded(winTeam)
