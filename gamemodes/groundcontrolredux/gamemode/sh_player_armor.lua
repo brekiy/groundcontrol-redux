@@ -258,8 +258,7 @@ end
 
 -- Clear all of the player's tracked armor
 function PLAYER:ResetTrackedArmor()
-    self.armor = self.armor or {}
-    table.Empty(self.armor)
+    self.armor = {}
 end
 
 -- Force resets the player to have no armor

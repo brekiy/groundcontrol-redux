@@ -44,7 +44,7 @@ function GM:RemoveStatusEffect(id) -- on self
 end
 
 function GM:RemoveAllStatusEffects() -- on self
-    table.Empty(self.ActiveStatusEffects)
+    self.ActiveStatusEffects = {}
 end
 
 GM.BaseStatusEffectX = GM.BaseHUDX

@@ -284,8 +284,11 @@ function GM:setupLoadoutSelectionTime()
 end
 
 function GM:setupRoundPreparation()
-    if GetConVar("gc_print_damage_log"):GetBool() then PrintTable(self.DamageLog) end
-    table.Empty(self.DamageLog)
+    if GetConVar("gc_print_damage_log"):GetBool() then
+        PrintTable(self.DamageLog)
+    end
+
+    self.DamageLog = {}
     self.PreparationTime = CurTime() + self.RoundPreparationTime
     self:setupLoadoutSelectionTime()
 

@@ -1,16 +1,6 @@
 AddCSLuaFile()
 
 -- Util functions that have been defined under lua libraries
-
--- Empties a table
-function table.Empty(list)
-    for key, value in pairs(list) do
-        list[key] = nil
-    end
-
-    return list
-end
-
 function file.verifyDataFolder(path)
     if !file.IsDir(path, "DATA") then
         file.CreateDir(path)

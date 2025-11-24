@@ -77,8 +77,8 @@ function PLAYER:ResetStatusEffects() -- on other players
         return
     end
 
-    table.Empty(self.statusEffects.numeric)
-    table.Empty(self.statusEffects.map)
+    self.statusEffects.numeric = {}
+    self.statusEffects.map = {}
 end
 
 function PLAYER:HasStatusEffect(statusEffect)

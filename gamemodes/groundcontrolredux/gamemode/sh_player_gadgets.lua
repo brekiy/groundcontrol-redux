@@ -35,8 +35,7 @@ function PLAYER:getSpecificGadget(id)
 end
 
 function PLAYER:ResetGadgetData()
-    self.gadgets = self.gadgets or {}
-    table.Empty(self.gadgets)
+    self.gadgets = {}
 end
 
 function PLAYER:GetDesiredAmmoCount()

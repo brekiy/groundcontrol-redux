@@ -14,11 +14,10 @@ function PLAYER:UnlockAttachment(attachmentName)
 end
 
 function PLAYER:resetAttachmentData()
-    self.ownedAttachments = self.ownedAttachments or {}
-    table.Empty(self.ownedAttachments)
+    self.ownedAttachments = {}
 end
 
-net.Receive("GC_ATTACHMENTS", function(len, ply)
+net.Receive("GC_ATTACHMENTS", function(len)
     LocalPlayer().ownedAttachments = net.ReadTable()
 end)
 

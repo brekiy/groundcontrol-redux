@@ -97,7 +97,7 @@ function GM:PlayerSpawn(ply)
         return false
     end
 
-    ply.currentTraits = ply.currentTraits and table.Empty(ply.currentTraits) or {}
+    ply.currentTraits = {}
     ply.armor = {}
     ply:UnSpectate()
     ply:SendAttachments()
@@ -127,7 +127,7 @@ function GM:PlayerSpawn(ply)
     ply.crippledArm = false
     ply.sustainedArmDamage = 0 -- regardless of which arm was hit
     ply:setInvincibilityPeriod(self.postSpawnInvincibilityTimePeriod)
-    table.Empty(ply.attackedBy)
+    ply.attackedBy = {}
     ply:SetHullDuck(self.DuckHullMin, self.DuckHullMax)
     ply:SetViewOffsetDucked(self.ViewOffsetDucked)
     ply:ResetStatusEffects()
