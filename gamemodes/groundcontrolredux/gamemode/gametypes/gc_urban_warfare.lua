@@ -156,7 +156,7 @@ function GM:RegisterUrbanWarfare()
     end
 
     function urbanwarfare:PlayerInitialSpawn(ply)
-        if GAMEMODE.RoundsPlayed == 0 and #player.GetAll() >= 2 then
+        if GAMEMODE.RoundsPlayed == 0 and player.GetCount() >= 2 then
             GAMEMODE:EndRound(nil)
             GAMEMODE.RoundsPlayed = 1
         end

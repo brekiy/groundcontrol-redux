@@ -140,7 +140,7 @@ function GM:RegisterDrugBust()
     end
 
     function ghettoDrugBust:ResetRoundData()
-        for key, ply in ipairs(player.GetAll()) do
+        for _, ply in player.Iterator() do
             ply.hasDrugs = false
         end
     end
@@ -237,7 +237,7 @@ function GM:RegisterDrugBust()
     end
 
     function ghettoDrugBust:PlayerInitialSpawn(ply)
-        if GAMEMODE.RoundsPlayed == 0 and #player.GetAll() >= 2 then
+        if GAMEMODE.RoundsPlayed == 0 and player.GetCount() >= 2 then
             GAMEMODE:EndRound(nil)
         end
     end
@@ -249,7 +249,8 @@ function GM:RegisterDrugBust()
     function ghettoDrugBust:RoundStart()
         if SERVER then
             local players = player.GetAll()
-            local gearGuys = math.max(math.floor(#players / self.blueGuyPer), 1) -- aka the dudes who get the cool gear
+            local playerCount = #players
+            local gearGuys = math.max(math.floor(playerCount / self.blueGuyPer), 1) -- aka the dudes who get the cool gear
             if self.timeLimitMap[self.CurMap] then
                 GAMEMODE:SetTimeLimit(self.timeLimitMap[self.CurMap])
             else
@@ -258,7 +259,7 @@ function GM:RegisterDrugBust()
             self.stopCountdown = false
 
             for i = 1, gearGuys do
-                local randomIndex = math.random(1, #players)
+                local randomIndex = math.random(1, playerCount)
                 local dude = players[randomIndex]
 
                 if dude then
@@ -267,7 +268,7 @@ function GM:RegisterDrugBust()
                 end
             end
 
-            for key, ply in ipairs(players) do
+            for _, ply in ipairs(players) do
                 ply:SetTeam(self.gangTeam)
             end
 
@@ -282,7 +283,7 @@ function GM:RegisterDrugBust()
     end
 
     function ghettoDrugBust:DeadDraw(w, h)
-        if GAMEMODE:GetActivePlayerAmount() < 2 then
+        if player.GetCount() < 2 then
             draw.ShadowText("This gametype requires at least 2 players, waiting for more people...", "CW_HUD20", w * 0.5, 15, GAMEMODE.HUD_COLORS.white, GAMEMODE.HUD_COLORS.black, 1, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end
     end

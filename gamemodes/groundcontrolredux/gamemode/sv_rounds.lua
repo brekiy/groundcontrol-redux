@@ -51,12 +51,13 @@ end
 -- this is the default round over check, for gametypes with no player respawns
 function GM:CheckRoundOverPossibility(teamId, ignoreDisplay)
     if !self.RoundOver then
-        local allPlayers = self.CurrentPlayerList
+        local playerCount = player.GetCount()
 
-        if #allPlayers < 2 then -- don't do anything if we only have 2 players
-            if allPlayers == 0 then -- if everyone disconnected, reset rounds played
+        if playerCount < 2 then -- don't do anything if we only have 2 players
+            if playerCount == 0 then -- if everyone disconnected, reset rounds played
                 self.RoundsPlayed = 0
             end
+
             return
         end
 
@@ -129,7 +130,7 @@ function GM:EndRound(winningTeam)
         net.Start("GC_ROUND_OVER")
         net.WriteInt(winningTeam, 8)
         net.WriteInt(actionToSend, 8)
-        net.Send(self.CurrentPlayerList)
+        net.Broadcast()
     end
 
     self.MVPTracker:sendMVPList()
@@ -179,12 +180,12 @@ function GM:startVoteMap()
         local _, data = self:GetGametypeFromConVar()
         local mapList = self:FilterExistingMaps(data.mapRotation)
 
-        self:setupCurrentVote("Vote for the next map", mapList, self.CurrentPlayerList, self.MaxMapsPerPick, true, nil, function()
+        self:setupCurrentVote("Vote for the next map", mapList, player.GetAll(), self.MaxMapsPerPick, true, nil, function()
             local highestOption, _ = self:getHighestVote()
             self.nextVotedMap = highestOption.option
             local mapText = "Will switch to '" .. self.nextVotedMap .. "' at the end of this round."
 
-            for key, ply in ipairs(self.CurrentPlayerList) do
+            for _, ply in player.Iterator() do
                 ply:ChatPrint(mapText)
             end
         end, self.VoteMapVoteID)
@@ -238,7 +239,7 @@ function GM:startGameTypeVote()
         end
     end
 
-    self:setupCurrentVote("Vote for next game type", possibilities, self.CurrentPlayerList, self.MaxGameTypesPerPick, false, nil, function()
+    self:setupCurrentVote("Vote for next game type", possibilities, player.GetAll(), self.MaxGameTypesPerPick, false, nil, function()
         local highestOption, _ = self:getHighestVote()
 
         self:SetGametypeCVarByPrettyName(highestOption.option)
@@ -248,7 +249,6 @@ function GM:startGameTypeVote()
 end
 
 function GM:RestartRound()
-    self:updateCurrentPlayerList() -- might not be needed for players, but is for bots
     if !self.curGametype.noTeamBalance then
         self:BalanceTeams()
     end
@@ -266,7 +266,7 @@ function GM:RestartRound()
 
     self:setupRoundPreparation()
 
-    for key, obj in pairs(self.CurrentPlayerList) do
+    for _, obj in player.Iterator() do
         obj:Spawn()
     end
 

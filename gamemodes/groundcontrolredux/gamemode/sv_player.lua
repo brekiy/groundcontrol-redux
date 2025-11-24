@@ -79,12 +79,6 @@ end
 
 function GM:PlayerAuthed(ply, steamID, uniqueID)
     self:verifyPunishment(ply)
-    self:updateCurrentPlayerList()
-end
-
-function GM:PlayerConnect(name, ip)
-    -- cover bots joining
-    self:updateCurrentPlayerList()
 end
 
 local ZeroVector = Vector(0, 0, 0)
@@ -264,7 +258,7 @@ function GM:DoPlayerDeath(ply, attacker, dmgInfo)
 end
 
 function GM:disableCustomizationMenu()
-    for key, ply in ipairs(self.CurrentPlayerList) do
+    for _, ply in player.Iterator() do
         local wep = ply:GetActiveWeapon()
 
         if IsValid(wep) and wep.CW20Weapon and wep.dt.State == CW_CUSTOMIZE then
@@ -471,7 +465,7 @@ function GM:PlayerDeathThink(ply)
     if self.curGametype.canSpawn then
         return self.curGametype:canSpawn(ply)
     else
-        if #self.CurrentPlayerList < 2 and (ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_JUMP)) then
+        if player.GetCount() < 2 and (ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_JUMP)) then
             ply:Spawn()
             return true
         end
@@ -501,8 +495,6 @@ function GM:PlayerDisconnected(ply)
             plyObj:attemptSpectate()
         end
     end
-
-    self:updateCurrentPlayerList(ply)
 end
 
 function PLAYER:crippleArm()
@@ -738,13 +730,3 @@ end)
 hook.Add("CW20_PreventCWWeaponPickup", "GC_CW20_PreventCWWeaponPickup", function(wepObj, ply)
     return !ply.canPickupWeapon or (ply.sustainedArmDamage >= GAMEMODE.DropPrimarySustainedDamage and weapons.GetStored(wepObj:GetWepClass()).isPrimaryWeapon)
 end)
-
-function GM:updateCurrentPlayerList(exclude)
-    self.CurrentPlayerList = player.GetAll()
-
-    if exclude then
-        table.Exclude(self.CurrentPlayerList, exclude)
-    end
-    print("[GROUND CONTROL REDUX] Updated player list:")
-    PrintTable(self.CurrentPlayerList)
-end

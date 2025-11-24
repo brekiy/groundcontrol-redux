@@ -18,7 +18,7 @@ function GM:ResetAllKillcountData() -- used in Urban Warfare
 
     -- reset unconfirmed kills on players
 
-    for key, plyObj in ipairs(self.CurrentPlayerList) do
+    for _, plyObj in player.Iterator() do
         plyObj:ResetKillcountData()
     end
 end

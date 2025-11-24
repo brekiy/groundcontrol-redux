@@ -5,7 +5,6 @@
 ]]--
 
 GM.AutoUpdateConVars = {}
-GM.CurrentPlayerList = {}
 GM.defaultDoorMoveSpeed = 200 -- the default door move speed to set
 
 CreateConVar("gc_door_move_speed", GM.defaultDoorMoveSpeed, {FCVAR_ARCHIVE, FCVAR_NOTIFY}) -- time in seconds that a player can remain without any input before we kick him out
@@ -112,7 +111,6 @@ AddCSLuaFile("cl_music_handler.lua")
 AddCSLuaFile("cl_render.lua")
 AddCSLuaFile("cl_voice_selection.lua")
 AddCSLuaFile("cl_weapon_selection_hud.lua")
-AddCSLuaFile("cl_player_counting.lua")
 AddCSLuaFile("cl_config.lua")
 AddCSLuaFile("cl_killcount.lua")
 
