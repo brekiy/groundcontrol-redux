@@ -157,7 +157,7 @@ function GM:RegisterDrugBust()
         if team == ghettoDrugBust.gangTeam and ply.hasDrugs and !host:GetHasDrugs() then
             ghettoDrugBust:RemoveDrugs(ply)
 
-            host:createDrugPackageObject()
+            host:CreateDrugPackageObject()
             ply:AddCurrency("RETURNED_DRUGS", nil, self.cashPerDrugReturn, self.expPerDrugReturn)
             GAMEMODE:TrackRoundMVP(ply, "objective", 1)
             GAMEMODE:StartAnnouncement("ghetto", "drugs_retrieved", CurTime(), nil, ply)
